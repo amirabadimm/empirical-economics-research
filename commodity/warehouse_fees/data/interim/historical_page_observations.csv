@@ -1,0 +1,31 @@
+observed_at,tariff_year,commodity,daily_fee_rial,fee_basis,source_url,source_kind,confidence,notes
+2016-10-29,1395,feed_barley,2,kg,https://web.archive.org/web/20161029233658id_/http://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation; entry fee was 50 rial/kg
+2016-10-29,1395,grain_corn,2.5,kg,https://web.archive.org/web/20161029233658id_/http://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation; entry fee was 70 rial/kg
+2019-04-18,1398,saffron,10,gram,https://web.archive.org/web/20190418100538id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2019-04-18,,gold_coin,700,coin,https://web.archive.org/web/20190418100538id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2019-08-18,1398,green_cumin,40,kg,https://web.archive.org/web/20190818155404id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2020-01-21,1398,pistachio,50,kg,https://web.archive.org/web/20200121124235id_/http://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2021-01-21,1399,raisin,40,kg,https://web.archive.org/web/20210121084803id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2021-01-21,1399,saffron,15,gram,https://web.archive.org/web/20210121084803id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2021-01-21,,gold_coin,1050,coin,https://web.archive.org/web/20210121084803id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2021-01-21,1399,green_cumin,80,kg,https://web.archive.org/web/20210121084803id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2021-01-21,1399,pistachio,100,kg,https://web.archive.org/web/20210121084803id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2021-01-21,1399,date_fruit,100,kg,https://web.archive.org/web/20210121084803id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2021-04-12,1400,rice,30,kg,https://web.archive.org/web/20210412072321id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2021-09-26,1399,raisin,100,kg,https://web.archive.org/web/20210926223105id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Changed since 2021-04-12 snapshot
+2022-01-25,,copper_cathode,150,kg,https://web.archive.org/web/20220125175931id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,medium,Conflicts with a 70-rial notice; likely a different contract regime or stale page
+2022-01-25,1400,rice,40,kg,https://web.archive.org/web/20220125175931id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Changed since 2021-09-26 snapshot
+2022-01-25,,raisin,40,kg,https://web.archive.org/web/20220125175931id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2022-01-25,,saffron,22,gram,https://web.archive.org/web/20220125175931id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2022-01-25,,green_cumin,80,kg,https://web.archive.org/web/20220125175931id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2022-01-25,,pistachio,220,kg,https://web.archive.org/web/20220125175931id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2022-05-21,,copper_cathode,75,kg,https://web.archive.org/web/20220521181324id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,medium,Archived table differs from Jan 2022 snapshot and Dec 2021 notice
+2022-05-21,,gold_coin,1300,coin,https://web.archive.org/web/20220521181324id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2022-05-21,,chickpea,40,kg,https://web.archive.org/web/20220521181324id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,First recovered observation
+2023-09-22,,iron_ore,250,tonne,https://web.archive.org/web/20230922053608id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2023-09-22,,quarter_gold_coin,1000,coin,https://web.archive.org/web/20230922053608id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2023-09-22,,gold_coin,2960,coin,https://web.archive.org/web/20230922053608id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2023-09-22,,saffron,36,gram,https://web.archive.org/web/20230922053608id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2023-09-22,,gold_bullion,30,certificate_0.1g,https://web.archive.org/web/20230922053608id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2023-09-22,,pistachio,600,kg,https://web.archive.org/web/20230922053608id_/https://www.ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Rate observed on archived official table
+2023-09-30,,saffron,44,gram,https://web.archive.org/web/20230930215640id_/https://ime.co.ir/hazine-anbardari.html,official_page_wayback,high,Agrees with official change notice effective 1402-07-10
