@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this research code, please cite the repository."
+title: "Empirical Economics Research"
+type: software
+authors:
+  - given-names: "Mohammad Mahdi"
+    family-names: "Amirabadi"
+    website: "https://github.com/amirabadimm"
+repository-code: "https://github.com/amirabadimm/empirical-economics-research"
+url: "https://github.com/amirabadimm/empirical-economics-research"
+version: 0.1.0
+date-released: 2026-08-11
+license: MIT
+keywords:
+  - empirical economics
+  - commodity markets
+  - market integration
+  - exchange-rate pass-through
+  - reproducible research

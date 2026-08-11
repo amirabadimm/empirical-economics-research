@@ -1,0 +1,231 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,booktabs,tabularx,array,enumitem,xcolor,hyperref,fancyhdr,lastpage,graphicx,float}
+\definecolor{accent}{HTML}{A85D32}
+\definecolor{navy}{HTML}{17365D}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=navy,pdftitle={Copper Certificate Valuation Research Report}}
+\pagestyle{fancy}\fancyhf{}\lhead{Copper Certificate Valuation}\rhead{Research Report}\cfoot{Page \thepage\ of \pageref{LastPage}}
+\setlength{\headheight}{14pt}\setlist[itemize]{leftmargin=1.5em,itemsep=2pt}
+\newcommand{\pct}{\,\%}\newcommand{\code}[1]{\texttt{#1}}
+\graphicspath{{figures/}}
+\begin{document}
+
+\begin{titlepage}\centering
+\vspace*{2cm}{\Huge\bfseries\color{accent} Copper Certificate Valuation\par}
+\vspace{0.5cm}{\LARGE Data, Methodology, Implementation, and Results\par}
+\vspace{1cm}\rule{0.85\textwidth}{1pt}\par\vfill
+{\large Iranian Mercantile Exchange copper cathode certificate and physical market\par}
+\vspace{0.3cm}{\large LME cash copper and free-market USD/IRR\par}\vfill
+\begin{tabular}{rl}\textbf{Data checkpoint:}&3 August 2026\\\textbf{Report date:}&10 August 2026\\\textbf{Status:}&Complete valuation pipeline; analytical QA continuing\end{tabular}
+\vfill{\small Research documentation only; not investment advice.\par}
+\end{titlepage}
+\tableofcontents\newpage
+
+\section{Executive Summary}
+This project built a reproducible pipeline to estimate whether the Iranian copper cathode
+warehouse receipt trades at a premium or discount to a comparable domestic physical price.
+It integrates the official IME certificate and physical-market feeds, LME cash copper, and
+free-market USD/IRR. Raw source snapshots are preserved; canonical CSV files are refreshed
+incrementally and atomically; derived outputs are rebuilt from raw data.
+
+The principal result covers 169 certificate-trading days from 26 October 2025 to 26 July
+2026. It uses 26 exact physical/certificate anchors and 143 interpolated days. The estimated
+certificate-to-domestic-physical bubble averaged 5.17\pct, with a median of 6.13\pct, a
+minimum of $-14.52\pct$, and a maximum of 23.70\pct. It was positive on 125 days and
+negative on 44 days.
+
+\section{Research Architecture and Data Governance}
+The workspace separates collection, transformation, and presentation:
+\begin{itemize}
+\item immutable API and HTML evidence is retained under \code{data/raw};
+\item canonical raw CSVs are refreshed only by documented collectors;
+\item derived data is written only to \code{data/processed};
+\item collectors are incremental, idempotent, validated, and atomic;
+\item notebooks read source/processed data but never rewrite raw files;
+\item shared IME logic resides in \code{shared/ime\_data}, while copper filters remain explicit.
+\end{itemize}
+
+\section{Data Sources and Collection Logic}
+\subsection{Certificate}
+The certificate collector uses the official IME CDC endpoint
+\url{https://dataapi.ime.co.ir/api/CDC/CDCTrades}. It treats \code{CD1COP0001}
+and \code{CopperCthd} as one continuous instrument (Commodity ID 14), refreshes a trailing
+14-day window, merges by date, retains zero-volume days, and archives complete JSON responses.
+The analytical price is \code{TodaySettlementPrice}. The independently calculated
+\code{TradesValue/TradesVolume} is a validation only; the allowed difference is approximately
+0.5 IRR because the official settlement is rounded.
+
+The current raw certificate contains 246 calendar rows from 20 October 2025 through
+2 August 2026, of which 178 have positive trading volume.
+
+\subsection{Physical copper}
+The official IME physical-market service is queried month by month. Full market responses are
+archived before filtering. The canonical scope is intentionally narrow: goods exactly equal
+to copper cathode, National Iranian Copper Industries Company, symbols \code{NCI-CCAA-00}
+and \code{NCI-OACCAA-00}, and cash or cash-matching contracts. Forward, credit, other
+producers, and ``copper cathode 2'' are excluded. Quantity-zero offers remain in raw data but
+do not enter traded-price benchmarks.
+
+The canonical physical CSV has 1,163 rows and 36 columns from 1387/06/03 through 1405/05/04;
+1,154 rows are positive trades.
+
+\subsection{LME and FX}
+Westmetall annual tables are collected with field \code{LME\_Cu\_cash}. The collector downloads
+history from 2008 on first run and refreshes only the newest local year thereafter. Annual HTML
+is preserved, and source ``-'' markers remain unchanged in raw. The current file contains 4,699
+dates through 31 July 2026.
+
+The TGJU-derived FX series stores IRR/USD. New observations use the daily close; historical
+user-supplied midpoint observations are preserved and labeled
+\code{legacy\_high\_low\_midpoint}. Calendar conversion is round-trip validated. The current
+series contains 13,060 dates through 1405/05/11.
+
+\section{Physical Benchmark}
+Only rows with positive price and quantity enter the daily benchmark:
+\begin{equation}
+P_d=\frac{\sum_i p_{i,d}q_{i,d}}{\sum_i q_{i,d}}.
+\end{equation}
+Cash and cash-matching quantities, row counts, symbols, and matching share remain visible for
+audit. On all 362 historical days with both mechanisms, their prices were equal. The builder
+stops if they diverge in future data rather than silently continuing the one-price rule.
+The output \code{nci\_copper\_cash\_daily.csv} contains 789 positive-trade days from
+24 August 2008 through 26 July 2026.
+
+\section{Intrinsic Price and Market Alignment}
+LME and FX are joined as-of: the latest observation on or before each target date is selected,
+never a future observation. Source date and age are retained. Intrinsic copper value is
+\begin{equation}
+I_t=\left(\frac{LME^{cash}_t}{1000}\right)FX_t,
+\end{equation}
+in IRR/kg. This transparent proxy excludes domestic tax, transport, storage, financing,
+quality, delivery, and liquidity effects.
+
+\section{Three Bubble Definitions}
+\begin{align}
+B^{P/I}_t&=100\left(\frac{P_t}{I_t}-1\right),\\
+B^{C/I}_t&=100\left(\frac{C_t}{I_t}-1\right),\\
+B^{C/P}_t&=100\left(\frac{C_t}{\widehat{P}_t}-1\right).
+\end{align}
+The first is the domestic physical basis to LME--FX. The second is the direct certificate
+basis to LME--FX. The third is the principal certificate premium to estimated domestic
+physical value. They answer different questions and must not be conflated.
+
+\section{Primary Estimator: Ratio Interpolation}
+On each exact physical/certificate anchor $a$, the domestic basis ratio is
+$R_a=P_a/I_a$. Between consecutive anchors $a_L$ and $a_R$:
+\begin{align}
+w_t&=\frac{t-a_L}{a_R-a_L},\\
+\widehat{R}_t&=R_{a_L}+w_t(R_{a_R}-R_{a_L}),\\
+\widehat{P}_t&=\widehat{R}_t I_t.
+\end{align}
+Calendar-day interpolation is used. No extrapolation is permitted before the first or after
+the last anchor. At anchors, estimated physical price must reconstruct observed price. This
+method lets daily LME and FX movements enter intrinsic value while smoothing only the domestic basis.
+
+\section{Experimental Regression}
+Regression uses only intrinsic price as the feature and physical price as the target;
+certificate price never enters model fitting. Five-fold \code{TimeSeriesSplit} compares a
+proportional model, a linear model with intercept, and a degree-two ridge polynomial. The current
+selection is
+\begin{equation}
+\widehat{P}=1{,}929{,}020.20+0.75842654 I.
+\end{equation}
+Only 26 anchor observations are available, so regression remains a sensitivity analysis and
+ratio interpolation remains official.
+
+\section{Results}
+\begin{table}[h]\centering
+\begin{tabular}{lrrrrrr}\toprule
+Measure&Rows&Mean&Median&Minimum&Maximum&Pos./Neg.\\\midrule
+Physical vs intrinsic&789&$-8.43\pct$&$-6.88\pct$&$-57.52\pct$&28.04\pct&150/639\\
+Certificate vs intrinsic&178&$-9.67\pct$&$-9.53\pct$&$-26.00\pct$&3.76\pct&13/165\\
+Certificate vs est. physical&169&5.17\pct&6.13\pct&$-14.52\pct$&23.70\pct&125/44\\
+Regression sensitivity&178&4.67\pct&4.90\pct&$-13.55\pct$&23.10\pct&116/62\\\bottomrule
+\end{tabular}\caption{Copper bubble results}\end{table}
+
+The direct intrinsic measures are mostly negative, while the certificate premium to the
+estimated domestic physical market is mostly positive. The domestic physical basis therefore
+explains a material part of the apparent global/FX discount.
+
+\section{Visual Analysis of the Three Bubble Measures}
+
+\subsection{Physical market versus intrinsic value}
+Figure~\ref{fig:cu-physical} shows the long-run domestic copper physical basis. This is the
+broadest series in the report and covers all 789 benchmark days, not merely the certificate
+period. Values below zero mean that eligible NCI cathode traded below the contemporaneous
+LME--FX proxy. The series is negative on 639 days and exhibits large historical dislocations,
+including the sample minimum of $-57.52\pct$. These movements show why intrinsic value cannot
+be substituted mechanically for domestic physical value.
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.97\textwidth]{copper_physical_bubble.png}
+\caption{Copper physical-market price relative to LME--FX intrinsic value. The horizontal
+zero line indicates parity; green shading denotes a positive basis and red shading a discount.}
+\label{fig:cu-physical}\end{figure}
+
+\subsection{Certificate versus intrinsic value}
+Figure~\ref{fig:cu-certificate} compares the official certificate settlement price directly
+with intrinsic value over 178 positive-volume certificate days. The measure is negative on
+165 days and positive on only 13. It answers a global-factor question, but it does not establish
+that the certificate is cheap relative to the Iranian physical market because the physical
+commodity itself usually trades below the same proxy.
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.97\textwidth]{copper_certificate_bubble.png}
+\caption{Copper certificate settlement price relative to LME--FX intrinsic value.}
+\label{fig:cu-certificate}\end{figure}
+
+\subsection{Certificate versus estimated domestic physical value}
+Figure~\ref{fig:cu-main} is the principal valuation chart. The denominator is the physical
+price reconstructed from the interpolated physical/intrinsic ratio. The graph begins at the
+first anchor and ends at the last anchor; the missing outer certificate dates are intentionally
+excluded because extrapolation is prohibited. Its predominantly positive shape---125 of 169
+days---indicates that the certificate usually carried a premium to the estimated comparable
+domestic cathode price during the modeled window.
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.97\textwidth]{copper_main_bubble.png}
+\caption{Principal copper certificate bubble relative to estimated domestic physical value.}
+\label{fig:cu-main}\end{figure}
+
+\subsection{How to read the three charts together}
+The charts form a valuation bridge. The first estimates the domestic physical basis to global
+copper and FX. The second places the certificate against the same global factor. The third
+removes the estimated domestic physical basis from that direct comparison. A negative second
+chart can therefore coexist with a positive third chart: both the certificate and physical
+copper may be below intrinsic value, while the certificate remains expensive relative to the
+domestic physical commodity. Line segments should not be read as observations on every calendar
+day: the physical chart joins sparse benchmark dates, and the principal chart contains modeled
+interpolation between observed anchors.
+
+\section{Validation and Audit Controls}
+Controls cover required schema; stable identity and allowed codes; sorted unique dates;
+Gregorian--Jalali round trips; non-negative raw values; positive traded benchmark inputs;
+settlement/VWAP reconciliation; exact duplicate detection; immutable snapshots; atomic writes;
+as-of source ages; exact anchor reconstruction; and no extrapolation. Five network-free copper
+contract tests currently cover core raw and processing contracts.
+
+\section{Outputs and Reproduction}
+Principal files are \code{nci\_copper\_cash\_daily.csv},
+\code{physical\_vs\_intrinsic\_bubble.csv},
+\code{certificate\_vs\_intrinsic\_bubble.csv},
+\code{copper\_certificate\_bubble.csv}, and \code{intrinsic\_regression.csv}.
+Run collectors first, then the physical benchmark, intrinsic bubbles, principal bubble, and
+regression. Processed files are rebuilt from current raw inputs and never modify raw data.
+
+\section{Limitations and Next Steps}
+The main limitation is the 26-anchor sample and its uneven timing, including a long physical
+trade gap. Ratio interpolation assumes a smooth domestic basis between anchors. As-of joins may
+carry stale weekend/holiday observations. Intrinsic value omits domestic frictions. A positive
+bubble does not imply imminent convergence.
+
+Next steps are monitored scheduling, freshness thresholds, broader regression tests, systematic
+anchor-gap reporting, and repeated economic interpretation as more physical trades accumulate.
+
+\section*{Provenance Note}
+All reported figures were read from the local canonical and processed datasets at the stated
+checkpoint. Raw data and snapshots remain local and unversioned by policy. No credentials are
+stored in this document or project source.
+\end{document}

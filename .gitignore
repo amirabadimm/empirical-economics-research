@@ -1,0 +1,36 @@
+.env
+.env.*
+!.env.example
+.secrets/
+temporary/
+.venv/
+Finenv/
+*.egg-info/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+.ipynb_checkpoints/
+*.log
+*.tmp
+~$*
+
+# Raw source data and snapshots are preserved locally, not versioned in Git.
+commodity/*/data/raw/**
+!commodity/*/data/raw/**/.gitkeep
+
+# Local/intermediate and reproducible bulk data are not committed by default.
+commodity/*/data/interim/**
+commodity/*/data/processed/**
+!commodity/*/data/interim/**/.gitkeep
+!commodity/*/data/processed/**/.gitkeep
+
+# Reproducible or presentation outputs.
+commodity/*/outputs/**
+
+# Binary research and presentation material stays local until a Git/LFS policy is agreed.
+reports/**/*.pdf
+reports/**/*.pptx
+reports/**/*.ttf
