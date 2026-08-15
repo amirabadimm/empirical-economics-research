@@ -1,76 +1,48 @@
-# گزارش نهایی مرحله تحلیل فیزیکی و حباب گواهی گندله
+# Iron-Ore Pellet Certificate: Final Exploratory Report
 
-آخرین به‌روزرسانی: 2026-08-15
+Last updated: 2026-08-15
 
-## هدف و دامنه
+## Objective and scope
 
-هدف پروژه اندازه‌گیری premium یا discount گواهی سپرده گندله نسبت به قیمت معاملات
-داخلی گندله است. ارزش ذاتی مبتنی بر قیمت جهانی، ارز یا مدل خارجی در دامنه نیست.
-داده‌های خام و snapshotها تغییر نکرده‌اند.
+This study estimates the premium or discount of the Iranian iron-ore pellet warehouse receipt relative to comparable domestic physical pellet transactions. It deliberately excludes global prices, exchange rates, and external intrinsic-value models. Raw files and immutable source snapshots are not modified.
 
-## انتخاب بازار فیزیکی
+## Physical-market selection
 
-انتخاب تولیدکنندگان براساس نمایندگی حجمی در همه معاملات مثبت بازار از شروع گواهی
-انجام شد، مستقل از نوع قرارداد و تسویه. گل‌گهر و گهرزمین در مجموع ۵۳٫۸۶٪ بازار را
-پوشش می‌دهند. چادرملو و سنگان خراسان با سهم ترکیبی ۱۵٫۴۷٪ از benchmark حذف شدند؛
-علت اصلی، نمایندگی حجمی کمتر است و نه صرفاً اختلاف قیمت یا کمبود نقاط مشترک.
+Producer selection is based on all positive physical-market trades since certificate inception, independent of contract and settlement type. Gol Gohar and Gohar Zamin jointly account for 53.86% of this volume. Chadormalu and Sangan Khorasan jointly account for 15.47% and are excluded because of lower market representation—not simply because their prices differ or overlap is sparse.
 
-برای ساخت قیمت فقط قرارداد «نقدی» یا «نقدی (مچینگ)» با تسویه دقیقاً «نقدی» و
-قیمت و مقدار مثبت پذیرفته می‌شود. معاملات نقدی/اعتباری حذف می‌شوند.
+Benchmark construction is stricter. It accepts only cash or cash-matching contracts with an explicitly cash settlement and positive executed price and quantity. Cash/credit transactions are excluded.
 
-## قاعده benchmark
+## Benchmark rule
 
-هر روزی که دست‌کم یکی از گل‌گهر یا گهرزمین معامله نقدی واقعی داشته باشد معتبر است.
-در روز تک‌شرکتی قیمت همان شرکت و در روز مشترک میانگین ساده قیمت دو شرکت استفاده
-می‌شود. مقایسه با گواهی فقط در تاریخ دقیق و روز دارای حجم و قیمت تسویه مثبت انجام
-می‌شود. هیچ interpolation یا carry-forward وجود ندارد.
+A date is eligible when at least one selected producer has a qualifying cash trade. The daily benchmark is the observed price when only one producer trades and the simple mean when both trade. Certificate comparisons are exact-date only and require positive certificate volume and price. Neither interpolation nor carry-forward prices are used.
 
-در نمونه نهایی ۲۲ نقطه exact-date وجود دارد: ۱۶ روز تک‌شرکتی و ۶ روز دوشرکتی.
-متوسط حباب ۱۲٫۱۸٪-، میانه ۱۱٫۵۵٪-، کمینه ۲۴٫۹۳٪- و بیشینه ۱۱٫۰۳٪+ است. فقط یک
-مشاهده مثبت است؛ بنابراین گواهی در این نمونه عمدتاً با discount معامله شده است.
+The final sample contains 22 observations: 16 single-producer and six two-producer days. The certificate bubble has a mean of -12.18%, a median of -11.55%, a minimum of -24.93%, and a maximum of +11.03%. Only one observation is positive.
 
-## مطالعه موردی ۱۴۰۴/۱۰/۲۱
+## Positive-bubble case study: 1404/10/21
 
-تنها حباب مثبت در ۱۴۰۴/۱۰/۲۱ مشاهده شد:
-
-| بخش بازار | قیمت (ریال/کیلوگرم) |
+| Market observation | Price (IRR/kg) |
 |---|---:|
-| گل‌گهر، نقدی واقعی و benchmark رسمی | ۹۴٬۵۶۶ |
-| گواهی سپرده | ۱۰۴٬۹۹۸ |
-| گل‌گهر، سلف نقدی/اعتباری | ۱۰۷٬۳۳۲ |
-| گهرزمین، نقدی/اعتباری | ۱۱۱٬۲۲۹ |
+| Gol Gohar qualifying cash trade and official benchmark | 94,566 |
+| Warehouse-receipt certificate | 104,998 |
+| Gol Gohar forward cash/credit trade | 107,332 |
+| Gohar Zamin cash/credit trade | 111,229 |
 
-حباب رسمی برابر ۱۱٫۰۳٪+ است. گهرزمین به علت تسویه نقدی/اعتباری وارد benchmark
-نشد. اگر فقط برای آزمون حساسیت میانگین گل‌گهر و گهرزمین محاسبه شود، benchmark
-۱۰۲٬۸۹۷٫۵ ریال و حباب حدود ۲٫۰۴٪+ خواهد بود. بنابراین حدود ۹ واحد درصد از حباب
-رسمی به تک‌شرکتی بودن benchmark و قیمت پایین‌تر گل‌گهر حساس است.
+The official bubble is +11.03%. Gohar Zamin is correctly excluded because its settlement is cash/credit. As a sensitivity check only, averaging the two same-day producer prices produces a benchmark of IRR 102,897.5/kg and a bubble of approximately +2.04%. Roughly nine percentage points of the official result are therefore sensitive to benchmark composition.
 
-این افزایش در خود ۲۱ دی آغاز نشد. تسویه گواهی از ۸۱٬۸۴۴ ریال در ۱۰ دی به
-۱۰۳٬۴۸۳ ریال در ۱۷ دی رسید؛ رشد حدود ۲۶٫۴٪ پیش از مشاهده فیزیکی. در ۲۱ دی نیز
-۲۰۸٬۷۲۶ واحد گواهی در بازه ۱۰۳٬۵۰۰ تا ۱۰۵٬۵۶۰ ریال معامله شد و تسویه روزانه
-۶٫۹۹٪ افزایش یافت. پس مشاهده ناشی از یک معامله منفرد کم‌حجم نیست.
+Certificate settlement had already risen from IRR 81,844/kg on 1404/10/10 to IRR 103,483/kg on 1404/10/17, about 26.4%. On 1404/10/21, 208,726 certificates traded between IRR 103,500 and 105,560/kg and settlement increased by 6.99%. The result is not driven by a single low-volume print.
 
-تفسیر محتمل، شکاف زمانی کشف قیمت است: بازار پیوسته گواهی زودتر از عرضه مقطعی
-بازار فیزیکی به سطح جدید واکنش نشان داده است. قرارگرفتن قیمت گواهی میان قیمت نقدی
-گل‌گهر و قیمت‌های سلف/اعتباری همان روز این تفسیر را تقویت می‌کند. در اخبار عمومی
-رویداد اختصاصی هم‌زمانی پیدا نشد که علت بنیادی را اثبات کند؛ در نتیجه این توضیح
-یک inference داده‌محور است، نه رابطه علّی قطعی.
+A plausible interpretation is a timing difference in price discovery: the continuously traded certificate may have adjusted before the intermittently supplied physical market. Its position between the qualifying cash price and same-day forward/credit prices is consistent with that interpretation. No contemporaneous public event establishes causality, so this remains a data-based inference.
 
-## نتیجه‌گیری و قاعده گزارش
+## Reporting rule and limitations
 
-مشاهده ۱۴۰۴/۱۰/۲۱ حذف نمی‌شود، زیرا معامله گواهی و معامله نقدی گل‌گهر هر دو معتبرند.
-اما باید با برچسب «benchmark تک‌شرکتی / حساس به ترکیب» گزارش شود. نتایج اصلی باید
-همراه با تفکیک روزهای تک‌شرکتی و دوشرکتی و آزمون حساسیت ارائه شوند. با توجه به
-غلبه ۱۶ روز تک‌شرکتی، نتیجه‌گیری ساختاری درباره اندازه حباب هنوز نیازمند افزایش
-پوشش زمانی است.
+The observation is retained because both trades are valid, but it must be labeled as a composition-sensitive, single-producer benchmark. Results should separate single- and two-producer days and include the sensitivity check. With 16 of 22 observations based on one producer, structural conclusions require broader time coverage.
 
-## منابع و قابلیت بازتولید
+## Reproducibility
 
-- داده گواهی: data/raw/certificate/pellet_certificate_raw.csv
-- داده بازار فیزیکی: data/raw/physical/pellet_physical_raw.csv
-- تحلیل قابل‌بازتولید: notebooks/01_physical_analysis.ipynb
-- تعریف مسیر و کنترل‌ها: docs/WORKFLOW.md
-- بررسی زمینه عمومی ۱۷ دی:
-  [گزارش نرخ ارز](https://sarmayevabourse.ir/20421/%D9%82%DB%8C%D9%85%D8%AA-%D8%AF%D9%84%D8%A7%D8%B1-%D8%A7%D9%85%D8%B1%D9%88%D8%B2-17%D8%AF%DB%8C-1404-%D8%A8%D8%A7%D8%B2%D8%A7%D8%B1-%D8%A7%D8%B1%D8%B2-%D8%A2%D8%B1%D8%A7%D9%85-%DA%AF%D8%B1%D9%81)
-  و [گزارش بازار سهام](https://www.sarpoosh.com/economy/stock-market/stock-market1404101408.html).
-  این منابع فقط زمینه بازار را نشان می‌دهند و مدرک رابطه علّی با گواهی گندله نیستند.
+- Certificate input: `data/raw/certificate/pellet_certificate_raw.csv`
+- Physical input: `data/raw/physical/pellet_physical_raw.csv`
+- Analysis: `notebooks/01_physical_analysis.ipynb`
+- Scope and validation: `docs/WORKFLOW.md`
+- Figure builder: `reports/build_report_figures.py`
+
+Public news reviewed for the 1404/10/17 context provides background only and is not evidence of causality.

@@ -1,24 +1,19 @@
-# گواهی سپرده قیر
-
-منبع رسمی: `https://dataapi.ime.co.ir/api/CDC/CDCTrades`
-
-کدهای یک سری پیوسته: `CD1BIT0001` (قدیم) و `Bitumen` (جدید).
-
+# Bitumen deposit certificate
+Official source: `https://dataapi.ime.co.ir/api/CDC/CDCTrades`
+Codes in a continuous series: `CD1BIT0001` (old) and `Bitumen` (new).
 ```powershell
 python .\src\bitumen\collectors\certificate.py
 ```
 
-خروجی خام: `data/raw/certificate/bitumen_certificate_raw.csv`؛ پاسخ‌های کامل در
-`data/raw/certificate/api_snapshots` نگه‌داری می‌شوند. اجرای عادی ۱۴ روز اخیر
-را refresh می‌کند؛ `--full-refresh` کل دوره را از 2025-10-20 بازسازی می‌کند.
-
-## بازار فیزیکی — جمع‌آوری خام گسترده
-
+raw output: `data/raw/certificate/bitumen_certificate_raw.csv`; Complete answers in
+`data/raw/certificate/api_snapshots` are kept. The normal performance of the last 14 days
+refreshes `--full-refresh` restores the entire period from 2025-10-20.
+## Physical Market — Extensive raw collection
 ```powershell
 python .\src\bitumen\collectors\physical.py
 ```
 
-خروجی `data/raw/physical/bitumen_physical_raw.csv` است و پاسخ کامل هر ماه در
-`data/raw/physical/api_snapshots` آرشیو می‌شود. collector همه نام‌های کالای شامل
-«قیر»، همه گریدها، تولیدکنندگان، نمادها، قراردادها و عرضه‌های مقدار صفر را حفظ
-می‌کند. در این مرحله هیچ گرید یا underlying نهایی انتخاب نشده است.
+The output is `data/raw/physical/bitumen_physical_raw.csv` and the full answer every month in
+`data/raw/physical/api_snapshots` will be archived. collector All item names included
+"bitumen", maintaining all grades, manufacturers, symbols, contracts and supplies of zero value
+does At this stage, no final grade or underlying has been selected.
