@@ -1,12 +1,12 @@
 # Agent Instructions — Zinc Project
 
-- داده خام را فقط در `data/raw` و داده مشتق‌شده را فقط در `data/processed` نگه دار.
-- snapshotهای API و CSV canonical را حذف یا دست‌کاری نکن.
-- گواهی شمش روی شامل هر دو کد `CD1ZNI0001` و `ZincIngot` است؛ آنها یک سری پیوسته‌اند.
-- واحد قیمت، حجم و ارزش را بدون سند حدس نزن و validation را دور نزن.
-- هر روش بازار فیزیکی یا حباب نیازمند بررسی جداگانه عیار، تولیدکننده و انبار است.
-- منبع جهانی روی Westmetall با `field=LME_Zn_cash` است؛ HTML سالانه immutable و
-  CSV canonical باید incremental، یکتا، مرتب و atomic بماند.
-- قیمت cash خام LME دلار بر تن است؛ تبدیل قیمت ذاتی فقط با تقسیم بر ۱۰۰۰ و سپس
-  ضرب در دلار آزاد ریال/دلار انجام می‌شود و مقادیر `-` منبع در raw حفظ می‌شوند.
-- `docs/WORKFLOW.md` را پس از هر تغییر منبع، schema یا تعداد مشاهدات به‌روز کن.
+- Keep raw data only in `data/raw` and derived data only in `data/processed`.
+- Do not delete or manipulate API and CSV canonical snapshots.
+- Zinc ingot certificate includes both `CD1ZNI0001` and `ZincIngot` codes; They are a continuous series.
+- Do not guess the price unit, volume and value without documents and do not avoid validation.
+- Any physical market or bubble method requires separate examination of grade, producer and warehouse.
+- The global source of zinc is Westmetall with `field=LME_Zn_cash`; HTML is immutable and annual
+  CSV canonical should remain incremental, unique, ordered and atomic.
+- LME raw cash price is USD per ton; Intrinsic price conversion only by dividing by 1000 and then
+  The multiplication is done in the free dollar Riyal/Dollar and the `-` values of the source are kept in raw.
+- Update `docs/WORKFLOW.md` after any source, schema or observation count changes.

@@ -1,8 +1,8 @@
 # Agent Instructions — Pellet Project
 
-- داده خام را فقط در `data/raw` و داده مشتق‌شده را فقط در `data/processed` نگه دار.
-- snapshotهای API و CSV canonical را حذف یا دست‌کاری نکن.
-- گواهی گندله شامل هر دو کد `CD1IOP0001` و `IronOrePlt` است؛ آنها یک سری پیوسته‌اند.
-- واحد قیمت، حجم و ارزش را بدون سند حدس نزن و validation را دور نزن.
-- هر روش بازار فیزیکی یا حباب نیازمند بررسی جداگانه کیفیت، تولیدکننده و انبار است.
-- `docs/WORKFLOW.md` را پس از هر تغییر منبع، schema یا تعداد مشاهدات به‌روز کن.
+- Keep raw data only in `data/raw` and derived data only in `data/processed`.
+- Do not delete or manipulate API and CSV canonical snapshots.
+- The pellet certificate contains both `CD1IOP0001` and `IronOrePlt` codes; They are a continuous series.
+- Do not guess the price unit, volume and value without documents and do not avoid validation.
+- Any method of physical market or bubble requires separate examination of quality, producer and warehouse.
+- Update `docs/WORKFLOW.md` after any source, schema or observation count changes.

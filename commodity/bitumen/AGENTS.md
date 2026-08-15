@@ -1,8 +1,8 @@
 # Agent Instructions — Bitumen Project
 
-- داده خام را فقط در `data/raw` و داده مشتق‌شده را فقط در `data/processed` نگه دار.
-- snapshotهای API و CSV canonical را حذف یا دست‌کاری نکن.
-- گواهی قیر شامل هر دو کد `CD1BIT0001` و `Bitumen` است؛ آنها یک سری پیوسته‌اند.
-- واحد قیمت، حجم و ارزش را بدون سند حدس نزن و validation را دور نزن.
-- هر روش بازار فیزیکی یا حباب نیازمند بررسی جداگانه گرید، تولیدکننده و نوع عرضه است.
-- `docs/WORKFLOW.md` را پس از هر تغییر منبع، schema یا تعداد مشاهدات به‌روز کن.
+- Keep raw data only in `data/raw` and derived data only in `data/processed`.
+- Do not delete or manipulate API and CSV canonical snapshots.
+- Bitumen certificate contains both codes `CD1BIT0001` and `Bitumen`; They are a continuous series.
+- Do not guess the price unit, volume and value without documents and do not avoid validation.
+- Each method of physical market or bubble requires separate examination of grade, manufacturer and type of supply.
+- Update `docs/WORKFLOW.md` after any source, schema or observation count changes.

@@ -1,6 +1,6 @@
 # Agent Instructions — Pellet Certificate
 
-داده خام immutable است، snapshot کامل باید حفظ شود، collector باید incremental،
-idempotent و atomic بماند. هر دو کد قدیم و جدید یک ابزار پیوسته هستند. روزهای حجم
-صفر در raw حفظ و فقط در تحلیل قیمت حذف شوند. تغییر schema یا شکست validation باید
-اجرای pipeline را متوقف کند.
+Raw data is immutable, full snapshot must be maintained, collector must be incremental,
+remain idempotent and atomic. Both old and new codes are a continuous tool. volume days
+Keep zero in raw and remove only in price analysis. Schema change or validation failure must
+Stop pipeline execution.
