@@ -1,120 +1,105 @@
-# Agent Instructions — Copper Certificate Project
+# Copper Certificate Research Policy
 
-## Scope
+Last reviewed: 2026-08-15
 
-This file applies to all jobs in `commodity/copper/`. LME project files
-Do not change the parent folder unless the user specifically requests it.
-## Collaboration rule
+## Scope and decision discipline
 
-The project should proceed step by step. Do not proceed to the next step without the explicit confirmation of the user.
-Research each stage, report results, assumptions and limitations before implementing the next stage
-do Approval of a step is not authorization to change the scope or execute subsequent steps.
-## Current status
+This policy applies to `commodity/copper`. Methodological decisions must be explicit, documented,
+and reproducible. Approval of one stage does not authorize an unrelated change in scope. Any
+change in source, schema, unit, eligibility rule, formula, observation count, or research status
+must update the project README, `docs/WORKFLOW.md`, and `docs/STATUS.md` in the same change.
 
-- Steps 2 to 4 are completed for the new certificate.
-- Verified source of official public CDC API certificate of Commodity Exchange and Verified Contract Code
-  is `CopperCthd`; Details are recorded in `README.md`.
-- Step 5 of physical market sampling is complete.
-- Stage 6 is complete: physical market incremental collector and full raw history are available.
-- Step 7 is complete: physical benchmark, physical ratio to intrinsic price, linear interpolation
-  Proportion and certificate bubbles are made.
-- Proposed next step: step 8, analytical quality control and timing of the complete chain implementation.
-- `WORKFLOW.md` is a consistent reference for reporting and presentation. After each method change, the number of observations,
-  Formula or production output, update it with README and this status.
-- TSETMC subscription is not required for certificate collector and `InsCode` is not specified.
-- The `src/copper/tools/probe_sources.py` reading tool has been built and verified in terms of syntax. execution
-  It timed out on 10 August 1405 for all sources in TLS handshake. This situation
-  Do not interpret as missing data, missing symbols or needing an API key.
-- `src/copper/collectors/certificate.py` wrapper collector is the official and incremental certificate collector and
-  Connects both historical codes `CD1COP0001` and `CopperCthd` into a series. Raw CSV and
-  Save its JSON snapshots. The second run should only read the refresh interval.
-## Data rules
+## Data governance
 
-1. Store raw certificate data only in `data/raw/certificate/`.
-2. Store physical market raw data only in `data/raw/physical/`.
-3. Do not delete, overwrite or implicitly transform raw data; snapshot or source response
-   along with the time of receipt and the address of the source.
-4. Store the derived data in `data/processed/` only.
-5. Prices must be stored with the explicit unit; Especially rial/toman and kg/ton.
-6. Keep source date, transaction date, and receipt time in separate columns.
-7. Scripts should be incremental, idempotent and have replication control.
-8. Failure of download or validation should not destroy the previous healthy dataset.
+1. Store certificate raw data only in `data/raw/certificate`.
+2. Store physical-market raw data only in `data/raw/physical`.
+3. Preserve source responses and snapshots immutably with retrieval time and source URL.
+4. Write derived data only to `data/interim` or `data/processed`.
+5. Keep price and quantity units explicit, especially IRR versus toman and kilograms versus tonnes.
+6. Keep source date, trade date, and retrieval time in separate fields.
+7. Collectors must be incremental, idempotent, schema validated, and atomic.
+8. A failed download or validation must not destroy the previous healthy canonical file.
+9. Credentials must come from environment variables and must never enter code or documentation.
+
+Raw data, snapshots, logs, caches, environments, and bulk outputs are excluded from Git.
+
 ## Source hierarchy
 
-1. Iran Commodity Exchange;
-2. TSETMC, only after proving the coverage of the desired symbol;
-3. Third party source only for reconciliation and dispute resolution.
-Any discrepancies between sources should be recorded and reported, rather than being singled out without explanation.
-## Certificate discovery requirements
+1. Iran Mercantile Exchange official endpoints.
+2. TSETMC only after coverage and instrument identity are demonstrated.
+3. Third-party sources only for reconciliation or dispute investigation.
 
-Before writing the certificate collector, the following must be confirmed:
-- exact symbol name and tool ID;
-- presence or absence of valid `InsCode` in TSETMC;
-- the first and last date available in each source;
-- Definition of price, volume, value and transaction number fields;
-- unit of each field;
-- Behavior of no-deal days and historical corrections.
-## Physical-market requirements
+Source disagreements must be recorded and explained rather than resolved silently.
 
-Maintain all raw supply and transaction rows. Filter product, manufacturer, market, type
-Contract, delivery date, base price, transaction price and transaction amount before calculation
-Check the reasonable price. Only rows truly comparable to the certificate's backing property
-Must enter bubble criteria.
-### Confirmed physical candidate
+## Certificate identity and price
 
-- Primary symbol candidate: `NCI-OACCAA-00`
-- Goods: `مس کاتد`
-- Producer: `ملی صنایع مس ایران`
-- Observed contract types: `نقدی` and `نقدی (مچینگ)`
-- Preserve but exclude zero-quantity offers from weighted traded price.
-- Do not combine `مس کاتد 2` or other producers without explicit equivalence
-  evidence and user approval.
-- By the user's later explicit decision, the canonical physical CSV must be retained
-  only normalized `GoodsName == مس کاتد`, symbols `NCI-CCAA-00` and
-  `NCI-OACCAA-00`, and contract types `نقدی` or `نقدی (مچینگ)`. Discard other
-  goods groups, producers, symbols, forward, forward-matching, and credit rows
-  from that CSV. Retain zero-quantity offers within the selected scope. Keep full
-  compressed API snapshots so excluded rows remain recoverable.
-- The source reports `Unit=تن`, while `Price` is on the same apparent scale as
-  certificate IRR/kg and `TotalPrice=Price*Quantity`. Preserve all raw units and
-  do not silently infer or rescale `TotalPrice`.
-### Physical collector status
-- Script: `src/copper/collectors/physical.py`
-- Canonical raw table: `data/raw/physical/copper_cathode_physical_raw.csv`
-- Full-response archives: `data/raw/physical/api_snapshots/*.json.gz`
-- Search coverage: `1386/01` through the current Jalali month.
-- Initial broad collection found 1,993 cathode-related rows. After the user's
-  staged filtering decisions, the canonical table contains 1,163 national Iranians
-  Copper Industries cash/cash-matching rows; verify current coverage and counts
-  after each collector run.
-- On the current history, cash and cash-matching daily weighted prices are exactly
-  equal on all 362 paired trading days, while matching adds 9 matching-only dates.
-  The proposed primary benchmark combines both using quantity weights, while
-  retaining contract-type diagnostics for sensitivity analysis.
-- `src/copper/processing/build_physical_benchmark.py` implements the approved combined benchmark and
-  writes `data/processed/nci_copper_cash_daily.csv`. Its current output is 789
-  positive-trade days. Do not treat stage 7 as complete until date matching and
-  bubble calculations have been explicitly approved and implemented.
-- The processed daily benchmark must expose only one numeric price column,
-  `physical_weighted_price`. Keep cash/matching quantity diagnostics, and fail
-  validation if their daily weighted prices ever diverge in future source data.
-- `src/copper/processing/build_certificate_bubble.py` implements the approved ratio interpolation:
-  physical/LME-FX ratios at the currently available 26 exact anchors are linearly interpolated by calendar
-  day, multiplied by each day's intrinsic LME-FX price, and compared with the
-  VWAP certificate. It writes `data/processed/copper_certificate_bubble.csv`.
-  Never extrapolate outside the first/last anchor without new explicit approval.
-- `src/copper/processing/build_intrinsic_bubbles.py` writes the two direct comparison datasets:
-  `physical_vs_intrinsic_bubble.csv` (789 physical observations) and
-  `certificate_vs_intrinsic_bubble.csv` (178 certificate observations). These do
-  do not use the interpolated physical benchmark.
-- Incremental runs refresh recent complete Jalali months and replace those
-  months atomically rather than attempting to infer a source primary key.
-## Bubble calculation safeguards
+The official certificate collector joins the continuous historical contract identities
+`CD1COP0001` and `CopperCthd`. `TodaySettlementPrice` is the analytical certificate price.
+`TradesValue / TradesVolume` is a rounding-tolerant validation only. Zero-volume dates remain in
+raw data but do not enter price analysis.
 
-Do not finalize any historical connection methods until user approval. In the future output should
-At least `physical_trade_date` and `physical_price_age_days` exist to price
-The old physical market should not be implicitly attributed to the date of the certificate.
-## Documentation
+The collector must validate instrument identity, date uniqueness, schema, positive-trade logic,
+historical overlap, and incremental refresh behavior before replacing the canonical file.
 
-After confirming and completing each step, check list status in `README.md` and Current section
-status Update this file on the same change.
+## Physical-market eligibility
+
+The approved comparable underlying is National Iranian Copper Industries Company cathode under
+symbols `NCI-CCAA-00` and `NCI-OACCAA-00`. The exact official Persian source labels used by the
+collector are intentionally preserved:
+
+- goods: `مس کاتد`;
+- producer: `ملی صنایع مس ایران`;
+- eligible contract types: `نقدی` and `نقدی (مچینگ)`.
+
+Forward, forward-matching, credit, other producers, and `مس کاتد 2` are excluded from the cash
+benchmark unless a later documented decision establishes equivalence. Zero-quantity offers may be
+preserved within source scope but never enter a traded-price weight.
+
+The source reports quantity in tonnes while `Price` is on the observed IRR/kg scale used by the
+certificate. Raw source units must be preserved; `TotalPrice` must not be silently rescaled.
+
+## Physical benchmark safeguards
+
+`build_physical_benchmark.py` produces `nci_copper_cash_daily.csv`. The output exposes one primary
+numeric price, `physical_weighted_price`, and retains cash/matching quantity diagnostics. If
+cash and cash-matching weighted prices diverge on the same date, validation must fail rather than
+silently combining them.
+
+The current benchmark contains 791 positive-trading days through 2026-08-09.
+
+## Certificate valuation safeguards
+
+The primary method uses the physical/intrinsic ratio at exact physical/certificate anchors and
+linearly interpolates that ratio by calendar day. Current coverage contains 28 exact anchors and
+150 interpolated dates. Extrapolation outside the first and last anchor is prohibited without a
+new explicit methodological decision.
+
+Every valuation output must retain enough information to audit:
+
+- certificate date and price;
+- physical anchor dates and observed prices;
+- interpolation method;
+- LME and FX source dates and ages;
+- estimated physical price;
+- bubble in IRR/kg and percent.
+
+The regression specification is a sensitivity check only. Certificate price must not be used to
+predict physical price.
+
+## Forward-gap diagnostic
+
+Forward trades inside the 102-day cash gap remain separate from the approved cash benchmark.
+Their prices may be compared with adjacent cash anchors, but they must not fill the cash series
+without explicit maturity and financing adjustments.
+
+## Validation and reporting
+
+- Final analytical prices use IRR/kg.
+- Dates are unique and sorted.
+- Price and quantity are positive in analytical samples.
+- Exact anchors are distinguished from modeled observations.
+- Stale as-of inputs remain visible through source date and age fields.
+- Observation counts and headline statistics are never hard-coded as validation logic.
+- Limitations are reported alongside results.
+
+This repository provides research documentation and reproducible analysis, not investment advice.
