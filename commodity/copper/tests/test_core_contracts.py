@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import unittest
 from datetime import date
 from pathlib import Path
@@ -54,6 +55,22 @@ class ScopeTests(unittest.TestCase):
         self.assertTrue(is_approved_copper_cathode(approved))
         self.assertFalse(is_approved_copper_cathode(approved | {"ContractType": "سلف"}))
         self.assertFalse(is_approved_copper_cathode(approved | {"Symbol": "OTHER"}))
+
+
+class ForwardGapOutputTests(unittest.TestCase):
+    def test_forward_gap_contract_and_boundaries(self) -> None:
+        output = WORKSPACE_ROOT / "commodity/copper/data/processed/nci_copper_forward_gap.csv"
+        if not output.exists():
+            self.skipTest("forward-gap processed output is not present")
+
+        with output.open(encoding="utf-8-sig", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+
+        self.assertEqual(len(rows), 16)
+        self.assertEqual(sum(float(row["total_quantity"]) for row in rows), 26_420)
+        self.assertTrue(all("سلف" in row["contract_types"] for row in rows))
+        self.assertTrue(all(row["settlement_types"] == "نقدی / اعتباری" for row in rows))
+        self.assertTrue(all("1404/09/26" < row["trade_date_jalali"] < "1405/01/09" for row in rows))
 
 
 if __name__ == "__main__":

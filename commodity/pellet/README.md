@@ -2,21 +2,29 @@
 
 ## Research question
 
-Which domestic physical-market basket is sufficiently comparable with the Iranian iron-ore
-pellet warehouse receipt to support a defensible daily benchmark and certificate valuation?
+What premium or discount does the Iranian iron-ore pellet warehouse receipt trade at relative to
+a defensible benchmark built only from comparable domestic physical pellet trades?
 
 ## Current checkpoint
 
 - Data checkpoint: 2026-08-10
 - Certificate: 252 calendar observations, 182 positive-trading days, through 2026-08-09
 - Physical market: 3,467 rows, including 1,606 positive trades, through 1405/05/18
-- Stage: complete raw collection and exploratory analysis; underlying not yet approved
-- Processed benchmark and certificate bubble: not yet produced
+- Stage: exploratory exact-date certificate-bubble series implemented and validated
+- Selected: Gol Gohar (`GOLG-PELL-00`) and Gohar Zamin (`GHZ-PELL-00`)
+- Excluded for lower representation across all positive physical trades since certificate start: Sangan Khorasan (5.66%) and Chadormalu (9.81%)
+- Notebook benchmark: every strict-cash day with at least one selected producer; one available price or the simple mean when both trade
+- Exact-date overlap with positive certificate trading: 22 days (16 single-producer, 6 two-producer)
+- Processed benchmark file: not yet produced; the current bubble series is notebook-based and exploratory
+- The only positive observation is 1404/10/21 (+11.03%); it is retained but flagged as a single-producer, composition-sensitive benchmark. See reports/FINAL_REPORT.md.
+- Complete Persian LaTeX report: reports/pellet_certificate_report.tex
+- Reproducible report figures: run reports/build_report_figures.py from the project directory
 
-The physical raw scope retains all rows whose normalized goods name is exactly iron-ore pellet,
-without silently choosing a producer, symbol, contract type, or delivery condition. The exploratory
-notebook compares producers and cash/cash-matching transactions. A formal benchmark will be built
-only after quality specifications and certificate delivery terms are matched to eligible physical rows.
+The physical raw scope retains every normalized iron-ore-pellet row; screening does not alter raw
+data. The four initially reviewed producers were not a homogeneous price group. Gol Gohar and
+Gohar Zamin were the closest pair and jointly represented 53.86% of all positive physical volume
+since certificate trading began. The notebook now assesses this two-producer domestic benchmark. No
+external intrinsic-value model is in scope.
 
 ## Reproduction from the repository root
 
@@ -26,4 +34,4 @@ python .\commodity\pellet\src\pellet\collectors\physical.py
 ```
 
 See [`docs/WORKFLOW.md`](docs/WORKFLOW.md) for provenance, validation, and the unresolved
-underlying-selection decision.
+benchmark construction and validation details.

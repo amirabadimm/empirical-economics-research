@@ -16,7 +16,7 @@
 \vspace{1cm}\rule{0.85\textwidth}{1pt}\par\vfill
 {\large Iranian Mercantile Exchange zinc ingot certificate and physical market\par}
 \vspace{0.3cm}{\large LME cash zinc and free-market USD/IRR\par}\vfill
-\begin{tabular}{rl}\textbf{Data checkpoint:}&10 August 2026\\\textbf{Report date:}&10 August 2026\\\textbf{Status:}&Complete benchmark and three-bubble pipeline\end{tabular}
+\begin{tabular}{rl}\textbf{Data checkpoint:}&15 August 2026\\\textbf{Report date:}&15 August 2026\\\textbf{Status:}&Complete benchmark and three-bubble pipeline\end{tabular}
 \vfill{\small Research documentation only; not investment advice.\par}
 \end{titlepage}
 \tableofcontents\newpage
@@ -32,7 +32,7 @@ The principal result covers 178 modeled days from 26 October 2025 to 9 August 20
 exact anchors and 137 interpolated days. The certificate-to-estimated-physical bubble averaged
 0.34\pct, had a median of 1.02\pct, ranged from $-19.58\pct$ to 16.97\pct, and was positive
 on 102 days. By contrast, the certificate was below the simple LME--FX intrinsic proxy on all
-182 certificate trading days, demonstrating why domestic physical basis must be modeled.
+184 certificate trading days, demonstrating why domestic physical basis must be modeled.
 
 \section{Research Architecture and Data Governance}
 Raw responses and canonical files are separated from derived outputs. Source snapshots are
@@ -48,7 +48,7 @@ Codes \code{CD1ZNI0001} and \code{ZincIngot} form one continuous series with Com
 The collector refreshes 14 trailing days, preserves zero-volume days and complete JSON snapshots,
 merges by date, validates schema/identity, and writes atomically. \code{TodaySettlementPrice} is
 the analytical price; \code{TradesValue/TradesVolume} is only a rounding-tolerant validation.
-The current file has 252 calendar rows through 9 August 2026 and 182 positive-trade days.
+The current file has 256 calendar rows through 13 August 2026 and 184 positive-trade days.
 
 \subsection{Broad physical zinc raw data}
 The official monthly IME physical endpoint is archived before filtering. Raw selection keeps
@@ -63,11 +63,11 @@ the same month is selected during rebuild.
 \subsection{LME and FX}
 Westmetall is queried with \code{LME\_Zn\_cash}. Annual HTML snapshots are preserved, source
 missing markers remain raw, and incremental refresh touches only the newest year. The current
-LME file contains 4,704 unique dates from 2 January 2008 through 7 August 2026.
+LME file contains 4,709 unique dates from 2 January 2008 through 14 August 2026.
 
 The canonical FX file stores IRR/USD. Recent TGJU observations use daily close; 13,030 historical
-midpoint observations remain explicitly labeled legacy. The file contains 13,064 dates through
-1405/05/17, including 34 close-based observations.
+midpoint observations remain explicitly labeled legacy. The file contains 13,067 dates through
+1405/05/20, including 37 close-based observations.
 
 \section{Underlying Selection and Physical Benchmark}
 Exploration showed that zinc soil dominates the broad zinc-labelled volume but is not the
@@ -123,9 +123,9 @@ interpolation is official.
 \begin{tabular}{lrrrrrr}\toprule
 Measure&Rows&Mean&Median&Minimum&Maximum&Pos./Neg.\\\midrule
 Physical vs intrinsic&554&$-13.14\pct$&$-15.87\pct$&$-36.02\pct$&22.28\pct&75/479\\
-Certificate vs intrinsic&182&$-20.13\pct$&$-18.58\pct$&$-33.91\pct$&$-10.54\pct$&0/182\\
+Certificate vs intrinsic&184&$-20.11\pct$&$-18.58\pct$&$-33.91\pct$&$-10.54\pct$&0/184\\
 Certificate vs est. physical&178&0.34\pct&1.02\pct&$-19.58\pct$&16.97\pct&102/76\\
-Regression sensitivity&182&0.58\pct&2.53\pct&$-16.77\pct$&12.66\pct&104/78\\\bottomrule
+Regression sensitivity&184&0.59\pct&2.52\pct&$-16.78\pct$&12.65\pct&106/78\\\bottomrule
 \end{tabular}\caption{Zinc bubble results}\end{table}
 
 The persistent certificate discount to intrinsic largely mirrors a domestic physical discount.
@@ -148,8 +148,8 @@ marks parity; green shading denotes a positive basis and red shading a discount.
 \label{fig:zn-physical}\end{figure}
 
 \subsection{Certificate versus intrinsic value}
-Figure~\ref{fig:zn-certificate} is negative for every one of the 182 positive-volume
-certificate days. Its mean is $-20.13\pct$. Read alone, this chart might suggest a persistent
+Figure~\ref{fig:zn-certificate} is negative for every one of the 184 positive-volume
+certificate days. Its mean is $-20.11\pct$. Read alone, this chart might suggest a persistent
 certificate discount. That conclusion is incomplete because the comparable domestic ingot
 basket also trades at a material discount to the LME--FX proxy.
 

@@ -31,6 +31,7 @@ restricted raw market data.
 | [Zinc](commodity/zinc/README.md) | How does the zinc-ingot certificate compare with an eligible 99.97/99.98 domestic basket? | Grade-filtered volume weighting; three bubble definitions; time-series regression sensitivity | Complete benchmark and valuation pipeline |
 | [Iron-ore pellet](commodity/pellet/README.md) | Which physical-market basket is economically comparable with the pellet certificate? | Producer/contract exploration before benchmark approval | Exploratory stage |
 | [Bitumen](commodity/bitumen/README.md) | Which grade, market, and delivery terms match the bitumen certificate? | Broad raw collection followed by eligibility research | Data collection complete; underlying unresolved |
+| [Warehouse fees](commodity/warehouse_fees/README.md) | How have daily storage fees for all documented commodity certificates changed? | Official notices plus archived official tables | 43 exact-date intervals and 30 observations back to 2016 |
 
 Current data coverage and next actions are summarized in [docs/STATUS.md](docs/STATUS.md).
 

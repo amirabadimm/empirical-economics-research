@@ -11,6 +11,7 @@ license = "MIT"
 authors = [{ name = "Mohammad Mahdi Amirabadi" }]
 requires-python = ">=3.11"
 dependencies = [
+  "beautifulsoup4",
   "jdatetime",
   "numpy",
   "pandas",

@@ -8,13 +8,13 @@ and the free-market USD/IRR exchange rate?
 
 ## Current checkpoint
 
-- Data checkpoint: 2026-08-03
-- Certificate: 246 calendar observations, 178 positive-trading days, through 2026-08-02
-- Canonical physical market: 1,163 rows, including 1,154 positive trades, through 1405/05/04
-- LME cash copper: 4,699 observations through 2026-07-31
-- Free-market USD/IRR: 13,060 observations through 1405/05/11
+- Data checkpoint: 2026-08-15
+- Certificate: 256 calendar observations, 184 positive-trading days, through 2026-08-13
+- Canonical physical market: 1,165 rows through 1405/05/18
+- LME cash copper: 4,709 observations through 2026-08-14
+- Free-market USD/IRR: 13,067 observations through 1405/05/20
 - Processed layer: physical benchmark, two direct bubbles, primary certificate bubble,
-  regression sensitivity output, and presentation timelines
+  regression sensitivity output, presentation timelines, and a 102-day forward-gap diagnostic
 
 ## Comparable physical underlying
 
@@ -28,11 +28,15 @@ the ratio of domestic physical price to LME–FX intrinsic price between exact p
 anchors. No extrapolation is allowed outside the observed anchor range. A time-series regression
 using intrinsic price as its sole feature is retained as an experimental sensitivity check.
 
+The separate `nci_copper_forward_gap.csv` diagnostic preserves the cash-only benchmark scope.
+It covers 16 forward-trade dates and 26,420 tonnes strictly inside the 102-day cash gap,
+comparing each forward weighted price with both cash anchors and a linear bridge.
+
 ## Main current result
 
-The primary output contains 169 certificate-trading days from 2025-10-26 to 2026-07-26:
-26 exact physical anchors and 143 interpolated days. The estimated certificate premium to
-domestic physical value averages 5.17%, with a median of 6.13%. Interpretation is limited by
+The primary output contains 178 certificate-trading days from 2025-10-26 to 2026-08-09:
+28 exact physical anchors and 150 interpolated days. The estimated certificate premium to
+domestic physical value averages 5.53%, with a median of 7.06%. Interpretation is limited by
 the small and temporally uneven physical anchor sample.
 
 ## Reproduction from the repository root
@@ -47,6 +51,7 @@ python .\commodity\copper\src\copper\processing\build_intrinsic_bubbles.py
 python .\commodity\copper\src\copper\processing\build_certificate_bubble.py
 python .\commodity\copper\src\copper\processing\build_intrinsic_regression.py
 python .\commodity\copper\src\copper\processing\build_presentation_timeline.py
+python .\commodity\copper\src\copper\processing\build_forward_gap_analysis.py
 ```
 
 The full methodology, source contracts, validations, and limitations are documented in

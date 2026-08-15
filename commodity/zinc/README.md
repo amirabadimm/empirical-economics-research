@@ -7,11 +7,11 @@ physical basket and to an LME–FX intrinsic benchmark?
 
 ## Current checkpoint
 
-- Data checkpoint: 2026-08-10
-- Certificate: 252 calendar observations, 182 positive-trading days, through 2026-08-09
+- Data checkpoint: 2026-08-15
+- Certificate: 256 calendar observations, 184 positive-trading days, through 2026-08-13
 - Broad physical raw data: 6,235 rows, including 3,462 positive trades, through 1405/05/18
-- LME cash zinc: 4,704 observations from 2008-01-02 through 2026-08-07
-- Free-market USD/IRR: 13,064 observations through 1405/05/17
+- LME cash zinc: 4,709 observations from 2008-01-02 through 2026-08-14
+- Free-market USD/IRR: 13,067 observations through 1405/05/20
 - Official physical benchmark: 554 days from 2009-08-16 through 2026-08-09
 - Test suite: 14 network-free contract and pipeline tests
 
