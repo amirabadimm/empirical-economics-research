@@ -1,5 +1,5 @@
-We have 25 weekly observations of the physical market (since November 404), I also get the internal price, the free market dollar rate in the global price of copper outside the US;
-The bubble means the price ratio of observations divided by the internal price.
-The bubble percentage of empty days is the average interval, multiplied by the dollar rate of the same day by the global copper rate of the same day (in kilograms, of course!)
-Finally, the certificate bubble is calculated from the approved inputs.
-Another work is multivariate regression
+25 مشاهده هفتگی بازار فیزیکی داریم (از آبان 404) ، قیمت درونی هم میگیرم نرخ دلار بازار آزاد در قیمت جهانی مس خارج امریکا ؛
+حباب به معنی نسبت قیمتی مشاهدات تقسیم بر قیمت درونی بدست میاد.
+درصد حباب روز های خالی میانگین فواصل میشه ، ضربدر نرخ دلار همان روز در نرخ مس جهانی همان روز(به کیلوگرم طبیعتا !)
+در نهایت خود حباب ساخته میشود.
+کار دیگر هم رگرسیون چند متغیره است

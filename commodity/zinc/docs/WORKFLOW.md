@@ -1,218 +1,276 @@
-# Zinc-Ingot Warehouse-Receipt Certificate: Research Workflow
-## Update checkpoint — 2026-08-15
-All four collectors were implemented incrementally. The certificate is now 256 calendar rows and
-184 days of positive trading until 2026-08-13, LME equal to 4,709 rows until 2026-08-14 and currency
-It has 13,067 rows until 05/20/1405. refresh physical market 338 rows of open months
-re-read and extended canonical still remained 6,235 rows after merge;
-The official benchmark also has 554 days and 41 real anchors unchanged. Direct certificate output
-increased to 184 days at the intrinsic price; The main bubble remains because of the prohibition of extrapolation
-It has 178 days until the last anchor on 2026-08-09. Both main notebooks run again
-Fresh charts were saved in them.
-- Source: Official CDC API of Iran Commodity Exchange, Bazar 22.
-- Series start: 07/28/1404 equals 10-20-2025.
-- old code: `CD1ZNI0001`; New code: `ZincIngot`; `CommodityID=30`.
+# Workflow — گواهی سپرده شمش روی
+
+## checkpoint تازه‌سازی — 2026-08-15
+
+هر چهار collector به‌صورت incremental اجرا شدند. گواهی اکنون ۲۵۶ ردیف تقویمی و
+۱۸۴ روز معامله مثبت تا 2026-08-13، LME برابر ۴٬۷۰۹ ردیف تا 2026-08-14 و ارز
+برابر ۱۳٬۰۶۷ ردیف تا 1405/05/20 دارد. refresh بازار فیزیکی ۳۳۸ ردیف ماه‌های باز
+را بازخوانی کرد و canonical گسترده پس از merge همچنان ۶٬۲۳۵ ردیف باقی ماند؛
+benchmark رسمی نیز بدون تغییر ۵۵۴ روز و ۴۱ anchor واقعی دارد. خروجی مستقیم گواهی
+به قیمت ذاتی به ۱۸۴ روز افزایش یافت؛ حباب اصلی به‌علت ممنوعیت extrapolation همچنان
+۱۷۸ روز تا آخرین anchor در 2026-08-09 دارد. هر دو notebook اصلی دوباره اجرا و
+نمودارهای تازه در آنها ذخیره شدند.
+
+- منبع: API رسمی CDC بورس کالای ایران، بازار ۲۲.
+- شروع سری: 1404/07/28 برابر 2025-10-20.
+- کد قدیم: `CD1ZNI0001`؛ کد جدید: `ZincIngot`؛ `CommodityID=30`.
 - collector: `src/zinc/collectors/certificate.py`.
-- shared logic: `../../shared/ime_data/certificate_collector.py` relative to the workspace root; It is also required when transferring the `shared/ime_data` folder.
+- منطق مشترک: `../../shared/ime_data/certificate_collector.py` نسبت به ریشه workspace؛ هنگام انتقال پوشه `shared/ime_data` نیز لازم است.
 - CSV: `data/raw/certificate/zinc_certificate_raw.csv`.
-- Rules: keeping zero day, complete snapshot, merge on date, fourteen days refresh, atomic writing.
-- validation: complete schema, unique date, fixed code/id/description, non-negative values and matching
-  `TradesValue / TradesVolume` with `TodaySettlementPrice` on trading days.
-- The price criterion in future analyzes is `TodaySettlementPrice` and the ratio of value to volume will only be validation.
-- Status 2026-08-10: 252 rows until 2026-08-09; 182 days of positive transactions.
-Normal execution from within `commodity/zinc`:
+- قواعد: حفظ روز صفر، snapshot کامل، merge بر تاریخ، refresh چهارده‌روزه، نوشتن atomic.
+- validation: schema کامل، تاریخ یکتا، کد/شناسه/شرح ثابت، مقادیر نامنفی و تطبیق
+  `TradesValue / TradesVolume` با `TodaySettlementPrice` در روزهای معامله.
+- معیار قیمت در تحلیل‌های آینده `TodaySettlementPrice` است و نسبت ارزش به حجم فقط validation خواهد بود.
+- وضعیت 2026-08-10: ۲۵۲ ردیف تا 2026-08-09؛ ۱۸۲ روز معامله مثبت.
+
+اجرای عادی از داخل `commodity/zinc`:
+
 ```powershell
 python .\src\zinc\collectors\certificate.py
 ```
 
-Full implementation only for reconstruction or audit:
+اجرای کامل فقط برای بازسازی یا audit:
+
 ```powershell
 python .\src\zinc\collectors\certificate.py --full-refresh
 ```
 
-The second incremental execution without increasing the number of rows and all schema controls, date,
-OHLC, codes, CommodityID and price settlement has been successful.
-Raw physical market data is now collected and validated; ultimate underlying,
-The benchmark has been processed and the bubble has not yet been selected or generated.
-## Preliminary review of the physical market — 2026-08-03
-Review of full snapshots of the official commodity exchange API, between 07/28/1404 and 05/07/1405
-And it was done only for transactions with `Quantity > 0` and `Price > 0`. No data files
-New production and no final filter was approved.
-A general search for the word "on" returns 498 rows and 502,787 tons, but 92.80% of this volume
-Zinc dust is not comparable with the zinc-ingot certificate and must remain outside the underlying basket. After restricting the scope to
-"Zinc ingot":
-- 415 rows, 54 trading days and 36,187 tons;
-- 8 titles from 99.92 to 99.99, 24 producers and 57 symbols;
-- Grade shares: 99.96 accounts for 44.87%, 99.97 for 23.45%, and 99.98 for
-  17.64% and 99.95 equal to 11.22%;
-- Main producers: Calcimine 29.64%, zinc smelting 18.86%, mineral processing
-  Iran 9.88%, development of zinc industries in the Middle East 8.69% and Zanjan compounders 7.67%;
-- Contracts: cash 87.12% and matching cash 12.88%; All rows of ingots have settlement
-  Cash and 99.05% of the volume are in the industrial hall.
-Conclusion: "Soil" should definitely be removed, but the choice of grade and producer is still not final.
-First, the minimum purity, delivery standard and acceptable warehouses must be extracted; then
-A defensible basket of eligible ingot grades can be constructed using a daily volume-weighted price. Selecting a single
-The manufacturer alone is not recommended without a certificate of equivalence.
-The main recommended resource for the future collector is the official public API of the stock exchange. BrsApi only
-For discovery, fallback is kept and no keys are stored in the project.
-## Current stage: raw collector of the physical market
-`src/zinc/collectors/physical.py` with common logic
-`shared/ime_data/ime_physical_collector.py` was created. Filter raw any product name
-Normalized contains zinc; Therefore, zinc soil is also deliberately used until the stage of analysis
-It remains raw. Limitation on denomination, manufacturer, symbol, contract, settlement or volume of transactions
-can't The full monthly response is created atomically before the archive and CSV filter.
-Outputs:
+اجرای incremental دوم بدون افزایش تعداد ردیف و تمام کنترل‌های schema، تاریخ،
+OHLC، کدها، CommodityID و قیمت تسویه موفق بوده است.
+
+داده خام بازار فیزیکی اکنون جمع‌آوری و اعتبارسنجی شده است؛ underlying نهایی،
+benchmark پردازش‌شده و حباب هنوز انتخاب یا تولید نشده‌اند.
+
+## بررسی مقدماتی بازار فیزیکی — 2026-08-03
+
+بررسی از snapshotهای کامل API رسمی بورس کالا، در بازه 1404/07/28 تا 1405/05/07
+و فقط برای معاملات دارای `Quantity > 0` و `Price > 0` انجام شد. هیچ فایل داده‌ای
+جدید تولید و هیچ فیلتر نهایی تصویب نشد.
+
+جست‌وجوی کلی واژه «روی» ۴۹۸ ردیف و ۵۰۲٬۷۸۷ تن برمی‌گرداند، اما ۹۲٫۸۰٪ این حجم
+«خاک روی» است و با دارایی پایه گواهی شمش روی قابل ترکیب نیست. پس از محدودکردن به
+«شمش روی»:
+
+- ۴۱۵ ردیف، ۵۴ روز معامله و ۳۶٬۱۸۷ تن؛
+- ۸ عنوان عیار از ۹۹٫۹۲ تا ۹۹٫۹۹، ۲۴ تولیدکننده و ۵۷ نماد؛
+- سهم عیارها: ۹۹٫۹۶ برابر ۴۴٫۸۷٪، ۹۹٫۹۷ برابر ۲۳٫۴۵٪، ۹۹٫۹۸ برابر
+  ۱۷٫۶۴٪ و ۹۹٫۹۵ برابر ۱۱٫۲۲٪؛
+- تولیدکنندگان اصلی: کالسیمین ۲۹٫۶۴٪، ذوب روی بافق ۱۸٫۸۶٪، فرآوری مواد معدنی
+  ایران ۹٫۸۸٪، توسعه صنایع روی خاورمیانه ۸٫۶۹٪ و ترکیب‌پردازان زنجان ۷٫۶۷٪؛
+- قراردادها: نقدی ۸۷٫۱۲٪ و نقدی مچینگ ۱۲٫۸۸٪؛ همه ردیف‌های شمش دارای تسویه
+  نقدی و ۹۹٫۰۵٪ حجم در تالار صنعتی‌اند.
+
+نتیجه: «خاک روی» باید قطعاً حذف شود، ولی انتخاب عیار و تولیدکننده هنوز نهایی نیست.
+ابتدا باید حداقل خلوص، استاندارد تحویل و انبارهای قابل قبول گواهی استخراج شود؛ سپس
+می‌توان سبد شمش‌های واجد شرایط را با قیمت موزون حجمی روزانه ساخت. انتخاب یک
+تولیدکننده به‌تنهایی بدون سند هم‌ارزی توصیه نمی‌شود.
+
+منبع اصلی پیشنهادی برای collector آینده API عمومی رسمی بورس کالاست. BrsApi فقط
+برای کشف، کنترل متقابل یا fallback نگه داشته می‌شود و هیچ کلیدی در پروژه ذخیره نشود.
+
+## مرحله جاری: collector خام بازار فیزیکی
+
+`src/zinc/collectors/physical.py` با منطق مشترک
+`shared/ime_data/ime_physical_collector.py` ساخته شد. فیلتر raw هر نام کالای
+نرمال‌شده شامل «روی» را نگه می‌دارد؛ بنابراین خاک روی نیز عمداً تا مرحله تحلیل در
+raw باقی می‌ماند. محدودیتی روی عیار، تولیدکننده، نماد، قرارداد، تسویه یا حجم اعمال
+نمی‌شود. پاسخ کامل ماهانه پیش از فیلتر آرشیو و CSV به‌صورت atomic ساخته می‌شود.
+
+خروجی‌ها:
+
 ```text
 data/raw/physical/zinc_physical_raw.csv
 data/raw/physical/api_snapshots/*.json.gz
 ```
 
-### The result of complete collection and validation — 2026-08-03
-To avoid repeated downloads, the most recent complete snapshot of each of the 233 months from the archive
-The same official endpoint of the commodity exchange was copied to the independent Zinc folder in the copper project. Snapshots
-Bazarand's total response and CSV were reconstructed from them with their own independent filter.
-- 6,178 raw rows and 36 columns from 07/28/1387 to 07/05/1405 on 999 dates;
-- After normalization, all 12 product titles include "Zinc";
-- In raw: 47 producer titles, 168 symbols and 5 types of contracts;
-- 3,428 rows of positive transactions on 756 dates;
-- In positive transactions: 12 product titles, 40 producers, 127 symbols and 4 types of contracts;
-- 2,750 supply of zero amount; No negative price/value, missing identity, completely duplicate row or
-  duplicate business key;
-- Every 233 monthly snapshots are unique, healthy and parsable.
-The volume composition of the positive trades of the entire "Zn" group is misleading: Zn soil is 94.15% of the volume
-forms, while the underlying asset is a zinc-ingot certificate. The principal ingot grades are:
-from 99.96 with 85,266 tons, 99.98 with 83,405 tons, 99.97 with 71,242 tons and 99.95 with
-23,020 tonnes; grades 99.90 through 99.99 are also available in smaller quantities. This statistic
-It is descriptive and no rows have been removed from raw yet.
-This review supports the final underlying decision: a volume-weighted basket of grades
-99.97 and 99.98 in cash and cash matching contracts. Zinc and other grades only in
-Wide raws are preserved and not included in the official benchmark.
-### refresh, fix snapshot and test contracts — 2026-08-10
-- The certificate was refreshed incrementally until 2026-08-09: 252 rows and 182 days
-  Positive transaction.
-- The physical market was refreshed until 05/18/1405: 6,235 rows, 3,462 positive transactions and
-  1,003 dates.
-- The old snapshot `physical_1403-11_20260801T114224Z.json.gz` is broken and according to
-  The immutable policy was not deleted or overwritten. The official answer of the same month in the new snapshot
-  `physical_1403-11_20260810T073129Z.json.gz` saved.
-- The most recent snapshot of each of the 233 months is healthy and can be parsed; Complete and atomic reconstruction
-  CSV produced exactly 6,235 rows of them.
-- network-free tests in `tests/test_zinc_contracts.py`, schema and certificate identity,
-  Extended filter on, non-negative values, exact duplicate, business key, health latest
-  They control the snapshot every month and the selection of a new snapshot during rebuild. companion
-  Pipeline tests are a total of fourteen tests in the Zinc test set.
-- No underlying analysis, benchmark, processed file or bubble was created at this stage.
-### Manual validation design for grades 99.97 and 99.98 — 2026-08-10
-- The physical scope of only contracts `نقدی` and `نقدی (مچینگ)` with `Quantity > 0` and
-  It is `Price > 0`.
-- Daily prices for each grade and for the combined 99.97/99.98 basket are weighted by `Quantity`.
-- notebook number of days added by entering 99.98 to 99.97 series and the number of days
-  Added to the overlap with the certificate calculates separately.
-- The certificate price criterion is `TodaySettlementPrice`; `TradesValue / TradesVolume` only
-  validation is this column.
-- Coverage, cross-grade price differences, and volume shares are reported with price, spread,
-  The active days schematic volume and matrix have been prepared, but not yet implemented and interpreted.
-## Current stop status
-raw is complete and zinc soil should not be removed from it. hand notebook
-`notebooks/zinc_analysis.ipynb` is retained for manual data richness analysis. underlying
-The official pipeline uses the 99.97/99.98 grade basket in `نقدی` contracts and
-It is `نقدی (مچینگ)`. Benchmark, three bubble definitions and regression test are made and
-`notebooks/02_bubble_analysis.ipynb` provides a schematic representation of them at runtime.
-## World price on LME — Westmetall — 2026-08-10
-Official source used:```text
+### نتیجه جمع‌آوری کامل و validation — 2026-08-03
+
+برای جلوگیری از دانلود تکراری، جدیدترین snapshot کامل هر یک از ۲۳۳ ماه از آرشیو
+همان endpoint رسمی بورس کالا در پروژه مس به پوشه مستقل Zinc کپی شد. snapshotها
+پاسخ کل بازارند و CSV روی با فیلتر مستقل خود از آنها بازسازی شد.
+
+- ۶٬۱۷۸ ردیف خام و ۳۶ ستون از 1387/07/28 تا 1405/05/07 در ۹۹۹ تاریخ؛
+- تمام ۱۲ عنوان کالا پس از نرمال‌سازی شامل «روی» هستند؛
+- در raw: ۴۷ عنوان تولیدکننده، ۱۶۸ نماد و ۵ نوع قرارداد؛
+- ۳٬۴۲۸ ردیف معامله مثبت در ۷۵۶ تاریخ؛
+- در معاملات مثبت: ۱۲ عنوان کالا، ۴۰ تولیدکننده، ۱۲۷ نماد و ۴ نوع قرارداد؛
+- ۲٬۷۵۰ عرضه مقدار صفر؛ بدون قیمت/مقدار منفی، هویت مفقود، ردیف کاملاً تکراری یا
+  کلید تجاری تکراری؛
+- هر ۲۳۳ snapshot ماهانه یکتا، سالم و قابل parse است.
+
+ترکیب حجمی معاملات مثبت کل گروه «روی» گمراه‌کننده است: خاک روی ۹۴٫۱۵٪ حجم را
+تشکیل می‌دهد، در حالی که دارایی پایه گواهی شمش روی است. عیارهای اصلی شمش عبارت‌اند
+از ۹۹٫۹۶ با ۸۵٬۲۶۶ تن، ۹۹٫۹۸ با ۸۳٬۴۰۵ تن، ۹۹٫۹۷ با ۷۱٬۲۴۲ تن و ۹۹٫۹۵ با
+۲۳٬۰۲۰ تن؛ عیارهای ۹۹٫۹۰ تا ۹۹٫۹۹ نیز با حجم‌های کوچک‌تر وجود دارند. این آمار
+توصیفی است و هنوز هیچ ردیفی از raw حذف نشده است.
+
+این بررسی مبنای تصمیم بعدی شد: underlying تحلیلی نهایی، سبد موزون حجمی عیارهای
+99.97 و 99.98 در قراردادهای نقدی و نقدی مچینگ است. خاک روی و سایر عیارها فقط در
+raw گسترده حفظ می‌شوند و وارد benchmark رسمی نمی‌شوند.
+
+### refresh، تعمیر snapshot و تست قراردادها — 2026-08-10
+
+- گواهی به‌صورت incremental تا 2026-08-09 refresh شد: ۲۵۲ ردیف و ۱۸۲ روز
+  معامله مثبت.
+- بازار فیزیکی تا 1405/05/18 refresh شد: ۶٬۲۳۵ ردیف، ۳٬۴۶۲ معامله مثبت و
+  ۱٬۰۰۳ تاریخ.
+- snapshot قدیمی `physical_1403-11_20260801T114224Z.json.gz` خراب است و طبق
+  سیاست immutable حذف یا بازنویسی نشد. پاسخ رسمی همان ماه در snapshot جدید
+  `physical_1403-11_20260810T073129Z.json.gz` ذخیره شد.
+- جدیدترین snapshot هر یک از ۲۳۳ ماه سالم و قابل parse است؛ بازسازی کامل و atomic
+  CSV از آنها دقیقاً ۶٬۲۳۵ ردیف تولید کرد.
+- تست‌های network-free در `tests/test_zinc_contracts.py`، schema و identity گواهی،
+  فیلتر گسترده روی، مقادیر نامنفی، exact duplicate، کلید تجاری، سلامت جدیدترین
+  snapshot هر ماه و انتخاب snapshot جدید هنگام rebuild را کنترل می‌کنند. همراه
+  تست‌های pipeline، مجموع مجموعه آزمون Zinc چهارده تست است.
+- هیچ تحلیل underlying، benchmark، فایل processed یا حبابی در این مرحله ساخته نشد.
+
+### طراحی بررسی دستی عیارهای 99.97 و 99.98 — 2026-08-10
+
+- دامنه فیزیکی فقط قراردادهای `نقدی` و `نقدی (مچینگ)` با `Quantity > 0` و
+  `Price > 0` است.
+- قیمت روزانه هر عیار و سبد مشترک 99.97 و 99.98 با وزن `Quantity` طراحی شده است.
+- notebook تعداد روزهای افزوده‌شده با ورود 99.98 به سری 99.97 و تعداد روزهای
+  افزوده‌شده به هم‌پوشانی با گواهی را جداگانه محاسبه می‌کند.
+- معیار قیمت گواهی `TodaySettlementPrice` است؛ `TradesValue / TradesVolume` فقط
+  validation این ستون است.
+- جدول‌های پوشش، اختلاف قیمت دو عیار و سهم حجمی، به‌همراه نمودار قیمت، اختلاف،
+  حجم و ماتریس شماتیک روزهای فعال آماده شده‌اند، اما هنوز اجرا و تفسیر نشده‌اند.
+
+## وضعیت توقف فعلی
+
+raw کامل است و نباید خاک روی از آن حذف شود. notebook دستی
+`notebooks/zinc_analysis.ipynb` برای تحلیل دستی غنای داده حفظ شده است. underlying
+رسمی pipeline سبد عیارهای 99.97 و 99.98 در قراردادهای `نقدی` و
+`نقدی (مچینگ)` است. benchmark، سه تعریف حباب و رگرسیون آزمایشی ساخته شده‌اند و
+`notebooks/02_bubble_analysis.ipynb` نمایش شماتیک آنها را هنگام اجرا فراهم می‌کند.
+
+## قیمت جهانی روی LME — Westmetall — 2026-08-10
+
+منبع رسمی مورد استفاده:
+
+```text
 https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Zn_cash
 ```
 
-Independent collector `src/zinc/collectors/lme.py` collected the data year by year from 2008
-does The first run of all years and the next run of only the year of the most recent observation until the current year
-It refreshes. The HTML of each request is unchanged
-`data/raw/lme/html_snapshots/zinc_<year>_<timestamp>.html` preserve and CSV canonical
-`data/raw/lme/zinc_lme_raw.csv` is written atomically.
-raw schema:
-- `date`;
-- `cash_settlement`, cash price in dollars per ton;
-- `three_month`, quarterly price;
-- `stock`, source reported inventory;
-- `source_year`, `fetched_at_utc` and `source_url`.
-The result of complete collection and second incremental execution:
-- 4,704 unique and regular dates from 2008-01-02 to 2026-08-07;
-- 19 years of source and 20 snapshots are available; Additional snapshot related to the second implementation audit
-  The year is 2026;
-- The second run only refreshed the year 2026 and had zero new or modified dates;
-- 2 amounts of cash, 82 amounts of quarterly and 1 amount of stock in source `-` are either empty and without
-  The conversions are preserved in raw; Other values ​​of all three columns have valid numeric format.
-Intrinsic price formula, according to the copper method:
+collector مستقل `src/zinc/collectors/lme.py` داده را سال‌به‌سال از ۲۰۰۸ دریافت
+می‌کند. اجرای اول تمام سال‌ها و اجرای بعدی فقط سال جدیدترین مشاهده تا سال جاری را
+refresh می‌کند. HTML هر درخواست بدون تغییر در
+`data/raw/lme/html_snapshots/zinc_<year>_<timestamp>.html` حفظ و CSV canonical در
+`data/raw/lme/zinc_lme_raw.csv` به‌صورت atomic نوشته می‌شود.
+
+schema خام:
+
+- `date`؛
+- `cash_settlement`، قیمت cash با واحد دلار بر تن؛
+- `three_month`، قیمت سه‌ماهه؛
+- `stock`، موجودی گزارش‌شده منبع؛
+- `source_year`، `fetched_at_utc` و `source_url`.
+
+نتیجه جمع‌آوری کامل و اجرای incremental دوم:
+
+- ۴٬۷۰۴ تاریخ یکتا و مرتب از 2008-01-02 تا 2026-08-07؛
+- ۱۹ سال منبع و ۲۰ snapshot موجود است؛ snapshot اضافه مربوط به audit اجرای دوم
+  سال ۲۰۲۶ است؛
+- اجرای دوم فقط سال ۲۰۲۶ را refresh کرد و صفر تاریخ جدید یا اصلاح‌شده داشت؛
+- ۲ مقدار cash، ۸۲ مقدار سه‌ماهه و ۱ مقدار stock در منبع `-` یا خالی است و بدون
+  تبدیل در raw حفظ شده‌اند؛ سایر مقادیر هر سه ستون قالب عددی معتبر دارند.
+
+فرمول قیمت ذاتی، مطابق روش مس:
+
 ```text
 LME_Zinc_USD_per_kg = LME_Zinc_cash_USD_per_ton / 1000
 intrinsic_zinc_price_IRR_per_kg = LME_Zinc_USD_per_kg × free_market_USD_IRR
 ```
 
-Free canonical dollar inside Zinc with workspace seed history and with collector TGJU to
-It was refreshed on 05/17/1405. The file has 13,064 dates: 34 TGJU closing prices and 13,030
-Historical value `legacy_high_low_midpoint`.
-## Physical benchmark 99.97 and 99.98
-`src/zinc/processing/build_physical_benchmark.py` retains only the two target grades and eligible contracts
-Cash/cash matching and select rows `Quantity > 0` and `Price > 0` from wide raw
-does The daily price is the benchmark with the weight of the trading volume:
+دلار آزاد canonical داخل Zinc با تاریخچه workspace seed و با collector TGJU تا
+1405/05/17 refresh شد. فایل ۱۳٬۰۶۴ تاریخ دارد: ۳۴ قیمت پایانی TGJU و ۱۳٬۰۳۰
+مقدار تاریخی `legacy_high_low_midpoint`.
+
+## benchmark فیزیکی 99.97 و 99.98
+
+`src/zinc/processing/build_physical_benchmark.py` فقط دو عیار هدف، قراردادهای
+نقدی/نقدی مچینگ و ردیف‌های `Quantity > 0` و `Price > 0` را از raw گسترده انتخاب
+می‌کند. قیمت روزانه معیار با وزن حجم معامله است:
+
 ```text
 physical_weighted_price = Σ(Price_i × Quantity_i) / Σ Quantity_i
 ```
 
-`zinc_9798_cash_daily.csv` contains 554 days from 2009-08-16 to 2026-08-09: 239
-There are 239 two-grade days, 158 days with only 99.97, and 157 days with only 99.98. Total volume is 155,602 tonnes:
-71,852 tons 99.97 and 83,750 tons 99.98.
-## LME and dollar alignment
-Last observation of LME cash and free dollar on the same day or before the target date with the as-of method
-connects The source date and data age are preserved in the output. The maximum current LME age is 4 days.
-The maximum age of the dollar is 10 days in the whole benchmark and 1 day in the certificate period.
-## Three definitions of bubble
-### 1. Physical market compared to intrinsic price
+`zinc_9798_cash_daily.csv` شامل ۵۵۴ روز از 2009-08-16 تا 2026-08-09 است: ۲۳۹
+روز هر دو عیار، ۱۵۸ روز فقط 99.97 و ۱۵۷ روز فقط 99.98. حجم کل ۱۵۵٬۶۰۲ تن است:
+۷۱٬۸۵۲ تن 99.97 و ۸۳٬۷۵۰ تن 99.98.
+
+## هم‌ترازی LME و دلار
+
+آخرین مشاهده LME cash و دلار آزاد در همان روز یا قبل از تاریخ هدف با روش as-of
+متصل می‌شود. تاریخ منبع و سن داده در خروجی حفظ می‌شود. بیشترین سن LME جاری ۴ روز،
+بیشترین سن دلار در کل benchmark ۱۰ روز و در دوره گواهی ۱ روز است.
+
+## سه تعریف حباب
+
+### ۱. بازار فیزیکی نسبت به قیمت ذاتی
+
 ```text
 physical_vs_intrinsic_bubble_pct =
     (physical_price / intrinsic_price - 1) × 100
 ```
 
-`physical_vs_intrinsic_bubble.csv`: 554 views; Average -13.14%, median
--15.87%, minimum -36.02% and maximum 22.28%; 75 positive and 479 negative.
-### 2. A certificate of intrinsic value
-The price of the certificate is only `TodaySettlementPrice`; `TradesValue / TradesVolume` only
-Validation is equal to it.
+`physical_vs_intrinsic_bubble.csv`: ۵۵۴ مشاهده؛ میانگین ‎-13.14٪، میانه
+‎-15.87٪، کمینه ‎-36.02٪ و بیشینه 22.28٪؛ ۷۵ مثبت و ۴۷۹ منفی.
+
+### ۲. گواهی نسبت به قیمت ذاتی
+
+قیمت گواهی فقط `TodaySettlementPrice` است؛ `TradesValue / TradesVolume` صرفاً
+validation برابری آن است.
+
 ```text
 certificate_vs_intrinsic_bubble_pct =
     (certificate_price / intrinsic_price - 1) × 100
 ```
 
-`certificate_vs_intrinsic_bubble.csv`: 182 views; Average -20.13%, median
--18.58%, minimum -33.91% and maximum -10.54%; All 182 observations are negative.
-### 3. The original bubble of the certificate relative to the estimated physical price
-In 41 days, the actual ratio of `physical_price / intrinsic_price` is calculated and between
-Consecutive anchors are interpolated linearly based on the calendar day. Before the first and after
-The last anchor extrapolation is not performed.
+`certificate_vs_intrinsic_bubble.csv`: ۱۸۲ مشاهده؛ میانگین ‎-20.13٪، میانه
+‎-18.58٪، کمینه ‎-33.91٪ و بیشینه ‎-10.54٪؛ هر ۱۸۲ مشاهده منفی‌اند.
+
+### ۳. حباب اصلی گواهی نسبت به قیمت فیزیکی برآوردی
+
+در ۴۱ روز مشترک واقعی نسبت `physical_price / intrinsic_price` محاسبه و بین
+anchorهای متوالی براساس روز تقویمی خطی درون‌یابی می‌شود. قبل از اولین و بعد از
+آخرین anchor extrapolation انجام نمی‌شود.
+
 ```text
 estimated_physical_price_t = interpolated_physical_ratio_t × intrinsic_price_t
 certificate_bubble_pct =
     (certificate_price / estimated_physical_price - 1) × 100
 ```
 
-`zinc_certificate_bubble.csv`: 178 days from 2025-10-26 to 2026-08-09, including 41
-real anchor and 137 days of interpolation; Average 0.34%, median 1.02%, minimum -19.58% and
-Maximum 16.97%; 102 positive and 76 negative.
-## Experimental regression
-Three proportional models without width from the origin, linear with width from the origin and polynomial of the second degree
-Ridge are compared to `TimeSeriesSplit(5)`. feature only intrinsic price and target price
-The benchmark is physical. Current selected model `proportional_no_intercept` with RMSE
-It is 256,696.52 rials per kilogram. The main method is still ratio interpolation.
-## Display outputs and notebook
-| File | row | Application |
+`zinc_certificate_bubble.csv`: ۱۷۸ روز از 2025-10-26 تا 2026-08-09، شامل ۴۱
+anchor واقعی و ۱۳۷ روز درون‌یابی؛ میانگین 0.34٪، میانه 1.02٪، کمینه ‎-19.58٪ و
+بیشینه 16.97٪؛ ۱۰۲ مثبت و ۷۶ منفی.
+
+## رگرسیون آزمایشی
+
+سه مدل proportional بدون عرض از مبدأ، خطی با عرض از مبدأ و polynomial درجه دو
+Ridge با `TimeSeriesSplit(5)` مقایسه می‌شوند. feature فقط قیمت ذاتی و target قیمت
+benchmark فیزیکی است. مدل منتخب فعلی `proportional_no_intercept` با RMSE
+256,696.52 ریال بر کیلوگرم است. روش اصلی همچنان درون‌یابی نسبت است.
+
+## خروجی‌ها و notebook نمایش
+
+| فایل | ردیف | کاربرد |
 |---|---:|---|
-| `zinc_9798_cash_daily.csv` | 554-day volume-weighted two-grade benchmark
-| `physical_vs_intrinsic_bubble.csv` | 554 Direct physical-intrinsic bubble
-| `certificate_vs_intrinsic_bubble.csv` | 184 Direct certificate-intrinsic bubble
-| `zinc_certificate_bubble.csv` | 178 The main bubble of interpolation
-| `intrinsic_regression.csv` | 184 The output of the experimental method
-| `intrinsic_regression_metrics.csv` | 3 | Comparison of RMSE models
-`notebooks/02_bubble_analysis.ipynb` makes all outputs read-only and
-Tables, three bubble charts, price components, anchors, interpolation, regression and data age
-displays notebook at checkpoint 2026-08-15 execution and the output of the charts is saved in the file itself.
-## Architectural migration — 2026-08-03
-`Cert` layer removed. Data in `data/`, collectors in `src/zinc/collectors/`
-And the documentation is at `docs/`. CSVs and raw snapshots were transferred unchanged.
+| `zinc_9798_cash_daily.csv` | 554 | benchmark موزون دو عیار |
+| `physical_vs_intrinsic_bubble.csv` | 554 | حباب مستقیم فیزیکی–ذاتی |
+| `certificate_vs_intrinsic_bubble.csv` | 184 | حباب مستقیم گواهی–ذاتی |
+| `zinc_certificate_bubble.csv` | 178 | حباب اصلی درون‌یابی |
+| `intrinsic_regression.csv` | 184 | خروجی روش آزمایشی |
+| `intrinsic_regression_metrics.csv` | 3 | مقایسه RMSE مدل‌ها |
+
+`notebooks/02_bubble_analysis.ipynb` تمام خروجی‌ها را read-only می‌خواند و
+جدول‌ها، سه نمودار حباب، اجزای قیمت، anchorها، درون‌یابی، رگرسیون و سن داده را
+نمایش می‌دهد. notebook در checkpoint 2026-08-15 اجرا و خروجی نمودارها در خود فایل ذخیره شده است.
+
+## مهاجرت معماری — 2026-08-03
+
+لایه `Cert` حذف شد. داده‌ها در `data/`، collectorها در `src/zinc/collectors/`
+و مستندات در `docs/` قرار دارند. CSVها و snapshotهای raw بدون تغییر منتقل شدند.

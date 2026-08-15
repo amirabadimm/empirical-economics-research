@@ -17,7 +17,7 @@ a defensible benchmark built only from comparable domestic physical pellet trade
 - Exact-date overlap with positive certificate trading: 22 days (16 single-producer, 6 two-producer)
 - Processed benchmark file: not yet produced; the current bubble series is notebook-based and exploratory
 - The only positive observation is 1404/10/21 (+11.03%); it is retained but flagged as a single-producer, composition-sensitive benchmark. See reports/FINAL_REPORT.md.
-- Complete English LaTeX report: `reports/pellet_certificate_report.tex`
+- Complete Persian LaTeX report: reports/pellet_certificate_report.tex
 - Reproducible report figures: run reports/build_report_figures.py from the project directory
 
 The physical raw scope retains every normalized iron-ore-pellet row; screening does not alter raw

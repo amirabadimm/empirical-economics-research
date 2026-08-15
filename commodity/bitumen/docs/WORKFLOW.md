@@ -1,93 +1,116 @@
-# Workflow — Bitumen deposit certificate
-- Source: Official CDC API of Iran Commodity Exchange, Bazar 22.
-- Series start: 07/28/1404 equals 10-20-2025.
-- old code: `CD1BIT0001`; New code: `Bitumen`; `CommodityID=26`.
+# Workflow — گواهی سپرده قیر
+
+- منبع: API رسمی CDC بورس کالای ایران، بازار ۲۲.
+- شروع سری: 1404/07/28 برابر 2025-10-20.
+- کد قدیم: `CD1BIT0001`؛ کد جدید: `Bitumen`؛ `CommodityID=26`.
 - collector: `src/bitumen/collectors/certificate.py`.
-- shared logic: `../../shared/ime_data/certificate_collector.py` relative to the workspace root; It is also required when transferring the `shared/ime_data` folder.
+- منطق مشترک: `../../shared/ime_data/certificate_collector.py` نسبت به ریشه workspace؛ هنگام انتقال پوشه `shared/ime_data` نیز لازم است.
 - CSV: `data/raw/certificate/bitumen_certificate_raw.csv`.
-- Rules: keeping zero day, complete snapshot, merge on date, fourteen days refresh, atomic writing.
-- validation: complete schema, unique date, fixed code/id/description, non-negative values and matching
-  `TradesValue / TradesVolume` with `TodaySettlementPrice` on trading days.
-- The price criterion in future analyzes is `TodaySettlementPrice` and the ratio of value to volume will only be validation.
-- 2026-08-03 situation: 246 rows until 2026-08-02; 178 days of positive transaction.
-Normal execution from within `commodity/bitumen`:
+- قواعد: حفظ روز صفر، snapshot کامل، merge بر تاریخ، refresh چهارده‌روزه، نوشتن atomic.
+- validation: schema کامل، تاریخ یکتا، کد/شناسه/شرح ثابت، مقادیر نامنفی و تطبیق
+  `TradesValue / TradesVolume` با `TodaySettlementPrice` در روزهای معامله.
+- معیار قیمت در تحلیل‌های آینده `TodaySettlementPrice` است و نسبت ارزش به حجم فقط validation خواهد بود.
+- وضعیت 2026-08-03: ۲۴۶ ردیف تا 2026-08-02؛ ۱۷۸ روز معامله مثبت.
+
+اجرای عادی از داخل `commodity/bitumen`:
+
 ```powershell
 python .\src\bitumen\collectors\certificate.py
 ```
 
-Full implementation only for reconstruction or audit:
+اجرای کامل فقط برای بازسازی یا audit:
+
 ```powershell
 python .\src\bitumen\collectors\certificate.py --full-refresh
 ```
 
-The second incremental execution without increasing the number of rows and all schema controls, date,
-OHLC, codes, CommodityID and price settlement has been successful.
-Raw physical market data is now collected and validated; ultimate underlying,
-The benchmark has been processed and the bubble has not yet been selected or generated.
-## Preliminary review of the physical market — 2026-08-03
-Review of full snapshots of the official commodity exchange API, between 07/28/1404 and 05/07/1405
-And it was done only for transactions with `Quantity > 0` and `Price > 0`. No data files
-New production and no final filter was approved.
-- 347 rows in 128 days and a total of 246,878 tons;
-- 12 product titles, 40 manufacturers and 70 symbols; All by ton and bulk;
-- Share of grades: bitumen 60/70 equal to 59.65%, PG 64-22 equal to 26.21%, PG 70-16
-  equal to 5.16% and PG 70-10 equal to 2.92%;
-- Main producers: Tabriz oil refining 24.14%, Dezhpa oil and bitumen refining 17.14%,
-  Tehran Pasargad Oil 11.14%, Mehran Hesar Refining 10.63% and Arak Pasargad Oil 9.40%;
-- Contracts: credit 36.89%, cash 28.70%, advance 14.83%, advance matching 9.32%,
-  cash matching 9.00% and credit matching 1.27%;
-- 98.02% of the volume in the oil products hall of the commodity exchange.
-Result: This market is highly heterogeneous and the combination of all grades and types of financing is one price
-It does not make a valid reference. Before the benchmark, the grade, standard, warehouse/delivery place and so on
-Acceptable manufacturers of certificates are specified. The primary option after verifying the specification is to restrict
-It is matching to the corresponding grade and cash and cash transactions; Loans and loans should not be without financial adjustment
-be collected in cash. This filter has not been approved yet.
-The main recommended resource for the future collector is the official public API of the stock exchange. BrsApi only
-For discovery, fallback is kept and no keys are stored in the project.
-## Current stage: raw collector of the physical market
-`src/bitumen/collectors/physical.py` file using common logic
-`shared/ime_data/ime_physical_collector.py` was created. The raw filter is intentionally broad:
-Any row whose normalized product name includes "bitumen", without limitation of grade, producer,
-The symbol, contract type, settlement or volume is preserved. Full snapshot of the monthly response before the filter
-It is also archived.
-Outputs:
+اجرای incremental دوم بدون افزایش تعداد ردیف و تمام کنترل‌های schema، تاریخ،
+OHLC، کدها، CommodityID و قیمت تسویه موفق بوده است.
+
+داده خام بازار فیزیکی اکنون جمع‌آوری و اعتبارسنجی شده است؛ underlying نهایی،
+benchmark پردازش‌شده و حباب هنوز انتخاب یا تولید نشده‌اند.
+
+## بررسی مقدماتی بازار فیزیکی — 2026-08-03
+
+بررسی از snapshotهای کامل API رسمی بورس کالا، در بازه 1404/07/28 تا 1405/05/07
+و فقط برای معاملات دارای `Quantity > 0` و `Price > 0` انجام شد. هیچ فایل داده‌ای
+جدید تولید و هیچ فیلتر نهایی تصویب نشد.
+
+- ۳۴۷ ردیف در ۱۲۸ روز و مجموع ۲۴۶٬۸۷۸ تن؛
+- ۱۲ عنوان کالا، ۴۰ تولیدکننده و ۷۰ نماد؛ همه بر حسب تن و فله؛
+- سهم گریدها: قیر ۶۰/۷۰ برابر ۵۹٫۶۵٪، PG 64-22 برابر ۲۶٫۲۱٪، PG 70-16
+  برابر ۵٫۱۶٪ و PG 70-10 برابر ۲٫۹۲٪؛
+- تولیدکنندگان اصلی: پالایش نفت تبریز ۲۴٫۱۴٪، پالایش نفت و قیر دژپا ۱۷٫۱۴٪،
+  نفت پاسارگاد تهران ۱۱٫۱۴٪، پالایش حصار مهران ۱۰٫۶۳٪ و نفت پاسارگاد اراک ۹٫۴۰٪؛
+- قراردادها: نسیه ۳۶٫۸۹٪، نقدی ۲۸٫۷۰٪، سلف ۱۴٫۸۳٪، سلف مچینگ ۹٫۳۲٪،
+  نقدی مچینگ ۹٫۰۰٪ و نسیه مچینگ ۱٫۲۷٪؛
+- ۹۸٫۰۲٪ حجم در تالار فرآورده‌های نفتی بورس کالا.
+
+نتیجه: این بازار به‌شدت ناهمگن است و ترکیب همه گریدها و انواع تأمین مالی یک قیمت
+مرجع معتبر نمی‌سازد. پیش از benchmark باید گرید، استاندارد، انبار/محل تحویل و
+تولیدکنندگان قابل قبول گواهی مشخص شوند. گزینه اولیه پس از تأیید مشخصات، محدودکردن
+به گرید متناظر و معاملات نقدی و نقدی مچینگ است؛ نسیه و سلف نباید بدون تعدیل مالی
+با نقدی تجمیع شوند. این فیلتر هنوز تصویب نهایی نشده است.
+
+منبع اصلی پیشنهادی برای collector آینده API عمومی رسمی بورس کالاست. BrsApi فقط
+برای کشف، کنترل متقابل یا fallback نگه داشته می‌شود و هیچ کلیدی در پروژه ذخیره نشود.
+
+## مرحله جاری: collector خام بازار فیزیکی
+
+فایل `src/bitumen/collectors/physical.py` با استفاده از منطق مشترک
+`shared/ime_data/ime_physical_collector.py` ساخته شد. فیلتر raw عمداً گسترده است:
+هر ردیفی که نام نرمال‌شده کالای آن شامل «قیر» باشد، بدون محدودیت گرید، تولیدکننده،
+نماد، نوع قرارداد، تسویه یا حجم حفظ می‌شود. snapshot کامل پاسخ ماهانه پیش از فیلتر
+نیز آرشیو می‌شود.
+
+خروجی‌ها:
+
 ```text
 data/raw/physical/bitumen_physical_raw.csv
 data/raw/physical/api_snapshots/*.json.gz
 ```
 
-collector is incremental and atomic; The first performance of all months from 01/1386 and the following normal performance
-It refreshes the last two months. Comparable grade selection, removal of contracts and construction
-Benchmark is not done at this stage.
-At first full run, curl/Schannel was slow and unstable. 201 months to 1402/09 Salem
-archived; Continue with `IME_HTTP_TRANSPORT=requests`. Option
-`--rebuild-from-snapshots` to rebuild the CSV from the latest healthy snapshot every additional month
-done so that the existing archive will not be downloaded again.
-### The result of complete collection and validation — 2026-08-03
-After proxy timeout on the network, missing months of full snapshots of the same endpoint
-Officials that were previously archived in the copper project were completed. Those snapshots answer the entire market
-are physical, not copper-filtered data, and the URL, payload, time received, and the full response of the source
-they keep The tar CSV was then reconstructed from the most recent healthy snapshot of each of the 233 months.
-- 47,035 raw rows and 36 columns;
-- Covering bitumen rows from 06/02/1387 to 05/12/1405 on 3,736 dates;
-- All normalized commodity names include "bitumen";
-- 51 product titles, 167 producer titles, 527 symbols and 8 types of contracts in raw;
-- 24,154 rows of positive transactions on 3,460 dates from 06/02/1387 to 05/07/1405;
-- In positive transactions: 37 product titles, 128 producers and 336 symbols;
-- 22,880 supply of zero amount; No price or negative value, missing identity field, row completely
-  duplicate or duplicate business key;
-- 233 unique months and all of them can be parsed; In the review of 2026-08-09, the number of 258 snapshot files
-  There were (25 healthy replicates). Deliberately rebuild the newest snapshot every month
-  chooses
-The initial volume composition of positive transactions shows that bitumen 60/70 is about 63.36%, bitumen 85/100
-About 11.47%, PG 64-22 about 9.78% and MC250 about 4.02% of the volume.
-This statistic is only descriptive; Still no grade, manufacturer or contract removal and no benchmark
-not made
-## Current stop status
-raw is complete and all grades, manufacturers, domestic/export markets and contracts must
-Stay in it. The analysis step should first determine the exact grade of the certificate backing, then
-Separate domestic and export and cash contracts, matching, advances and loans. Still the file
-processed, physical analysis notebook, official weighted price or bitumen certification bubble is not made.
-## Architectural migration — 2026-08-03
-`Cert` layer removed. Data in `data/`, collectors in `src/bitumen/collectors/`
-And the documentation is at `docs/`. CSVs and raw snapshots were transferred unchanged.
+collector افزایشی و atomic است؛ اجرای نخست همه ماه‌ها از 1386/01 و اجرای عادی بعدی
+دو ماه انتهایی را refresh می‌کند. انتخاب گرید قابل‌مقایسه، حذف قراردادها و ساخت
+benchmark در این مرحله انجام نمی‌شود.
+
+در اجرای کامل نخست، curl/Schannel کند و ناپایدار بود. ۲۰۱ ماه تا 1402/09 سالم
+آرشیو شد؛ ادامه با `IME_HTTP_TRANSPORT=requests` انجام می‌شود. گزینه
+`--rebuild-from-snapshots` برای بازسازی CSV از جدیدترین snapshot سالم هر ماه اضافه
+شد تا آرشیو موجود دوباره دانلود نشود.
+
+### نتیجه جمع‌آوری کامل و validation — 2026-08-03
+
+پس از timeout پروکسی در ادامه شبکه، ماه‌های مفقود از snapshotهای کامل همان endpoint
+رسمی که پیش‌تر در پروژه مس آرشیو شده بودند تکمیل شدند. آن snapshotها پاسخ کل بازار
+فیزیکی‌اند، نه داده فیلترشده مس، و URL، payload، زمان دریافت و پاسخ کامل منبع را
+حفظ می‌کنند. CSV قیر سپس از جدیدترین snapshot سالم هر یک از ۲۳۳ ماه بازسازی شد.
+
+- ۴۷٬۰۳۵ ردیف خام و ۳۶ ستون؛
+- پوشش ردیف‌های قیر از 1387/06/02 تا 1405/05/12 در ۳٬۷۳۶ تاریخ؛
+- تمام نام‌های نرمال‌شده کالا شامل «قیر» هستند؛
+- ۵۱ عنوان کالا، ۱۶۷ عنوان تولیدکننده، ۵۲۷ نماد و ۸ نوع قرارداد در raw؛
+- ۲۴٬۱۵۴ ردیف معامله مثبت در ۳٬۴۶۰ تاریخ از 1387/06/02 تا 1405/05/07؛
+- در معاملات مثبت: ۳۷ عنوان کالا، ۱۲۸ تولیدکننده و ۳۳۶ نماد؛
+- ۲۲٬۸۸۰ عرضه مقدار صفر؛ بدون قیمت یا مقدار منفی، فیلد هویتی مفقود، ردیف کاملاً
+  تکراری یا کلید تجاری تکراری؛
+- ۲۳۳ ماه یکتا و همگی قابل parse؛ در بازبینی 2026-08-09 تعداد ۲۵۸ فایل snapshot
+  وجود داشت (۲۵ دریافت تکراری سالم). rebuild عمداً جدیدترین snapshot هر ماه را
+  انتخاب می‌کند.
+
+ترکیب حجمی اولیه معاملات مثبت نشان می‌دهد قیر ۶۰/۷۰ حدود ۶۳٫۳۶٪، قیر ۸۵/۱۰۰
+حدود ۱۱٫۴۷٪، PG 64-22 حدود ۹٫۷۸٪ و MC250 حدود ۴٫۰۲٪ حجم را تشکیل می‌دهند.
+این آمار فقط توصیفی است؛ هنوز هیچ گرید، تولیدکننده یا قرارداد حذف و هیچ benchmark
+ساخته نشده است.
+
+## وضعیت توقف فعلی
+
+raw کامل است و تمام گریدها، تولیدکنندگان، بازارهای داخلی/صادراتی و قراردادها باید
+در آن باقی بمانند. مرحله تحلیل باید ابتدا گرید دقیق پشتوانه گواهی را تعیین کند، سپس
+داخلی و صادراتی و قراردادهای نقدی، مچینگ، سلف و نسیه را تفکیک کند. هنوز فایل
+processed، نوت‌بوک تحلیل فیزیکی، قیمت موزون رسمی یا حباب گواهی قیر ساخته نشده است.
+
+## مهاجرت معماری — 2026-08-03
+
+لایه `Cert` حذف شد. داده‌ها در `data/`، collectorها در `src/bitumen/collectors/`
+و مستندات در `docs/` قرار دارند. CSVها و snapshotهای raw بدون تغییر منتقل شدند.

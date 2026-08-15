@@ -1,39 +1,91 @@
-# Iron-Ore Pellet Research Status
+# وضعیت پروژه گندله سنگ‌آهن
 
-Last updated: 2026-08-15
-Stage: exploratory exact-date certificate valuation
+آخرین به‌روزرسانی: 2026-08-15  
+وضعیت: تحلیل اکتشافی حباب نهایی و مطالعه موردی تنها حباب مثبت مستند شد.
 
-## Objective
+گزارش کامل فارسی LaTeX در reports/pellet_certificate_report.tex و چهار شکل
+قابل‌بازتولید در reports/figures قرار دارند. اسکریپت ساخت شکل‌ها
+reports/build_report_figures.py است. موتور LaTeX در محیط فعلی نصب نیست؛
+بنابراین فایل PDF در این checkpoint تولید نشده است.
 
-Estimate the warehouse-receipt premium or discount relative to comparable domestic physical pellet trades. Global prices, exchange rates, and external intrinsic-value models are outside the current scope.
+## هدف مصوب
 
-## Data checkpoint
+هدف فقط بررسی premium/discount گواهی سپرده نسبت به معاملات داخلی گندله است.
+ارزش ذاتی مبتنی بر قیمت‌ها، نرخ ارز یا مدل‌های خارجی در دامنه نیست.
 
-- Certificate: 252 calendar observations and 182 positive-trading days through 2026-08-09.
-- Physical market: 3,467 rows and 1,606 positive trades through 1405/05/18.
-- Raw files and immutable snapshots remain unchanged.
-- The exploratory bubble contains 22 exact-date observations; no standalone processed benchmark has yet been approved.
+## وضعیت داده
 
-## Benchmark rule
+- گواهی: ۲۵۲ مشاهده و ۱۸۲ روز معامله مثبت تا 1405/05/18؛
+- بازار فیزیکی: ۳٬۴۶۷ ردیف و ۱٬۶۰۶ معامله مثبت تا 1405/05/18؛
+- raw و snapshotها immutable و بدون تغییر مانده‌اند؛
+- حباب اکتشافی گواهی در notebook برای ۲۲ تاریخ exact-date محاسبه شده است؛ فایل
+  benchmark processed مستقل هنوز تولید نشده است.
 
-The candidate producers are Gol Gohar (`GOLG-PELL-00`) and Gohar Zamin (`GHZ-PELL-00`). Eligible observations require a cash or cash-matching contract, an explicitly cash settlement, and positive price and quantity. Cash/credit trades are excluded.
+## قاعده فعلی benchmark
 
-A single-producer day uses that producer's observed price; a two-producer day uses the simple mean. Certificate comparisons are exact-date only and require positive volume and price. No interpolation or carry-forward is used. Coverage is 16 single-producer and six two-producer days.
+هر روز نقدی واقعی که دست‌کم گل‌گهر یا گهرزمین معامله شده باشد معتبر است. در روز
+تک‌شرکتی قیمت همان شرکت و در روز مشترک میانگین ساده قیمت دو شرکت استفاده می‌شود.
+مقایسه با گواهی فقط در تاریخ دقیق و با معامله مثبت گواهی است؛ قیمت کهنه،
+carry-forward و interpolation استفاده نمی‌شود. پوشش فعلی ۲۲ روز است: ۱۶ روز
+تک‌شرکتی و ۶ روز دوشرکتی.
 
-## Selection rationale
+## تعریف نهایی دامنه تحلیل
 
-Selection uses all positive physical trades since certificate inception. Gol Gohar represents 30.75% and Gohar Zamin 23.10%, for a combined 53.86%. Chadormalu represents 9.81% and Sangan Khorasan 5.66%; both are excluded. The decision affects analysis only and never alters raw data.
+فقط ردیف‌هایی مجازند که `ContractType` آنها «نقدی» یا «نقدی (مچینگ)»،
+`Tasvieh` آنها دقیقاً «نقدی» و قیمت و مقدارشان مثبت باشد. معاملات نقدی/اعتباری
+کاملاً حذف می‌شوند. با این تعریف ۲۶۹ ردیف در ۱۳۸ روز و ۱۳ نماد باقی ماند.
 
-## Validation findings
+در زیرمجموعه مورد استفاده برای محاسبه قیمت، گل‌گهر ۵۵٫۳۱٪ و گهرزمین ۱۴٫۷۶٪
+حجم نقدی واقعی را دارند. این اعداد فقط مشخصات نمونه قیمت‌اند و مبنای انتخاب
+تولیدکننده نیستند؛ انتخاب براساس کل بازار مستقل از قرارداد و تسویه انجام شده است.
 
-Only 16 strict-cash common dates exist for the selected producers over the full history: nine before and seven after certificate inception. The mean symmetric difference declines from 1.53% to 0.88%; both medians are zero. Four of the seven later dates have identical prices, and the largest later difference is 3.32%. The evidence does not support increased producer dispersion after certificate inception.
+## تصمیم ثبت‌شده
 
-The largest valid historical difference occurs on 1401/04/11. Base price, offer quantity, delivery, warehouse, and settlement align, but demand-to-supply is 1.3 for Gol Gohar and 3.0 for Gohar Zamin. Stronger competition raises Gohar Zamin 10.60% above base versus 2.43% for Gol Gohar, producing a 7.67% symmetric difference. Available data do not identify the cause of buyer preference.
+- حفظ برای مرحله بعد: گل‌گهر (`GOLG-PELL-00`) و گهر زمین (`GHZ-PELL-00`)؛
+- حذف از benchmark پیشنهادی: سنگان خراسان (`SSMI-PELL-00`) و چادرملو
+  (`CHMI-PELL-00`)؛
+- حذف فقط در تحلیل اعمال می‌شود و raw حذف یا بازنویسی نمی‌شود.
 
-## Positive-bubble case
+مبنای اصلی حذف، سهم کل بازار مستقل از قرارداد و تسویه است. از شروع گواهی، سهم
+گل‌گهر ۳۰٫۷۵٪، گهرزمین ۲۳٫۱۰٪، چادرملو ۹٫۸۱٪ و سنگان ۵٫۶۶٪ است. دو شرکت منتخب
+۵۳٫۸۶٪ کل بازار و دو شرکت حذف‌شده ۱۵٫۴۷٪ را پوشش می‌دهند. بنابراین بازار غالب
+در اختیار سنگان و چادرملو نیست. اختلاف قیمت و کمبود نقاط مشترک فقط دلایل
+تکمیلی‌اند؛ فیلتر نقدی واقعی صرفاً برای محاسبه قیمت benchmark استفاده می‌شود.
 
-On 1404/10/21 the benchmark is Gol Gohar's IRR 94,566/kg cash price. The certificate settles at IRR 104,998/kg, implying +11.03%. Gohar Zamin's IRR 111,229/kg trade is excluded because settlement is cash/credit. A sensitivity mean reduces the bubble to +2.04%, demonstrating material composition risk.
+## کار بعدی
 
-## Next step
+قاعده روزهای تک‌شرکتی تصویب و حباب اکتشافی محاسبه شده است. مرحله بعد، افزایش
+پوشش زمانی، تفکیک نتایج تک‌شرکتی و دوشرکتی، و در صورت نیاز تولید فایل processed
+نسخه‌دار است. تا آن زمان خروجی notebook اکتشافی است، نه benchmark رسمی تولیدی.
 
-Extend exact-date coverage, report single- and two-producer results separately, and promote the benchmark to a processed output only after final approval. Until then, the notebook series remains exploratory.
+## نتیجه بازبینی اختلاف قیمت — 2026-08-15
+
+در کل تاریخ فقط ۱۶ روز مشترک نقدی واقعی وجود دارد: ۹ روز قبل و ۷ روز بعد از
+شروع گواهی. متوسط اختلاف متقارن قبل از گواهی ۱٫۵۳٪ و بعد از آن ۰٫۸۸٪ است؛ میانه
+هر دو دوره صفر است. پس از گواهی در ۴ روز از ۷ روز قیمت دو شرکت دقیقاً برابر بود
+و بیشترین اختلاف متقارن ۳٫۳۲٪ بود. افزایش اختلاف پس از گواهی تأیید نمی‌شود.
+
+مشاهدات ۲۱ دی و ۱۲ بهمن از نقاط مشترک حذف شدند، زیرا گهرزمین در آنها فقط
+نقدی/اعتباری بود. در ۳ اسفند، پس از حذف ردیف اعتباری، قیمت نقدی هر دو شرکت
+۱۰۴٬۴۷۱ ریال و اختلاف صفر است. شکاف‌های بزرگ قبلی artifact اختلاط نوع تسویه
+بودند و دیگر مبنای تحلیل نیستند.
+
+بیشترین اختلاف معتبر در 1401/04/11 رخ داد: قیمت پایه، عرضه، تحویل، انبار و
+تسویه دو شرکت یکسان بود، اما نسبت تقاضا به عرضه برای گل‌گهر ۱٫۳ و برای گهرزمین
+۳ بود. رقابت بیشتر، قیمت گهرزمین را ۱۰٫۶۰٪ و گل‌گهر را ۲٫۴۳٪ بالاتر از پایه
+برد؛ اختلاف متقارن ۷٫۶۷٪ شد. مشاهده حفظ می‌شود و علت بنیادی ترجیح خریداران از
+داده فعلی قابل اثبات نیست.
+
+## مطالعه موردی تنها حباب مثبت — 1404/10/21
+
+قیمت benchmark رسمی فقط از معامله نقدی واقعی گل‌گهر، ۹۴٬۵۶۶ ریال، ساخته شد.
+قیمت تسویه گواهی ۱۰۴٬۹۹۸ ریال و حباب ۱۱٫۰۳٪+ بود. گهرزمین با قیمت ۱۱۱٬۲۲۹
+ریال تسویه نقدی/اعتباری داشت و به‌درستی حذف شد. قیمت گواهی میان نقدی گل‌گهر و
+قیمت‌های سلف/اعتباری ۱۰۷٬۳۳۲ تا ۱۱۱٬۲۲۹ ریالی همان روز قرار داشت.
+
+تسویه گواهی پیش‌تر از ۸۱٬۸۴۴ ریال در ۱۰ دی به ۱۰۳٬۴۸۳ ریال در ۱۷ دی رسیده
+بود؛ بنابراین نقطه مثبت نتیجه آغاز جهش در ۲۱ دی نیست، بلکه نخستین هم‌ترازی
+قیمت جهش‌کرده گواهی با مشاهده نقدی جدید است. آزمون حساسیت با میانگین آزمایشی
+گل‌گهر و گهرزمین حباب را به ۲٫۰۴٪+ کاهش می‌دهد. نتیجه: بزرگی حباب عمدتاً به
+benchmark تک‌شرکتی حساس است و تفسیر محتمل، شکاف زمانی کشف قیمت است. رویداد
+اختصاصی قابل‌اثباتی در اخبار یافت نشد؛ بنابراین علت بنیادی قطعی ادعا نمی‌شود.

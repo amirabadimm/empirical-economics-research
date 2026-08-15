@@ -1,24 +1,33 @@
 # Copper Certificate and Physical-Market Data
 
-Step-by-step description of the method, decisions, formulas, number of observations and path of files in
-[`WORKFLOW.md`](WORKFLOW.md) is maintained and is the basis of project reporting and presentation.
-This sub-project was created to collect and compare two datasets:
-1. Copper cathode deposit certificate transactions with symbol `CopperCthd`;
-2. Copper cathode transactions in the physical market of Iran Commodity Exchange.
-The ultimate goal is to calculate the certificate bubble relative to the weighted price of physical market transactions.
-## The implementation principle of the project
-The work is done in stages and the start of each stage requires user approval.
-The new certificate, the physical market and the bubble calculation method now have a verified collector and pipeline.
-## Suggested steps
-- [x] Step 1: Create structure, README and Agent instructions.
-- [x] Step 2: Identification and validation of the official certificate source and possible endpoints.
-- [x] Step 3: View the official certificate data sample and schema verification.
-- [x] Step 4: Writing incremental certificate collector and collecting its complete history.
-- [x] Step 5: Identification and sampling of copper cathode physical transactions.
-- [x] Step 6: Write incremental physical market collector and collect history.
-- [x] Step 7: Defining the matching rule of two markets and calculating the bubble in the processed data.
-- [ ] Step 8: Quality control, scheduling documentation and weekly execution.
-## Folder structure
+شرح مرحله‌به‌مرحله روش، تصمیم‌ها، فرمول‌ها، تعداد مشاهدات و مسیر فایل‌ها در
+[`WORKFLOW.md`](WORKFLOW.md) نگهداری می‌شود و مبنای گزارش و ارائه پروژه است.
+
+این زیرپروژه برای جمع‌آوری و مقایسه دو مجموعه‌داده ایجاد شده است:
+
+1. معاملات گواهی سپرده مس کاتد با نماد `CopperCthd`؛
+2. معاملات مس کاتد در بازار فیزیکی بورس کالای ایران.
+
+هدف نهایی، محاسبه حباب گواهی نسبت به قیمت موزون معاملات بازار فیزیکی است.
+
+## اصل اجرایی پروژه
+
+کار به‌صورت مرحله‌ای انجام می‌شود و شروع هر مرحله به تأیید کاربر نیاز دارد.
+گواهی جدید، بازار فیزیکی و روش محاسبه حباب اکنون collector و pipeline تأییدشده دارند.
+
+## مراحل پیشنهادی
+
+- [x] مرحله ۱: ایجاد ساختار، README و دستورالعمل Agent.
+- [x] مرحله ۲: شناسایی و اعتبارسنجی منبع رسمی گواهی و endpointهای محتمل.
+- [x] مرحله ۳: مشاهده نمونه رسمی داده گواهی و تأیید schema.
+- [x] مرحله ۴: نوشتن collector افزایشی گواهی و جمع‌آوری تاریخچه کامل آن.
+- [x] مرحله ۵: شناسایی و نمونه‌گیری معاملات فیزیکی کاتد مس.
+- [x] مرحله ۶: نوشتن collector افزایشی بازار فیزیکی و جمع‌آوری تاریخچه.
+- [x] مرحله ۷: تعریف قاعده تطبیق دو بازار و محاسبه حباب در داده پردازش‌شده.
+- [ ] مرحله ۸: کنترل کیفیت، مستندسازی زمان‌بندی و اجرای هفتگی.
+
+## ساختار پوشه‌ها
+
 ```text
 commodity/copper/
 ├── data/{raw,interim,processed}/
@@ -29,8 +38,10 @@ commodity/copper/
 └── docs/
 ```
 
-## Basic definition of bubble
-After confirming the date matching method:
+## تعریف اولیه حباب
+
+پس از تأیید روش تطبیق تاریخ‌ها:
+
 ```text
 bubble_irr_per_kg = certificate_close_irr_per_kg
                     - physical_weighted_irr_per_kg
@@ -39,173 +50,217 @@ bubble_pct = (certificate_close_irr_per_kg
               / physical_weighted_irr_per_kg - 1) × 100
 ```
 
-The physical market does not trade every day. The approved method of step 7 is the ratio of physical price to intrinsic price
-LME-calculates the currency at actual points and linearly interpolates the same ratio between points.
-## Candidate resources
-- Iran Commodity Exchange: reference source for final control of both markets;
-- TSETMC APIs: certificate history candidate, subject to finding the actual symbol ID and coverage;
-- Third-party sources: only for cross-checking, not automatic replacement of the official source.
-No unknown identifier or endpoint should be fixed in the code without validation.
-## Research report stage 2
-The following candidates are from the source version of `0.4.0` open source library `fima` (published in
-(Tir 1405) have been identified, but have not yet been confirmed by a live response in this project:
-- Commodity exchange deposit certificate:
+بازار فیزیکی هر روز معامله ندارد. روش مصوب مرحله ۷ نسبت قیمت فیزیکی به قیمت ذاتی
+LME-ارز را در نقاط واقعی محاسبه و همان نسبت را بین نقاط به‌صورت خطی درون‌یابی می‌کند.
+
+## منابع کاندید
+
+- بورس کالای ایران: منبع مرجع برای کنترل نهایی هر دو بازار؛
+- APIهای TSETMC: کاندید تاریخچه گواهی، مشروط به یافتن شناسه و پوشش واقعی نماد؛
+- منابع ثالث: فقط برای کنترل متقابل، نه جایگزین خودکار منبع رسمی.
+
+هیچ شناسه یا endpoint ناشناخته‌ای نباید بدون اعتبارسنجی در کد ثابت شود.
+
+## گزارش تحقیق مرحله ۲
+
+کاندیدهای زیر از سورس نسخه `0.4.0` کتابخانه متن‌باز `fima` (منتشرشده در
+تیر ۱۴۰۵) شناسایی شده‌اند، اما هنوز با پاسخ زنده در این پروژه تأیید نشده‌اند:
+
+- گواهی سپرده بورس کالا:
   `https://www.ime.co.ir/subsystems/ime/bazaremali/bazaremalidata.ashx`
-- physical transactions of the commodity exchange:
+- معاملات فیزیکی بورس کالا:
   `https://www.ime.co.ir/subsystems/ime/services/home/imedata.asmx/GetAmareMoamelatList`
-endpoint candidate certificate fields such as symbol, description, solar and Gregorian date, price
-It reports the final and last, minimum and maximum, volume, value and number of transactions. endpoint
-Physical also product, symbol, manufacturer, contract type, supply and transaction prices, quantity,
-Returns the value, transaction and delivery date, warehouse, supplier, unit and hall.
-Search TSETMC usually from route
-`https://cdn.tsetmc.com/api/Instrument/GetInstrumentSearch/{query}` is done.
-The reading tests of this step for TSETMC and IME timed out from the current environment; Therefore
-`InsCode`, historical coverage, real live response schema and units not yet confirmed. this
-timeout does not mean no symbol or data.
-The readable diagnostic tool is located at `src/copper/tools/probe_sources.py`. This tool has no files
-does not write and is executed with the following command:
+
+endpoint کاندید گواهی فیلدهایی مانند نماد، شرح، تاریخ شمسی و میلادی، قیمت
+پایانی و آخرین، کمینه و بیشینه، حجم، ارزش و تعداد معاملات گزارش می‌کند. endpoint
+فیزیکی نیز محصول، نماد، تولیدکننده، نوع قرارداد، قیمت‌های عرضه و معامله، مقدار،
+ارزش، تاریخ معامله و تحویل، انبار، عرضه‌کننده، واحد و تالار را برمی‌گرداند.
+
+جست‌وجوی TSETMC معمولاً از مسیر
+`https://cdn.tsetmc.com/api/Instrument/GetInstrumentSearch/{query}` انجام می‌شود.
+آزمون‌های خواندنی این مرحله برای TSETMC و IME از محیط فعلی timeout شدند؛ بنابراین
+`InsCode`، پوشش تاریخی، schema واقعی پاسخ زنده و واحدها هنوز تأیید نشده‌اند. این
+timeout به معنی نبودن نماد یا داده نیست.
+
+ابزار تشخیصی خواندنی در `src/copper/tools/probe_sources.py` قرار دارد. این ابزار هیچ فایلی
+نمی‌نویسد و با دستور زیر اجرا می‌شود:
+
 ```powershell
 python .\src\probe_sources.py --timeout 30
 ```
 
-In the test on August 10, 1405, all five requests were timed out in the TLS handshake phase:
-Two commodity exchange endpoints and three TSETMC searches. No HTTP response like `401` or `403`
-not received; As a result, there is no indication of the need for an API key and the current limitation
-Network/IP is more likely.
-After forcing the connection to IPv4 and TLS 1.2, the official exchange API responded. The ultimate source
-The new certificate for this endpoint is:
+در آزمون ۱۰ مرداد ۱۴۰۵، هر پنج درخواست در مرحله TLS handshake timeout شدند:
+دو endpoint بورس کالا و سه جست‌وجوی TSETMC. هیچ پاسخ HTTP مانند `401` یا `403`
+دریافت نشد؛ در نتیجه نشانه‌ای از نیاز به API key مشاهده نشده و محدودیت فعلی
+شبکه/IP محتمل‌تر است.
+
+پس از اجبار اتصال به IPv4 و TLS 1.2، API رسمی بورس کالا پاسخ داد. منبع نهایی
+گواهی جدید این endpoint است:
+
 ```text
 https://dataapi.ime.co.ir/api/CDC/CDCTrades
 ```
 
-The real contract code in the answer is `CopperCthd` and its description "Copper Cathode Continuous Deposit Certificate"
-is `CD1COP0001` did not work as a filter on the new endpoint. service
-`api.tsetmc.com` is subscription and paid; public `cdn.tsetmc.com/api` endpoints but
-They are without official contracts and documents and are not the main source in this project.
-## Certificate collection
+کد قرارداد واقعی در پاسخ `CopperCthd` و شرح آن «گواهی سپرده پیوسته مس کاتد»
+است. `CD1COP0001` در endpoint جدید به‌عنوان فیلتر کار نکرد. سرویس
+`api.tsetmc.com` اشتراکی و پولی است؛ endpointهای `cdn.tsetmc.com/api` عمومی اما
+بدون قرارداد و مستندات رسمی‌اند و در این پروژه منبع اصلی نیستند.
+
+## جمع‌آوری گواهی
+
 ```powershell
 python .\src\copper\collectors\certificate.py
 ```
 
-Outputs:
+خروجی‌ها:
+
 - `data/raw/certificate/copper_certificate_raw.csv`
 - `data/raw/certificate/api_snapshots/*.json`
 
-The modified version connects both the old `CD1COP0001` and the new `CopperCthd`.
-The current output has 246 unique rows from 2025-10-20 to 2026-08-02, which is 178 days.
-It has a positive trading volume. Normal execution only 14 days ago, refresh the latest row
-and found no new or modified rows. API for no deal days too
-The record is kept at zero volume and settlement price; These rows are preserved in the raw data.
-## The result of physical market sampling
-Official physical market endpoint confirmed:
+نسخه اصلاح‌شده هر دو کد قدیمی `CD1COP0001` و جدید `CopperCthd` را متصل می‌کند.
+خروجی فعلی ۲۴۶ ردیف یکتا از ۲۰۲۵-۱۰-۲۰ تا ۲۰۲۶-۰۸-۰۲ دارد که ۱۷۸ روز
+آن حجم معامله مثبت دارد. اجرای عادی فقط ۱۴ روز پیش از جدیدترین ردیف را refresh
+کرد و هیچ ردیف جدید یا اصلاح‌شده‌ای نیافت. API برای روزهای بدون معامله نیز
+رکورد با حجم صفر و قیمت تسویه نگه می‌دارد؛ این ردیف‌ها در داده خام حفظ شده‌اند.
+
+## نتیجه نمونه‌گیری بازار فیزیکی
+
+endpoint رسمی بازار فیزیکی تأیید شد:
+
 ```text
 https://www.ime.co.ir/subsystems/ime/services/home/imedata.asmx/GetAmareMoamelatList
 ```
 
-The answer is in the envelope of the `d` field as a JSON string and must be parsed twice.
-In the sample `1405/04/01` to `1405/05/10`, there are 6,935 total rows and 22 related rows.
-Copper cathode was observed. Sample groups included the following:
-- `NCI-OACCAA-00`, "Copper Cathode" product, produced by "National Copper Industries of Iran", contract
-  cash and cash (matching);
-- "Copper Cathode 2" products from Contact, Navid Alborz process and Horizon development and Middle East mines.
-The main candidate for the benchmark certificate is `NCI-OACCAA-00`; Other manufacturers and products
-"Copper Cathode 2" will not enter the benchmark until standard equivalence is proven. supplies
-No transaction (`Quantity=0` or empty price) should be kept in raw, but from the balanced price of the transaction
-be deleted
-In the example, `Price` was about 19,477,000 Rials and compatible with the price scale of the certificate. with this
-Now, the response reports `Unit=تن` and is `TotalPrice = Price × Quantity`; Therefore
-`TotalPrice` unit and scale should not be guessed. The collector must leave the raw fields intact
-Keep and build benchmark price directly from `Price` with official unit control.
-## Physical market collection powershell
-python .\src\copper\collectors\physical.py```
+پاسخ در envelope فیلد `d` به‌صورت JSON string قرار دارد و باید دوبار parse شود.
+در نمونه `1405/04/01` تا `1405/05/10` تعداد ۶٬۹۳۵ ردیف کل و ۲۲ ردیف مرتبط با
+کاتد مس مشاهده شد. گروه‌های نمونه شامل موارد زیر بودند:
 
-Outputs:
+- `NCI-OACCAA-00`، محصول «مس کاتد»، تولیدکننده «ملی صنایع مس ایران»، قرارداد
+  نقدی و نقدی (مچینگ)؛
+- محصولات «مس کاتد 2» از تماس، نوید فرآیند البرز و افق توسعه و معادن خاورمیانه.
+
+کاندید اصلی benchmark گواهی، `NCI-OACCAA-00` است؛ سایر تولیدکنندگان و محصول
+«مس کاتد 2» تا زمان اثبات هم‌ارزی استاندارد وارد benchmark نمی‌شوند. عرضه‌های
+بدون معامله (`Quantity=0` یا قیمت خالی) باید در raw حفظ ولی از قیمت موزون معامله
+حذف شوند.
+
+در نمونه، `Price` حدود ۱۹٬۴۷۷٬۰۰۰ ریال و با مقیاس قیمت گواهی سازگار بود. با این
+حال، پاسخ `Unit=تن` گزارش می‌کند و `TotalPrice = Price × Quantity` است؛ بنابراین
+واحد و مقیاس `TotalPrice` نباید حدس زده شود. collector باید فیلدهای خام را دست‌نخورده
+نگه دارد و قیمت benchmark را مستقیماً از `Price` با کنترل رسمی واحد بسازد.
+
+## جمع‌آوری بازار فیزیکی
+
+```powershell
+python .\src\copper\collectors\physical.py
+```
+
+خروجی‌ها:
+
 - `data/raw/physical/copper_cathode_physical_raw.csv`
 - `data/raw/physical/api_snapshots/*.json.gz`
 
-The first run of the API checks month by month from `1386/01` to the current day. The next implementation as
-By default, it also refreshes the local month two months before the most recent one, and the updated months
-completely replaces Therefore, both source modifications are recorded and duplicates are created
-can't No API key or external Python dependency is required for normal execution and connection with
-`curl`, IPv4 and TLS 1.2 are performed.
-The collector keeps the entire market response as a compressed snapshot, but only in CSV
-The rows of "Copper Cathode" belong to the old and new formats of the national symbol of Iran's copper industries, ie
-Holds `NCI-CCAA-00` and `NCI-OACCAA-00`. Only "cash" contracts and
-"Matchings" remain canonical in CSV; Salaf, Salaf (matching), loan and others
-Producers are removed. Supplies with zero value are still retained.
-The result of the full implementation on August 10, 1405:
-- Initial execution before limiting the product group, 1,993 rows from `1387/06/03` to
-  `1405/05/04` compiled;
-- 15 producers and 26 symbols;
-- the canonical table keeps only 1,733 rows of the "copper cathode" group after the stepwise decision;
-- Cash, cash (matching), advance, advance (matching) and loan contracts.
-In the next decision, the canonical table was divided into two old and new national symbols of Iran's copper industries and contracts
-Cash was limited. The current situation is 1,163 rows: 791 cash rows and 372 cash rows (matching).
-Self, self (matching), credit and other manufacturers are removed from CSV, but in snapshots
-The full API is retrievable.
-In the 362 days that both cash and cash (matching) methods have traded, the balanced price of the two methods in
-All days have been exactly equal. For 9 days, they had only cash transaction (matching). Therefore
-The main benchmark candidate is the volume weighted price of the combination of both methods; Transaction type and volume share
-Matches should be maintained as control columns.
-## Physical market daily benchmark
+اجرای اول API را ماه‌به‌ماه از `1386/01` تا روز جاری بررسی می‌کند. اجرای بعدی به‌صورت
+پیش‌فرض دو ماه پیش از جدیدترین ماه محلی را نیز refresh می‌کند و ماه‌های بازخوانی‌شده
+را کامل جایگزین می‌کند؛ بنابراین هم اصلاحات منبع ثبت می‌شوند و هم duplicate ایجاد
+نمی‌شود. برای اجرای عادی هیچ API key یا وابستگی پایتونی خارجی لازم نیست و ارتباط با
+`curl`، IPv4 و TLS 1.2 انجام می‌شود.
+
+collector تمام پاسخ بازار را به‌صورت snapshot فشرده نگه می‌دارد، اما در CSV فقط
+ردیف‌های «مس کاتد» متعلق به دو فرمت قدیم و جدید نماد ملی صنایع مس ایران یعنی
+`NCI-CCAA-00` و `NCI-OACCAA-00` را نگه می‌دارد. فقط قراردادهای «نقدی» و
+«نقدی (مچینگ)» در CSV canonical باقی می‌مانند؛ سلف، سلف (مچینگ)، نسیه و سایر
+تولیدکنندگان حذف می‌شوند. عرضه‌های دارای مقدار صفر همچنان حفظ می‌شوند.
+
+نتیجه اجرای کامل در ۱۰ مرداد ۱۴۰۵:
+
+- اجرای اولیه پیش از محدودکردن گروه کالا، ۱٬۹۹۳ ردیف از `1387/06/03` تا
+  `1405/05/04` گردآوری کرد؛
+- ۱۵ تولیدکننده و ۲۶ نماد؛
+- جدول canonical پس از تصمیم مرحله‌ای فقط ۱٬۷۳۳ ردیف گروه «مس کاتد» را نگه می‌دارد؛
+- قراردادهای نقدی، نقدی (مچینگ)، سلف، سلف (مچینگ) و نسیه.
+
+در تصمیم بعدی، جدول canonical به دو نماد قدیم و جدید ملی صنایع مس ایران و قراردادهای
+نقدی محدود شد. وضعیت فعلی ۱٬۱۶۳ ردیف است: ۷۹۱ ردیف نقدی و ۳۷۲ ردیف نقدی (مچینگ).
+سلف، سلف (مچینگ)، نسیه و سایر تولیدکنندگان از CSV حذف شده‌اند، اما در snapshotهای
+کامل API قابل بازیابی‌اند.
+
+در ۳۶۲ روزی که هر دو روش نقدی و نقدی (مچینگ) معامله داشته‌اند، قیمت موزون دو روش در
+تمام روزها دقیقاً برابر بوده است. ۹ روز نیز فقط معامله نقدی (مچینگ) داشته‌اند. بنابراین
+کاندید benchmark اصلی، قیمت موزون حجمی ترکیب هر دو روش است؛ نوع معامله و سهم حجم
+مچینگ باید به‌عنوان ستون‌های کنترلی حفظ شوند.
+
+## benchmark روزانه بازار فیزیکی
+
 ```powershell
 python .\src\copper\processing\build_physical_benchmark.py
 ```
 
-Script `src/copper/processing/build_physical_benchmark.py` Only rows traded with `Quantity > 0`
-and enters `Price > 0` into the calculation and produces the following output atomically:
+اسکریپت `src/copper/processing/build_physical_benchmark.py` فقط ردیف‌های معامله‌شده با `Quantity > 0`
+و `Price > 0` را وارد محاسبه می‌کند و خروجی زیر را به‌صورت atomic می‌سازد:
+
 ```text
 data/processed/nci_copper_cash_daily.csv
 ```
 
-Definition of the original price:
+تعریف قیمت اصلی:
+
 ```text
 physical_weighted_price = Σ(Price × Quantity) / Σ(Quantity)
 ```
 
-This calculation is done on the combination of cash and cash (matching) every day. Because the price is two ways
-All common days are equal, the output is only one price column named
-It has `physical_weighted_price`. Volume of each method, matching volume share, current symbols and history
-Solar/Maladi are still kept separately. If the cash price and matching are different in the future implementation
-If so, the script will stop with a validation error so that the single price rule does not continue without checking.
-The current output has 789 trading days from `1387/06/03` to `1405/05/04`.
-This benchmark is an approved pipeline input, estimated physical price and certification bubble.
-## Estimated physical price and certification bubble
+این محاسبه روی ترکیب نقدی و نقدی (مچینگ) در هر روز انجام می‌شود. چون قیمت دو روش در
+تمام روزهای مشترک برابر بوده، خروجی فقط یک ستون قیمت به نام
+`physical_weighted_price` دارد. حجم هر روش، سهم حجم مچینگ، نمادهای حاضر و تاریخ
+شمسی/میلادی همچنان جداگانه حفظ می‌شوند. اگر در اجرای آینده قیمت نقدی و مچینگ متفاوت
+شود، اسکریپت با خطای validation متوقف می‌شود تا قاعده تک‌قیمت بدون بررسی ادامه نیابد.
+خروجی فعلی ۷۸۹ روز معامله از `1387/06/03` تا `1405/05/04` دارد.
+این benchmark ورودی pipeline مصوب قیمت فیزیکی برآوردی و حباب گواهی است.
+
+## قیمت فیزیکی برآوردی و حباب گواهی
+
 ```powershell
 python .\src\copper\processing\build_certificate_bubble.py
 ```
 
-The script first constructs the inherent price per kilo of copper:
+اسکریپت ابتدا قیمت ذاتی هر کیلو مس را می‌سازد:
+
 ```text
 intrinsic_price = (LME cash USD/ton ÷ 1000) × free-market USD/IRR
 ```
 
-On the current 26 actual common dates, the ratio `physical_price / intrinsic_price` is calculated.
-This ratio between both real points in terms of calendar days is linearly interpolated and then in
-The inherent price is multiplied every day. At the end:
+در ۲۶ تاریخ مشترک واقعی فعلی، نسبت `physical_price / intrinsic_price` محاسبه می‌شود.
+خود این نسبت بین هر دو نقطه واقعی بر حسب روز تقویمی به‌صورت خطی درون‌یابی و سپس در
+قیمت ذاتی هر روز ضرب می‌شود. در پایان:
+
 ```text
 certificate_bubble_pct =
     (certificate_price / estimated_physical_price - 1) × 100
 ```
 
-No extrapolation is done before the first or after the last anchor. Current output in
-`data/processed/copper_certificate_bubble.csv` including 169 days from `2025-10-26` to
-`2026-07-26` is: 26 actual points and 143 interpolated days. Source date and life of LME and
-Dollars, two anchors of each ratio, ratio method and all intermediate prices are preserved in the output.
-Two complementary direct measures are created with the following command:
+هیچ extrapolation پیش از اولین یا پس از آخرین anchor انجام نمی‌شود. خروجی فعلی در
+`data/processed/copper_certificate_bubble.csv` شامل ۱۶۹ روز از `2025-10-26` تا
+`2026-07-26` است: ۲۶ نقطه واقعی و ۱۴۳ روز درون‌یابی‌شده. تاریخ منبع و عمر LME و
+دلار، دو anchor هر نسبت، روش نسبت و تمام قیمت‌های واسطه‌ای در خروجی حفظ شده‌اند.
+
+دو معیار مستقیم مکمل با دستور زیر ساخته می‌شوند:
+
 ```powershell
 python .\src\copper\processing\build_intrinsic_bubbles.py
 ```
 
-Outputs:
-- `data/processed/physical_vs_intrinsic_bubble.csv`: All 789 actual physical price ratio
-  at the inherent price of the LME-dollar;
-- `data/processed/certificate_vs_intrinsic_bubble.csv`: All 178 days of certificate transaction
-  compared to the intrinsic price of LME-dollar.
-These two files do not do any physical price interpolation and with the original certificate bubble to
-Estimated physical price is conceptually different.
-Although the search was performed from `1386/01`, the first relevant row returned by the endpoint was for
-It is `1387/06/03`. The second run only read the months `1405/03` to `1405/05` and
-The final number before applying the group filter remained 1,993; As a result of incremental behavior and
-idempotent verified. Full API snapshots are preserved and deprecated groups in
-They can be recovered if needed.
+خروجی‌ها:
+
+- `data/processed/physical_vs_intrinsic_bubble.csv`: تمام ۷۸۹ قیمت واقعی فیزیکی نسبت
+  به قیمت ذاتی LME–دلار؛
+- `data/processed/certificate_vs_intrinsic_bubble.csv`: تمام ۱۷۸ روز معامله گواهی
+  نسبت به قیمت ذاتی LME–دلار.
+
+این دو فایل هیچ درون‌یابی قیمت فیزیکی انجام نمی‌دهند و با حباب اصلی گواهی نسبت به
+قیمت فیزیکی برآوردی تفاوت مفهومی دارند.
+
+اگرچه جست‌وجو از `1386/01` انجام شد، نخستین ردیف مرتبطی که endpoint برگرداند مربوط به
+`1387/06/03` است. اجرای دوم تنها ماه‌های `1405/03` تا `1405/05` را بازخوانی کرد و
+تعداد نهایی پیش از اعمال فیلتر گروه همچنان ۱٬۹۹۳ ماند؛ در نتیجه رفتار incremental و
+idempotent تأیید شد. snapshotهای کامل API حفظ شده‌اند و گروه‌های کنارگذاشته‌شده در
+صورت نیاز قابل بازیابی هستند.

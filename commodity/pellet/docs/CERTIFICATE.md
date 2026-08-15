@@ -1,21 +1,27 @@
-# Iron ore pellet deposit certificate
-Official source: `https://dataapi.ime.co.ir/api/CDC/CDCTrades`
-Codes in a continuous series: `CD1IOP0001` (old) and `IronOrePlt` (new).
+# گواهی سپرده گندله سنگ‌آهن
+
+منبع رسمی: `https://dataapi.ime.co.ir/api/CDC/CDCTrades`
+
+کدهای یک سری پیوسته: `CD1IOP0001` (قدیم) و `IronOrePlt` (جدید).
+
 ```powershell
 python .\src\pellet\collectors\certificate.py
 ```
 
-raw output: `data/raw/certificate/pellet_certificate_raw.csv`; Complete answers in
-`data/raw/certificate/api_snapshots` are kept. The normal performance of the last 14 days
-refreshes `--full-refresh` restores the entire period from 2025-10-20.
-## Physical market — raw collection stage
-Wide collector physical market:
+خروجی خام: `data/raw/certificate/pellet_certificate_raw.csv`؛ پاسخ‌های کامل در
+`data/raw/certificate/api_snapshots` نگه‌داری می‌شوند. اجرای عادی ۱۴ روز اخیر
+را refresh می‌کند؛ `--full-refresh` کل دوره را از 2025-10-20 بازسازی می‌کند.
+
+## بازار فیزیکی — مرحله جمع‌آوری خام
+
+collector گسترده بازار فیزیکی:
+
 ```powershell
 python .\src\pellet\collectors\physical.py
 ```
 
-The programmed output is `data/raw/physical/pellet_physical_raw.csv` and the complete response
-Archived monthly at `data/raw/physical/api_snapshots`. This step is all rows
-Precisely named "iron ore cart", including all manufacturers, symbols, contract types and
-Maintains non-traded supplies. Still no benchmark or final underlying filter
-not defined The first performance is from 1386/01 and the subsequent performances are with a refresh of the last two months.
+خروجی برنامه‌ریزی‌شده `data/raw/physical/pellet_physical_raw.csv` است و پاسخ کامل
+هر ماه در `data/raw/physical/api_snapshots` آرشیو می‌شود. این مرحله همه ردیف‌های
+دقیقاً با نام «گندله سنگ آهن»، شامل تمام تولیدکنندگان، نمادها، انواع قرارداد و
+عرضه‌های بدون معامله را حفظ می‌کند. هنوز هیچ benchmark یا فیلتر underlying نهایی
+تعریف نشده است. اجرای اول از 1386/01 و اجراهای بعدی با refresh دو ماه انتهایی است.
