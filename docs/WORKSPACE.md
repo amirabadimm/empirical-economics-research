@@ -45,11 +45,11 @@ processed outputs. Notebooks may explore and visualize data but must not mutate 
 
 ## Validation checkpoints
 
-At the 2026-08-03 base checkpoint:
+At each project's latest documented checkpoint:
 
 | Project | Certificate rows | Physical rows | Positive physical trades |
 |---|---:|---:|---:|
-| Bitumen | 246 | 47,035 | 24,154 |
+| Bitumen | 257 | 47,085 | 24,163 |
 | Copper | 246 | 1,163 | 1,154 |
 | Iron-ore pellet | 246 | 3,446 | 1,592 |
 | Zinc | 246 | 6,178 | 3,428 |
