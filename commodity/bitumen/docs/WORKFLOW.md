@@ -18,12 +18,37 @@ Statistical liquidity alone does not establish deliverability or technical compa
 | Certificate | 257 calendar observations through 2026-08-15; 185 positive-trading days |
 | Broad physical market | 47,085 rows through 1405/05/24; 24,163 positive trades |
 | Exploratory notebook | Executed successfully; 34 cells, no external analytical outputs |
+| Working analytical underlying | Conventional domestic penetration-grade 60/70 |
+| Conservative physical specification | Standard cash contract and observed cash settlement |
 | Approved physical benchmark | Not yet approved |
 | Certificate premium/discount series | Not yet produced |
 
 Broad raw collection is complete and current. Exploratory work is performed in
 `notebooks/01_bitumen_physical_analysis.ipynb`. The notebook reads canonical raw data without
 writing interim or processed files.
+
+The research specification is now fixed for the current diagnostic: certificate observations are
+compared with conventional domestic 60/70 physical trades executed under standard cash contracts
+and observed cash settlement. “Not yet approved” refers to production use and legal deliverability,
+not to uncertainty about the working analytical filter.
+
+## Workflow state and decisions
+
+| Component | Current decision | Status |
+|---|---|---|
+| Product | Conventional domestic penetration-grade 60/70 | Fixed for the current research specification |
+| Physical contract | Standard cash (`ContractType`) | Fixed for the conservative diagnostic |
+| Settlement | Observed cash (`Tasvieh`) | Fixed for the conservative diagnostic |
+| Cash matching | Economically close to standard cash | Excluded from the conservative series; retained for sensitivity work |
+| Cash/credit settlement | No significant adjusted difference under a 3% tolerance | Excluded from the conservative series; retained for sensitivity work |
+| Credit contracts | Positive financing premium | Excluded without financing and maturity adjustment |
+| Forward contracts | Different maturity basis | Excluded |
+| Missing settlement | Source value retained as unknown | Excluded from the primary specification |
+| Date alignment | Exact common positive-trading dates | Approved for the diagnostic only |
+| Daily physical price | Physical value divided by physical volume | Approved for the diagnostic; symbol median is a robustness check |
+| Certificate volume conversion | One certificate equals one kilogram | Supported by secondary documentation; official IME notice still required |
+| Price comparability | Certificate settlement divided by physical VWAP | Diagnostic only pending quotation- and delivery-basis reconciliation |
+| Processed benchmark | None | Blocked by the production decision gates below |
 
 ## Data architecture
 
@@ -259,6 +284,13 @@ conversion is supported by a published secondary market report
 confirmation against the official IME admission or market-opening notice. The notebook retains
 both the raw certificate count and converted metric-ton volume.
 
+The volume conversion does not alter the price diagnostic and does not prove that the two quoted
+prices share the same tax, fee, delivery, or quotation basis. Internally, physical
+`TotalPrice = Quantity × Price` and certificate
+`TradesValue = TradesVolume × TodaySettlementPrice` within rounding tolerance. These identities
+validate each source internally but do not, by themselves, establish cross-market economic
+equivalence.
+
 Results show a structural discontinuity:
 
 | Jalali year | Exact overlap days | Median certificate price | Median physical VWAP | Median diagnostic |
@@ -300,11 +332,43 @@ The exploratory notebook currently performs:
 10. cash-settlement symbol comparisons;
 11. legacy settlement-missingness analysis;
 12. settlement fixed-effects comparisons;
-13. cash-versus-credit contract comparisons.
+13. standard-cash versus cash-matching contract comparisons;
+14. cash-versus-credit contract comparisons;
+15. post-certificate-inception liquidity and overlap profiling;
+16. strict standard-cash/observed-cash exact-date price construction;
+17. certificate-to-physical diagnostic spread calculation and supplier-aggregation sensitivity;
+18. source-unit identity checks and certificate-volume conversion to metric tons;
+19. descriptive 1404/1405 regime inference and common-day volume visualization.
 
 Fixed-effects models use log price with date and symbol effects and date-clustered standard errors.
 Estimation is restricted to dates with overlapping observed comparison groups. Volume-weighted
 and unweighted specifications are reported.
+
+The exact-date diagnostic is intentionally not extrapolated to nonphysical trading days. The
+regime tests are exploratory rather than confirmatory: the sample is small, the calendar split is
+descriptive, and daily observations may be serially dependent. Statistical significance therefore
+does not supersede contract-specification validation.
+
+## Reproducibility and analytical outputs
+
+Run the notebook from the repository root with the project environment:
+
+```powershell
+.\Finenv\Scripts\python.exe -m nbconvert --to notebook --execute --inplace `
+  .\commodity\bitumen\notebooks\01_bitumen_physical_analysis.ipynb `
+  --ExecutePreprocessor.timeout=600
+```
+
+The executed notebook contains no error outputs and writes no analytical files. Its principal
+in-memory objects are:
+
+- `focus`: conventional domestic 60/70 positive physical trades;
+- `post_candidate`: broader post-inception cash-group candidate retained for sensitivity work;
+- `strict_cash`: standard-cash and observed-cash physical observations after inception;
+- `strict_common_records`: record-level physical observations on positive certificate dates;
+- `strict_overlap`: exact-date daily physical/certificate comparison;
+- `regime_inference`: exploratory year-specific inference table;
+- `volume_plot`: common-date physical and certificate volumes in metric tons.
 
 ## Benchmark eligibility rules
 
@@ -348,28 +412,26 @@ A processed benchmark may be created only after all of the following are documen
 
 ## Next actions
 
-1. Obtain the official certificate specification and eligible warehouse/producer list.
-2. Review the 60/70 symbol universe and document legacy/current symbol mappings.
-3. Validate producer aliases without collapsing distinct plants.
-4. Audit warehouse, delivery, packaging, and lot-size fields for the cash-contract candidate set.
-5. Define the missing-settlement sensitivity specification and cash-only comparison series.
-6. Test alternative cash-only aggregation rules inside the notebook.
-7. Compare exact-date, bounded carry-forward, and lower-frequency temporal-alignment rules.
-8. Submit the candidate physical basket for approval before creating processed data.
+1. Obtain and archive the official IME certificate admission or market-opening notice, including
+   grade, certificate mass, quotation unit, eligible warehouse, delivery lot, fees, and taxes.
+2. Reconcile the sharp 1405 price discontinuity against quotation conventions, VAT, storage,
+   packaging, delivery location, and any contract-rule changes.
+3. Review the strict 60/70 symbol universe and document producer, plant, packaging, and delivery
+   attributes without collapsing unsupported aliases.
+4. Test whether the 1405 diagnostic survives tax/fee harmonization and any required quality or
+   delivery-basis adjustment.
+5. Report exact-date results as the conservative primary diagnostic; evaluate bounded prior-trade
+   and lower-frequency alignment only as explicitly labeled sensitivity analyses.
+6. Estimate uncertainty with methods appropriate for short, potentially dependent time series
+   once the economic basis is validated.
+7. Keep cash-matching and cash/credit-settlement extensions as secondary sensitivity specifications;
+   do not use them to replace observed standard-cash prices silently.
+8. Approve an auditable symbol/producer basket and methodology before writing any processed
+   benchmark or production certificate premium/discount series.
 
-## Open questions for the next session
+## Interpretation boundary
 
-Two alternative bubble specifications remain deliberately unresolved:
-
-1. Estimate the post-inception cash-minus-cash/credit price gap and reconstruct a cash-equivalent
-   physical price using a strictly backward-looking moving average of that gap.
-2. Ignore cash/credit settlement and calculate the bubble only from eligible observed-cash physical
-   trades.
-
-The gap-adjusted method requires explicit choices for comparison frequency, sign convention,
-moving-average window, minimum overlap, maximum gap age, outlier handling, and look-ahead
-prevention. It must be evaluated out of sample where observed cash prices are available.
-
-The observed-cash-only exact-date bubble is the conservative reference. The two approaches must be
-compared on coverage, gap stability, reconstruction error, price staleness, and sensitivity of the
-certificate premium/discount before either becomes the production method.
+The current result supports the statement that a large, persistent recorded certificate-to-physical
+price spread appears on the strict exact-date sample in 1405. It does not yet support claims of a
+risk-free arbitrage opportunity, market mispricing, or a production-ready bubble. Those stronger
+claims require completion of the documentary and economic reconciliation steps above.

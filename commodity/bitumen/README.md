@@ -10,7 +10,8 @@ comparable with the Iranian bitumen certificate?
 - Data checkpoint: 2026-08-16
 - Certificate: 257 calendar observations, 185 positive-trading days, through 2026-08-15
 - Physical market: 47,085 rows, including 24,163 positive trades, through 1405/05/24
-- Stage: conventional domestic 60/70 selected for focused exploration; deliverable underlying not yet approved
+- Stage: domestic 60/70 standard-cash/observed-cash specification fixed for the conservative
+  diagnostic; production deliverability and price-basis approval remain pending
 - Processed benchmark and certificate bubble: not yet produced
 
 The physical market is heterogeneous across grades, producers, domestic/export markets, and
@@ -45,6 +46,10 @@ delivery market, settlement type, and eligible contract terms.
 - A published secondary market report identifies one certificate as one kilogram; the notebook
   uses that documented conversion for volume comparison while retaining official IME contract
   documentation as a production-approval requirement.
+- Every one of the 14 strict common-date observations in 1405 has a positive diagnostic spread;
+  the mean is approximately 149% and the median approximately 157%. These statistics remain
+  descriptive until price quotation, tax, fee, warehouse, packaging, and delivery bases are
+  reconciled.
 
 ## Reproduction from the repository root
 
