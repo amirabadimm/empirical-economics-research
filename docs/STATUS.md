@@ -1,6 +1,6 @@
 # Research Status
 
-Documentation review: 2026-08-19
+Documentation review: 2026-08-22
 Latest data checkpoint: 2026-08-16
 
 | Project | Current data coverage | Research stage | Next action |
@@ -10,6 +10,7 @@ Latest data checkpoint: 2026-08-16
 | Zinc | Certificate through 2026-08-13; physical benchmark through 2026-08-09; LME through 2026-08-14; FX through 1405/05/20 | Full three-bubble pipeline; notebooks refreshed | Interpret notebook results and monitor input freshness |
 | Bitumen | Certificate through 2026-08-15; physical through 1405/05/24 | Strict cash–cash diagnostic has 29 overlaps and a major 1405 price discontinuity; no production bubble approved | Verify units/specification, then test exact-date, bounded carry-forward, and lower-frequency alignment rules |
 | Warehouse fees | 43 exact-date regimes plus 30 official-table observations back to 2016-10-29 | Official notices, Wayback recovery, and interval builder | Resolve exact boundaries for archived point observations |
+| Iran Energy Exchange | Project skeleton created; no canonical dataset yet | Documentation intake and domain mapping | Register source documents and map market structure before collector design |
 
 ## Available research outputs
 

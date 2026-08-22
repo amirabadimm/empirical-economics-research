@@ -6,8 +6,8 @@ This repository is a portfolio of reproducible empirical economics research on p
 formation, market integration, exchange-rate transmission, and applied market analysis.
 The current projects study Iranian commodity certificate markets by combining domestic
 physical-market transactions, international benchmark prices, and the free-market exchange
-rate. Planned extensions include housing markets, the Iran Energy Exchange, and broader
-applied microeconomic and macro-financial questions.
+rate. The workspace also includes a dedicated Iran Energy Exchange research project, with
+room for broader applied microeconomic and macro-financial questions.
 
 The repository is designed as a living research environment. It separates source-data
 collection from analytical processing, preserves source provenance, records methodological
@@ -20,7 +20,6 @@ restricted raw market data.
 - International-to-domestic price transmission
 - Exchange-rate pass-through
 - Commodity and energy market microstructure
-- Housing prices and regional market dynamics
 - Reproducible empirical methods for markets with sparse or irregular data
 
 ## Current projects
@@ -32,6 +31,7 @@ restricted raw market data.
 | [Iron-ore pellet](commodity/pellet/README.md) | Which physical-market basket is economically comparable with the pellet certificate? | Producer/contract exploration before benchmark approval | Exploratory stage |
 | [Bitumen](commodity/bitumen/README.md) | Which grade, market, and delivery terms match the bitumen certificate? | Broad raw collection followed by eligibility research | Data collection complete; underlying unresolved |
 | [Warehouse fees](commodity/warehouse_fees/README.md) | How have daily storage fees for all documented commodity certificates changed? | Official notices plus archived official tables | 43 exact-date intervals and 30 observations back to 2016 |
+| [Iran Energy Exchange](energy_exchange/README.md) | How are the exchange, its markets, instruments, trading lifecycle, and published data structured? | Source-document registry and domain mapping before collector design | Documentation intake |
 
 Current data coverage and next actions are summarized in [docs/STATUS.md](docs/STATUS.md).
 
@@ -79,12 +79,13 @@ commodity/                 Commodity-specific empirical projects
   pellet/
   bitumen/
 shared/ime_data/           Reusable Iran Mercantile Exchange collection logic
+energy_exchange/           Iran Energy Exchange documentation and research
 reports/                   Research reports, source documents, and reproducible figures
 docs/                      Workspace architecture, status, and data policy
 ```
 
 Future research domains can be added beside `commodity/` rather than forced into the commodity
-schema—for example, `housing/` or `energy/`.
+schema—for example, `energy_exchange/`.
 
 ## Environment
 

@@ -2,15 +2,16 @@
 
 ## Purpose
 
-This workspace supports reproducible empirical economics projects. Commodity studies currently
-share a common architecture, while future domains such as housing or energy may define their own
-top-level packages and data contracts.
+This workspace supports reproducible empirical economics projects. Commodity studies share a
+common architecture. The Iran Energy Exchange is a separate top-level domain with its own source
+register, package boundary, and data contracts.
 
 ## Layout
 
 ```text
 empirical-economics-research/
 ├── commodity/{bitumen,copper,pellet,zinc}/
+├── energy_exchange/
 ├── shared/ime_data/
 ├── reports/{copper,zinc}/
 ├── docs/
@@ -20,6 +21,10 @@ empirical-economics-research/
 Each commodity project may contain `src/<commodity>`, `data/{raw,interim,processed}`,
 `notebooks`, `tests`, `logs`, `outputs`, and `docs`. The existing local `Finenv` directory is
 ignored; new clones should use `.venv`.
+
+The Energy Exchange domain uses `energy_exchange/src/energy_exchange` for reusable domain logic
+and `energy_exchange/references` for source-document provenance. Its logic must remain separate
+from `shared/ime_data`, which is specific to the Iran Mercantile Exchange.
 
 ## Execution model
 
@@ -41,7 +46,10 @@ processed outputs. Notebooks may explore and visualize data but must not mutate 
 - 2026-08-09: commodity projects moved from `projects/` to `commodity/`; shared collectors,
   reports, and raw data retained their content and provenance.
 - 2026-08-11: public-facing metadata was reframed as a broader empirical-economics research
-  portfolio capable of supporting future housing, energy, and other applied-economics domains.
+  portfolio capable of supporting energy and other applied-economics domains.
+- 2026-08-22: the Iran Energy Exchange became a dedicated top-level project for documentation
+  intake and domain mapping; the separately maintained housing project was removed from this
+  workspace.
 
 ## Validation checkpoints
 

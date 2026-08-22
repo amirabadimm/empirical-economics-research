@@ -30,6 +30,16 @@ commodity/*/data/processed/**
 # Reproducible or presentation outputs.
 commodity/*/outputs/**
 
+# Iran Energy Exchange follows the same immutable-source and derived-data policy.
+energy_exchange/data/raw/**
+energy_exchange/data/interim/**
+energy_exchange/data/processed/**
+energy_exchange/outputs/**
+!energy_exchange/data/raw/**/.gitkeep
+!energy_exchange/data/interim/**/.gitkeep
+!energy_exchange/data/processed/**/.gitkeep
+!energy_exchange/outputs/**/.gitkeep
+
 # Binary research and presentation material stays local until a Git/LFS policy is agreed.
 reports/**/*.pdf
 reports/**/*.pptx

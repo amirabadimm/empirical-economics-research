@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "empirical-economics-research"
 version = "0.1.0"
-description = "Reproducible empirical research on commodity, housing, energy, and financial markets"
+description = "Reproducible empirical research on commodity, energy, and financial markets"
 readme = "README.md"
 license = "MIT"
 authors = [{ name = "Mohammad Mahdi Amirabadi" }]
