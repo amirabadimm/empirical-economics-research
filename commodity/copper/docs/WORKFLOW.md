@@ -1,6 +1,6 @@
 # Copper Warehouse-Receipt Certificate: Research Workflow
 
-Last reviewed: 2026-08-15
+Last reviewed: 2026-08-23
 
 ## Research objective
 
@@ -13,15 +13,15 @@ valuation remains anchored to observed domestic physical trades.
 
 | Source | Coverage |
 |---|---|
-| LME cash copper | 4,709 observations through 2026-08-14 |
-| Free-market USD/IRR | 13,067 observations through 1405/05/20 |
-| Certificate | 256 calendar rows; 184 positive-trading days through 2026-08-13 |
-| Broad physical copper cathode | 1,165 rows through 1405/05/18 |
-| Approved NCI cash benchmark | 791 trading days through 2026-08-09 |
+| LME cash copper | 4,714 observations through 2026-08-21 |
+| Free-market USD/IRR | 13,074 observations through 1405/05/31 |
+| Certificate | 263 calendar rows; 190 positive-trading days through 2026-08-22 |
+| Broad physical copper cathode | 1,170 rows through 1405/06/01 |
+| Approved NCI cash benchmark | 794 trading days through 2026-08-23 |
 
-The primary certificate output contains 178 dates from 2025-10-26 through 2026-08-09: 28 exact
-physical anchors and 150 interpolated observations. Its mean estimated premium is 5.53% and its
-median is 7.06%.
+The primary certificate output contains 183 dates from 2025-10-26 through 2026-08-17: 30 exact
+physical anchors and 153 interpolated observations. Its mean estimated premium is 5.57% and its
+median is 6.96%.
 
 ## Repository architecture
 
@@ -143,7 +143,7 @@ maturity and financing adjustments have not been established.
 
 - `01_lme_analysis.ipynb`: LME and market-input diagnostics.
 - `02_certificate_analysis.ipynb`: certificate valuation, regression sensitivities, forward-gap
-  analysis, certificate volume, and the 28 exact observed-anchor bubbles.
+  analysis, certificate volume, and the exact observed-anchor bubbles.
 - `build_presentation_timeline.py`: presentation-ready daily and event timelines.
 
 Notebooks read raw and processed data but never modify canonical raw files.
