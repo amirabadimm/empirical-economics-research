@@ -31,7 +31,7 @@ restricted raw market data.
 | [Iron-ore pellet](commodity/pellet/README.md) | Which physical-market basket is economically comparable with the pellet certificate? | Producer/contract exploration before benchmark approval | Exploratory stage |
 | [Bitumen](commodity/bitumen/README.md) | Which grade, market, and delivery terms match the bitumen certificate? | Broad raw collection followed by eligibility research | Data collection complete; underlying unresolved |
 | [Warehouse fees](commodity/warehouse_fees/README.md) | How have daily storage fees for all documented commodity certificates changed? | Official notices plus archived official tables | 43 exact-date intervals and 30 observations back to 2016 |
-| [Iran Energy Exchange](energy_exchange/README.md) | How are the exchange, its markets, instruments, trading lifecycle, and published data structured? | Source-document registry and domain mapping before collector design | Documentation intake |
+| [Iran Energy Exchange](energy_exchange/README.md) | Is the certificate market sufficiently active for a broader empirical project? | Public-source mapping plus complete 21-symbol certificate-history feasibility test | Closed: activity too sparse and concentrated for the intended project |
 
 Current data coverage and next actions are summarized in [docs/STATUS.md](docs/STATUS.md).
 

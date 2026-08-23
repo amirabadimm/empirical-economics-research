@@ -35,6 +35,7 @@ energy_exchange/data/raw/**
 energy_exchange/data/interim/**
 energy_exchange/data/processed/**
 energy_exchange/outputs/**
+energy_exchange/documents/_archive/*.zip
 !energy_exchange/data/raw/**/.gitkeep
 !energy_exchange/data/interim/**/.gitkeep
 !energy_exchange/data/processed/**/.gitkeep

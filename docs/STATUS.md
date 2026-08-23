@@ -1,7 +1,7 @@
 # Research Status
 
-Documentation review: 2026-08-22
-Latest data checkpoint: 2026-08-16
+Documentation review: 2026-08-23
+Latest data checkpoint: 2026-08-22
 
 | Project | Current data coverage | Research stage | Next action |
 |---|---|---|---|
@@ -10,7 +10,7 @@ Latest data checkpoint: 2026-08-16
 | Zinc | Certificate through 2026-08-13; physical benchmark through 2026-08-09; LME through 2026-08-14; FX through 1405/05/20 | Full three-bubble pipeline; notebooks refreshed | Interpret notebook results and monitor input freshness |
 | Bitumen | Certificate through 2026-08-15; physical through 1405/05/24 | Strict cash–cash diagnostic has 29 overlaps and a major 1405 price discontinuity; no production bubble approved | Verify units/specification, then test exact-date, bounded carry-forward, and lower-frequency alignment rules |
 | Warehouse fees | 43 exact-date regimes plus 30 official-table observations back to 2016-10-29 | Official notices, Wayback recovery, and interval builder | Resolve exact boundaries for archived point observations |
-| Iran Energy Exchange | Project skeleton created; no canonical dataset yet | Documentation intake and domain mapping | Register source documents and map market structure before collector design |
+| Iran Energy Exchange | 21 certificate symbols; 7,070 rows through 2026-08-22; 1,432 actual traded rows | Feasibility assessment complete; project closed because activity is sparse and concentrated | None; preserve evidence and reproducible collector |
 
 ## Available research outputs
 
@@ -23,6 +23,8 @@ Latest data checkpoint: 2026-08-16
   symbol dispersion, settlement missingness, and cash-versus-credit contract pricing. It has no
   approved deliverable basket or processed benchmark yet.
 - Warehouse fees has a local 41-row interval CSV and an 11-row live-table snapshot.
+- Iran Energy Exchange has a local immutable certificate snapshot and derived activity tables;
+  the versioned collector reproduces them. The project is closed and not scheduled for refresh.
 - No collector is currently scheduled or monitored in the repository.
 
 ## Update rule
