@@ -30,6 +30,7 @@ restricted raw market data.
 | [Zinc](commodity/zinc/README.md) | How does the zinc-ingot certificate compare with an eligible 99.97/99.98 domestic basket? | Grade-filtered volume weighting; three bubble definitions; time-series regression sensitivity | Complete benchmark and valuation pipeline |
 | [Iron-ore pellet](commodity/pellet/README.md) | Which physical-market basket is economically comparable with the pellet certificate? | Producer/contract exploration before benchmark approval | Exploratory stage |
 | [Bitumen](commodity/bitumen/README.md) | Which grade, market, and delivery terms match the bitumen certificate? | Broad raw collection followed by eligibility research | Data collection complete; underlying unresolved |
+| [Steel rebar](commodity/rebar/README.md) | What physical-market rebar universe is available for a defensible future benchmark? | Broad immutable IME collection before product-specification research | Collection pipeline ready |
 | [Warehouse fees](commodity/warehouse_fees/README.md) | How have daily storage fees for all documented commodity certificates changed? | Official notices plus archived official tables | 43 exact-date intervals and 30 observations back to 2016 |
 | [Iran Energy Exchange](energy_exchange/README.md) | Is the certificate market sufficiently active for a broader empirical project? | Public-source mapping plus complete 21-symbol certificate-history feasibility test | Closed: activity too sparse and concentrated for the intended project |
 
@@ -78,6 +79,7 @@ commodity/                 Commodity-specific empirical projects
   zinc/
   pellet/
   bitumen/
+  rebar/
 shared/ime_data/           Reusable Iran Mercantile Exchange collection logic
 energy_exchange/           Iran Energy Exchange documentation and research
 reports/                   Research reports, source documents, and reproducible figures
