@@ -6,6 +6,8 @@ import unittest
 from pathlib import Path
 import sys
 
+import pandas as pd
+
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[3]
 if str(WORKSPACE_ROOT) not in sys.path:
@@ -17,6 +19,7 @@ from commodity.rebar.src.rebar.processing.rebar_scope import (
     canonical_straight_rebar_label,
     is_a3_12_straight_rebar,
 )
+from commodity.rebar.src.rebar.processing.build_a3_12_cash_daily import build_daily
 from shared.ime_data.ime_physical_collector import normalize_fa
 
 
@@ -36,6 +39,33 @@ class RebarScopeTests(unittest.TestCase):
         self.assertTrue(is_a3_12_straight_rebar("\u0645\u06cc\u0644\u06af\u0631\u062f A3-12"))
         self.assertFalse(is_a3_12_straight_rebar("\u0633\u0628\u062f \u0645\u06cc\u0644\u06af\u0631\u062f 12-A3"))
         self.assertFalse(is_a3_12_straight_rebar("\u0645\u06cc\u0644\u06af\u0631\u062f 12 \u0648 14-A3"))
+
+    def test_daily_vwap_filters_to_a3_12_before_aggregation(self) -> None:
+        raw = pd.DataFrame([
+            {
+                "GoodsName": "\u0645\u06cc\u0644\u06af\u0631\u062f 12-A3", "Symbol": "A3-12", "ProducerName": "P1",
+                "ContractType": "\u0646\u0642\u062f\u06cc", "date": "1405/01/01", "Price": "100",
+                "ArzeBasePrice": "80", "Quantity": "10",
+            },
+            {
+                "GoodsName": "\u0645\u06cc\u0644\u06af\u0631\u062f A3-12", "Symbol": "A3-12", "ProducerName": "P2",
+                "ContractType": "\u0646\u0642\u062f\u06cc (\u0645\u0686\u06cc\u0646\u06af)", "date": "1405/01/01", "Price": "200",
+                "ArzeBasePrice": "160", "Quantity": "10",
+            },
+            {
+                "GoodsName": "\u0645\u06cc\u0644\u06af\u0631\u062f 10-A3", "Symbol": "A3-10", "ProducerName": "P3",
+                "ContractType": "\u0646\u0642\u062f\u06cc", "date": "1405/01/01", "Price": "999999",
+                "ArzeBasePrice": "999999", "Quantity": "1000",
+            },
+        ])
+
+        daily = build_daily(raw)
+
+        self.assertEqual(len(daily), 1)
+        self.assertEqual(float(daily.loc[0, "cash_trade_price_vwap"]), 150.0)
+        self.assertEqual(float(daily.loc[0, "offer_base_price_vwap"]), 120.0)
+        self.assertEqual(float(daily.loc[0, "traded_quantity"]), 20.0)
+        self.assertNotIn("A3-10", daily.loc[0, "symbols"])
 
 
 if __name__ == "__main__":

@@ -31,5 +31,6 @@ See [`docs/WORKFLOW.md`](docs/WORKFLOW.md) for the source contract, data governa
 [`notebooks/01_physical_price_analysis.ipynb`](notebooks/01_physical_price_analysis.ipynb) plots
 the A3 / 12 mm daily output: volume-weighted cash trade price (`Price`) and offer-base price
 (`ArzeBasePrice`) on Jalali dates, using a level chart and the daily percentage difference
-`100 × (cash / offer base − 1)`. It deliberately keeps the broad rebar-labelled source universe
-and labels the result as an exploratory aggregate.
+`100 × (cash / offer base − 1)`. The builder first applies the documented strict A3 / 12 mm
+product and cash-contract filter; it does not calculate a market-wide average across the broad
+rebar-labelled raw universe.

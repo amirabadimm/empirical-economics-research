@@ -27,6 +27,7 @@ OUTPUT_PATH = PROJECT_DIR / "data" / "processed" / "rebar_a3_12_cash_daily.csv"
 OUTPUT_COLUMNS = [
     "trade_date_jalali", "cash_trade_price_vwap", "offer_base_price_vwap",
     "cash_vs_offer_base_pct", "traded_quantity", "row_count", "producer_count", "producers",
+    "source_goods_names", "contract_types", "symbols",
 ]
 
 
@@ -36,7 +37,10 @@ def numeric(series: pd.Series) -> pd.Series:
 
 def build_daily(raw: pd.DataFrame) -> pd.DataFrame:
     """Filter documented A3 / 12 mm cash trades and aggregate their daily VWAPs."""
-    required = {"GoodsName", "ContractType", "date", "Price", "ArzeBasePrice", "Quantity", "ProducerName"}
+    required = {
+        "GoodsName", "Symbol", "ContractType", "date", "Price", "ArzeBasePrice", "Quantity",
+        "ProducerName",
+    }
     missing = sorted(required - set(raw.columns))
     if missing:
         raise ValueError(f"Raw rebar schema changed; missing columns: {missing}")
@@ -68,6 +72,9 @@ def build_daily(raw: pd.DataFrame) -> pd.DataFrame:
             "row_count": len(frame),
             "producer_count": frame["ProducerName"].nunique(),
             "producers": "|".join(sorted({str(value) for value in frame["ProducerName"].dropna()})),
+            "source_goods_names": "|".join(sorted({str(value) for value in frame["GoodsName"].dropna()})),
+            "contract_types": "|".join(sorted({str(value) for value in frame["ContractType"].dropna()})),
+            "symbols": "|".join(sorted({str(value) for value in frame["Symbol"].dropna()})),
         })
 
     daily = (

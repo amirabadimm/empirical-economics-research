@@ -53,7 +53,8 @@ multi-diameter labels. Eligible rows additionally require a cash or cash-matchin
 and positive `Quantity`, `Price`, and `ArzeBasePrice`.
 
 The builder writes `data/processed/rebar_a3_12_cash_daily.csv` atomically. Each Jalali-date row
-contains cash trade and offer-base VWAPs using identical executed-quantity weights, their
-percentage difference `100 × (cash / offer base − 1)`, quantity, row count, and producer audit
-fields. This is an exploratory visualization scope—not an approved economic benchmark—because
+contains cash trade and offer-base VWAPs using identical executed-quantity weights **only after**
+the strict A3 / 12 mm product and cash-contract filter has been applied. It also retains the
+source goods names, contract types, symbols, and producer audit fields. The percentage difference
+is `100 × (cash / offer base − 1)`. This is an exploratory visualization scope—not an approved economic benchmark—because
 producer, standard, delivery, and quotation-basis comparability have not yet been established.
