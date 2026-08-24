@@ -3,8 +3,8 @@
 ## Purpose
 
 This workspace supports reproducible empirical economics projects. Commodity studies share a
-common architecture. The Iran Energy Exchange is a separate top-level domain with its own source
-register, package boundary, and data contracts.
+common architecture. The Iran Energy Exchange and Codal issuer research are separate top-level
+domains with their own package boundaries and data contracts.
 
 ## Layout
 
@@ -12,6 +12,7 @@ register, package boundary, and data contracts.
 empirical-economics-research/
 ├── commodity/{bitumen,copper,pellet,zinc}/
 ├── energy_exchange/
+├── codal/national_copper/
 ├── shared/ime_data/
 ├── reports/{copper,zinc}/
 ├── docs/
@@ -25,6 +26,11 @@ ignored; new clones should use `.venv`.
 The Energy Exchange domain uses `energy_exchange/src/energy_exchange` for reusable domain logic
 and `energy_exchange/references` for source-document provenance. Its logic must remain separate
 from `shared/ime_data`, which is specific to the Iran Mercantile Exchange.
+
+The Codal domain uses one independent project per listed issuer under `codal/<company>/`. Codal
+disclosure collection must remain separate from both `shared/ime_data` and the Energy Exchange
+package. Reusable Codal logic should be extracted only after a stable source contract exists. The
+first issuer project is `codal/national_copper`.
 
 ## Execution model
 
@@ -50,6 +56,8 @@ processed outputs. Notebooks may explore and visualize data but must not mutate 
 - 2026-08-22: the Iran Energy Exchange became a dedicated top-level project for documentation
   intake and domain mapping; the separately maintained housing project was removed from this
   workspace.
+- 2026-08-24: a separate Codal domain was created, beginning with the National Iranian Copper
+  Industries Company issuer project.
 
 ## Validation checkpoints
 

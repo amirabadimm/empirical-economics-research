@@ -33,6 +33,7 @@ restricted raw market data.
 | [Steel rebar](commodity/rebar/README.md) | What physical-market rebar universe is available for a defensible future benchmark? | Broad immutable IME collection before product-specification research | Collection pipeline ready |
 | [Warehouse fees](commodity/warehouse_fees/README.md) | How have daily storage fees for all documented commodity certificates changed? | Official notices plus archived official tables | 43 exact-date intervals and 30 observations back to 2016 |
 | [Iran Energy Exchange](energy_exchange/README.md) | Is the certificate market sufficiently active for a broader empirical project? | Public-source mapping plus complete 21-symbol certificate-history feasibility test | Closed: activity too sparse and concentrated for the intended project |
+| [National Copper — Codal](codal/national_copper/README.md) | What can issuer disclosures reveal about National Iranian Copper Industries Company? | Cumulative-to-quarter conversion with explicit audit lineage | 75 valid quarters; 18 complete years |
 
 Current data coverage and next actions are summarized in [docs/STATUS.md](docs/STATUS.md).
 
@@ -82,6 +83,7 @@ commodity/                 Commodity-specific empirical projects
   rebar/
 shared/ime_data/           Reusable Iran Mercantile Exchange collection logic
 energy_exchange/           Iran Energy Exchange documentation and research
+codal/                     Issuer-level Codal disclosure research
 reports/                   Research reports, source documents, and reproducible figures
 docs/                      Workspace architecture, status, and data policy
 ```

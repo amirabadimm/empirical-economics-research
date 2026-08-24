@@ -45,6 +45,6 @@ select = ["E9", "F63", "F7", "F82"]
 packages = []
 
 [tool.pytest.ini_options]
-testpaths = ["commodity"]
+testpaths = ["commodity", "codal", "energy_exchange"]
 pythonpath = ["."]
 addopts = "-ra"

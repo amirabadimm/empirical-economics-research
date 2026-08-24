@@ -41,6 +41,17 @@ energy_exchange/documents/_archive/*.zip
 !energy_exchange/data/processed/**/.gitkeep
 !energy_exchange/outputs/**/.gitkeep
 
+# Codal issuer projects follow the same immutable-source and derived-data policy.
+codal/*/data/raw/**
+codal/*/data/interim/**
+codal/*/data/processed/**
+codal/*/outputs/**/*
+!codal/*/data/raw/**/.gitkeep
+!codal/*/data/interim/**/.gitkeep
+!codal/*/data/processed/**/.gitkeep
+!codal/*/outputs/**/
+!codal/*/outputs/**/.gitkeep
+
 # Binary research and presentation material stays local until a Git/LFS policy is agreed.
 reports/**/*.pdf
 reports/**/*.pptx

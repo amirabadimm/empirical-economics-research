@@ -12,6 +12,7 @@ Latest data checkpoint: 2026-08-22
 | Steel rebar | 31,532 physical rows through 1405/06/01; A3/12 cash daily output | Broad raw collection complete; A3/12 exploratory cash-versus-offer-base pipeline available | Audit A3/12 producer, delivery, standard, and quotation basis before benchmarking |
 | Warehouse fees | 43 exact-date regimes plus 30 official-table observations back to 2016-10-29 | Official notices, Wayback recovery, and interval builder | Resolve exact boundaries for archived point observations |
 | Iran Energy Exchange | 21 certificate symbols; 7,070 rows through 2026-08-22; 1,432 actual traded rows | Feasibility assessment complete; project closed because activity is sparse and concentrated | None; preserve evidence and reproducible collector |
+| National Copper — Codal | 75 valid core quarters; 18 complete years; labor fields provisional | Core modern-plus-legacy history validated; labor audit pending | Build header-aware labor parser and reconcile non-monotonic cumulative values |
 
 ## Available research outputs
 
@@ -26,6 +27,10 @@ Latest data checkpoint: 2026-08-22
 - Warehouse fees has a local 41-row interval CSV and an 11-row live-table snapshot.
 - Iran Energy Exchange has a local immutable certificate snapshot and derived activity tables;
   the versioned collector reproduces them. The project is closed and not scheduled for refresh.
+- National Copper Codal research has a local immutable archive of 118 modern qualifying filings
+  plus two verified legacy PDFs, a 20-row Q1 history, and a 75-row quarterly core history. Five
+  unavailable quarters are documented. Labor fields are explicitly provisional pending a
+  schedule-layout and cumulative-reconciliation audit.
 - No collector is currently scheduled or monitored in the repository.
 
 ## Update rule
