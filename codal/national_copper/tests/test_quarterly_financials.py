@@ -1,4 +1,4 @@
-"""Network-free contracts for the National Copper Q1 Codal pipeline."""
+"""Network-free contracts for the integrated National Copper quarterly pipeline."""
 
 from __future__ import annotations
 
@@ -9,11 +9,10 @@ from pathlib import Path
 from codal.national_copper.src.national_copper.collectors.financial_statements import (
     COMPANY,
     SYMBOL,
-    is_q1_parent_filing,
+    is_parent_financial_filing,
     period_end,
 )
-from codal.national_copper.src.national_copper.processing.build_q1_history import (
-    OUTPUT_PATH,
+from codal.national_copper.src.national_copper.processing.statement_parsing import (
     normalize_text,
     parse_number,
 )
@@ -24,15 +23,25 @@ from codal.national_copper.src.national_copper.processing.build_quarterly_histor
 
 
 class CodalMetadataTests(unittest.TestCase):
-    def test_exact_parent_q1_scope(self) -> None:
+    def test_exact_parent_statement_scope(self) -> None:
         base = {
             "Symbol": SYMBOL,
             "CompanyName": COMPANY,
             "Title": "اطلاعات و صورت‌های مالی میاندوره‌ای دوره ۳ ماهه منتهی به ۱۴۰۵/۰۳/۳۱ (حسابرسی نشده)",
         }
-        self.assertTrue(is_q1_parent_filing(base))
-        self.assertFalse(is_q1_parent_filing({**base, "Title": base["Title"] + " تلفیقی"}))
-        self.assertFalse(is_q1_parent_filing({**base, "CompanyName": "شرکت فرعی"}))
+        self.assertTrue(is_parent_financial_filing(base))
+        self.assertTrue(
+            is_parent_financial_filing(
+                {**base, "Title": "صورت‌های مالی دوره ۶ ماهه منتهی به ۱۴۰۴/۰۶/۳۱"}
+            )
+        )
+        self.assertTrue(
+            is_parent_financial_filing(
+                {**base, "Title": "صورت‌های مالی دوره ۹ ماهه منتهی به ۱۴۰۴/۰۹/۳۰"}
+            )
+        )
+        self.assertFalse(is_parent_financial_filing({**base, "Title": base["Title"] + " تلفیقی"}))
+        self.assertFalse(is_parent_financial_filing({**base, "CompanyName": "شرکت فرعی"}))
 
     def test_period_and_number_normalization(self) -> None:
         self.assertEqual(period_end("دوره ۳ ماهه منتهی به ۱۴۰۵/۰۳/۳۱"), "1405/03/31")
@@ -41,20 +50,6 @@ class CodalMetadataTests(unittest.TestCase):
 
 
 class BuiltOutputTests(unittest.TestCase):
-    @unittest.skipUnless(OUTPUT_PATH.exists(), "local processed output is not present")
-    def test_local_output_contract(self) -> None:
-        with OUTPUT_PATH.open(encoding="utf-8-sig", newline="") as stream:
-            rows = list(csv.DictReader(stream))
-        self.assertEqual(len(rows), 20)
-        self.assertEqual(rows[0]["period_end_jalali"], "1386/03/31")
-        self.assertEqual(rows[-1]["period_end_jalali"], "1405/03/31")
-        self.assertEqual({row["audit_status"] for row in rows}, {"حسابرسی نشده"})
-        self.assertEqual(sum(row["wage_detail_available"] == "True" for row in rows), 7)
-        self.assertEqual(
-            sum(row["labor_data_status"].startswith("provisional_") for row in rows), 7
-        )
-        self.assertEqual(len({row["tracing_no"] for row in rows}), 20)
-
     @unittest.skipUnless(
         QUARTERLY_OUTPUT_PATH.exists() and AVAILABILITY_PATH.exists(),
         "local quarterly outputs are not present",

@@ -5,15 +5,18 @@ Stage: core financial history validated; labor-cost audit pending
 
 ## Current state
 
-- The canonical index contains 24 original/corrected filings covering 20 Q1 periods from
-  `1386/03/31` through `1405/03/31`.
-- Every selected current-period column explicitly reports `حسابرسی نشده`.
-- Operating revenue, gross profit, and net profit have complete 20-period coverage.
+- The single canonical modern index contains 118 original/corrected cumulative filings across 79
+  statement periods; no separate Q1 index or output is maintained.
+- Every selected interim current-period column explicitly reports `حسابرسی نشده`; selected annual
+  inputs explicitly report `حسابرسی شده`.
+- Operating revenue, gross profit, and net profit are validated throughout the available
+  quarterly history.
 - Labor schedules are consistently present from 1399 onward, with a 1398 annual comparative in
   the 1399 filing. Older packages do not provide an equivalent period-level labor table.
 - Corrections are selected for 1400, 1402, and 1405; superseded filings remain immutable.
-- The processed output is `data/processed/national_copper_q1_financials.csv`.
-- The expanded raw index contains 118 filings across 79 cumulative statement periods.
+- The sole financial-history output is
+  `data/processed/national_copper_quarterly_financials.csv`, accompanied by the complete
+  `quarterly_availability.csv` grid.
 - The legacy OldLetters collector recovers explicitly unaudited 1386 six- and nine-month scanned
   statements with pinned hashes and page-level transcription provenance.
 - The quarterly output contains 75 valid observations; 18 years are complete.

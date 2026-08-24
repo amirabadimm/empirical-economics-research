@@ -10,8 +10,8 @@ with explicit audit lineage.
 
 ## Current stage
 
-The Q1 history contains 20 observations from `1386/03/31` through `1405/03/31`. The full quarterly
-output contains 75 valid quarterly flows from 80 expected fiscal-year quarters. Eighteen years
+The integrated quarterly output contains 75 valid flows from 80 expected fiscal-year quarters,
+covering `1386/03/31` through `1405/03/31`. Eighteen years
 have all four quarters. The legacy OldLetters archive recovers 1386 completely. Five quarters
 remain unavailable: 1388 Q2-Q3 lack a six-month input, and fiscal 1405 currently has only Q1.
 
@@ -54,7 +54,6 @@ From the repository root:
 ```powershell
 python .\codal\national_copper\src\national_copper\collectors\financial_statements.py
 python .\codal\national_copper\src\national_copper\collectors\legacy_financial_statements.py
-python .\codal\national_copper\src\national_copper\processing\build_q1_history.py
 python .\codal\national_copper\src\national_copper\processing\build_quarterly_history.py
 python -m pytest .\codal\national_copper\tests -q
 ```

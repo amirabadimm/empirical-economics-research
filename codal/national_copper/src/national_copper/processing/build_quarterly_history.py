@@ -11,7 +11,7 @@ WORKSPACE_ROOT = Path(__file__).resolve().parents[5]
 if str(WORKSPACE_ROOT) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_ROOT))
 
-from codal.national_copper.src.national_copper.processing.build_q1_history import (
+from codal.national_copper.src.national_copper.processing.statement_parsing import (
     PROJECT_ROOT,
     atomic_csv,
     parse_html,

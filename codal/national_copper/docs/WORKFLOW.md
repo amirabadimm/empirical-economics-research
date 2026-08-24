@@ -29,16 +29,15 @@ must explicitly state `حسابرسی نشده`; annual inputs used for Q4 must 
   `DownloadFiles.ashx` filing packages.
 - Exact identity: symbol `فملی` and company name `ملی صنایع مس ایران`.
 - Letter type: `6`; parent filings only; subsidiaries and consolidated titles are excluded.
-- Required title scope: financial statements for a three-month period.
+- Required title scope: standalone cumulative 3-, 6-, 9-, and 12-month financial statements.
 - Coverage: `1386/03/31` through `1405/03/31`.
-- Canonical raw index: `data/raw/financial_statements/q1_filing_index.csv`.
+- Canonical raw index: `data/raw/financial_statements/filing_index.csv`.
 - Immutable inputs: timestamped compressed API pages and content-addressed Excel exports under
   `data/raw/financial_statements`.
 
 The collector archives 118 qualifying original/corrected filings across 79 cumulative statement
-periods. The Q1 subset contains 24 filings across 20 periods. Builders choose the latest source
-that passes the required audit-status and standalone-statement validations while preserving every
-earlier version in raw storage.
+periods. The integrated builder chooses the latest source that passes the required audit-status
+and standalone-statement validations while preserving every earlier version in raw storage.
 
 The legacy collector adds two scanned, explicitly unaudited 1386 statements (six and nine
 months). Their PDF hashes are pinned, and operating revenue, gross profit, and net profit are
@@ -47,15 +46,11 @@ but an exhaustive six-month-title search returns no 1388 six-month statement.
 
 ## Output schema and availability
 
-`data/processed/national_copper_q1_financials.csv` contains one row per Q1 period. All monetary
-amounts are in million IRR, matching the source:
-
-- operating revenue, gross profit, and net profit: 20 periods;
-- direct production labor, production-overhead wages, and administrative/general/selling wages:
-  values are currently extracted for 7 Q1 periods (`1399/03/31`–`1405/03/31`), but remain
-  provisional pending the labor-specific audit described below;
-- other production-overhead and other administrative/general/selling expenses: the same 7
-  periods, explicitly named as non-wage expenses.
+There is one analysis-ready output:
+`data/processed/national_copper_quarterly_financials.csv`. It contains one row per available
+fiscal quarter. All monetary amounts are in million IRR, matching the source. Operating revenue,
+gross profit, and net profit are the validated core metrics. Labor and other-expense fields remain
+provisional pending the labor-specific audit described below.
 
 The newer Codal schedule format exposes `دستمزد مستقیم تولید` and separate payroll rows under
 production overhead and administrative/general/selling expense. It is consistently available
@@ -102,11 +97,12 @@ containing `تلفیقی`. Consolidated interim statements remain outside scope.
 
 ## Validation
 
-The build stops unless all 20 periods are unique and contiguous at the documented annual Q1
-grain, every current column is explicitly unaudited, every snapshot hash matches the raw index,
-the expected correction is selected, revenue is positive, gross profit does not exceed revenue,
-and detailed-cost fields are either complete or all blank. This structural check does not yet
-certify the economic validity of quarterly labor differences; that is the pending labor audit.
+The build stops unless the availability grid contains all 80 expected fiscal quarters, every
+selected interim column is explicitly unaudited, every selected annual column is explicitly
+audited, every snapshot hash matches its raw index, revenue is positive, gross profit does not
+exceed revenue, and detailed-cost fields are either complete or all blank. This structural check
+does not yet certify the economic validity of quarterly labor differences; that is the pending
+labor audit.
 Persian/Arabic character and digit variants are normalized only for matching; source files and
 labels remain unchanged.
 
@@ -122,7 +118,6 @@ ever required, must come from environment variables.
 ```powershell
 python .\codal\national_copper\src\national_copper\collectors\financial_statements.py
 python .\codal\national_copper\src\national_copper\collectors\legacy_financial_statements.py
-python .\codal\national_copper\src\national_copper\processing\build_q1_history.py
 python .\codal\national_copper\src\national_copper\processing\build_quarterly_history.py
 python -m pytest .\codal\national_copper\tests -q
 ```

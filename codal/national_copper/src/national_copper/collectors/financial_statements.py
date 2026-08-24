@@ -22,7 +22,6 @@ API_SNAPSHOTS = RAW_DIR / "api_snapshots"
 EXCEL_SNAPSHOTS = RAW_DIR / "excel_snapshots"
 REPORT_SNAPSHOTS = RAW_DIR / "report_snapshots"
 INDEX_PATH = RAW_DIR / "filing_index.csv"
-Q1_INDEX_PATH = RAW_DIR / "q1_filing_index.csv"
 
 SEARCH_URL = "https://search.codal.ir/api/search/v2/q"
 SYMBOL = "فملی"
@@ -70,10 +69,6 @@ def is_parent_financial_filing(letter: dict[str, object]) -> bool:
         return months in {3, 6, 9, 12} and (months == 12 or "تلفیقی" not in title)
     except ValueError:
         return False
-
-
-def is_q1_parent_filing(letter: dict[str, object]) -> bool:
-    return is_parent_financial_filing(letter) and statement_months(str(letter.get("Title"))) == 3
 
 
 def fetch(url: str) -> bytes:
@@ -168,7 +163,7 @@ def collect() -> list[dict[str, object]]:
 
     candidates = [letter for letter in all_letters if is_parent_financial_filing(letter)]
     if not candidates:
-        raise RuntimeError("No exact-company, non-consolidated three-month filings found")
+        raise RuntimeError("No exact-company standalone cumulative financial filings found")
 
     rows: list[dict[str, object]] = []
     for letter in candidates:
@@ -233,7 +228,6 @@ def collect() -> list[dict[str, object]]:
     rows.sort(key=lambda row: (str(row["period_end_jalali"]), str(row["publish_datetime_jalali"])))
     fields = list(rows[0])
     atomic_csv(INDEX_PATH, rows, fields)
-    atomic_csv(Q1_INDEX_PATH, [row for row in rows if row["statement_months"] == 3], fields)
     return rows
 
 

@@ -28,7 +28,7 @@ Latest data checkpoint: 2026-08-22
 - Iran Energy Exchange has a local immutable certificate snapshot and derived activity tables;
   the versioned collector reproduces them. The project is closed and not scheduled for refresh.
 - National Copper Codal research has a local immutable archive of 118 modern qualifying filings
-  plus two verified legacy PDFs, a 20-row Q1 history, and a 75-row quarterly core history. Five
+  plus two verified legacy PDFs and a single 75-row quarterly core history. Five
   unavailable quarters are documented. Labor fields are explicitly provisional pending a
   schedule-layout and cumulative-reconciliation audit.
 - No collector is currently scheduled or monitored in the repository.

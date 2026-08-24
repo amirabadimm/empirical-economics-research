@@ -1,9 +1,8 @@
-"""Build a validated history from National Copper unaudited three-month filings."""
+"""Parse and validate standalone National Copper financial-statement snapshots."""
 
 from __future__ import annotations
 
 import csv
-import hashlib
 import json
 import os
 import re
@@ -16,9 +15,6 @@ from bs4 import BeautifulSoup
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-INDEX_PATH = PROJECT_ROOT / "data" / "raw" / "financial_statements" / "q1_filing_index.csv"
-OUTPUT_PATH = PROJECT_ROOT / "data" / "processed" / "national_copper_q1_financials.csv"
-
 PERSIAN_DIGITS = str.maketrans("۰۱۲۳۴۵۶۷۸۹", "0123456789")
 ARABIC_DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
 
@@ -319,80 +315,3 @@ def atomic_csv(path: Path, rows: list[dict[str, object]]) -> None:
         Path(temporary_name).unlink(missing_ok=True)
         raise
 
-
-def build() -> list[dict[str, object]]:
-    with INDEX_PATH.open(encoding="utf-8-sig", newline="") as stream:
-        index = list(csv.DictReader(stream))
-    latest: dict[str, dict[str, str]] = {}
-    for row in index:
-        period = row["period_end_jalali"]
-        if period not in latest or row["publish_datetime_jalali"] > latest[period]["publish_datetime_jalali"]:
-            latest[period] = row
-
-    rows: list[dict[str, object]] = []
-    for period, source in sorted(latest.items()):
-        snapshot = PROJECT_ROOT / source["snapshot_path"]
-        if hashlib.sha256(snapshot.read_bytes()).hexdigest() != source["snapshot_sha256"]:
-            raise RuntimeError(f"Snapshot hash mismatch for {snapshot.name}")
-        try:
-            metrics = (
-                parse_html(snapshot, period) if snapshot.suffix == ".html" else parse_xls(snapshot, period)
-            )
-        except Exception as error:
-            raise RuntimeError(f"Failed to parse {period} from {snapshot.name}: {error}") from error
-        rows.append(
-            {
-                "period_end_jalali": period,
-                **metrics,
-                "wage_detail_available": metrics["direct_labor_cost_million_irr"] is not None,
-                "labor_data_status": (
-                    "provisional_pending_header_mapping_and_reconciliation"
-                    if metrics["direct_labor_cost_million_irr"] is not None
-                    else "not_disclosed"
-                ),
-                "audit_status": "حسابرسی نشده",
-                "is_correction": source["is_correction"],
-                "tracing_no": source["tracing_no"],
-                "publish_datetime_jalali": source["publish_datetime_jalali"],
-                "source_title": source["title"],
-                "source_url": source["report_url"],
-                "source_snapshot_sha256": source["snapshot_sha256"],
-            }
-        )
-
-    if len(rows) != 20 or rows[0]["period_end_jalali"] != "1386/03/31" or rows[-1]["period_end_jalali"] != "1405/03/31":
-        raise RuntimeError("Unexpected Q1 period coverage")
-    if len({row["period_end_jalali"] for row in rows}) != len(rows):
-        raise RuntimeError("Duplicate Q1 periods")
-    for row in rows:
-        if row["audit_status"] != "حسابرسی نشده":
-            raise RuntimeError("A non-unaudited observation entered the output")
-        if row["operating_revenue_million_irr"] <= 0:
-            raise RuntimeError(f"Non-positive revenue in {row['period_end_jalali']}")
-        if row["gross_profit_million_irr"] > row["operating_revenue_million_irr"]:
-            raise RuntimeError(f"Gross profit exceeds revenue in {row['period_end_jalali']}")
-        wage_values = [
-            row["direct_labor_cost_million_irr"],
-            row["overhead_wages_million_irr"],
-            row["sga_wages_million_irr"],
-            row["other_overhead_expense_million_irr"],
-            row["other_sga_expense_million_irr"],
-        ]
-        if bool(row["wage_detail_available"]) != all(value is not None for value in wage_values):
-            raise RuntimeError(f"Partial detailed-cost schedule in {row['period_end_jalali']}")
-    expected_corrections = {"1400/03/31", "1402/03/31", "1405/03/31"}
-    actual_corrections = {str(row["period_end_jalali"]) for row in rows if row["is_correction"] == "True"}
-    if actual_corrections != expected_corrections:
-        raise RuntimeError(f"Unexpected correction selection: {sorted(actual_corrections)}")
-    atomic_csv(OUTPUT_PATH, rows)
-    return rows
-
-
-def main() -> None:
-    rows = build()
-    wage_rows = sum(bool(row["wage_detail_available"]) for row in rows)
-    print(f"Built {len(rows)} Q1 rows; wage schedules available for {wage_rows} rows")
-
-
-if __name__ == "__main__":
-    main()
