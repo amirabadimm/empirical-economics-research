@@ -180,8 +180,10 @@ def plot_goods_type_counts(physical: pd.DataFrame, title: str, top_n: int = 30) 
     fig.update_layout(
         title=f"{title}: physical goods types by source-record count",
         xaxis_title="Physical source records", yaxis_title="GoodsName",
-        height=max(600, len(plot_table) * 27), template="plotly_white", margin={"l": 260},
+        height=max(600, len(plot_table) * 27), template="plotly_white",
+        margin={"l": 100, "r": 30, "t": 80, "b": 60},
     )
+    fig.update_yaxes(automargin=True)
     fig.show()
     print(
         f"Distinct physical GoodsName labels: {len(table):,}; "
