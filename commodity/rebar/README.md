@@ -43,7 +43,8 @@ the A3 / 12 mm daily output: volume-weighted cash trade price (`Price`) and offe
 product and cash-contract filter; it does not calculate a market-wide average across the broad
 rebar-labelled raw universe.
 
-The notebook also follows the workspace dashboard contract with interactive Plotly figures:
+The notebook also follows the workspace dashboard contract with responsive, consistently themed
+interactive Plotly figures:
 source-coverage audit, separate physical and certificate volume charts, separate descriptive price panels, and a frequency table
 computed from every raw physical record by the unmodified `GoodsName`. Its readable bar chart shows
 the 30 most frequent labels while the returned table contains all labels. The bubble panel states

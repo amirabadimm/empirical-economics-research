@@ -11,6 +11,45 @@ from plotly.subplots import make_subplots
 from shared.ime_data.ime_physical_collector import jalali_to_gregorian
 
 
+PLOTLY_CONFIG = {
+    "responsive": True,
+    "displaylogo": False,
+    "scrollZoom": True,
+    "modeBarButtonsToRemove": ["lasso2d", "select2d"],
+}
+PAPER_COLOR = "#F3F5F8"
+PLOT_COLOR = "#FFFFFF"
+GRID_COLOR = "#DDE3EA"
+TEXT_COLOR = "#243447"
+
+
+def _style_figure(fig: go.Figure) -> None:
+    """Apply the shared responsive research-dashboard presentation contract."""
+    fig.update_layout(
+        autosize=True,
+        paper_bgcolor=PAPER_COLOR,
+        plot_bgcolor=PLOT_COLOR,
+        font={"family": "Arial, Tahoma, sans-serif", "size": 13, "color": TEXT_COLOR},
+        title={"x": 0.02, "xanchor": "left", "font": {"size": 20}},
+        hoverlabel={"bgcolor": "#FFFFFF", "font": {"color": TEXT_COLOR}},
+        margin={"l": 80, "r": 35, "t": 90, "b": 65},
+    )
+    fig.update_xaxes(
+        automargin=True,
+        showgrid=True,
+        gridcolor=GRID_COLOR,
+        zerolinecolor=GRID_COLOR,
+        linecolor="#B8C2CC",
+    )
+    fig.update_yaxes(
+        automargin=True,
+        showgrid=True,
+        gridcolor=GRID_COLOR,
+        zerolinecolor=GRID_COLOR,
+        linecolor="#B8C2CC",
+    )
+
+
 def _jalali_series(values: pd.Series) -> pd.Series:
     def convert(value: object) -> pd.Timestamp:
         year, month, day = map(int, str(value).replace("-", "/").split("/")[:3])
@@ -108,7 +147,8 @@ def plot_trade_activity(physical: pd.DataFrame, certificate: pd.DataFrame, title
         title=f"{title}: physical and certificate trade activity", height=310 * rows,
         template="plotly_white", showlegend=False, hovermode="x unified",
     )
-    fig.show()
+    _style_figure(fig)
+    fig.show(config=PLOTLY_CONFIG)
 
 
 def plot_market_prices(physical: pd.DataFrame, certificate: pd.DataFrame, title: str) -> None:
@@ -157,7 +197,8 @@ def plot_market_prices(physical: pd.DataFrame, certificate: pd.DataFrame, title:
         title=f"{title}: physical and certificate prices (separate source bases)",
         height=310 * rows, template="plotly_white", showlegend=False, hovermode="x unified",
     )
-    fig.show()
+    _style_figure(fig)
+    fig.show(config=PLOTLY_CONFIG)
 
 
 def goods_type_counts(physical: pd.DataFrame) -> pd.DataFrame:
@@ -183,8 +224,8 @@ def plot_goods_type_counts(physical: pd.DataFrame, title: str, top_n: int = 30) 
         height=max(600, len(plot_table) * 27), template="plotly_white",
         margin={"l": 100, "r": 30, "t": 80, "b": 60},
     )
-    fig.update_yaxes(automargin=True)
-    fig.show()
+    _style_figure(fig)
+    fig.show(config=PLOTLY_CONFIG)
     print(
         f"Distinct physical GoodsName labels: {len(table):,}; "
         f"records counted: {table['record_count'].sum():,}"
@@ -225,5 +266,6 @@ def plot_available_bubbles(project_dir: Path, title: str) -> list[str]:
             xaxis={"visible": False}, yaxis={"visible": False},
         )
         print("No validated processed bubble dataset exists. No bubble was calculated or inferred.")
-    fig.show()
+    _style_figure(fig)
+    fig.show(config=PLOTLY_CONFIG)
     return plotted
