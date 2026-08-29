@@ -35,6 +35,10 @@ of 20.13%. This difference demonstrates the economic importance of the domestic 
 
 ## Reproduction from the repository root
 
+Canonical physical and certificate trades remain separate under `data/raw/{physical,certificate}`.
+The physical benchmark is written to `data/processed/physical`; every bubble and regression table
+is written to `data/processed/bubble`.
+
 ```powershell
 python .\commodity\zinc\src\zinc\collectors\certificate.py
 python .\commodity\zinc\src\zinc\collectors\physical.py

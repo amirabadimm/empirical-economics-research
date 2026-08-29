@@ -28,6 +28,10 @@ external intrinsic-value model is in scope.
 
 ## Reproduction from the repository root
 
+Canonical physical and certificate records remain separate under `data/raw/{physical,certificate}`.
+Future physical tables use `data/processed/physical`; any approved bubble uses
+`data/processed/bubble`.
+
 ```powershell
 python .\commodity\pellet\src\pellet\collectors\certificate.py
 python .\commodity\pellet\src\pellet\collectors\physical.py

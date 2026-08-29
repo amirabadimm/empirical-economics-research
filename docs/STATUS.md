@@ -1,24 +1,24 @@
 # Research Status
 
-Documentation review: 2026-08-23
-Latest data checkpoint: 2026-08-22
+Documentation review: 2026-08-29
+Latest data checkpoint: 2026-08-29
 
 | Project | Current data coverage | Research stage | Next action |
 |---|---|---|---|
-| Copper | Certificate through 2026-08-13; FX through 1405/05/20; LME through 2026-08-14; physical through 1405/05/18 | Full valuation pipeline; notebooks refreshed; 102-day forward-gap diagnostic added | Expand analytical QA, regression tests, and refresh monitoring |
+| Copper | 266 certificate rows through 2026-08-25; 1,171 physical rows through 1405/06/02 | Domain-separated physical/bubble pipeline; notebooks and reports refreshed | Expand analytical QA and refresh monitoring |
 | Iron-ore pellet | Certificate through 2026-08-09; physical through 1405/05/18 | Exploratory underlying research | Validate quality/delivery comparability and approve a physical basket |
-| Zinc | Certificate through 2026-08-13; physical benchmark through 2026-08-09; LME through 2026-08-14; FX through 1405/05/20 | Full three-bubble pipeline; notebooks refreshed | Interpret notebook results and monitor input freshness |
+| Zinc | 256 certificate rows through 2026-08-13; 6,235 physical rows through 1405/05/18 | Domain-separated three-bubble pipeline; notebooks and reports refreshed | Interpret results and monitor input freshness |
 | Bitumen | Certificate through 2026-08-15; physical through 1405/05/24 | Strict cash–cash diagnostic has 29 overlaps and a major 1405 price discontinuity; no production bubble approved | Verify units/specification, then test exact-date, bounded carry-forward, and lower-frequency alignment rules |
-| Steel rebar | 31,532 physical rows through 1405/06/01; A3/12 cash daily output | Broad raw collection complete; A3/12 exploratory cash-versus-offer-base pipeline available | Audit A3/12 producer, delivery, standard, and quotation basis before benchmarking |
+| Steel rebar | 31,532 physical rows through 1405/06/01; 268 certificate rows through 2026-08-27 | Both unfiltered raw datasets collected; A3/12 remains physical-only exploration; no bubble | Verify the official A3/18 certificate specification before analytical matching |
 | Warehouse fees | 43 exact-date regimes plus 30 official-table observations back to 2016-10-29 | Official notices, Wayback recovery, and interval builder | Resolve exact boundaries for archived point observations |
 | Iran Energy Exchange | 21 certificate symbols; 7,070 rows through 2026-08-22; 1,432 actual traded rows | Feasibility assessment complete; project closed because activity is sparse and concentrated | None; preserve evidence and reproducible collector |
 | National Copper — Codal | 75 valid core quarters; 18 complete years; labor fields provisional | Core modern-plus-legacy history validated; labor audit pending | Build header-aware labor parser and reconcile non-monotonic cumulative values |
 
 ## Available research outputs
 
-- Copper has eight local processed CSVs and an English LaTeX research report under
+- Copper processed CSVs are separated into `physical`, `bubble`, and `analysis` domains and have an English LaTeX research report under
   `reports/copper/research`.
-- Zinc has six local processed CSVs, two analytical notebooks, fourteen tests, and an English
+- Zinc processed CSVs are separated into `physical` and `bubble` domains, with two analytical notebooks and an English
   LaTeX report under `reports/zinc/research`.
 - Iron-ore pellet has an exploratory physical-market notebook but no approved benchmark.
 - Bitumen has an executed English exploratory notebook covering producer/grade structure, 60/70

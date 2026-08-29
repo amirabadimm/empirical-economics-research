@@ -31,7 +31,11 @@ OUTPUT_COLUMNS = [
     "total_quantity",
     "matching_quantity_share",
     "physical_weighted_price",
+    "cash_trades_value_irr",
+    "matching_trades_value_irr",
+    "physical_trades_value_irr",
     "quantity_source_field",
+    "trades_value_source_field",
 ]
 
 
@@ -82,7 +86,7 @@ def build(raw_path: Path, output_path: Path) -> list[dict[str, str]]:
     if not raw_rows:
         raise ValueError(f"No raw rows found in {raw_path}")
 
-    grouped: dict[str, dict[str, list[tuple[Decimal, Decimal, str]]]] = defaultdict(
+    grouped: dict[str, dict[str, list[tuple[Decimal, Decimal, Decimal, str]]]] = defaultdict(
         lambda: {CASH: [], MATCHING: []}
     )
     for row in raw_rows:
@@ -97,9 +101,21 @@ def build(raw_path: Path, output_path: Path) -> list[dict[str, str]]:
             )
         quantity = decimal_value(row["Quantity"], "Quantity", trade_date)
         price = decimal_value(row["Price"], "Price", trade_date)
+        source_total = decimal_value(row["TotalPrice"], "TotalPrice", trade_date)
         # Offers without an executed quantity/price remain in raw but are not trades.
         if quantity > 0 and price > 0:
-            grouped[trade_date][contract].append((price, quantity, symbol))
+            if source_total <= 0:
+                raise ValueError(f"Positive trade with non-positive TotalPrice on {trade_date}")
+            # IME reports Price in IRR/kg, Quantity in tonnes, and TotalPrice in
+            # million IRR. Price is rounded, so validate with a small tolerance.
+            implied_source_total = price * quantity
+            relative_error = abs(source_total - implied_source_total) / source_total
+            if relative_error > Decimal("0.00002"):
+                raise ValueError(
+                    f"TotalPrice mismatch on {trade_date}: source={source_total}, "
+                    f"price_x_quantity={implied_source_total}"
+                )
+            grouped[trade_date][contract].append((price, quantity, source_total, symbol))
 
     output: list[dict[str, str]] = []
     for trade_date in sorted(grouped):
@@ -108,8 +124,8 @@ def build(raw_path: Path, output_path: Path) -> list[dict[str, str]]:
         combined = cash + matching
         if not combined:
             continue
-        cash_pairs = [(p, q) for p, q, _ in cash]
-        matching_pairs = [(p, q) for p, q, _ in matching]
+        cash_pairs = [(p, q) for p, q, _, _ in cash]
+        matching_pairs = [(p, q) for p, q, _, _ in matching]
         combined_pairs = cash_pairs + matching_pairs
         cash_q = sum((q for _, q in cash_pairs), Decimal(0))
         matching_q = sum((q for _, q in matching_pairs), Decimal(0))
@@ -117,6 +133,9 @@ def build(raw_path: Path, output_path: Path) -> list[dict[str, str]]:
         cash_price = weighted_price(cash_pairs)
         matching_price = weighted_price(matching_pairs)
         total_price = weighted_price(combined_pairs)
+        cash_value_irr = sum((value for _, _, value, _ in cash), Decimal(0)) * 1000000
+        matching_value_irr = sum((value for _, _, value, _ in matching), Decimal(0)) * 1000000
+        total_value_irr = cash_value_irr + matching_value_irr
         if cash_price is not None and matching_price is not None and cash_price != matching_price:
             raise ValueError(
                 f"Cash and matching prices diverged on {trade_date}: "
@@ -126,7 +145,7 @@ def build(raw_path: Path, output_path: Path) -> list[dict[str, str]]:
         output.append({
             "physical_trade_date_jalali": trade_date,
             "physical_trade_date_gregorian": gregorian,
-            "symbols": "|".join(sorted({symbol for _, _, symbol in combined})),
+            "symbols": "|".join(sorted({symbol for _, _, _, symbol in combined})),
             "cash_trade_rows": str(len(cash)),
             "matching_trade_rows": str(len(matching)),
             "total_trade_rows": str(len(combined)),
@@ -135,7 +154,11 @@ def build(raw_path: Path, output_path: Path) -> list[dict[str, str]]:
             "total_quantity": display_number(total_q),
             "matching_quantity_share": display_number(matching_q / total_q),
             "physical_weighted_price": display_number(total_price),
+            "cash_trades_value_irr": display_number(cash_value_irr),
+            "matching_trades_value_irr": display_number(matching_value_irr),
+            "physical_trades_value_irr": display_number(total_value_irr),
             "quantity_source_field": "Quantity",
+            "trades_value_source_field": "TotalPrice (million IRR) x 1,000,000",
         })
 
     if not output:
@@ -156,7 +179,7 @@ def build(raw_path: Path, output_path: Path) -> list[dict[str, str]]:
 def main() -> None:
     project_dir = Path(__file__).resolve().parents[3]
     raw_path = project_dir / "data" / "raw" / "physical" / "copper_cathode_physical_raw.csv"
-    output_path = project_dir / "data" / "processed" / "nci_copper_cash_daily.csv"
+    output_path = project_dir / "data" / "processed" / "physical" / "nci_copper_cash_daily.csv"
     rows = build(raw_path, output_path)
     print(f"Daily traded observations: {len(rows)}")
     print(f"Coverage: {rows[0]['physical_trade_date_jalali']} through {rows[-1]['physical_trade_date_jalali']}")

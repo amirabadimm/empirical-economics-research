@@ -20,7 +20,8 @@ def to_jalali(value: pd.Timestamp) -> str:
 
 
 def build(project: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
-    processed = project / "data" / "processed"
+    processed = project / "data" / "processed" / "bubble"
+    processed.mkdir(parents=True, exist_ok=True)
     physical = pd.read_csv(processed / "physical_vs_intrinsic_bubble.csv")
     certificate = pd.read_csv(processed / "certificate_vs_intrinsic_bubble.csv")
     physical["date"] = pd.to_datetime(physical["date"])

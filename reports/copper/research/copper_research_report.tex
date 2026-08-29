@@ -41,7 +41,9 @@ The workspace separates collection, transformation, and presentation:
 \begin{itemize}
 \item immutable API and HTML evidence is retained under \code{data/raw};
 \item canonical raw CSVs are refreshed only by documented collectors;
-\item derived data is written only to \code{data/processed};
+\item physical derivatives are written to \code{data/processed/physical}, bubble and model
+outputs to \code{data/processed/bubble}, and other analytical tables to
+\code{data/processed/analysis};
 \item collectors are incremental, idempotent, validated, and atomic;
 \item notebooks read source/processed data but never rewrite raw files;
 \item shared IME logic resides in \code{shared/ime\_data}, while copper filters remain explicit.

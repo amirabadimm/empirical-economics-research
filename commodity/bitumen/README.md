@@ -53,6 +53,10 @@ delivery market, settlement type, and eligible contract terms.
 
 ## Reproduction from the repository root
 
+Canonical physical and certificate records remain separate under `data/raw/{physical,certificate}`.
+Future physical tables use `data/processed/physical`; any approved bubble uses
+`data/processed/bubble`.
+
 ```powershell
 python .\commodity\bitumen\src\bitumen\collectors\certificate.py
 python .\commodity\bitumen\src\bitumen\collectors\physical.py

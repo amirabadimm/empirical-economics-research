@@ -77,7 +77,7 @@ def build(project_dir: Path) -> tuple[list[dict[str, str]], list[dict[str, str]]
             "is_main_exact_anchor": str(int(target in anchors)),
         })
 
-    processed = project_dir / "data" / "processed"
+    processed = project_dir / "data" / "processed" / "bubble"
     write_atomic(processed / "physical_vs_intrinsic_bubble.csv", PHYSICAL_COLUMNS, physical_output)
     write_atomic(processed / "certificate_vs_intrinsic_bubble.csv", CERTIFICATE_COLUMNS, certificate_output)
     return physical_output, certificate_output

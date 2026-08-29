@@ -59,7 +59,7 @@ class ScopeTests(unittest.TestCase):
 
 class ForwardGapOutputTests(unittest.TestCase):
     def test_forward_gap_contract_and_boundaries(self) -> None:
-        output = WORKSPACE_ROOT / "commodity/copper/data/processed/nci_copper_forward_gap.csv"
+        output = WORKSPACE_ROOT / "commodity/copper/data/processed/physical/nci_copper_forward_gap.csv"
         if not output.exists():
             self.skipTest("forward-gap processed output is not present")
 
@@ -71,6 +71,25 @@ class ForwardGapOutputTests(unittest.TestCase):
         self.assertTrue(all("سلف" in row["contract_types"] for row in rows))
         self.assertTrue(all(row["settlement_types"] == "نقدی / اعتباری" for row in rows))
         self.assertTrue(all("1404/09/26" < row["trade_date_jalali"] < "1405/01/09" for row in rows))
+
+
+class PhysicalTransactionValueTests(unittest.TestCase):
+    def test_daily_benchmark_retains_positive_irr_transaction_value(self) -> None:
+        output = WORKSPACE_ROOT / "commodity/copper/data/processed/physical/nci_copper_cash_daily.csv"
+        if not output.exists():
+            self.skipTest("physical benchmark output is not present")
+
+        with output.open(encoding="utf-8-sig", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+
+        self.assertTrue(rows)
+        self.assertIn("physical_trades_value_irr", rows[0])
+        self.assertTrue(all(float(row["physical_trades_value_irr"]) > 0 for row in rows))
+        self.assertTrue(all(
+            float(row["physical_trades_value_irr"])
+            == float(row["cash_trades_value_irr"]) + float(row["matching_trades_value_irr"])
+            for row in rows
+        ))
 
 
 if __name__ == "__main__":

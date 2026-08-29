@@ -1,6 +1,6 @@
 # Bitumen Certificate Research Workflow
 
-Last reviewed: 2026-08-19
+Last reviewed: 2026-08-29
 
 ## Research objective
 
@@ -405,7 +405,8 @@ A processed benchmark may be created only after all of the following are documen
 - Preserve canonical raw CSVs and all API snapshots unchanged.
 - Do not write exploratory derived files from the notebook.
 - Record every future exclusion through stable source fields or documented symbol mappings.
-- Store approved derived data only in `data/interim` or `data/processed`.
+- Store physical derivatives in `data/processed/physical`, certificate-only derivatives in
+  `data/processed/certificate`, and any approved bubble in `data/processed/bubble`.
 - Stop on schema or validation failure.
 - Update the README, this workflow, and repository status after changes to source, schema, paths,
   formulas, observation counts, or research stage.

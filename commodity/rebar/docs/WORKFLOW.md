@@ -1,10 +1,12 @@
 # Steel Rebar Physical-Market Workflow
 
-Last reviewed: 2026-08-24
+Last reviewed: 2026-08-29
 
 ## Objective and boundary
 
-This project collects official Iran Mercantile Exchange (IME) physical-market observations for steel rebar. Its first stage is data acquisition and source exploration only. It does not yet define a homogeneous rebar product, a daily price benchmark, a certificate underlying, or a premium/discount measure.
+This project collects official Iran Mercantile Exchange (IME) physical-market and continuous-
+certificate observations for steel rebar. It defines an exploratory A3 / 12 mm physical screen,
+but no certificate/physical comparison or approved homogeneous benchmark.
 
 Rebar can vary materially by standard, diameter, grade, producer, bundle/lot terms, warehouse or delivery location, tax and quotation basis, contract type, settlement condition, and currency. None of these characteristics may be silently pooled in a derived series.
 
@@ -34,7 +36,8 @@ The first run begins at 1386/01. Subsequent default runs refresh the current mon
 
 - `data/raw` contains only the canonical raw CSV and immutable snapshots.
 - `data/interim` may hold reproducible temporary cleaning/alignment stages.
-- `data/processed` may hold approved derived outputs.
+- `data/processed/physical` holds approved physical derivatives; `processed/certificate` is
+  reserved for certificate-only derivatives; `processed/bubble` is reserved for future bubbles.
 - `src/rebar/collectors` owns source acquisition; `src/rebar/processing` will own deterministic derived builders when a specification is approved.
 - Notebooks may inspect data but must never modify canonical raw data.
 
@@ -52,9 +55,28 @@ diameter. It excludes baskets, coil, alloy, short-length, mixed-product, simple/
 multi-diameter labels. Eligible rows additionally require a cash or cash-matching `ContractType`,
 and positive `Quantity`, `Price`, and `ArzeBasePrice`.
 
-The builder writes `data/processed/rebar_a3_12_cash_daily.csv` atomically. Each Jalali-date row
+The builder writes `data/processed/physical/rebar_a3_12_cash_daily.csv` atomically. Each Jalali-date row
 contains cash trade and offer-base VWAPs using identical executed-quantity weights **only after**
 the strict A3 / 12 mm product and cash-contract filter has been applied. It also retains the
 source goods names, contract types, symbols, and producer audit fields. The percentage difference
 is `100 × (cash / offer base − 1)`. This is an exploratory visualization scope—not an approved economic benchmark—because
 producer, standard, delivery, and quotation-basis comparability have not yet been established.
+
+## Continuous certificate
+
+The certificate source is `https://dataapi.ime.co.ir/api/CDC/CDCTrades`, market ID `22`,
+commodity ID `29`, exact description `گواهی سپرده پیوسته میلگرد`, and continuous codes
+`CD1RBR0001` then `SteelRebar`. Canonical data is stored at
+`data/raw/certificate/rebar_certificate_raw.csv`; immutable responses are archived under
+`data/raw/certificate/api_snapshots`. The shared collector validates identity, schema,
+nonnegative values, traded-day VWAP, unique dates, and writes atomically. It retains zero-trade
+records and does not transform the canonical source fields.
+
+No bubble builder is active. Historical launch notices describe A3 / 18 mm rebar, but current
+official warehouse and continuous-contract documentation must still establish grade, diameter,
+standard, lot conversion, eligible warehouse and producer, delivery timing, taxes, storage and
+transaction fees, and quotation units.
+
+The required architecture is three separate datasets: canonical certificate records, canonical
+physical records, and—only after analytical approval—a derived bubble table. A bubble table must
+never replace or act as the storage location for either source dataset.

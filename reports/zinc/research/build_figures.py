@@ -12,7 +12,7 @@ from bubble_report_figures import build  # noqa: E402
 
 if __name__ == "__main__":
     build(
-        processed=WORKSPACE / "commodity" / "zinc" / "data" / "processed",
+        processed=WORKSPACE / "commodity" / "zinc" / "data" / "processed" / "bubble",
         output=Path(__file__).resolve().parent / "figures",
         commodity="zinc",
         main_filename="zinc_certificate_bubble.csv",

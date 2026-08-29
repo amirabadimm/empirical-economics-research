@@ -12,8 +12,8 @@ PROJECT = Path(__file__).resolve().parents[1]
 PROCESSED = PROJECT / "data" / "processed"
 
 
-def rows(name: str) -> list[dict[str, str]]:
-    path = PROCESSED / name
+def rows(name: str, domain: str = "bubble") -> list[dict[str, str]]:
+    path = PROCESSED / domain / name
     if not path.exists():
         raise unittest.SkipTest(f"generated dataset is unavailable: {path}")
     with path.open("r", encoding="utf-8-sig", newline="") as handle:
@@ -26,7 +26,7 @@ def d(value: str) -> Decimal:
 
 class ZincBenchmarkTests(unittest.TestCase):
     def test_benchmark_is_unique_sorted_and_reconciles_grade_weights(self) -> None:
-        data = rows("zinc_9798_cash_daily.csv")
+        data = rows("zinc_9798_cash_daily.csv", "physical")
         dates = [row["physical_trade_date_gregorian"] for row in data]
         self.assertEqual(dates, sorted(set(dates)))
         for row in data:

@@ -25,6 +25,7 @@ commodity/*/data/raw/**
 commodity/*/data/interim/**
 commodity/*/data/processed/**
 !commodity/*/data/interim/**/.gitkeep
+!commodity/*/data/processed/**/
 !commodity/*/data/processed/**/.gitkeep
 
 # Reproducible or presentation outputs.

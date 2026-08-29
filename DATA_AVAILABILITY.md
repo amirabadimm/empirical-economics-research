@@ -20,9 +20,13 @@ license IME, LME, Westmetall, TGJU, or other third-party data.
 ## Local data layout
 
 ```text
-<project>/data/raw/          Canonical source data and immutable snapshots
-<project>/data/interim/      Temporary derived stages
-<project>/data/processed/    Reproducible analytical outputs
+<project>/data/raw/physical/       Canonical physical records and snapshots
+<project>/data/raw/certificate/    Canonical certificate records and snapshots
+<project>/data/interim/            Temporary derived stages
+<project>/data/processed/physical/ Physical benchmarks and diagnostics
+<project>/data/processed/certificate/ Certificate-only derivatives
+<project>/data/processed/bubble/   Bubble and model outputs
+<project>/data/processed/analysis/ Other analytical tables
 ```
 
 These directories are excluded from Git except for placeholder files.

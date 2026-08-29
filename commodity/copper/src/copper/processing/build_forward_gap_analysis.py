@@ -83,7 +83,7 @@ def newest_valid_months(snapshot_dir: Path, months: set[str]) -> list[dict]:
 
 
 def build(project: Path) -> list[dict[str, str]]:
-    benchmark_path = project / "data/processed/nci_copper_cash_daily.csv"
+    benchmark_path = project / "data/processed/physical/nci_copper_cash_daily.csv"
     with benchmark_path.open("r", encoding="utf-8-sig", newline="") as handle:
         benchmark = {row["physical_trade_date_jalali"]: row for row in csv.DictReader(handle)}
     left = benchmark[GAP_LEFT]
@@ -164,7 +164,7 @@ def build(project: Path) -> list[dict[str, str]]:
 def main() -> None:
     project = Path(__file__).resolve().parents[3]
     rows = build(project)
-    output = project / "data/processed/nci_copper_forward_gap.csv"
+    output = project / "data/processed/physical/nci_copper_forward_gap.csv"
     temporary = output.with_suffix(output.suffix + ".tmp")
     with temporary.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=OUTPUT_COLUMNS)

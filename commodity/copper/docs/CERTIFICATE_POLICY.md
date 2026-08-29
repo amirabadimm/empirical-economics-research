@@ -14,7 +14,8 @@ must update the project README, `docs/WORKFLOW.md`, and `docs/STATUS.md` in the 
 1. Store certificate raw data only in `data/raw/certificate`.
 2. Store physical-market raw data only in `data/raw/physical`.
 3. Preserve source responses and snapshots immutably with retrieval time and source URL.
-4. Write derived data only to `data/interim` or `data/processed`.
+4. Write physical derivatives to `data/processed/physical`, certificate-only derivatives to
+   `data/processed/certificate`, and bubble/model outputs to `data/processed/bubble`.
 5. Keep price and quantity units explicit, especially IRR versus toman and kilograms versus tonnes.
 6. Keep source date, trade date, and retrieval time in separate fields.
 7. Collectors must be incremental, idempotent, schema validated, and atomic.

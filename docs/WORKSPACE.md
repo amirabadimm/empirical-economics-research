@@ -19,7 +19,8 @@ empirical-economics-research/
 └── .venv/                         # local only; never versioned
 ```
 
-Each commodity project may contain `src/<commodity>`, `data/{raw,interim,processed}`,
+Each commodity project may contain `src/<commodity>`, `data/raw/{physical,certificate}`,
+`data/interim`, and `data/processed/{physical,certificate,bubble,analysis}`,
 `notebooks`, `tests`, `logs`, `outputs`, and `docs`. The existing local `Finenv` directory is
 ignored; new clones should use `.venv`.
 
@@ -43,7 +44,8 @@ python .\commodity\copper\src\copper\processing\build_physical_benchmark.py
 ```
 
 Collectors own raw-data persistence. Processing scripts read raw data and write only interim or
-processed outputs. Notebooks may explore and visualize data but must not mutate canonical raw files.
+processed outputs. Bubble/model tables belong under `processed/bubble`, never beside canonical
+source records. Notebooks may explore and visualize data but must not mutate canonical raw files.
 
 ## Architecture history
 
@@ -58,6 +60,9 @@ processed outputs. Notebooks may explore and visualize data but must not mutate 
   workspace.
 - 2026-08-24: a separate Codal domain was created, beginning with the National Iranian Copper
   Industries Company issuer project.
+- 2026-08-29: commodity canonical physical and certificate CSVs were reaffirmed as independent
+  raw datasets; physical, certificate-only, bubble/model, and other analysis outputs moved into
+  separate processed-domain directories. Builders, notebooks, tests, and reports were migrated.
 
 ## Validation checkpoints
 
@@ -66,9 +71,10 @@ At each project's latest documented checkpoint:
 | Project | Certificate rows | Physical rows | Positive physical trades |
 |---|---:|---:|---:|
 | Bitumen | 257 | 47,085 | 24,163 |
-| Copper | 246 | 1,163 | 1,154 |
-| Iron-ore pellet | 246 | 3,446 | 1,592 |
-| Zinc | 246 | 6,178 | 3,428 |
+| Copper | 266 | 1,171 | 1,162 |
+| Iron-ore pellet | 252 | 3,467 | 1,606 |
+| Steel rebar | 268 | 31,532 | not yet standardized |
+| Zinc | 256 | 6,235 | 3,462 |
 
 Zinc was refreshed and extended on 2026-08-10 to 252 certificate rows and 6,235 broad physical
 rows. Its processed pipeline contains a 554-day 99.97/99.98 benchmark, two direct bubble series,

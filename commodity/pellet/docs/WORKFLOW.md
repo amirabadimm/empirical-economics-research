@@ -1,8 +1,12 @@
 # Iron-Ore Pellet Warehouse-Receipt Certificate: Research Workflow
 
-Last reviewed: 2026-08-15
+Last reviewed: 2026-08-29
 
 ## Research objective
+
+Canonical physical and certificate CSVs remain separate under `data/raw/{physical,certificate}`.
+Any future physical benchmark belongs in `data/processed/physical`; any bubble belongs only in
+`data/processed/bubble` and must be rebuildable from the independent source datasets.
 
 The pellet project estimates the warehouse-receipt premium or discount relative to comparable
 domestic physical pellet transactions. It is currently an exploratory exact-date study. Global

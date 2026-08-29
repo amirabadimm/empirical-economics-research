@@ -26,6 +26,9 @@ remain local by default. This protects source licensing, prevents accidental sec
 keeps Git history focused on research logic. Small fixtures, code, tests, documentation, reports, and
 selected reproducible figures may be versioned.
 
-Processed CSVs are also excluded by default even when small. A processed dataset may be published
-only after documenting its source licence, construction method, schema, version, and citation. See
+Processed CSVs are also excluded by default even when small. A processed dataset belongs in its
+domain directory: physical tables in `processed/physical`, certificate-only derived tables in
+`processed/certificate`, and comparisons/models in `processed/bubble`. Canonical source records
+remain in `raw/physical` and `raw/certificate`. A processed dataset may be published only after
+documenting its source licence, construction method, schema, version, and citation. See
 the repository-level [DATA_AVAILABILITY.md](../DATA_AVAILABILITY.md).

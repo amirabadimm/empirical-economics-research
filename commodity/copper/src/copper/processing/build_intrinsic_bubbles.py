@@ -32,6 +32,7 @@ PHYSICAL_COLUMNS = [
     "date",
     "physical_price_irr_per_kg",
     "physical_total_quantity",
+    "physical_trades_value_irr",
     *COMMON_COLUMNS[1:],
     "physical_to_intrinsic_ratio",
     "physical_vs_intrinsic_irr_per_kg",
@@ -70,7 +71,7 @@ def build(project_dir: Path) -> tuple[list[dict[str, str]], list[dict[str, str]]
         project_dir / "data" / "raw" / "certificate" / "copper_certificate_raw.csv"
     )
     physical_rows = read_csv(
-        project_dir / "data" / "processed" / "nci_copper_cash_daily.csv"
+        project_dir / "data" / "processed" / "physical" / "nci_copper_cash_daily.csv"
     )
     lme_rows = read_csv(copper_dir / "data" / "raw" / "lme" / "copper_lme_raw.csv")
     usd_rows = read_csv(copper_dir / "data" / "raw" / "fx" / "usd_to_rial.csv")
@@ -97,9 +98,12 @@ def build(project_dir: Path) -> tuple[list[dict[str, str]], list[dict[str, str]]
             row["physical_weighted_price"], "physical_weighted_price", str(row_date)
         )
         quantity = number(row["total_quantity"], "total_quantity", str(row_date))
-        if price <= 0 or quantity <= 0:
+        value = number(
+            row["physical_trades_value_irr"], "physical_trades_value_irr", str(row_date)
+        )
+        if price <= 0 or quantity <= 0 or value <= 0:
             raise ValueError(f"Non-positive physical observation on {row_date}")
-        physical[row_date] = {"price": price, "quantity": quantity}
+        physical[row_date] = {"price": price, "quantity": quantity, "value": value}
 
     lme: dict[date, Decimal] = {}
     for row in lme_rows:
@@ -152,6 +156,7 @@ def build(project_dir: Path) -> tuple[list[dict[str, str]], list[dict[str, str]]
             "date": target.isoformat(),
             "physical_price_irr_per_kg": display(price),
             "physical_total_quantity": display(physical[target]["quantity"]),
+            "physical_trades_value_irr": display(physical[target]["value"]),
             "lme_source_date": str(market["lme_date"]),
             "lme_age_days": str(market["lme_age"]),
             "lme_cash_usd_per_ton": display(market["lme_ton"]),
@@ -194,7 +199,7 @@ def build(project_dir: Path) -> tuple[list[dict[str, str]], list[dict[str, str]]
             "is_main_exact_anchor": str(int(target in anchors)),
         })
 
-    processed = project_dir / "data" / "processed"
+    processed = project_dir / "data" / "processed" / "bubble"
     write_atomic(
         processed / "physical_vs_intrinsic_bubble.csv",
         PHYSICAL_COLUMNS,
@@ -214,7 +219,7 @@ def main() -> None:
     print(f"Physical vs intrinsic rows: {len(physical)}")
     print(f"Certificate vs intrinsic rows: {len(certificate)}")
     print(f"Exact anchors: {sum(r['is_main_exact_anchor'] == '1' for r in physical)}")
-    print(project_dir / "data" / "processed")
+    print(project_dir / "data" / "processed" / "bubble")
 
 
 if __name__ == "__main__":

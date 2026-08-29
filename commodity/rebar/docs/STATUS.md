@@ -1,7 +1,7 @@
 # Steel Rebar Research Status
 
-Last updated: 2026-08-24
-Stage: broad physical-market collection complete; A3 / 12 mm exploratory cash-price pipeline available
+Last updated: 2026-08-29
+Stage: unfiltered physical and certificate collection complete; no rebar bubble
 
 ## Current state
 
@@ -10,7 +10,11 @@ Stage: broad physical-market collection complete; A3 / 12 mm exploratory cash-pr
 - Initial historical collection produced 31,532 source rows from 1387/06/03 through 1405/06/01; the canonical raw file and immutable monthly snapshot archive remain local and excluded from Git.
 - The active chart scope is plainly specified straight A3 / 12 mm rebar under cash or cash-matching contracts. A deterministic builder produces its daily VWAP and percentage-difference output; the notebook visualizes it on source Jalali dates.
 - The notebook now includes a reproducible initial screen that ranks plainly specified, single-diameter/single-grade straight rebar groups by cash-trade frequency. This screening does not approve a benchmark or resolve producer and delivery comparability.
+- Continuous-certificate collection covers commodity ID 29 across `CD1RBR0001` and `SteelRebar`: 268 records from 2025-10-20 through 2026-08-27, including 194 traded days.
+- No rebar bubble is computed. Historical launch notices describe A3 / 18 mm as the certificate deliverable; current official contract and warehouse documentation is still required before comparison.
+- Network-free tests cover certificate identity and the separate A3 / 12 mm physical exploration.
 
 ## Next action
 
-Audit A3 / 12 mm producer, standard, delivery, and quotation-basis comparability before treating the exploratory daily output as a benchmark or economically interpreted price series.
+Obtain and archive the current official certificate and warehouse specification, then define and
+test an A3 / 18 mm physical analytical scope. Do not build the rebar bubble before that gate.

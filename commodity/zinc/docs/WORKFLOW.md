@@ -1,6 +1,6 @@
 # Zinc-Ingot Warehouse-Receipt Certificate: Research Workflow
 
-Last reviewed: 2026-08-15
+Last reviewed: 2026-08-29
 
 ## Research objective
 
@@ -70,8 +70,11 @@ as exact-date inputs.
    reconstruct physical value, and calculate the certificate premium or discount.
 
 The primary method does not extrapolate outside the first and last observed anchors. The processed
-outputs are `physical_vs_intrinsic_bubble.csv`, `certificate_vs_intrinsic_bubble.csv`, and
-`zinc_certificate_bubble.csv`.
+outputs are `data/processed/bubble/physical_vs_intrinsic_bubble.csv`,
+`data/processed/bubble/certificate_vs_intrinsic_bubble.csv`, and
+`data/processed/bubble/zinc_certificate_bubble.csv`. The physical benchmark is separately stored
+at `data/processed/physical/zinc_9798_cash_daily.csv`; none of the bubble files is a canonical
+store for certificate or physical records.
 
 ## Regression sensitivity
 

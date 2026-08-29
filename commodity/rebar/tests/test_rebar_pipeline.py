@@ -14,6 +14,7 @@ if str(WORKSPACE_ROOT) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_ROOT))
 
 from commodity.rebar.src.rebar.collectors.physical import is_rebar
+from commodity.rebar.src.rebar.collectors.certificate import CONFIG as CERTIFICATE_CONFIG
 from commodity.rebar.src.rebar.processing.rebar_scope import (
     A3_12_PRODUCT,
     canonical_straight_rebar_label,
@@ -24,6 +25,10 @@ from shared.ime_data.ime_physical_collector import normalize_fa
 
 
 class RebarScopeTests(unittest.TestCase):
+    def test_certificate_identity_is_continuous_across_code_change(self) -> None:
+        self.assertEqual(CERTIFICATE_CONFIG.commodity_id, "29")
+        self.assertEqual(CERTIFICATE_CONFIG.codes, {"CD1RBR0001", "SteelRebar"})
+
     def test_rebar_scope_accepts_normalized_rebar_labels(self) -> None:
         self.assertTrue(is_rebar({"GoodsName": "\u0645\u06cc\u0644\u06af\u0631\u062f A3"}))
         self.assertTrue(is_rebar({"GoodsName": "  \u0645\u064a\u0644\u06af\u0631\u062f   16 "}))
@@ -66,7 +71,6 @@ class RebarScopeTests(unittest.TestCase):
         self.assertEqual(float(daily.loc[0, "offer_base_price_vwap"]), 120.0)
         self.assertEqual(float(daily.loc[0, "traded_quantity"]), 20.0)
         self.assertNotIn("A3-10", daily.loc[0, "symbols"])
-
 
 if __name__ == "__main__":
     unittest.main()

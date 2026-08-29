@@ -84,7 +84,7 @@ def build(project_dir: Path) -> list[dict[str, str]]:
     if not output:
         raise ValueError("Primary Zinc bubble output is empty")
     write_atomic(
-        project_dir / "data" / "processed" / "zinc_certificate_bubble.csv",
+        project_dir / "data" / "processed" / "bubble" / "zinc_certificate_bubble.csv",
         OUTPUT_COLUMNS,
         output,
     )

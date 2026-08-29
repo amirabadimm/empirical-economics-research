@@ -21,7 +21,7 @@ def to_jalali(value: pd.Timestamp) -> str:
 
 def main() -> None:
     project = Path(__file__).resolve().parents[3]
-    processed = project / "data" / "processed"
+    processed = project / "data" / "processed" / "bubble"
 
     physical = pd.read_csv(processed / "physical_vs_intrinsic_bubble.csv")
     certificate = pd.read_csv(processed / "certificate_vs_intrinsic_bubble.csv")
@@ -103,6 +103,7 @@ def main() -> None:
     ]]
 
     destination = processed / "intrinsic_regression.csv"
+    destination.parent.mkdir(parents=True, exist_ok=True)
     output.to_csv(destination, index=False, encoding="utf-8-sig")
     print(f"Selected model: {selected_name}")
     print(f"Rows: {len(output)}; physical anchors: {output['is_actual_physical_observation'].sum()}")

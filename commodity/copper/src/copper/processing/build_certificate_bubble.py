@@ -81,10 +81,10 @@ def asof_value(
 def build(project_dir: Path) -> list[dict[str, str]]:
     copper_dir = project_dir
     certificate_path = project_dir / "data" / "raw" / "certificate" / "copper_certificate_raw.csv"
-    physical_path = project_dir / "data" / "processed" / "nci_copper_cash_daily.csv"
+    physical_path = project_dir / "data" / "processed" / "physical" / "nci_copper_cash_daily.csv"
     lme_path = copper_dir / "data" / "raw" / "lme" / "copper_lme_raw.csv"
     usd_path = copper_dir / "data" / "raw" / "fx" / "usd_to_rial.csv"
-    output_path = project_dir / "data" / "processed" / "copper_certificate_bubble.csv"
+    output_path = project_dir / "data" / "processed" / "bubble" / "copper_certificate_bubble.csv"
 
     certificate_rows = read_csv(certificate_path)
     physical_rows = read_csv(physical_path)
@@ -239,7 +239,7 @@ def main() -> None:
     print(f"Observed anchors: {observed}")
     print(f"Interpolated days: {interpolated}")
     print(f"Coverage: {rows[0]['date']} through {rows[-1]['date']}")
-    print(project_dir / "data" / "processed" / "copper_certificate_bubble.csv")
+    print(project_dir / "data" / "processed" / "bubble" / "copper_certificate_bubble.csv")
 
 
 if __name__ == "__main__":

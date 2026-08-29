@@ -178,7 +178,7 @@ def main() -> None:
     project_dir = Path(__file__).resolve().parents[3]
     rows = build(
         project_dir / "data" / "raw" / "physical" / "zinc_physical_raw.csv",
-        project_dir / "data" / "processed" / "zinc_9798_cash_daily.csv",
+        project_dir / "data" / "processed" / "physical" / "zinc_9798_cash_daily.csv",
     )
     print(f"Daily traded observations: {len(rows)}")
     print(f"Coverage: {rows[0]['physical_trade_date_jalali']} through {rows[-1]['physical_trade_date_jalali']}")

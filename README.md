@@ -74,6 +74,10 @@ from Git. See [DATA_AVAILABILITY.md](DATA_AVAILABILITY.md) and
 
 ## Repository structure
 
+Commodity data follows [the shared data architecture](docs/DATA_ARCHITECTURE.md): canonical
+physical and certificate records are stored independently under `data/raw`, while every bubble
+or comparison table is derived under `data/processed/bubble`.
+
 ```text
 commodity/                 Commodity-specific empirical projects
   copper/

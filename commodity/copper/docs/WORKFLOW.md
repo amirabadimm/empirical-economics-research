@@ -1,6 +1,6 @@
 # Copper Warehouse-Receipt Certificate: Research Workflow
 
-Last reviewed: 2026-08-23
+Last reviewed: 2026-08-29
 
 ## Research objective
 
@@ -13,21 +13,24 @@ valuation remains anchored to observed domestic physical trades.
 
 | Source | Coverage |
 |---|---|
-| LME cash copper | 4,714 observations through 2026-08-21 |
+| LME cash copper | 4,716 observations through 2026-08-25 |
 | Free-market USD/IRR | 13,074 observations through 1405/05/31 |
-| Certificate | 263 calendar rows; 190 positive-trading days through 2026-08-22 |
-| Broad physical copper cathode | 1,170 rows through 1405/06/01 |
-| Approved NCI cash benchmark | 794 trading days through 2026-08-23 |
+| Certificate | 266 calendar rows; 193 positive-trading days through 2026-08-25 |
+| Broad physical copper cathode | 1,171 rows through 1405/06/02 |
+| Approved NCI cash benchmark | 795 trading days through 2026-08-24 |
 
-The primary certificate output contains 183 dates from 2025-10-26 through 2026-08-17: 30 exact
-physical anchors and 153 interpolated observations. Its mean estimated premium is 5.57% and its
-median is 6.96%.
+The primary certificate output contains 188 dates from 2025-10-26 through 2026-08-24: 32 exact
+physical anchors and 156 interpolated observations. Its mean estimated premium is 5.64% and its
+median is 7.17%.
 
 ## Repository architecture
 
 - `data/raw`: canonical source files and immutable snapshots; never written by analysis.
 - `data/interim`: reproducible intermediate data.
-- `data/processed`: derived analytical outputs.
+- `data/processed/physical`: physical benchmarks and physical-only diagnostics.
+- `data/processed/certificate`: certificate-only derived tables, if introduced.
+- `data/processed/bubble`: bubble, intrinsic-comparison, and model outputs.
+- `data/processed/analysis`: other presentation or analytical tables.
 - `src/copper/collectors`: explicit commodity-specific source wrappers.
 - `src/copper/processing`: deterministic benchmark and valuation builders.
 - `notebooks`: executed analysis and saved figures.
@@ -79,7 +82,12 @@ The daily benchmark price is volume weighted. Cash and cash-matching quantities 
 for audit even when their prices coincide. If eligible contract methods produce different prices
 on the same date, the builder stops rather than silently selecting one.
 
-`build_physical_benchmark.py` produces `nci_copper_cash_daily.csv`.
+Daily cash, matching, and total transaction values are retained in IRR. They are converted from
+the IME `TotalPrice` source field (reported in million IRR), with a rounding-tolerant check against
+`Price × Quantity`. `physical_trades_value_irr` is also propagated to the physical-versus-intrinsic
+analysis; certificate transaction value remains the source `TradesValue` in IRR.
+
+`build_physical_benchmark.py` produces `data/processed/physical/nci_copper_cash_daily.csv`.
 
 ## Market alignment and intrinsic proxy
 
@@ -118,7 +126,10 @@ bubble is
 
 `100 × (certificate settlement / estimated physical price - 1)`.
 
-`build_certificate_bubble.py` produces `copper_certificate_bubble.csv`.
+`build_certificate_bubble.py` produces
+`data/processed/bubble/copper_certificate_bubble.csv`. All direct intrinsic bubbles and
+regression outputs are also stored under `data/processed/bubble`; they do not serve as canonical
+certificate or physical record stores.
 
 ## Regression sensitivity
 

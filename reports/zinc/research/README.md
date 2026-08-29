@@ -3,6 +3,7 @@
 - LaTeX source: `zinc_research_report.tex`
 - Data-driven charts: `figures/`
 - Figure builder: `build_figures.py`
+- Bubble inputs: `commodity/zinc/data/processed/bubble/`
 
 From the workspace root:
 

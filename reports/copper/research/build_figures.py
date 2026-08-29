@@ -12,7 +12,7 @@ from bubble_report_figures import build  # noqa: E402
 
 if __name__ == "__main__":
     build(
-        processed=WORKSPACE / "commodity" / "copper" / "data" / "processed",
+        processed=WORKSPACE / "commodity" / "copper" / "data" / "processed" / "bubble",
         output=Path(__file__).resolve().parent / "figures",
         commodity="copper",
         main_filename="copper_certificate_bubble.csv",

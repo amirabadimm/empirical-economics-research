@@ -5,7 +5,9 @@
 ├── README.md
 ├── AGENTS.md
 ├── src/<name>/{collectors,processing,analysis}/
-├── data/{raw,interim,processed}/
+├── data/raw/{physical,certificate}/
+├── data/interim/
+├── data/processed/{physical,certificate,bubble,analysis}/
 ├── notebooks/
 ├── tests/
 ├── logs/
@@ -15,7 +17,8 @@
 
 A collector writes only immutable snapshots and canonical raw data. Canonical raw files are
 refreshed through documented atomic merges. Processing reads raw inputs and writes interim or
-processed outputs. Analysis modules and notebooks must never mutate raw data.
+processed outputs. Physical and certificate source records remain separate; bubble outputs belong
+only in `data/processed/bubble`. Analysis modules and notebooks must never mutate raw data.
 
 Every public-facing project README should state the research question, economic motivation,
 sources, sample coverage, measurement/identification strategy, main results, limitations,

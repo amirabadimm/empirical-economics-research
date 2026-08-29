@@ -15,7 +15,9 @@ belong in `shared/ime_data/` and must remain compatible with all commodities.
 5. Store the notebook-friendly raw table at
    `data/raw/lme/copper_lme_raw.csv` without numeric cleaning.
 6. Use `notebooks/01_lme_analysis.ipynb` for exploration and processing only.
-7. Store every cleaned, transformed, or derived dataset in `data/processed/`.
+7. Store physical derivatives in `data/processed/physical`, certificate-only derivatives in
+   `data/processed/certificate`, bubble/model outputs in `data/processed/bubble`, and other
+   analytical tables in `data/processed/analysis`.
 8. Preserve raw files and do not silently weaken validation checks.
 9. `src/copper/collectors/fx.py` incrementally extends `data/raw/fx/usd_to_rial.csv`
    from TGJU. Preserve user-supplied historical rows and merge by Persian date.
@@ -41,5 +43,5 @@ documented benefit.
 
 Detailed certificate safeguards and the approved physical scope are in
 `docs/CERTIFICATE_POLICY.md`. Keep certificate and physical raw data under
-`data/raw/{certificate,physical}` and derived outputs under `data/processed`.
+`data/raw/{certificate,physical}` and derived outputs under their `data/processed/*` domain.
 Update `docs/WORKFLOW.md` after source, schema, formula, path, or row-count changes.

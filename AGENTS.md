@@ -5,6 +5,11 @@
 - Raw canonical CSV only by documented, incremental, idempotent and atomic collector
   it is refreshed; Analysis and notebook do not have the right to change raw.
 - Write the derived file only in `data/interim` or `data/processed`.
+- Within each commodity, route physical derivatives to `data/processed/physical`,
+  certificate-only derivatives to `data/processed/certificate`, bubble/model outputs to
+  `data/processed/bubble`, and other analytical tables to `data/processed/analysis`.
+- Canonical physical and certificate CSVs remain independent under `data/raw/{physical,certificate}`;
+  a bubble file never replaces either source dataset.
 - The general logic of the commodity exchange is placed in `shared/ime_data`; Each product must have a wrapper
   Keep the settings and filters of the same project explicit.
 - The energy exchange logic is placed in a separate joint package and is not mixed with `ime_data`.

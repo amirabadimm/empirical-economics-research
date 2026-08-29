@@ -17,7 +17,7 @@ def excel_serial(value: pd.Timestamp) -> int:
 def main() -> None:
     project = Path(__file__).resolve().parents[3]
     raw = pd.read_csv(project / "data/raw/certificate/copper_certificate_raw.csv")
-    physical = pd.read_csv(project / "data/processed/nci_copper_cash_daily.csv")
+    physical = pd.read_csv(project / "data/processed/physical/nci_copper_cash_daily.csv")
 
     certificate_dates = set(
         pd.to_datetime(raw.loc[pd.to_numeric(raw["TradesVolume"]) > 0, "DT"]).dt.normalize()
@@ -49,7 +49,8 @@ def main() -> None:
         event_rows, columns=["date_jalali", "date_excel_serial", "market", "lane", "exact_overlap"]
     ).sort_values(["date_excel_serial", "lane"], ascending=[True, False])
 
-    destination = project / "data/processed"
+    destination = project / "data/processed/analysis"
+    destination.mkdir(parents=True, exist_ok=True)
     daily.to_csv(destination / "presentation_timeline_daily.csv", index=False, encoding="utf-8-sig")
     events.to_csv(destination / "presentation_timeline_events.csv", index=False, encoding="utf-8-sig")
     print(f"Daily rows: {len(daily)}; events: {len(events)}; overlaps: {len(overlap)}")

@@ -3,6 +3,7 @@
 - LaTeX source: `copper_research_report.tex`
 - Data-driven charts: `figures/`
 - Figure builder: `build_figures.py`
+- Bubble inputs: `commodity/copper/data/processed/bubble/`
 
 From the workspace root:
 

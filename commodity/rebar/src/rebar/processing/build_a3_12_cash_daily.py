@@ -23,7 +23,7 @@ from shared.ime_data.ime_physical_collector import normalize_fa  # noqa: E402
 
 PROJECT_DIR = Path(__file__).resolve().parents[3]
 RAW_PATH = PROJECT_DIR / "data" / "raw" / "physical" / "rebar_physical_raw.csv"
-OUTPUT_PATH = PROJECT_DIR / "data" / "processed" / "rebar_a3_12_cash_daily.csv"
+OUTPUT_PATH = PROJECT_DIR / "data" / "processed" / "physical" / "rebar_a3_12_cash_daily.csv"
 OUTPUT_COLUMNS = [
     "trade_date_jalali", "cash_trade_price_vwap", "offer_base_price_vwap",
     "cash_vs_offer_base_pct", "traded_quantity", "row_count", "producer_count", "producers",
