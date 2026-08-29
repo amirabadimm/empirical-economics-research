@@ -158,6 +158,10 @@ maturity and financing adjustments have not been established.
 
 ## Notebooks and presentation outputs
 
+Both active notebooks include the shared read-only dashboard for source coverage, separate
+physical/certificate activity and prices, physical goods counts, and existing validated bubble
+series. Copper-specific LME and valuation analysis remains local.
+
 - `01_lme_analysis.ipynb`: LME and market-input diagnostics.
 - `02_certificate_analysis.ipynb`: certificate valuation, regression sensitivities, forward-gap
   analysis, certificate volume, and the exact observed-anchor bubbles.

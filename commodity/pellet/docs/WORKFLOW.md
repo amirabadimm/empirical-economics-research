@@ -26,6 +26,10 @@ remains available for reconstruction. No production processed benchmark has yet 
 
 ## Architecture and collection
 
+The active notebook includes the shared read-only dashboard for source coverage, separate
+physical/certificate activity and prices, all-record physical goods counts, and visualization only
+of validated processed bubbles. Pellet-specific benchmark rules remain local.
+
 The certificate wrapper uses the shared CDC collector and explicit pellet contract identities.
 The physical collector archives complete official IME monthly responses before filtering and
 retains every exact normalized iron-ore-pellet row in canonical raw data. Collection is

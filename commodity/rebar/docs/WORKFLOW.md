@@ -42,6 +42,11 @@ The first run begins at 1386/01. Subsequent runs refresh the current month and t
 - `src/rebar/collectors` owns source acquisition; `src/rebar/processing` will own deterministic derived builders when a specification is approved.
 - Notebooks may inspect data but must never modify canonical raw data.
 
+The active notebook uses `shared/notebook_tools/commodity_dashboard.py` for the standard read-only
+presentation pattern. Goods-type counts use all canonical physical rows and no certificate goods
+taxonomy is invented. Bubble visualization reads only an existing validated processed bubble CSV;
+therefore Rebar currently reports that no bubble is available.
+
 The shared collector validates the complete expected IME schema and verifies that every canonical row still passes the rebar scope predicate. It preserves source date, unit, price, quantity, value, contract, settlement, and provenance fields. Calendar conversion, numeric-unit validation, and identity/uniqueness requirements must be specified and tested before a benchmark is built.
 
 ## Decision gates before analytical pricing

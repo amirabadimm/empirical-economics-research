@@ -319,6 +319,10 @@ until price units, deliverable specification, packaging, delivery basis, and fee
 
 ## Notebook methodology
 
+The active notebook includes the shared read-only dashboard for source coverage, separate
+physical/certificate activity and prices, all-record physical goods counts, and visualization only
+of validated processed bubbles. Bitumen-specific exploration remains explicit below.
+
 The exploratory notebook currently performs:
 
 1. schema and data-quality validation;

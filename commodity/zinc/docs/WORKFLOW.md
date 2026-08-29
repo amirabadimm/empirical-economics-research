@@ -91,6 +91,10 @@ is not a feature, and the approved ratio-interpolation output remains the main r
 
 ## Notebooks and report
 
+Both active notebooks include the shared read-only dashboard for source coverage, separate
+physical/certificate activity and prices, physical goods counts, and existing validated bubble
+series. Zinc-specific grade and benchmark assumptions remain local.
+
 - `01_zinc_analysis.ipynb`: source audit, grade coverage, supplier concentration, unit checks,
   basket construction, and activity visualization.
 - `02_bubble_analysis.ipynb`: three bubble definitions, anchor interpolation, and regression

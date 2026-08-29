@@ -10,6 +10,10 @@ Full-market IME physical responses now have a content-addressed shared owner. Th
 local snapshots remain frozen pre-consolidation evidence. Copper/Zinc LME collection and intrinsic
 regression now use shared engines with explicit commodity wrappers.
 
+Seven active commodity notebooks now include the same governed market-dashboard section. Rebar
+adds all-record physical `GoodsName` counts and separate physical/certificate activity views while
+continuing to calculate no bubble.
+
 | Project | Current data coverage | Research stage | Next action |
 |---|---|---|---|
 | Copper | 266 certificate rows through 2026-08-25; 1,171 physical rows through 1405/06/02 | Domain-separated physical/bubble pipeline; notebooks and reports refreshed | Expand analytical QA and refresh monitoring |

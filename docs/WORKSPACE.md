@@ -25,6 +25,11 @@ Shared infrastructure also includes `shared/market_analysis` and the content-add
 commodity projects own only their filtered canonical physical CSVs and explicit scopes. Generic
 I/O, as-of matching, and model selection are shared while research assumptions remain local.
 
+Active commodity notebooks use the read-only helpers in `shared/notebook_tools`. Their common
+dashboard contract covers source audit, physical/certificate activity and price panels, physical
+goods composition, and visualization of existing validated bubble outputs. A notebook must never
+create a missing bubble merely to satisfy the presentation pattern.
+
 Each commodity project may contain `src/<commodity>`, `data/raw/{physical,certificate}`,
 `data/interim`, and `data/processed/{physical,certificate,bubble,analysis}`,
 `notebooks`, `tests`, `logs`, `outputs`, and `docs`. The existing local `Finenv` directory is

@@ -2,6 +2,9 @@
 
 Last updated: 2026-08-29
 
+Both active notebooks now include the governed workspace dashboard for source coverage,
+physical/certificate activity, goods composition, prices, and validated bubble visualization.
+
 The market-input collectors and all dependent valuation outputs have been refreshed. Processed
 physical outputs now live under `data/processed/physical`, bubble/model outputs under
 `data/processed/bubble`, and presentation tables under `data/processed/analysis`. Current

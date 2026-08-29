@@ -90,6 +90,7 @@ commodity/                 Commodity-specific empirical projects
 shared/ime_data/           Reusable Iran Mercantile Exchange collection logic
 shared/market_data/        Shared cross-commodity inputs such as canonical USD/IRR
 shared/market_analysis/    Commodity-invariant analysis and model-selection mechanics
+shared/notebook_tools/     Read-only standardized commodity notebook dashboards
 energy_exchange/           Iran Energy Exchange documentation and research
 codal/                     Issuer-level Codal disclosure research
 reports/                   Research reports, source documents, and reproducible figures
