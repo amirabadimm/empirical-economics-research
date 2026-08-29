@@ -35,3 +35,7 @@ the repository-level [DATA_AVAILABILITY.md](../DATA_AVAILABILITY.md).
 
 An external input used by multiple projects has one canonical file under `shared/data/raw` and one
 collector under `shared/market_data`. Project-local copies are prohibited because they can diverge.
+
+Complete IME physical responses are content-addressed under `shared/data/raw/ime/physical` and
+stored once across commodities. Existing project-local archives are frozen legacy evidence: they
+remain readable for reconstruction but must not be deleted, rewritten, or extended.

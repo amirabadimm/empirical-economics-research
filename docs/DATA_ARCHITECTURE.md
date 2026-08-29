@@ -32,9 +32,20 @@ External market inputs used by more than one project have one workspace owner:
 
 ```text
 shared/
-  market_data/                 # shared collector and validation logic
+  ime_data/                    # shared IME collector and snapshot ownership
+  market_data/                 # shared FX/LME collector and validation logic
+  market_analysis/             # shared analysis primitives and model engines
   data/raw/fx/usd_to_rial.csv  # single canonical USD/IRR series
+  data/raw/ime/physical/       # content-addressed full-market IME responses
 ```
 
 Commodity projects reference this canonical path directly. They must not seed, copy, or refresh
 project-local FX files. The shared collector owns incremental refresh and immutable TGJU pages.
+
+New complete IME physical responses are stored once by SHA-256 under
+`shared/data/raw/ime/physical`. Commodity raw CSVs remain separate filtered canonical datasets.
+Pre-consolidation project-local snapshots remain immutable evidence and rebuild inputs, but new
+collection never extends those local archives.
+
+Shared analysis owns only commodity-invariant mechanics. Product definitions, filters, units, and
+benchmark choices remain explicit inside each commodity project.

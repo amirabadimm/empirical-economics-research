@@ -21,6 +21,8 @@ processed outputs. Physical and certificate source records remain separate; bubb
 only in `data/processed/bubble`. Analysis modules and notebooks must never mutate raw data.
 Inputs shared by multiple projects belong under `shared/market_data` and `shared/data/raw`, not in
 any individual project template.
+Reusable analytical mechanics belong under `shared/market_analysis`; commodity filters, units,
+benchmark definitions, and interpretation must remain explicit in the project wrapper.
 
 Every public-facing project README should state the research question, economic motivation,
 sources, sample coverage, measurement/identification strategy, main results, limitations,

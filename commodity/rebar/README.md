@@ -30,7 +30,7 @@ python .\commodity\rebar\src\rebar\processing\build_a3_12_cash_daily.py
 python .\commodity\rebar\src\rebar\collectors\certificate.py
 ```
 
-The initial run queries all available IME months. Later runs refresh the current Jalali month and two preceding months. Use `--start-month` and `--end-month` only for a bounded recovery or source probe, and use `--rebuild-from-snapshots` only to reproduce the canonical CSV from the immutable local snapshots.
+The initial run queries all available IME months. Later runs refresh the current Jalali month and two preceding months. Complete responses are archived once in `shared/data/raw/ime/physical`; the historical Rebar-local archive is frozen but remains a valid rebuild input. Use `--start-month` and `--end-month` only for bounded recovery, and `--rebuild-from-snapshots` to reproduce the canonical CSV from shared plus legacy evidence.
 
 See [`docs/WORKFLOW.md`](docs/WORKFLOW.md) for the source contract, data governance, validation, and the decision gates required before building any derived benchmark.
 

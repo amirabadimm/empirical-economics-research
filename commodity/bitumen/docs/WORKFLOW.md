@@ -65,7 +65,8 @@ not to uncertainty about the working analytical filter.
 - Official endpoint:
   `https://www.ime.co.ir/subsystems/ime/services/home/imedata.asmx/GetAmareMoamelatList`
 - Canonical CSV: `data/raw/physical/bitumen_physical_raw.csv`
-- Immutable monthly responses: `data/raw/physical/api_snapshots`
+- Shared immutable monthly responses: `shared/data/raw/ime/physical`
+- Frozen pre-consolidation responses: `data/raw/physical/api_snapshots`
 - Default refresh: current month plus two prior Jalali months
 - Raw scope: every source row whose normalized `GoodsName` contains the Persian word for bitumen
 

@@ -74,10 +74,15 @@ The canonical physical CSV has 1,163 rows and 36 columns from 1387/06/03 through
 1,154 rows are positive trades.
 
 \subsection{LME and FX}
-Westmetall annual tables are collected with field \code{LME\_Cu\_cash}. The collector downloads
-history from 2008 on first run and refreshes only the newest local year thereafter. Annual HTML
+Westmetall annual tables are collected with field \code{LME\_Cu\_cash} through a workspace-wide
+LME engine with explicit Copper configuration. It downloads history from 2008 on first run and
+refreshes only the newest local year thereafter. Annual HTML
 is preserved, and source ``-'' markers remain unchanged in raw. The current file contains 4,699
 dates through 31 July 2026.
+
+Complete IME physical responses are content-addressed once in the shared source archive; the
+filtered Copper raw CSV remains project-owned. Generic as-of and regression mechanics are shared,
+while cathode scope and benchmark assumptions remain explicit in Copper.
 
 The shared canonical TGJU-derived FX series under \code{shared/data/raw/fx} stores IRR/USD.
 New observations use the daily close; historical user-supplied midpoint observations are preserved and labeled

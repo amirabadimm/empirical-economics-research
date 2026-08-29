@@ -15,7 +15,8 @@ python .\src\pellet\collectors\physical.py
 ```
 
 The programmed output is `data/raw/physical/pellet_physical_raw.csv` and the complete response
-Archived monthly at `data/raw/physical/api_snapshots`. This step is all rows
+New complete responses are archived once at `shared/data/raw/ime/physical`; the former
+`data/raw/physical/api_snapshots` archive is frozen legacy evidence. This step is all rows
 Precisely named "iron ore cart", including all manufacturers, symbols, contract types and
 Maintains non-traded supplies. Still no benchmark or final underlying filter
 not defined The first performance is from 1386/01 and the subsequent performances are with a refresh of the last two months.

@@ -2,62 +2,27 @@
 
 from __future__ import annotations
 
-import bisect
-import csv
 from dataclasses import dataclass
 from datetime import date
-from decimal import Decimal, InvalidOperation, getcontext
+from decimal import Decimal, getcontext
 from pathlib import Path
+import sys
+
+WORKSPACE_ROOT = Path(__file__).resolve().parents[5]
+if str(WORKSPACE_ROOT) not in sys.path:
+    sys.path.insert(0, str(WORKSPACE_ROOT))
+
+from shared.market_analysis.common import (
+    asof_value,
+    display,
+    number,
+    parse_mixed_gregorian,
+    read_csv,
+    write_atomic,
+)
 
 
 getcontext().prec = 28
-
-
-def number(value: str, field: str, row_date: str) -> Decimal:
-    try:
-        result = Decimal(str(value).replace(",", "").strip())
-    except InvalidOperation as exc:
-        raise ValueError(f"Invalid {field} on {row_date}: {value!r}") from exc
-    return result
-
-
-def display(value: Decimal | None) -> str:
-    if value is None:
-        return ""
-    if value == value.to_integral_value():
-        return str(int(value))
-    return format(value.normalize(), "f")
-
-
-def read_csv(path: Path) -> list[dict[str, str]]:
-    with path.open("r", encoding="utf-8-sig", newline="") as handle:
-        return list(csv.DictReader(handle))
-
-
-def write_atomic(path: Path, columns: list[str], rows: list[dict[str, str]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    with temporary.open("w", encoding="utf-8-sig", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=columns)
-        writer.writeheader()
-        writer.writerows(rows)
-    temporary.replace(path)
-
-
-def parse_mixed_gregorian(value: str) -> date:
-    value = value.strip().replace("-", "/")
-    first, second, third = map(int, value.split("/"))
-    return date(first, second, third) if first >= 1900 else date(third, first, second)
-
-
-def asof_value(
-    target: date, dates: list[date], values: dict[date, Decimal], label: str
-) -> tuple[date, Decimal]:
-    index = bisect.bisect_right(dates, target) - 1
-    if index < 0:
-        raise ValueError(f"No prior {label} observation for {target}")
-    source_date = dates[index]
-    return source_date, values[source_date]
 
 
 @dataclass(frozen=True)
@@ -92,9 +57,7 @@ def load_inputs(project_dir: Path) -> Inputs:
     )
     lme_rows = read_csv(project_dir / "data" / "raw" / "lme" / "zinc_lme_raw.csv")
     workspace_root = project_dir.parents[1]
-    usd_rows = read_csv(
-        workspace_root / "shared" / "data" / "raw" / "fx" / "usd_to_rial.csv"
-    )
+    usd_rows = read_csv(workspace_root / "shared" / "data" / "raw" / "fx" / "usd_to_rial.csv")
 
     certificate: dict[date, dict[str, Decimal]] = {}
     for row in certificate_rows:

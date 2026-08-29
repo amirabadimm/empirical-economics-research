@@ -4,9 +4,22 @@ from __future__ import annotations
 
 import bisect
 import csv
+import sys
 from datetime import date
-from decimal import Decimal, InvalidOperation, getcontext
+from decimal import Decimal, getcontext
 from pathlib import Path
+
+WORKSPACE_ROOT = Path(__file__).resolve().parents[5]
+if str(WORKSPACE_ROOT) not in sys.path:
+    sys.path.insert(0, str(WORKSPACE_ROOT))
+
+from shared.market_analysis.common import (
+    asof_value,
+    display,
+    number,
+    parse_mixed_gregorian,
+    read_csv,
+)
 
 
 getcontext().prec = 28
@@ -33,49 +46,6 @@ OUTPUT_COLUMNS = [
     "certificate_bubble_irr_per_kg",
     "certificate_bubble_pct",
 ]
-
-
-def number(value: str, field: str, row_date: str) -> Decimal:
-    text = str(value).replace(",", "").strip()
-    try:
-        result = Decimal(text)
-    except InvalidOperation as exc:
-        raise ValueError(f"Invalid {field} on {row_date}: {value!r}") from exc
-    return result
-
-
-def display(value: Decimal | None) -> str:
-    if value is None:
-        return ""
-    if value == value.to_integral_value():
-        return str(int(value))
-    return format(value.normalize(), "f")
-
-
-def parse_mixed_gregorian(value: str) -> date:
-    value = value.strip().replace("-", "/")
-    first, second, third = map(int, value.split("/"))
-    if first >= 1900:
-        return date(first, second, third)
-    return date(third, first, second)
-
-
-def read_csv(path: Path) -> list[dict[str, str]]:
-    with path.open("r", encoding="utf-8-sig", newline="") as handle:
-        return list(csv.DictReader(handle))
-
-
-def asof_value(
-    target: date,
-    dates: list[date],
-    values: dict[date, Decimal],
-    label: str,
-) -> tuple[date, Decimal]:
-    index = bisect.bisect_right(dates, target) - 1
-    if index < 0:
-        raise ValueError(f"No prior {label} observation for {target}")
-    source_date = dates[index]
-    return source_date, values[source_date]
 
 
 def build(project_dir: Path) -> list[dict[str, str]]:
@@ -156,7 +126,9 @@ def build(project_dir: Path) -> list[dict[str, str]]:
     # Only physical trades occurring on certificate trading dates are anchors.
     anchor_dates = sorted(set(certificates) & set(physical))
     if len(anchor_dates) < 2:
-        raise ValueError(f"At least two exact physical/certificate anchors are required; found {len(anchor_dates)}")
+        raise ValueError(
+            f"At least two exact physical/certificate anchors are required; found {len(anchor_dates)}"
+        )
     anchor_ratios: dict[date, Decimal] = {}
     for anchor in anchor_dates:
         intrinsic = market_inputs(anchor)["intrinsic"]
@@ -180,9 +152,9 @@ def build(project_dir: Path) -> list[dict[str, str]]:
             left = anchor_dates[position - 1]
             elapsed = Decimal((target - left).days)
             span = Decimal((right - left).days)
-            ratio = anchor_ratios[left] + (
-                anchor_ratios[right] - anchor_ratios[left]
-            ) * elapsed / span
+            ratio = (
+                anchor_ratios[left] + (anchor_ratios[right] - anchor_ratios[left]) * elapsed / span
+            )
             method = "linear_interpolation"
             observed_price = None
 
@@ -190,33 +162,37 @@ def build(project_dir: Path) -> list[dict[str, str]]:
         intrinsic = inputs["intrinsic"]
         assert isinstance(intrinsic, Decimal)
         estimated_physical = ratio * intrinsic
-        if observed_price is not None and abs(estimated_physical - observed_price) > Decimal("0.000001"):
+        if observed_price is not None and abs(estimated_physical - observed_price) > Decimal(
+            "0.000001"
+        ):
             raise ValueError(f"Anchor reconstruction failed on {target}")
         certificate = certificates[target]
         bubble_irr = certificate["price"] - estimated_physical
         bubble_pct = (certificate["price"] / estimated_physical - Decimal(1)) * Decimal(100)
-        output.append({
-            "date": target.isoformat(),
-            "certificate_price_irr_per_kg": display(certificate["price"]),
-            "certificate_trades_volume": display(certificate["volume"]),
-            "certificate_trades_value_irr": display(certificate["value"]),
-            "lme_source_date": str(inputs["lme_date"]),
-            "lme_age_days": str(inputs["lme_age"]),
-            "lme_cash_usd_per_ton": display(inputs["lme_ton"]),
-            "lme_cash_usd_per_kg": display(inputs["lme_kg"]),
-            "usd_source_date": str(inputs["usd_date"]),
-            "usd_age_days": str(inputs["usd_age"]),
-            "usd_irr": display(inputs["usd_irr"]),
-            "intrinsic_price_irr_per_kg": display(intrinsic),
-            "physical_ratio": display(ratio),
-            "physical_ratio_method": method,
-            "ratio_left_anchor_date": left.isoformat(),
-            "ratio_right_anchor_date": right.isoformat(),
-            "observed_physical_price_irr_per_kg": display(observed_price),
-            "estimated_physical_price_irr_per_kg": display(estimated_physical),
-            "certificate_bubble_irr_per_kg": display(bubble_irr),
-            "certificate_bubble_pct": display(bubble_pct),
-        })
+        output.append(
+            {
+                "date": target.isoformat(),
+                "certificate_price_irr_per_kg": display(certificate["price"]),
+                "certificate_trades_volume": display(certificate["volume"]),
+                "certificate_trades_value_irr": display(certificate["value"]),
+                "lme_source_date": str(inputs["lme_date"]),
+                "lme_age_days": str(inputs["lme_age"]),
+                "lme_cash_usd_per_ton": display(inputs["lme_ton"]),
+                "lme_cash_usd_per_kg": display(inputs["lme_kg"]),
+                "usd_source_date": str(inputs["usd_date"]),
+                "usd_age_days": str(inputs["usd_age"]),
+                "usd_irr": display(inputs["usd_irr"]),
+                "intrinsic_price_irr_per_kg": display(intrinsic),
+                "physical_ratio": display(ratio),
+                "physical_ratio_method": method,
+                "ratio_left_anchor_date": left.isoformat(),
+                "ratio_right_anchor_date": right.isoformat(),
+                "observed_physical_price_irr_per_kg": display(observed_price),
+                "estimated_physical_price_irr_per_kg": display(estimated_physical),
+                "certificate_bubble_irr_per_kg": display(bubble_irr),
+                "certificate_bubble_pct": display(bubble_pct),
+            }
+        )
 
     if not output:
         raise ValueError("Bubble output is empty")

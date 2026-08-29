@@ -60,7 +60,8 @@ anchor range. Regression is retained as a sensitivity analysis rather than the o
 
 ## Reproducibility and data governance
 
-- Complete source responses are archived locally as immutable snapshots.
+- Complete IME physical responses are archived once in a shared content-addressed store; historical
+  project-local snapshots remain frozen immutable evidence.
 - Canonical raw CSVs are refreshed only by documented incremental, idempotent, and atomic collectors.
 - Zero-trade source observations remain in raw data but do not enter traded-price benchmarks.
 - Derived datasets are produced by versioned scripts under `src/<project>/processing`.
@@ -88,6 +89,7 @@ commodity/                 Commodity-specific empirical projects
   rebar/
 shared/ime_data/           Reusable Iran Mercantile Exchange collection logic
 shared/market_data/        Shared cross-commodity inputs such as canonical USD/IRR
+shared/market_analysis/    Commodity-invariant analysis and model-selection mechanics
 energy_exchange/           Iran Energy Exchange documentation and research
 codal/                     Issuer-level Codal disclosure research
 reports/                   Research reports, source documents, and reproducible figures

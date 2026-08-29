@@ -20,8 +20,9 @@ prices, exchange rates, and external intrinsic-value models are outside scope.
 | Broad physical pellet market | 3,467 rows; 1,606 positive trades through 1405/05/18 |
 | Exploratory exact-date bubble | 22 observations |
 
-Raw data and immutable monthly snapshots remain unchanged. No production processed benchmark has
-yet been approved.
+Raw data and immutable monthly snapshots remain unchanged. New complete IME responses are written
+only to `shared/data/raw/ime/physical`; the existing local physical snapshot archive is frozen and
+remains available for reconstruction. No production processed benchmark has yet been approved.
 
 ## Architecture and collection
 

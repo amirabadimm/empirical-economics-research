@@ -20,8 +20,9 @@ license IME, LME, Westmetall, TGJU, or other third-party data.
 ## Local data layout
 
 ```text
-<project>/data/raw/physical/       Canonical physical records and snapshots
+<project>/data/raw/physical/       Canonical filtered physical records; frozen legacy snapshots
 <project>/data/raw/certificate/    Canonical certificate records and snapshots
+shared/data/raw/ime/physical/      Shared content-addressed full-market IME responses
 <project>/data/interim/            Temporary derived stages
 <project>/data/processed/physical/ Physical benchmarks and diagnostics
 <project>/data/processed/certificate/ Certificate-only derivatives

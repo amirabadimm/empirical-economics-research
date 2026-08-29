@@ -6,6 +6,10 @@ Latest data checkpoint: 2026-08-29
 Workspace-wide USD/IRR is a single shared canonical input with 13,074 dates through 1405/05/31;
 Copper and Zinc no longer maintain project-local copies.
 
+Full-market IME physical responses now have a content-addressed shared owner. The 1,593 existing
+local snapshots remain frozen pre-consolidation evidence. Copper/Zinc LME collection and intrinsic
+regression now use shared engines with explicit commodity wrappers.
+
 | Project | Current data coverage | Research stage | Next action |
 |---|---|---|---|
 | Copper | 266 certificate rows through 2026-08-25; 1,171 physical rows through 1405/06/02 | Domain-separated physical/bubble pipeline; notebooks and reports refreshed | Expand analytical QA and refresh monitoring |

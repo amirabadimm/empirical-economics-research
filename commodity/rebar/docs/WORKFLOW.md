@@ -16,7 +16,8 @@ Rebar can vary materially by standard, diameter, grade, producer, bundle/lot ter
 - Official endpoint: `https://www.ime.co.ir/subsystems/ime/services/home/imedata.asmx/GetAmareMoamelatList`
 - Request grain: one Jalali calendar month per request.
 - Canonical raw CSV: `data/raw/physical/rebar_physical_raw.csv`
-- Immutable source responses: `data/raw/physical/api_snapshots/physical_YYYY-MM_TIMESTAMP.json.gz`
+- Shared immutable source responses: `shared/data/raw/ime/physical/ime_physical_YYYY-MM_SHA256.json.gz`
+- Frozen legacy responses: `data/raw/physical/api_snapshots/physical_YYYY-MM_TIMESTAMP.json.gz`
 - Raw selection: every response row for which normalized `GoodsName` identifies rebar.
 
 The collector retains zero-trade offers and all source fields. It never changes the source values or removes a row because of a later analytical preference.
@@ -30,11 +31,11 @@ The collector retains zero-trade offers and all source fields. It never changes 
 3. Only the documented broad rebar rows are copied into the canonical CSV; schema and scope are validated before writing.
 4. Refreshes replace only the selected trailing months in the canonical CSV, preserving all older rows. The CSV is written to a sibling temporary file and atomically replaced only after validation succeeds.
 
-The first run begins at 1386/01. Subsequent default runs refresh the current month and two prior Jalali months, making repeated runs incremental and idempotent. `--rebuild-from-snapshots` reconstructs the canonical CSV from the newest snapshot for each month; it does not modify any snapshot.
+The first run begins at 1386/01. Subsequent runs refresh the current month and two prior Jalali months. New full-market responses are content-addressed in the shared archive. `--rebuild-from-snapshots` chooses the newest shared or frozen legacy response for each month and modifies no snapshot.
 
 ## Data architecture and validation
 
-- `data/raw` contains only the canonical raw CSV and immutable snapshots.
+- `data/raw` contains the canonical raw CSV and frozen pre-consolidation snapshots; new complete responses belong to the shared archive.
 - `data/interim` may hold reproducible temporary cleaning/alignment stages.
 - `data/processed/physical` holds approved physical derivatives; `processed/certificate` is
   reserved for certificate-only derivatives; `processed/bubble` is reserved for future bubbles.

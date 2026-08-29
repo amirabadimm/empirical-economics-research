@@ -43,9 +43,13 @@ Raw data, source snapshots, credentials, logs, caches, and bulk outputs are excl
 
 ### LME cash copper
 
-`collectors/lme.py` retrieves annual Westmetall tables from 2008 onward. It archives the source
-HTML, preserves missing markers, refreshes only recent periods during incremental runs, validates
+`collectors/lme.py` delegates annual Westmetall collection from 2008 onward to the shared
+`shared/market_data/lme.py` engine; Copper keeps only its explicit field, filename, and wrapper.
+The engine archives source HTML, preserves missing markers, refreshes recent periods, validates
 date uniqueness, and writes atomically. The analytical field is cash settlement in USD/tonne.
+
+The physical collector archives new complete IME responses once in
+`shared/data/raw/ime/physical`; project-local physical snapshots are frozen legacy rebuild inputs.
 
 ### Free-market USD/IRR
 

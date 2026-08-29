@@ -20,6 +20,11 @@ empirical-economics-research/
 └── .venv/                         # local only; never versioned
 ```
 
+Shared infrastructure also includes `shared/market_analysis` and the content-addressed
+`shared/data/raw/ime/physical` source archive. Full-market IME responses are stored once there;
+commodity projects own only their filtered canonical physical CSVs and explicit scopes. Generic
+I/O, as-of matching, and model selection are shared while research assumptions remain local.
+
 Each commodity project may contain `src/<commodity>`, `data/raw/{physical,certificate}`,
 `data/interim`, and `data/processed/{physical,certificate,bubble,analysis}`,
 `notebooks`, `tests`, `logs`, `outputs`, and `docs`. The existing local `Finenv` directory is

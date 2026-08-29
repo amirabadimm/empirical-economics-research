@@ -22,8 +22,11 @@ and preserves grade composition in every benchmark observation.
 
 Commodity-specific collectors live in `src/zinc/collectors`; deterministic builders live in
 `src/zinc/processing`; shared IME logic lives in `shared/ime_data`. Raw responses and snapshots are
-immutable, collectors are incremental and atomic, and analysis writes only to interim or processed
-paths. Bulk data and source snapshots are excluded from Git.
+content-addressed once in `shared/data/raw/ime/physical`; Zinc-local physical snapshots are frozen
+pre-consolidation evidence. Shared LME and intrinsic-regression engines live under
+`shared/market_data` and `shared/market_analysis`, with Zinc assumptions kept in local wrappers.
+All raw sources are immutable, collectors are incremental and atomic, and analysis writes only to
+interim or processed paths. Bulk data and source snapshots are excluded from Git.
 
 The certificate collector validates the continuous zinc contract identity and uses
 `TodaySettlementPrice` as the analytical price. The physical collector archives complete monthly

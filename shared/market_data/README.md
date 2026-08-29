@@ -17,6 +17,12 @@ The collector validates the table shape, numeric values, Jalali/Gregorian equiva
 dates, and conflicting records. It archives the downloaded page before atomically replacing the
 canonical CSV. Copper and Zinc both read this exact file.
 
+## LME contract
+
+`shared/market_data/lme.py` owns Westmetall download, parsing, validation, immutable-page
+archiving, and atomic refresh. Copper and Zinc keep explicit metal configurations and separate
+canonical CSVs because Copper and Zinc are distinct source series.
+
 Run from the workspace root:
 
 ```powershell
