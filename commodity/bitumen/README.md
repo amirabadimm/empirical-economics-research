@@ -8,8 +8,8 @@ comparable with the Iranian bitumen certificate?
 ## Current checkpoint
 
 - Data checkpoint: 2026-08-16
-- Certificate: 257 calendar observations, 185 positive-trading days, through 2026-08-15
-- Physical market: 47,085 rows, including 24,163 positive trades, through 1405/05/24
+- Certificate: 268 calendar observations, 194 positive-trading days, through 2026-08-27
+- Physical market: 47,124 rows, including 24,179 positive trades, through 1405/06/07
 - Stage: domestic 60/70 standard-cash/observed-cash specification fixed for the conservative
   diagnostic; production deliverability and price-basis approval remain pending
 - Processed benchmark and certificate bubble: not yet produced

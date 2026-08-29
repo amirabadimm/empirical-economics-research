@@ -68,6 +68,7 @@ class PhysicalCollectorConfig:
     snapshot_prefix: str
     target_label: str
     row_filter: Callable[[dict[str, Any]], bool]
+    shared_snapshot_dir: Path = SHARED_SNAPSHOT_DIR
 
 
 def normalize_fa(value: Any) -> str:
@@ -317,7 +318,7 @@ def available_snapshots(config: PhysicalCollectorConfig) -> list[Path]:
     legacy_dir = config.project_dir / "data" / "raw" / "physical" / "api_snapshots"
     return sorted(
         [
-            *SHARED_SNAPSHOT_DIR.glob("ime_physical_*.json.gz"),
+            *config.shared_snapshot_dir.glob("ime_physical_*.json.gz"),
             *legacy_dir.glob(f"{config.snapshot_prefix}_*.json.gz"),
         ]
     )
@@ -412,7 +413,9 @@ def collect(
         raw_response, all_rows = fetch_rows(payload, timeout, retries)
         selected = [row for row in all_rows if config.row_filter(row)]
         validate_selected(selected, config)
-        snapshot_path = archive_market_response(raw_response, payload, fetched_at, year, month)
+        snapshot_path = archive_market_response(
+            raw_response, payload, fetched_at, year, month, config.shared_snapshot_dir
+        )
         with gzip.open(snapshot_path, "rt", encoding="utf-8") as handle:
             archived_fetch_time = str(json.load(handle)["fetched_at_utc"])
         for row in selected:

@@ -9,10 +9,10 @@ and the free-market USD/IRR exchange rate?
 ## Current checkpoint
 
 - Data checkpoint: 2026-08-26
-- Certificate: 266 calendar observations, 193 positive-trading days, through 2026-08-25
+- Certificate: 268 calendar observations, 194 positive-trading days, through 2026-08-27
 - Canonical physical market: 1,171 rows through 1405/06/02
-- LME cash copper: 4,716 observations through 2026-08-25
-- Free-market USD/IRR: 13,074 observations through 1405/05/31
+- LME cash copper: 4,719 observations through 2026-08-28
+- Free-market USD/IRR: 13,079 observations through 1405/06/05
 - Processed physical benchmark and forward-gap diagnostic: `data/processed/physical`
 - Bubble and regression outputs: `data/processed/bubble`
 - Presentation timelines: `data/processed/analysis`

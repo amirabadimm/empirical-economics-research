@@ -10,8 +10,8 @@ Canonical physical and certificate records remain separate under `data/raw/{phys
 The optional A3 / 12 mm physical analysis lives under `data/processed/physical`; no rebar bubble
 exists.
 
-Physical collection completed on 2026-08-24: 31,532 rebar-labelled IME rows from 1387/06/03
-through 1405/06/01. The active exploratory chart scope is plainly specified straight A3 / 12 mm
+Physical collection refreshed on 2026-08-29: 31,641 rebar-labelled IME rows from 1387/06/03
+through 1405/06/07. The active exploratory chart scope is plainly specified straight A3 / 12 mm
 rebar under cash or cash-matching contracts. The broad raw scope remains immutable, and no
 producer/delivery-validated comparable-product benchmark has been approved.
 

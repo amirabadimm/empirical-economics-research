@@ -9,12 +9,12 @@ Estimate the warehouse-receipt premium or discount relative to comparable domest
 
 ## Data checkpoint
 
-- Certificate: 252 calendar observations and 182 positive-trading days through 2026-08-09.
-- Physical market: 3,467 rows and 1,606 positive trades through 1405/05/18.
+- Certificate: 268 calendar observations and 194 positive-trading days through 2026-08-27.
+- Physical market: 3,535 rows and 1,658 positive trades through 1405/06/07.
 - Raw files and immutable snapshots remain unchanged.
 - The active notebook now includes the governed workspace dashboard for source coverage,
   physical/certificate activity, goods composition, prices, and validated bubble visualization.
-- The exploratory bubble contains 22 exact-date observations; no standalone processed benchmark has yet been approved.
+- The exploratory bubble contains 23 exact-date observations; no standalone processed benchmark has yet been approved.
 
 ## Benchmark rule
 

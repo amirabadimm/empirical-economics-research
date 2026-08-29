@@ -8,8 +8,8 @@ a defensible benchmark built only from comparable domestic physical pellet trade
 ## Current checkpoint
 
 - Data checkpoint: 2026-08-10
-- Certificate: 252 calendar observations, 182 positive-trading days, through 2026-08-09
-- Physical market: 3,467 rows, including 1,606 positive trades, through 1405/05/18
+- Certificate: 268 calendar observations, 194 positive-trading days, through 2026-08-27
+- Physical market: 3,535 rows, including 1,658 positive trades, through 1405/06/07
 - Stage: exploratory exact-date certificate-bubble series implemented and validated
 - Selected: Gol Gohar (`GOLG-PELL-00`) and Gohar Zamin (`GHZ-PELL-00`)
 - Excluded for lower representation across all positive physical trades since certificate start: Sangan Khorasan (5.66%) and Chadormalu (9.81%)

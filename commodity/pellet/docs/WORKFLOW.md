@@ -16,9 +16,9 @@ prices, exchange rates, and external intrinsic-value models are outside scope.
 
 | Source | Coverage |
 |---|---|
-| Certificate | 252 calendar rows; 182 positive-trading days through 2026-08-09 |
-| Broad physical pellet market | 3,467 rows; 1,606 positive trades through 1405/05/18 |
-| Exploratory exact-date bubble | 22 observations |
+| Certificate | 268 calendar rows; 194 positive-trading days through 2026-08-27 |
+| Broad physical pellet market | 3,535 rows; 1,658 positive trades through 1405/06/07 |
+| Exploratory exact-date bubble | 23 observations |
 
 Raw data and immutable monthly snapshots remain unchanged. New complete IME responses are written
 only to `shared/data/raw/ime/physical`; the existing local physical snapshot archive is frozen and

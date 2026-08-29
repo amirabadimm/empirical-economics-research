@@ -3,7 +3,7 @@
 Documentation review: 2026-08-29
 Latest data checkpoint: 2026-08-29
 
-Workspace-wide USD/IRR is a single shared canonical input with 13,074 dates through 1405/05/31;
+Workspace-wide USD/IRR is a single shared canonical input with 13,079 dates through 1405/06/05;
 Copper and Zinc no longer maintain project-local copies.
 
 Full-market IME physical responses now have a content-addressed shared owner. The 1,593 existing
@@ -16,11 +16,11 @@ continuing to calculate no bubble.
 
 | Project | Current data coverage | Research stage | Next action |
 |---|---|---|---|
-| Copper | 266 certificate rows through 2026-08-25; 1,171 physical rows through 1405/06/02 | Domain-separated physical/bubble pipeline; notebooks and reports refreshed | Expand analytical QA and refresh monitoring |
-| Iron-ore pellet | Certificate through 2026-08-09; physical through 1405/05/18 | Exploratory underlying research | Validate quality/delivery comparability and approve a physical basket |
-| Zinc | 256 certificate rows through 2026-08-13; 6,235 physical rows through 1405/05/18 | Domain-separated three-bubble pipeline; notebooks and reports refreshed | Interpret results and monitor input freshness |
+| Copper | 268 certificate rows through 2026-08-27; 1,171 physical rows through 1405/06/02 | Domain-separated physical/bubble pipeline; notebooks and reports refreshed | Expand analytical QA and refresh monitoring |
+| Iron-ore pellet | 268 certificate rows through 2026-08-27; 3,535 physical rows through 1405/06/07 | Exploratory underlying research; 23 exact-date bubbles | Validate quality/delivery comparability and approve a physical basket |
+| Zinc | 268 certificate rows through 2026-08-27; 6,325 physical rows through 1405/06/04 | Domain-separated three-bubble pipeline; notebooks and reports refreshed | Interpret results and monitor input freshness |
 | Bitumen | Certificate through 2026-08-15; physical through 1405/05/24 | Strict cash–cash diagnostic has 29 overlaps and a major 1405 price discontinuity; no production bubble approved | Verify units/specification, then test exact-date, bounded carry-forward, and lower-frequency alignment rules |
-| Steel rebar | 31,532 physical rows through 1405/06/01; 268 certificate rows through 2026-08-27 | Both unfiltered raw datasets collected; A3/12 remains physical-only exploration; no bubble | Verify the official A3/18 certificate specification before analytical matching |
+| Steel rebar | 31,641 physical rows through 1405/06/07; 268 certificate rows through 2026-08-27 | Both unfiltered raw datasets collected; A3/12 remains physical-only exploration; no bubble | Verify the official A3/18 certificate specification before analytical matching |
 | Warehouse fees | 43 exact-date regimes plus 30 official-table observations back to 2016-10-29 | Official notices, Wayback recovery, and interval builder | Resolve exact boundaries for archived point observations |
 | Iran Energy Exchange | 21 certificate symbols; 7,070 rows through 2026-08-22; 1,432 actual traded rows | Feasibility assessment complete; project closed because activity is sparse and concentrated | None; preserve evidence and reproducible collector |
 | National Copper — Codal | 75 valid core quarters; 18 complete years; labor fields provisional | Core modern-plus-legacy history validated; labor audit pending | Build header-aware labor parser and reconcile non-monotonic cumulative values |

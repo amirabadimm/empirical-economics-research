@@ -58,7 +58,7 @@ Repeated execution over unchanged source data must produce the same canonical re
 
 ## Current checkpoint
 
-- Canonical certificate rows: 256.
+- Canonical certificate rows: 268.
 - Positive-trading days: 184.
 - Latest certificate date: 2026-08-13.
 - Primary valuation coverage: 178 dates through 2026-08-09.

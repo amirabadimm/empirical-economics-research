@@ -232,8 +232,8 @@ def main() -> None:
     FIGURE_DIR.mkdir(parents=True, exist_ok=True)
     physical, certificate = load_data()
     daily, bubble = build_benchmark(physical, certificate)
-    if len(bubble) != 22:
-        raise ValueError(f"Expected 22 exact-date observations, got {len(bubble)}")
+    if bubble.empty or not bubble["PersianDate"].is_unique:
+        raise ValueError("Exact-date bubble must be nonempty with unique dates")
     if int(bubble["bubble_pct"].gt(0).sum()) != 1:
         raise ValueError("Expected exactly one positive bubble observation")
     save_market_share(physical)

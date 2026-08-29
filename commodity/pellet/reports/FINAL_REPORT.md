@@ -16,7 +16,7 @@ Benchmark construction is stricter. It accepts only cash or cash-matching contra
 
 A date is eligible when at least one selected producer has a qualifying cash trade. The daily benchmark is the observed price when only one producer trades and the simple mean when both trade. Certificate comparisons are exact-date only and require positive certificate volume and price. Neither interpolation nor carry-forward prices are used.
 
-The final sample contains 22 observations: 16 single-producer and six two-producer days. The certificate bubble has a mean of -12.18%, a median of -11.55%, a minimum of -24.93%, and a maximum of +11.03%. Only one observation is positive.
+The refreshed sample contains 23 observations: 17 single-producer and six two-producer days. The certificate bubble has a mean of -12.18%, a median of -12.07%, a minimum of -24.93%, and a maximum of +11.03%. Only one observation is positive.
 
 ## Positive-bubble case study: 1404/10/21
 
@@ -35,7 +35,7 @@ A plausible interpretation is a timing difference in price discovery: the contin
 
 ## Reporting rule and limitations
 
-The observation is retained because both trades are valid, but it must be labeled as a composition-sensitive, single-producer benchmark. Results should separate single- and two-producer days and include the sensitivity check. With 16 of 22 observations based on one producer, structural conclusions require broader time coverage.
+The observation is retained because both trades are valid, but it must be labeled as a composition-sensitive, single-producer benchmark. Results should separate single- and two-producer days and include the sensitivity check. With 17 of 23 observations based on one producer, structural conclusions require broader time coverage.
 
 ## Reproducibility
 

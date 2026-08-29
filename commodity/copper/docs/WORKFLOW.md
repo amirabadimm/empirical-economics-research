@@ -13,9 +13,9 @@ valuation remains anchored to observed domestic physical trades.
 
 | Source | Coverage |
 |---|---|
-| LME cash copper | 4,716 observations through 2026-08-25 |
-| Free-market USD/IRR | 13,074 observations through 1405/05/31 |
-| Certificate | 266 calendar rows; 193 positive-trading days through 2026-08-25 |
+| LME cash copper | 4,719 observations through 2026-08-28 |
+| Free-market USD/IRR | 13,079 observations through 1405/06/05 |
+| Certificate | 268 calendar rows; 194 positive-trading days through 2026-08-27 |
 | Broad physical copper cathode | 1,171 rows through 1405/06/02 |
 | Approved NCI cash benchmark | 795 trading days through 2026-08-24 |
 

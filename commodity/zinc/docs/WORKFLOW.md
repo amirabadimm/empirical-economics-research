@@ -12,10 +12,10 @@ and preserves grade composition in every benchmark observation.
 
 | Source | Coverage |
 |---|---|
-| Certificate | 256 calendar rows; 184 positive-trading days through 2026-08-13 |
-| Broad physical zinc market | 6,235 rows; 3,462 positive trades through 1405/05/18 |
-| LME cash zinc | 4,709 dates from 2008-01-02 through 2026-08-14 |
-| Shared free-market USD/IRR | 13,074 dates through 1405/05/31 |
+| Certificate | 268 calendar rows; 194 positive-trading days through 2026-08-27 |
+| Broad physical zinc market | 6,325 rows; 3,512 positive trades through 1405/06/04 |
+| LME cash zinc | 4,719 dates from 2008-01-02 through 2026-08-28 |
+| Shared free-market USD/IRR | 13,079 dates through 1405/06/05 |
 | Approved physical benchmark | 554 days through 2026-08-09 |
 
 ## Architecture and source governance

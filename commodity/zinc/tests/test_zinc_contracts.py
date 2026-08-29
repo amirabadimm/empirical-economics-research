@@ -45,6 +45,7 @@ def _physical_config(project_dir: Path) -> PhysicalCollectorConfig:
         snapshot_prefix="physical",
         target_label="zinc-related",
         row_filter=is_zinc_related,
+        shared_snapshot_dir=project_dir / "shared" / "data" / "raw" / "ime" / "physical",
     )
 
 
@@ -166,8 +167,7 @@ class ZincLmeCollectorTests(unittest.TestCase):
     def test_url_uses_zinc_cash_field(self) -> None:
         self.assertEqual(
             build_lme_url(2026),
-            "https://www.westmetall.com/en/markdaten.php?"
-            "action=table&field=LME_Zn_cash&year=2026",
+            "https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Zn_cash&year=2026",
         )
 
     def test_parser_ignores_repeated_headers_and_preserves_source_values(self) -> None:

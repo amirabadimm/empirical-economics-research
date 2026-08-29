@@ -15,8 +15,8 @@ Statistical liquidity alone does not establish deliverability or technical compa
 
 | Source | Current coverage |
 |---|---|
-| Certificate | 257 calendar observations through 2026-08-15; 185 positive-trading days |
-| Broad physical market | 47,085 rows through 1405/05/24; 24,163 positive trades |
+| Certificate | 268 calendar observations through 2026-08-27; 194 positive-trading days |
+| Broad physical market | 47,124 rows through 1405/06/07; 24,179 positive trades |
 | Exploratory notebook | Executed successfully; 34 cells, no external analytical outputs |
 | Working analytical underlying | Conventional domestic penetration-grade 60/70 |
 | Conservative physical specification | Standard cash contract and observed cash settlement |
@@ -250,7 +250,7 @@ approximately 5.35% of the daily mean.
 
 Date alignment is also sparse:
 
-- 257 certificate calendar observations;
+- 268 certificate calendar observations;
 - 185 positive certificate days;
 - 51 eligible physical dates;
 - 51 exact overlaps with certificate calendar observations;

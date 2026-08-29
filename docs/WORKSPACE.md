@@ -85,13 +85,13 @@ At each project's latest documented checkpoint:
 
 | Project | Certificate rows | Physical rows | Positive physical trades |
 |---|---:|---:|---:|
-| Bitumen | 257 | 47,085 | 24,163 |
-| Copper | 266 | 1,171 | 1,162 |
-| Iron-ore pellet | 252 | 3,467 | 1,606 |
-| Steel rebar | 268 | 31,532 | not yet standardized |
-| Zinc | 256 | 6,235 | 3,462 |
+| Bitumen | 268 | 47,124 | 24,179 |
+| Copper | 268 | 1,171 | 1,162 |
+| Iron-ore pellet | 268 | 3,535 | 1,658 |
+| Steel rebar | 268 | 31,641 | 16,697 |
+| Zinc | 268 | 6,325 | 3,512 |
 
-Zinc was refreshed and extended on 2026-08-10 to 252 certificate rows and 6,235 broad physical
+All commodity sources were refreshed on 2026-08-29; Zinc now has 268 certificate rows and 6,325 broad physical
 rows. Its processed pipeline contains a 554-day 99.97/99.98 benchmark, two direct bubble series,
 a 178-day primary certificate bubble with 41 exact anchors, and regression sensitivity outputs.
 See [STATUS.md](STATUS.md) for the current state.

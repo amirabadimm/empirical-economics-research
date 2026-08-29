@@ -7,8 +7,8 @@ Stage: unfiltered physical and certificate collection complete; no rebar bubble
 
 - Product project created for IME steel rebar physical-market data.
 - Broad source filter retains every normalized rebar-labelled row without quality, producer, symbol, contract, settlement, or trade-status exclusions.
-- Initial historical collection produced 31,532 source rows from 1387/06/03 through 1405/06/01; the canonical raw file remains local, the former monthly archive is frozen, and future complete responses use the shared content-addressed IME archive. All remain excluded from Git.
-- The standardized notebook dashboard counts 630 distinct `GoodsName` labels across all 31,532
+- The refreshed physical collection contains 31,641 source rows from 1387/06/03 through 1405/06/07; the canonical raw file remains local, the former monthly archive is frozen, and future complete responses use the shared content-addressed IME archive. All remain excluded from Git.
+- The standardized notebook dashboard counts 630 distinct `GoodsName` labels across all 31,641
   physical records and adds separate physical/certificate activity and price views. Its bubble
   panel correctly reports that no validated Rebar bubble exists.
 - The active chart scope is plainly specified straight A3 / 12 mm rebar under cash or cash-matching contracts. A deterministic builder produces its daily VWAP and percentage-difference output; the notebook visualizes it on source Jalali dates.
