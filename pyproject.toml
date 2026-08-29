@@ -24,6 +24,7 @@ notebooks = [
   "ipython",
   "jupyterlab",
   "matplotlib",
+  "plotly",
   "seaborn",
 ]
 dev = [

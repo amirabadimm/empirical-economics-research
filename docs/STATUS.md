@@ -10,7 +10,7 @@ Full-market IME physical responses now have a content-addressed shared owner. Th
 local snapshots remain frozen pre-consolidation evidence. Copper/Zinc LME collection and intrinsic
 regression now use shared engines with explicit commodity wrappers.
 
-Seven active commodity notebooks now include the same governed market-dashboard section. Rebar
+Seven active commodity notebooks now include the same governed interactive Plotly market-dashboard section. Rebar
 adds all-record physical `GoodsName` counts and separate physical/certificate activity views while
 continuing to calculate no bubble.
 

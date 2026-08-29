@@ -42,8 +42,8 @@ The first run begins at 1386/01. Subsequent runs refresh the current month and t
 - `src/rebar/collectors` owns source acquisition; `src/rebar/processing` will own deterministic derived builders when a specification is approved.
 - Notebooks may inspect data but must never modify canonical raw data.
 
-The active notebook uses `shared/notebook_tools/commodity_dashboard.py` for the standard read-only
-presentation pattern. Goods-type counts use all canonical physical rows and no certificate goods
+The active notebook uses `shared/notebook_tools/commodity_dashboard.py` for the standard read-only,
+interactive Plotly presentation pattern. Goods-type counts use all canonical physical rows and no certificate goods
 taxonomy is invented. Bubble visualization reads only an existing validated processed bubble CSV;
 therefore Rebar currently reports that no bubble is available.
 

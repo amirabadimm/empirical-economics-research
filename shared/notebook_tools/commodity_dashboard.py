@@ -1,11 +1,12 @@
-"""Consistent read-only market dashboards for commodity notebooks."""
+"""Consistent read-only Plotly market dashboards for commodity notebooks."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import pandas as pd
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 from shared.ime_data.ime_physical_collector import jalali_to_gregorian
 
@@ -28,10 +29,7 @@ def load_markets(
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Load canonical physical and certificate records without mutating raw data."""
     physical = pd.read_csv(
-        project_dir
-        / "data"
-        / "raw"
-        / "physical"
+        project_dir / "data" / "raw" / "physical"
         / (physical_filename or f"{slug}_physical_raw.csv"),
         encoding="utf-8-sig",
         low_memory=False,
@@ -77,36 +75,47 @@ def plot_trade_activity(physical: pd.DataFrame, certificate: pd.DataFrame, title
     """Plot daily physical quantity and certificate volume on separate, honest scales."""
     physical = physical.copy()
     physical["source_unit"] = physical["Unit"].fillna("<missing>").astype(str)
-    physical_daily = (
-        physical.groupby(["source_unit", "date_gregorian"])["Quantity"].sum().sort_index()
-    )
-    certificate_daily = (
-        certificate.groupby("date_gregorian", as_index=True)["TradesVolume"].sum().sort_index()
-    )
+    physical_daily = physical.groupby(["source_unit", "date_gregorian"])["Quantity"].sum().sort_index()
+    certificate_daily = certificate.groupby("date_gregorian")["TradesVolume"].sum().sort_index()
     units = list(physical_daily.index.get_level_values("source_unit").unique())
-    fig, axes = plt.subplots(
-        len(units) + 1, 1, figsize=(14, 3 * (len(units) + 1)), constrained_layout=True
+    rows = len(units) + 1
+    fig = make_subplots(
+        rows=rows, cols=1,
+        subplot_titles=[f"Physical traded quantity — unit {unit}" for unit in units]
+        + ["Certificate traded volume"],
+        vertical_spacing=min(0.08, 0.25 / rows),
     )
-    axes = list(axes)
-    for axis, unit in zip(axes[:-1], units, strict=True):
+    for row_number, unit in enumerate(units, start=1):
         series = physical_daily.loc[unit]
-        axis.bar(series.index, series.values, width=5, color="#35618f")
-        axis.set(title=f"{title}: physical traded quantity — unit {unit}", ylabel=unit)
-    axes[-1].bar(certificate_daily.index, certificate_daily.values, width=1, color="#bf6b32")
-    axes[-1].set(
-        title="Certificate traded volume", ylabel="Certificate units", xlabel="Gregorian date"
+        fig.add_trace(
+            go.Bar(
+                x=series.index, y=series.values, name=f"Physical ({unit})",
+                marker_color="#35618f",
+                hovertemplate="Date=%{x|%Y-%m-%d}<br>Quantity=%{y:,.2f}<extra></extra>",
+            ), row=row_number, col=1,
+        )
+        fig.update_yaxes(title_text=unit, row=row_number, col=1)
+    fig.add_trace(
+        go.Bar(
+            x=certificate_daily.index, y=certificate_daily.values, name="Certificate",
+            marker_color="#bf6b32",
+            hovertemplate="Date=%{x|%Y-%m-%d}<br>Volume=%{y:,.0f}<extra></extra>",
+        ), row=rows, col=1,
     )
-    for axis in axes:
-        axis.grid(axis="y", alpha=0.25)
-    plt.show()
+    fig.update_yaxes(title_text="Certificate units", row=rows, col=1)
+    fig.update_xaxes(title_text="Gregorian date", row=rows, col=1)
+    fig.update_layout(
+        title=f"{title}: physical and certificate trade activity", height=310 * rows,
+        template="plotly_white", showlegend=False, hovermode="x unified",
+    )
+    fig.show()
 
 
 def plot_market_prices(physical: pd.DataFrame, certificate: pd.DataFrame, title: str) -> None:
     """Plot positive-trade daily VWAPs without claiming cross-market comparability."""
     traded = physical.loc[(physical["Quantity"] > 0) & (physical["Price"] > 0)].copy()
     traded["price_basis"] = (
-        traded["Currency"].fillna("<missing>").astype(str)
-        + " / "
+        traded["Currency"].fillna("<missing>").astype(str) + " / "
         + traded["Unit"].fillna("<missing>").astype(str)
     )
     physical_price = traded.groupby(["price_basis", "date_gregorian"]).apply(
@@ -115,36 +124,45 @@ def plot_market_prices(physical: pd.DataFrame, certificate: pd.DataFrame, title:
     )
     certificate_price = (
         certificate.loc[certificate["TradesVolume"] > 0]
-        .set_index("date_gregorian")["TodaySettlementPrice"]
-        .sort_index()
+        .set_index("date_gregorian")["TodaySettlementPrice"].sort_index()
     )
     bases = list(physical_price.index.get_level_values("price_basis").unique())
-    fig, axes = plt.subplots(
-        len(bases) + 1, 1, figsize=(14, 3 * (len(bases) + 1)), constrained_layout=True
+    rows = len(bases) + 1
+    fig = make_subplots(
+        rows=rows, cols=1,
+        subplot_titles=[f"Broad physical daily VWAP — {basis}" for basis in bases]
+        + ["Certificate settlement on traded days"],
+        vertical_spacing=min(0.08, 0.25 / rows),
     )
-    axes = list(axes)
-    for axis, basis in zip(axes[:-1], bases, strict=True):
+    for row_number, basis in enumerate(bases, start=1):
         series = physical_price.loc[basis]
-        axis.plot(series.index, series.values, color="#35618f", linewidth=1)
-        axis.set(title=f"{title}: broad physical daily VWAP — {basis}", ylabel=basis)
-    axes[-1].plot(
-        certificate_price.index, certificate_price.values, color="#bf6b32", linewidth=1
+        fig.add_trace(
+            go.Scatter(
+                x=series.index, y=series.values, mode="lines", name=f"Physical ({basis})",
+                line={"color": "#35618f", "width": 1.5},
+                hovertemplate="Date=%{x|%Y-%m-%d}<br>VWAP=%{y:,.2f}<extra></extra>",
+            ), row=row_number, col=1,
+        )
+        fig.update_yaxes(title_text=basis, row=row_number, col=1)
+    fig.add_trace(
+        go.Scatter(
+            x=certificate_price.index, y=certificate_price.values, mode="lines",
+            name="Certificate settlement", line={"color": "#bf6b32", "width": 1.5},
+            hovertemplate="Date=%{x|%Y-%m-%d}<br>Settlement=%{y:,.2f}<extra></extra>",
+        ), row=rows, col=1,
     )
-    axes[-1].set(
-        title="Certificate settlement on traded days",
-        ylabel="IRR / certificate unit",
-        xlabel="Gregorian date",
+    fig.update_yaxes(title_text="IRR / certificate unit", row=rows, col=1)
+    fig.update_xaxes(title_text="Gregorian date", row=rows, col=1)
+    fig.update_layout(
+        title=f"{title}: physical and certificate prices (separate source bases)",
+        height=310 * rows, template="plotly_white", showlegend=False, hovermode="x unified",
     )
-    for axis in axes:
-        axis.grid(alpha=0.25)
-    plt.show()
+    fig.show()
 
 
 def goods_type_counts(physical: pd.DataFrame) -> pd.DataFrame:
     """Count every physical source record by the unmodified GoodsName label."""
-    counts = (
-        physical["GoodsName"].fillna("<missing>").value_counts(dropna=False).rename("record_count")
-    )
+    counts = physical["GoodsName"].fillna("<missing>").value_counts(dropna=False).rename("record_count")
     result = counts.rename_axis("goods_name").reset_index()
     result["share_pct"] = result["record_count"] / len(physical) * 100
     return result
@@ -154,55 +172,56 @@ def plot_goods_type_counts(physical: pd.DataFrame, title: str, top_n: int = 30) 
     """Plot the most frequent physical GoodsName labels and return their audit table."""
     table = goods_type_counts(physical)
     plot_table = table.head(top_n).sort_values("record_count")
-    fig, axis = plt.subplots(figsize=(12, max(6, len(plot_table) * 0.32)))
-    axis.barh(plot_table["goods_name"], plot_table["record_count"], color="#4f7f62")
-    axis.set(
+    fig = go.Figure(go.Bar(
+        x=plot_table["record_count"], y=plot_table["goods_name"], orientation="h",
+        marker_color="#4f7f62", customdata=plot_table[["share_pct"]],
+        hovertemplate="Goods=%{y}<br>Records=%{x:,}<br>Share=%{customdata[0]:.2f}%<extra></extra>",
+    ))
+    fig.update_layout(
         title=f"{title}: physical goods types by source-record count",
-        xlabel="Physical source records",
-        ylabel="GoodsName",
+        xaxis_title="Physical source records", yaxis_title="GoodsName",
+        height=max(600, len(plot_table) * 27), template="plotly_white", margin={"l": 260},
     )
-    axis.grid(axis="x", alpha=0.25)
-    plt.tight_layout()
-    plt.show()
+    fig.show()
     print(
-        f"Distinct physical GoodsName labels: {len(table):,}; records counted: {table['record_count'].sum():,}"
+        f"Distinct physical GoodsName labels: {len(table):,}; "
+        f"records counted: {table['record_count'].sum():,}"
     )
     return table
 
 
 def plot_available_bubbles(project_dir: Path, title: str) -> list[str]:
-    """Plot validated processed bubble series, or state explicitly that none exists."""
+    """Plot validated processed bubble series, or show explicitly that none exists."""
     bubble_dir = project_dir / "data" / "processed" / "bubble"
     candidates = sorted(bubble_dir.glob("*.csv")) if bubble_dir.exists() else []
     plotted: list[str] = []
-    fig, axis = plt.subplots(figsize=(14, 5))
+    fig = go.Figure()
     for path in candidates:
         frame = pd.read_csv(path, encoding="utf-8-sig")
         if "date" not in frame:
             continue
-        bubble_columns = [column for column in frame if column.endswith("bubble_pct")]
-        for column in bubble_columns:
-            axis.plot(
-                pd.to_datetime(frame["date"]),
-                frame[column],
-                linewidth=1,
-                label=f"{path.stem}: {column}",
-            )
+        for column in [column for column in frame if column.endswith("bubble_pct")]:
+            fig.add_trace(go.Scatter(
+                x=pd.to_datetime(frame["date"]), y=frame[column], mode="lines",
+                name=f"{path.stem}: {column}",
+                hovertemplate="Date=%{x|%Y-%m-%d}<br>Bubble=%{y:.2f}%<extra></extra>",
+            ))
             plotted.append(f"{path.name}:{column}")
     if plotted:
-        axis.axhline(0, color="black", linewidth=0.8)
-        axis.set(
-            title=f"{title}: validated processed bubble series",
-            ylabel="Bubble (%)",
-            xlabel="Gregorian date",
+        fig.add_hline(y=0, line_color="black", line_width=0.8)
+        fig.update_layout(
+            title=f"{title}: validated processed bubble series", yaxis_title="Bubble (%)",
+            xaxis_title="Gregorian date", template="plotly_white", hovermode="x unified", height=520,
         )
-        axis.legend(fontsize=8)
-        axis.grid(alpha=0.25)
-        plt.tight_layout()
-        plt.show()
     else:
-        plt.close(fig)
-        print(
-            "No validated processed bubble dataset exists. No bubble was calculated or inferred in this notebook."
+        fig.add_annotation(
+            text="No validated processed bubble dataset exists.<br>No bubble was calculated or inferred.",
+            x=0.5, y=0.5, xref="paper", yref="paper", showarrow=False, font={"size": 16},
         )
+        fig.update_layout(
+            title=f"{title}: bubble analysis status", template="plotly_white", height=360,
+            xaxis={"visible": False}, yaxis={"visible": False},
+        )
+        print("No validated processed bubble dataset exists. No bubble was calculated or inferred.")
+    fig.show()
     return plotted
