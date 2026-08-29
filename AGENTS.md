@@ -12,6 +12,8 @@
   a bubble file never replaces either source dataset.
 - The general logic of the commodity exchange is placed in `shared/ime_data`; Each product must have a wrapper
   Keep the settings and filters of the same project explicit.
+- Cross-commodity external inputs such as USD/IRR belong to `shared/market_data` with one canonical
+  dataset under `shared/data/raw`; commodity projects must reference it rather than copy it.
 - The energy exchange logic is placed in a separate joint package and is not mixed with `ime_data`.
 - notebooks in `notebooks`, logs in `logs` and presentation output in `outputs` or
   `reports` are placed.

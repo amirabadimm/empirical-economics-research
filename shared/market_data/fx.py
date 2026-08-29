@@ -1,4 +1,4 @@
-"""Incrementally extend USD/IRR data using TGJU daily closing prices."""
+"""Maintain the workspace-wide canonical USD/IRR series from TGJU daily closes."""
 
 from __future__ import annotations
 
@@ -15,6 +15,10 @@ from pathlib import Path
 URL = "https://www.tgju.org/profile/price_dollar_rl/history"
 COLUMNS = ["date_pr", "date_gr", "source", "price_irr", "price_method"]
 LEGACY_COLUMNS = ["date_pr", "date_gr", "source", "price_avg"]
+WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
+RAW_DIR = WORKSPACE_ROOT / "shared" / "data" / "raw" / "fx"
+CSV_PATH = RAW_DIR / "usd_to_rial.csv"
+SNAPSHOT_DIR = RAW_DIR / "tgju_snapshots"
 
 
 class HistoryParser(HTMLParser):
@@ -142,8 +146,28 @@ def parse_tgju(html: bytes) -> list[dict[str, str]]:
     return output
 
 
-def update(project_dir: Path) -> None:
-    csv_path = project_dir / "data" / "raw" / "fx" / "usd_to_rial.csv"
+def archive_snapshot(content: bytes, snapshot_dir: Path, stamp: str | None = None) -> Path:
+    """Create an immutable snapshot, choosing a suffix instead of overwriting a collision."""
+    snapshot_dir.mkdir(parents=True, exist_ok=True)
+    base_stamp = stamp or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    for sequence in range(10_000):
+        suffix = "" if sequence == 0 else f"_{sequence:04d}"
+        path = snapshot_dir / f"tgju_usd_history_{base_stamp}{suffix}.html"
+        try:
+            with path.open("xb") as handle:
+                handle.write(content)
+            return path
+        except FileExistsError:
+            continue
+    raise RuntimeError(f"Could not allocate an immutable snapshot name for {base_stamp}")
+
+
+def update(csv_path: Path = CSV_PATH, snapshot_dir: Path = SNAPSHOT_DIR) -> None:
+    """Refresh one canonical FX table while preserving every downloaded source page."""
+    if not csv_path.is_file():
+        raise FileNotFoundError(
+            f"Canonical FX history is missing: {csv_path}. Restore the governed seed before refresh."
+        )
     with csv_path.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
         if reader.fieldnames not in (COLUMNS, LEGACY_COLUMNS):
@@ -174,10 +198,7 @@ def update(project_dir: Path) -> None:
             )
 
     html = download()
-    snapshots = project_dir / "data" / "raw" / "fx" / "usd_snapshots"
-    snapshots.mkdir(parents=True, exist_ok=True)
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    (snapshots / f"tgju_usd_history_{stamp}.html").write_bytes(html)
+    archive_snapshot(html, snapshot_dir)
     fetched = {row["date_pr"]: row for row in parse_tgju(html)}
 
     corrections = 0
@@ -211,4 +232,4 @@ def update(project_dir: Path) -> None:
 
 
 if __name__ == "__main__":
-    update(Path(__file__).resolve().parents[3])
+    update()

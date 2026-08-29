@@ -12,3 +12,5 @@
 - LME raw cash price is USD per ton; Intrinsic price conversion only by dividing by 1000 and then
   The multiplication is done in the free dollar Riyal/Dollar and the `-` values of the source are kept in raw.
 - Update `docs/WORKFLOW.md` after any source, schema or observation count changes.
+- USD/IRR is owned once by `shared/market_data/fx.py` at
+  `shared/data/raw/fx/usd_to_rial.csv`; Zinc must read it directly and keep no local copy.

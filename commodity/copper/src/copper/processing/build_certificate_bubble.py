@@ -83,7 +83,7 @@ def build(project_dir: Path) -> list[dict[str, str]]:
     certificate_path = project_dir / "data" / "raw" / "certificate" / "copper_certificate_raw.csv"
     physical_path = project_dir / "data" / "processed" / "physical" / "nci_copper_cash_daily.csv"
     lme_path = copper_dir / "data" / "raw" / "lme" / "copper_lme_raw.csv"
-    usd_path = copper_dir / "data" / "raw" / "fx" / "usd_to_rial.csv"
+    usd_path = project_dir.parents[1] / "shared" / "data" / "raw" / "fx" / "usd_to_rial.csv"
     output_path = project_dir / "data" / "processed" / "bubble" / "copper_certificate_bubble.csv"
 
     certificate_rows = read_csv(certificate_path)

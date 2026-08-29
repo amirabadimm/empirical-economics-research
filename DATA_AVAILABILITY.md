@@ -27,6 +27,7 @@ license IME, LME, Westmetall, TGJU, or other third-party data.
 <project>/data/processed/certificate/ Certificate-only derivatives
 <project>/data/processed/bubble/   Bubble and model outputs
 <project>/data/processed/analysis/ Other analytical tables
+shared/data/raw/fx/                 Canonical cross-commodity USD/IRR and immutable pages
 ```
 
 These directories are excluded from Git except for placeholder files.

@@ -91,7 +91,10 @@ def load_inputs(project_dir: Path) -> Inputs:
         project_dir / "data" / "processed" / "physical" / "zinc_9798_cash_daily.csv"
     )
     lme_rows = read_csv(project_dir / "data" / "raw" / "lme" / "zinc_lme_raw.csv")
-    usd_rows = read_csv(project_dir / "data" / "raw" / "fx" / "usd_to_rial.csv")
+    workspace_root = project_dir.parents[1]
+    usd_rows = read_csv(
+        workspace_root / "shared" / "data" / "raw" / "fx" / "usd_to_rial.csv"
+    )
 
     certificate: dict[date, dict[str, Decimal]] = {}
     for row in certificate_rows:

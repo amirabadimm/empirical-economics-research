@@ -11,7 +11,7 @@ physical basket and to an LME–FX intrinsic benchmark?
 - Certificate: 256 calendar observations, 184 positive-trading days, through 2026-08-13
 - Broad physical raw data: 6,235 rows, including 3,462 positive trades, through 1405/05/18
 - LME cash zinc: 4,709 observations from 2008-01-02 through 2026-08-14
-- Free-market USD/IRR: 13,067 observations through 1405/05/20
+- Shared free-market USD/IRR: 13,074 observations through 1405/05/31
 - Official physical benchmark: 554 days from 2009-08-16 through 2026-08-09
 - Test suite: 14 network-free contract and pipeline tests
 
@@ -43,7 +43,7 @@ is written to `data/processed/bubble`.
 python .\commodity\zinc\src\zinc\collectors\certificate.py
 python .\commodity\zinc\src\zinc\collectors\physical.py
 python .\commodity\zinc\src\zinc\collectors\lme.py
-python .\commodity\zinc\src\zinc\collectors\fx.py
+python .\shared\market_data\fx.py
 python .\commodity\zinc\src\zinc\processing\build_physical_benchmark.py
 python .\commodity\zinc\src\zinc\processing\build_intrinsic_bubbles.py
 python .\commodity\zinc\src\zinc\processing\build_certificate_bubble.py

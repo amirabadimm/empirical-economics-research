@@ -19,11 +19,8 @@ belong in `shared/ime_data/` and must remain compatible with all commodities.
    `data/processed/certificate`, bubble/model outputs in `data/processed/bubble`, and other
    analytical tables in `data/processed/analysis`.
 8. Preserve raw files and do not silently weaken validation checks.
-9. `src/copper/collectors/fx.py` incrementally extends `data/raw/fx/usd_to_rial.csv`
-   from TGJU. Preserve user-supplied historical rows and merge by Persian date.
-   Store new TGJU observations using the daily closing price in `price_irr`, retain
-   unavailable historical values as `legacy_high_low_midpoint`, record the method
-   in `price_method`, and validate calendar conversion.
+9. USD/IRR is owned by `shared/market_data/fx.py` and stored once at
+   `shared/data/raw/fx/usd_to_rial.csv`. Copper reads it directly and must not keep a local copy.
 
 ## Source contract
 

@@ -27,3 +27,14 @@ prices and source dates required to reconstruct its formula, but it is never the
 for certificate or physical records. A project must be able to rebuild every bubble after reading
 its separate canonical certificate CSV, canonical physical CSV, and any documented external
 inputs. Notebooks never write or repair canonical raw data.
+
+External market inputs used by more than one project have one workspace owner:
+
+```text
+shared/
+  market_data/                 # shared collector and validation logic
+  data/raw/fx/usd_to_rial.csv  # single canonical USD/IRR series
+```
+
+Commodity projects reference this canonical path directly. They must not seed, copy, or refresh
+project-local FX files. The shared collector owns incremental refresh and immutable TGJU pages.

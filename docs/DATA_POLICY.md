@@ -32,3 +32,6 @@ domain directory: physical tables in `processed/physical`, certificate-only deri
 remain in `raw/physical` and `raw/certificate`. A processed dataset may be published only after
 documenting its source licence, construction method, schema, version, and citation. See
 the repository-level [DATA_AVAILABILITY.md](../DATA_AVAILABILITY.md).
+
+An external input used by multiple projects has one canonical file under `shared/data/raw` and one
+collector under `shared/market_data`. Project-local copies are prohibited because they can diverge.

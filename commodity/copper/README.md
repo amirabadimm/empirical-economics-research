@@ -44,7 +44,7 @@ the small and temporally uneven physical anchor sample.
 
 ```powershell
 python .\commodity\copper\src\copper\collectors\lme.py
-python .\commodity\copper\src\copper\collectors\fx.py
+python .\shared\market_data\fx.py
 python .\commodity\copper\src\copper\collectors\certificate.py
 python .\commodity\copper\src\copper\collectors\physical.py
 python .\commodity\copper\src\copper\processing\build_physical_benchmark.py

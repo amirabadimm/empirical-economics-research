@@ -67,6 +67,7 @@ anchor range. Regression is retained as a sensitivity analysis rather than the o
 - Notebooks are analytical and presentation layers; they do not modify canonical raw data.
 - Source dates, units, calendar conversions, and data ages are validated explicitly.
 - Credentials are read only from environment variables and are never committed.
+- Cross-commodity inputs have one canonical owner; Copper and Zinc share the same USD/IRR series.
 
 Raw market data, source snapshots, local environments, and bulk generated datasets are excluded
 from Git. See [DATA_AVAILABILITY.md](DATA_AVAILABILITY.md) and
@@ -86,6 +87,7 @@ commodity/                 Commodity-specific empirical projects
   bitumen/
   rebar/
 shared/ime_data/           Reusable Iran Mercantile Exchange collection logic
+shared/market_data/        Shared cross-commodity inputs such as canonical USD/IRR
 energy_exchange/           Iran Energy Exchange documentation and research
 codal/                     Issuer-level Codal disclosure research
 reports/                   Research reports, source documents, and reproducible figures

@@ -14,6 +14,7 @@ empirical-economics-research/
 ├── energy_exchange/
 ├── codal/national_copper/
 ├── shared/ime_data/
+├── shared/market_data/
 ├── reports/{copper,zinc}/
 ├── docs/
 └── .venv/                         # local only; never versioned
@@ -46,6 +47,8 @@ python .\commodity\copper\src\copper\processing\build_physical_benchmark.py
 Collectors own raw-data persistence. Processing scripts read raw data and write only interim or
 processed outputs. Bubble/model tables belong under `processed/bubble`, never beside canonical
 source records. Notebooks may explore and visualize data but must not mutate canonical raw files.
+Cross-commodity inputs have one canonical owner under `shared/data/raw`; commodity-local copies
+are prohibited.
 
 ## Architecture history
 
@@ -63,6 +66,8 @@ source records. Notebooks may explore and visualize data but must not mutate can
 - 2026-08-29: commodity canonical physical and certificate CSVs were reaffirmed as independent
   raw datasets; physical, certificate-only, bubble/model, and other analysis outputs moved into
   separate processed-domain directories. Builders, notebooks, tests, and reports were migrated.
+- 2026-08-29: duplicate Copper and Zinc USD/IRR ownership was consolidated into one shared TGJU
+  collector and canonical series under `shared/market_data` and `shared/data/raw/fx`.
 
 ## Validation checkpoints
 

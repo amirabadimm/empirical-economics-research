@@ -21,6 +21,11 @@ coverage.xml
 commodity/*/data/raw/**
 !commodity/*/data/raw/**/.gitkeep
 
+# Workspace-wide market inputs shared by multiple commodity projects.
+shared/data/raw/**
+!shared/data/raw/**/
+!shared/data/raw/**/.gitkeep
+
 # Local/intermediate and reproducible bulk data are not committed by default.
 commodity/*/data/interim/**
 commodity/*/data/processed/**

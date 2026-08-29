@@ -49,7 +49,9 @@ date uniqueness, and writes atomically. The analytical field is cash settlement 
 
 ### Free-market USD/IRR
 
-`collectors/fx.py` merges the maintained historical series with recent TGJU close observations.
+`shared/market_data/fx.py` owns the workspace canonical series at
+`shared/data/raw/fx/usd_to_rial.csv`, merging maintained history with TGJU close observations.
+Copper reads that file directly and keeps no project-local FX copy.
 Historical user-supplied rows are preserved. The canonical unit is IRR per USD, and source labels
 remain explicit so legacy midpoint and recent close observations are distinguishable.
 
@@ -165,7 +167,7 @@ From the repository root:
 
 ```powershell
 python .\commodity\copper\src\copper\collectors\lme.py
-python .\commodity\copper\src\copper\collectors\fx.py
+python .\shared\market_data\fx.py
 python .\commodity\copper\src\copper\collectors\certificate.py
 python .\commodity\copper\src\copper\collectors\physical.py
 python .\commodity\copper\src\copper\processing\build_physical_benchmark.py

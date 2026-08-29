@@ -15,7 +15,7 @@ and preserves grade composition in every benchmark observation.
 | Certificate | 256 calendar rows; 184 positive-trading days through 2026-08-13 |
 | Broad physical zinc market | 6,235 rows; 3,462 positive trades through 1405/05/18 |
 | LME cash zinc | 4,709 dates from 2008-01-02 through 2026-08-14 |
-| Free-market USD/IRR | 13,067 dates through 1405/05/20 |
+| Shared free-market USD/IRR | 13,074 dates through 1405/05/31 |
 | Approved physical benchmark | 554 days through 2026-08-09 |
 
 ## Architecture and source governance
@@ -54,6 +54,10 @@ or two-grade dates. Current coverage includes 239 two-grade dates, 158 dates wit
 The intrinsic proxy is
 
 `LME cash zinc USD/kg × free-market USD/IRR`.
+
+USD/IRR is a workspace input owned by `shared/market_data/fx.py` and stored only at
+`shared/data/raw/fx/usd_to_rial.csv`. Zinc reads it directly; there is no Zinc-local FX collector,
+CSV, or snapshot archive.
 
 LME and FX are joined as-of to the latest observation on or before each target date. Source dates
 and data ages are retained. Missing or stale observations are visible rather than silently treated
@@ -97,7 +101,7 @@ From the repository root, run collectors first and then builders in dependency o
 
 ```powershell
 python .\commodity\zinc\src\zinc\collectors\lme.py
-python .\commodity\zinc\src\zinc\collectors\fx.py
+python .\shared\market_data\fx.py
 python .\commodity\zinc\src\zinc\collectors\certificate.py
 python .\commodity\zinc\src\zinc\collectors\physical.py
 python .\commodity\zinc\src\zinc\processing\build_physical_benchmark.py

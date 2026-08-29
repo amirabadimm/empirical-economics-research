@@ -74,7 +74,9 @@ def build(project_dir: Path) -> tuple[list[dict[str, str]], list[dict[str, str]]
         project_dir / "data" / "processed" / "physical" / "nci_copper_cash_daily.csv"
     )
     lme_rows = read_csv(copper_dir / "data" / "raw" / "lme" / "copper_lme_raw.csv")
-    usd_rows = read_csv(copper_dir / "data" / "raw" / "fx" / "usd_to_rial.csv")
+    usd_rows = read_csv(
+        project_dir.parents[1] / "shared" / "data" / "raw" / "fx" / "usd_to_rial.csv"
+    )
 
     certificate: dict[date, dict[str, Decimal]] = {}
     for row in certificate_rows:
