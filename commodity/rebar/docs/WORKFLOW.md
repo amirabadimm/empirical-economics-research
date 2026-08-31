@@ -38,15 +38,15 @@ The first run begins at 1386/01. Subsequent runs refresh the current month and t
 - `data/raw` contains the canonical raw CSV and frozen pre-consolidation snapshots; new complete responses belong to the shared archive.
 - `data/interim` may hold reproducible temporary cleaning/alignment stages.
 - `data/processed/physical` holds approved physical derivatives; `processed/certificate` is
-  reserved for certificate-only derivatives; `processed/bubble` is reserved for future bubbles.
+  reserved for certificate-only derivatives; `processed/bubble` holds reproducible comparison tables.
 - `src/rebar/collectors` owns source acquisition; `src/rebar/processing` will own deterministic derived builders when a specification is approved.
 - Notebooks may inspect data but must never modify canonical raw data.
 
 The active notebook uses `shared/notebook_tools/commodity_dashboard.py` for the standard read-only,
 responsive Plotly presentation pattern with a neutral dashboard background, white plot panels,
 consistent typography, and accessible grid contrast. Goods-type counts use all canonical physical rows and no certificate goods
-taxonomy is invented. Bubble visualization reads only an existing validated processed bubble CSV;
-therefore Rebar currently reports that no bubble is available.
+taxonomy is invented. Bubble visualization reads only the reproducible processed bubble CSV and
+does not calculate or repair a comparison in the notebook.
 
 The shared collector validates the complete expected IME schema and verifies that every canonical row still passes the rebar scope predicate. It preserves source date, unit, price, quantity, value, contract, settlement, and provenance fields. Calendar conversion, numeric-unit validation, and identity/uniqueness requirements must be specified and tested before a benchmark is built.
 
@@ -79,11 +79,45 @@ commodity ID `29`, exact description `گواهی سپرده پیوسته میل�
 nonnegative values, traded-day VWAP, unique dates, and writes atomically. It retains zero-trade
 records and does not transform the canonical source fields.
 
-No bubble builder is active. Historical launch notices describe A3 / 18 mm rebar, but current
-official warehouse and continuous-contract documentation must still establish grade, diameter,
-standard, lot conversion, eligible warehouse and producer, delivery timing, taxes, storage and
-transaction fees, and quotation units.
+### Exploratory exact-date bubble contract
+
+`src/rebar/processing/build_a3_18_exact_bubble.py` implements the deliberately narrow first
+comparison. Physical eligibility requires a label parsed as exactly one grade and diameter—A3 and
+18 mm—while excluding baskets, coil, alloy, short-length, mixed, simple/industrial, and other
+multi-product labels. It then requires a cash or cash-matching contract, rial currency, tonne unit,
+and positive executed quantity and price. Eligible same-day rows are aggregated by executed-
+quantity VWAP.
+
+Positive-volume certificate records are joined to physical observations only when their Gregorian
+dates are identical. The output formula is
+`100 × (certificate TodaySettlementPrice / physical Price VWAP − 1)`. No interpolation, as-of
+carry, forward-contract pooling, producer substitution, or delivery/storage/tax/fee adjustment is
+applied. The output retains Jalali and Gregorian dates, both prices, both activity measures,
+physical goods names, symbols, contracts, producer count and names, certificate code, price
+difference, percentage bubble, and alignment method.
+
+The builder writes `data/processed/bubble/rebar_a3_18_exact_date_bubble.csv` atomically. The current
+table has 5 observations from 2026-03-15 through 2026-05-26, all anchored by Isfahan Steel cash
+physical trades. Historical launch descriptions identify the certificate as A3 / 18 mm; however,
+the current official warehouse specification must still establish standard, lot conversion,
+eligible producer/warehouse, delivery timing, taxes, storage and transaction fees, and quotation
+basis. Consequently this is an exploratory gross quoted-price diagnostic, not an approved economic
+benchmark.
+
+### Intentional A3 / 12 mm sensitivity series
+
+`src/rebar/processing/build_a3_12_exact_bubble.py` reuses the exact same validated engine but
+changes the physical predicate to strict straight A3 / 12 mm. The output is
+`data/processed/bubble/rebar_a3_12_exact_date_bubble.csv`, with 46 exact-date observations from
+2025-11-12 through 2026-08-26. Its formula is
+`100 × (certificate TodaySettlementPrice / A3/12 physical cash Price VWAP − 1)`.
+
+Because the certificate launch description identifies A3 / 18 mm rather than A3 / 12 mm, every
+row carries `comparability_status=intentional_cross_diameter_diagnostic_not_underlying_match` and
+`alignment_method=exact_date_observed_cash_a3_12_cross_diameter`. This series is a requested
+sensitivity/nearby-product diagnostic, never the primary underlying comparison. No diameter
+equivalence is inferred.
 
 The required architecture is three separate datasets: canonical certificate records, canonical
-physical records, and—only after analytical approval—a derived bubble table. A bubble table must
+physical records, and a reproducible derived bubble table. A bubble table must
 never replace or act as the storage location for either source dataset.

@@ -7,8 +7,8 @@ Build an auditable physical-market dataset for Iranian steel rebar from the offi
 ## Current stage
 
 Canonical physical and certificate records remain separate under `data/raw/{physical,certificate}`.
-The optional A3 / 12 mm physical analysis lives under `data/processed/physical`; no rebar bubble
-exists.
+The optional A3 / 12 mm physical analysis lives under `data/processed/physical`. A separate
+exploratory exact-date A3 / 18 mm bubble lives under `data/processed/bubble`.
 
 Physical collection refreshed on 2026-08-29: 31,641 rebar-labelled IME rows from 1387/06/03
 through 1405/06/07. The active exploratory chart scope is plainly specified straight A3 / 12 mm
@@ -28,6 +28,8 @@ From the repository root:
 python .\commodity\rebar\src\rebar\collectors\physical.py
 python .\commodity\rebar\src\rebar\processing\build_a3_12_cash_daily.py
 python .\commodity\rebar\src\rebar\collectors\certificate.py
+python .\commodity\rebar\src\rebar\processing\build_a3_18_exact_bubble.py
+python .\commodity\rebar\src\rebar\processing\build_a3_12_exact_bubble.py
 ```
 
 The initial run queries all available IME months. Later runs refresh the current Jalali month and two preceding months. Complete responses are archived once in `shared/data/raw/ime/physical`; the historical Rebar-local archive is frozen but remains a valid rebuild input. Use `--start-month` and `--end-month` only for bounded recovery, and `--rebuild-from-snapshots` to reproduce the canonical CSV from shared plus legacy evidence.
@@ -47,8 +49,8 @@ The notebook also follows the workspace dashboard contract with responsive, cons
 interactive Plotly figures:
 source-coverage audit, separate physical and certificate volume charts, separate descriptive price panels, and a frequency table
 computed from every raw physical record by the unmodified `GoodsName`. Its readable bar chart shows
-the 30 most frequent labels while the returned table contains all labels. The bubble panel states
-that no validated Rebar bubble exists; it does not infer one.
+the 30 most frequent labels while the returned table contains all labels. The bubble panel reads
+only the processed exact-date CSV and never constructs a comparison inside the notebook.
 
 ## Certificate data
 
@@ -56,7 +58,27 @@ The official continuous rebar certificate collector uses commodity ID `29`, lega
 `CD1RBR0001`, and current code `SteelRebar`. The current canonical history has 268 records from
 2025-10-20 through 2026-08-27, including 194 traded days.
 
-No rebar bubble is computed at this stage. Historical launch notices identify the certificate
-deliverable as A3 / 18 mm rebar, but the current continuous contract and warehouse specification
-must be checked from official IME documentation before an analytical filter is approved. The
-existing A3 / 12 mm series remains a separate physical-market exploration only.
+## Exploratory exact-date A3 / 18 mm bubble
+
+`build_a3_18_exact_bubble.py` selects only plainly specified straight A3 / 18 mm physical rows,
+cash or cash-matching contracts, rial quotes, tonne quantities, and positive executed quantity and
+price. It volume-weights same-day physical rows and joins them only to positive-volume certificate
+records on the exact Gregorian date. It does not interpolate, carry prices forward, mix forward
+contracts, or adjust for storage, delivery, tax, or transaction costs.
+
+The current output contains 5 exact-date observations from 2026-03-15 through 2026-05-26. Every
+physical anchor is an Isfahan Steel (`ذوب آهن اصفهان`) cash trade. The percentage is
+`100 × (certificate settlement / physical cash VWAP − 1)` and remains an exploratory gross quoted-
+price diagnostic. Published launch descriptions identify A3 / 18 mm as the certificate product,
+but the current official warehouse specification, lot conversion, producer eligibility, delivery
+terms, and full fee/tax basis still require archival verification before this can be called an
+approved economic benchmark. The A3 / 12 mm series remains a separate physical exploration.
+
+## Intentional A3 / 12 mm cross-diameter diagnostic
+
+At the researcher's request, `build_a3_12_exact_bubble.py` applies the same positive-trade,
+cash/cash-matching, exact-date mechanics to plainly specified straight A3 / 12 mm physical trades.
+It produces 46 observations from 2025-11-12 through 2026-08-26 using
+`100 × (certificate settlement / A3/12 physical cash VWAP − 1)`. The CSV explicitly records
+`intentional_cross_diameter_diagnostic_not_underlying_match`; it must not be interpreted as a
+deliverable-underlying arbitrage series. It is useful as a nearby-diameter market diagnostic only.

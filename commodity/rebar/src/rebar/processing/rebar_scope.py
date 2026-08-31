@@ -16,6 +16,7 @@ EXCLUDED_PRODUCT_WORDS = (
 )
 REBAR_DIAMETERS_MM = {"8", "10", "12", "14", "16", "18", "20", "22", "25", "28", "32"}
 A3_12_PRODUCT = "A3 / 12 mm"
+A3_18_PRODUCT = "A3 / 18 mm"
 
 
 def canonical_straight_rebar_label(goods_name: Any) -> str | None:
@@ -38,3 +39,8 @@ def canonical_straight_rebar_label(goods_name: Any) -> str | None:
 def is_a3_12_straight_rebar(goods_name: Any) -> bool:
     """Return whether a source goods label is the exploratory A3 / 12 mm scope."""
     return canonical_straight_rebar_label(goods_name) == A3_12_PRODUCT
+
+
+def is_a3_18_straight_rebar(goods_name: Any) -> bool:
+    """Return whether a source goods label is the strict A3 / 18 mm scope."""
+    return canonical_straight_rebar_label(goods_name) == A3_18_PRODUCT

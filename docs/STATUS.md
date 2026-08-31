@@ -11,8 +11,9 @@ local snapshots remain frozen pre-consolidation evidence. Copper/Zinc LME collec
 regression now use shared engines with explicit commodity wrappers.
 
 Seven active commodity notebooks now include the same governed responsive Plotly market-dashboard section. Rebar
-adds all-record physical `GoodsName` counts and separate physical/certificate activity views while
-continuing to calculate no bubble.
+adds all-record physical `GoodsName` counts, separate physical/certificate activity views, a
+strict 5-observation exact-date A3 / 18 mm exploratory bubble, and a clearly marked 46-observation
+A3 / 12 mm cross-diameter sensitivity.
 
 | Project | Current data coverage | Research stage | Next action |
 |---|---|---|---|
@@ -20,7 +21,7 @@ continuing to calculate no bubble.
 | Iron-ore pellet | 268 certificate rows through 2026-08-27; 3,535 physical rows through 1405/06/07 | Exploratory underlying research; 23 exact-date bubbles | Validate quality/delivery comparability and approve a physical basket |
 | Zinc | 268 certificate rows through 2026-08-27; 6,325 physical rows through 1405/06/04 | Domain-separated three-bubble pipeline; notebooks and reports refreshed | Interpret results and monitor input freshness |
 | Bitumen | Certificate through 2026-08-15; physical through 1405/05/24 | Strict cash–cash diagnostic has 29 overlaps and a major 1405 price discontinuity; no production bubble approved | Verify units/specification, then test exact-date, bounded carry-forward, and lower-frequency alignment rules |
-| Steel rebar | 31,641 physical rows through 1405/06/07; 268 certificate rows through 2026-08-27 | Both unfiltered raw datasets collected; A3/12 remains physical-only exploration; no bubble | Verify the official A3/18 certificate specification before analytical matching |
+| Steel rebar | 31,641 physical rows through 1405/06/07; 268 certificate rows through 2026-08-27 | A3/18 exact-date exploratory bubble: 5 observations; marked A3/12 cross-diameter sensitivity: 46 | Verify official specification, units, eligibility, delivery and costs before benchmark approval |
 | Warehouse fees | 43 exact-date regimes plus 30 official-table observations back to 2016-10-29 | Official notices, Wayback recovery, and interval builder | Resolve exact boundaries for archived point observations |
 | Iran Energy Exchange | 21 certificate symbols; 7,070 rows through 2026-08-22; 1,432 actual traded rows | Feasibility assessment complete; project closed because activity is sparse and concentrated | None; preserve evidence and reproducible collector |
 | National Copper — Codal | 75 valid core quarters; 18 complete years; labor fields provisional | Core modern-plus-legacy history validated; labor audit pending | Build header-aware labor parser and reconcile non-monotonic cumulative values |

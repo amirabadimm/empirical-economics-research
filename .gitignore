@@ -62,3 +62,4 @@ codal/*/outputs/**/*
 reports/**/*.pdf
 reports/**/*.pptx
 reports/**/*.ttf
+commodity/*/articles/
