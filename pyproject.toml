@@ -15,6 +15,7 @@ dependencies = [
   "jdatetime",
   "numpy",
   "pandas",
+  "persiantools",
   "requests",
   "scikit-learn",
 ]
@@ -24,8 +25,11 @@ notebooks = [
   "ipython",
   "jupyterlab",
   "matplotlib",
+  "nbformat",
   "plotly",
+  "scipy",
   "seaborn",
+  "statsmodels",
 ]
 dev = [
   "pytest",
