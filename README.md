@@ -103,7 +103,7 @@ schema—for example, `energy_exchange/`.
 ## Environment
 
 Python 3.11 or newer is required. The two repositories on this workstation share the sibling
-environment `E:\\Finenv`. From the `E:\\Work` repository root in PowerShell:
+environment `..\Finenv`. From the repository root in PowerShell:
 
 ```powershell
 py -m venv ..\Finenv

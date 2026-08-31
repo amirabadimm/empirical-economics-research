@@ -1,5 +1,5 @@
 # Runtime and research dependencies for the empirical research workspace.
-# Keep this list aligned with pyproject.toml. Install into the shared E:\Finenv.
+# Keep this list aligned with pyproject.toml. Install into the shared ..\Finenv.
 beautifulsoup4>=4.12,<5
 jdatetime>=5,<7
 numpy>=1.26,<3
