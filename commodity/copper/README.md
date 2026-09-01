@@ -1,5 +1,22 @@
 # Copper Certificate Valuation
 
+This commodity workspace now contains two governed research systems: the original Iranian
+certificate-valuation study and a separate global copper-market data foundation. The latter
+reuses the existing LME history and never reacquires it.
+
+## Global copper-market data foundation
+
+Public first-wave sources are organized under `data/raw/global_market/<source>` with immutable
+source responses or files and atomic canonical manifests/tables. As of 2026-09-01 the collected
+foundation contains BGS world copper statistics (13,836 rows), main-contract COMEX copper CFTC
+positioning (869 weekly rows), IRENA world power capacity (543 rows), NBS China copper-products
+output (44 rows), and 206 USGS monthly copper survey workbooks. Exact licensed PRA benchmarks
+(Yangshan/US/Europe premiums and spot TC/RC) remain entitlement-gated and are not replaced with
+fabricated free series.
+
+The professional indicator/source registry is `docs/first_wave_source_dictionary.csv`; source
+assurance and collection constraints are documented in `docs/FIRST_WAVE_SOURCE_ASSURANCE.md`.
+
 ## Research question
 
 Does the Iranian copper-cathode warehouse receipt trade at a premium or discount to a
@@ -47,6 +64,8 @@ python .\commodity\copper\src\copper\collectors\lme.py
 python .\shared\market_data\fx.py
 python .\commodity\copper\src\copper\collectors\certificate.py
 python .\commodity\copper\src\copper\collectors\physical.py
+python .\commodity\copper\src\copper\collectors\global_market.py --sources nbs irena bgs cftc
+python .\commodity\copper\src\copper\collectors\usgs_archive.py
 python .\commodity\copper\src\copper\processing\build_physical_benchmark.py
 python .\commodity\copper\src\copper\processing\build_intrinsic_bubbles.py
 python .\commodity\copper\src\copper\processing\build_certificate_bubble.py

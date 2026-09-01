@@ -1,6 +1,21 @@
 # Copper Project Status
 
-Last updated: 2026-08-29
+Last updated: 2026-09-01
+
+## Global copper-market collection checkpoint
+
+The global-market subsystem has been added without modifying the existing LME raw history.
+Completed public collections are: BGS world copper statistics (13,836 observations, 1970 onward
+depending on table), CFTC main COMEX Grade #1 disaggregated futures-only positioning (869 weekly
+observations from 2010), IRENA world generating capacity by technology/grid status (543
+observations, 2000-2025), NBS China copper-products output via DBnomics (44 current-vintage
+observations), and 206 official USGS monthly Copper Mineral Industry Survey workbooks spanning
+2005-2025 with source gaps as published.
+
+FRED is registered but its server repeatedly reset connections during this collection session;
+no partial canonical FRED file was written. IEA Global EV Outlook 2026 is free but its XLSX
+download currently requires an IEA account session. Licensed physical-premium and spot TC/RC
+series remain explicit entitlement inputs, not reconstructed substitutes.
 
 Both active notebooks now include the governed workspace dashboard for source coverage,
 physical/certificate activity, goods composition, prices, and validated bubble visualization.

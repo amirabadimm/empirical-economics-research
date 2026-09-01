@@ -1,0 +1,32 @@
+priority,module,series_or_document,preferred_provider,canonical_owner,target_stage,status,dependency_or_guardrail
+0,exchange,LME cash price,Westmetall via shared LME engine,commodity/copper,data/raw/lme,active,Existing canonical series
+0,exchange,LME three-month price,Westmetall via shared LME engine,commodity/copper,data/raw/lme,active,Preserve cash-minus-three-month sign convention
+0,inventory,LME visible stock,Westmetall via shared LME engine,commodity/copper,data/raw/lme,active,Visible exchange stock is not total inventory
+0,fx,USD to IRR,shared market-data collector,shared,data/raw/fx,active,Never create a Copper-local copy
+0,domestic_physical,NICICO cathode cash benchmark,Iran Mercantile Exchange,commodity/copper,data/raw/physical,active,Approved exact-symbol and contract-method scope only
+0,certificate,Copper cathode warehouse receipt,Iran Mercantile Exchange,commodity/copper,data/raw/certificate,active,Keep separate from physical and global balance inputs
+0,concentrates,Iran concentrate exports and offers,Iran Mercantile Exchange,commodity/copper,data/raw/concentrate_export,local_evidence,Do not generalize Iran-specific evidence into a global balance
+0,research,COCHILCO report archive,COCHILCO,commodity/copper,articles/chicolo_reports,local_evidence,Inventory provenance before extracting observations
+0,issuer,NICICO quarterly financials,Codal,codal/national_copper,data/processed,active,Consume read-only with lineage; do not copy raw disclosures
+1,exchange,LME Grade A contract and delivery rules,London Metal Exchange,commodity/copper,documentation,planned,Required before warrant and deliverability analysis
+1,inventory,LME on-warrant cancelled and regional stocks,London Metal Exchange,commodity/copper,data/raw/provider_specific,planned,Document warehouse geography and revision policy
+1,exchange,COMEX copper contract and delivery rules,CME Group,commodity/copper,documentation,planned,Required before COMEX-LME spread
+1,exchange,SHFE copper contract and delivery rules,Shanghai Futures Exchange,commodity/copper,documentation,planned,Required before SHFE-LME comparison
+1,physical_premiums,Regional cathode premiums,licensed or official provider,commodity/copper,data/raw/provider_specific,blocked_source_selection,Must define grade location currency tax freight and quotation basis
+2,mine_supply,Mine production by country and mine,ICSG or documented primary sources,commodity/copper,data/raw/provider_specific,planned,Define contained-copper unit and revision policy
+2,mine_supply,Mine disruptions and guidance,producer disclosures,commodity/copper,data/raw/provider_specific,planned,Separate expected guidance from realized lost output
+2,concentrates,Spot and benchmark TC RC,licensed physical-market provider,commodity/copper,data/raw/provider_specific,blocked_access,Keep spot and benchmark observations separate
+2,concentrates,Global concentrate balance,ICSG or documented industry source,commodity/copper,data/raw/provider_specific,planned,Preserve statistical definition and publication vintage
+2,smelting_refining,Capacity utilization outages and cuts,ICSG or documented industry source,commodity/copper,data/raw/provider_specific,planned,Separate nameplate effective capacity and actual output
+2,refined_balance,Refined production usage and balance,ICSG,commodity/copper,data/raw/icsg,planned,Store supply usage and balance as distinct fields
+2,circularity,Secondary refined and scrap indicators,ICSG or documented trade source,commodity/copper,data/raw/provider_specific,planned,Separate secondary refining from direct-melt scrap
+3,china_demand,China refined and concentrate trade,Chinese customs or documented provider,commodity/copper,data/raw/provider_specific,planned,Retain gross imports exports and net derived value
+3,china_demand,SHFE inventory and nearby curve,Shanghai Futures Exchange,commodity/copper,data/raw/shfe,planned,Do not mix with LME inventory without geography
+3,china_demand,China import premium,documented physical-market provider,commodity/copper,data/raw/provider_specific,blocked_source_selection,Define tax and delivery basis
+3,end_use,Grid semis property EV and industrial indicators,official statistical providers,shared_or_commodity,data/raw/provider_specific,planned,Assign shared ownership when series is cross-commodity
+3,cross_market,Adjusted COMEX-LME spread,derived from validated exchange inputs,commodity/copper,data/processed/analysis,blocked_dependencies,Normalize units eligibility freight financing and timing
+3,cross_market,Adjusted SHFE-LME import margin,derived from validated exchange and FX inputs,commodity/copper,data/processed/analysis,blocked_dependencies,Normalize FX tax import terms and timing
+4,positioning,Managed-money positions and open interest,CFTC and exchanges,commodity/copper,data/raw/provider_specific,planned,Retain gross long gross short net and publication date
+4,macro,DXY rates PMI and industrial production,official or shared market-data providers,shared,data/raw/provider_specific,planned,Prevent look-ahead with release timestamps
+4,model,Physical confirmation and tightness composites,derived from validated module tables,commodity/copper,data/processed/analysis,blocked_dependencies,Do not build composites before individual signal validation
+4,model,Global price or regime model,derived from validated module tables,commodity/copper,data/processed/analysis,blocked_dependencies,Require time-series validation and out-of-sample tests

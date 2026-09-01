@@ -197,3 +197,20 @@ python .\commodity\copper\src\copper\processing\build_forward_gap_analysis.py
 
 Results are research documentation, not investment advice. The limited and uneven physical-anchor
 sample is the principal constraint on structural interpretation.
+
+## Global copper-market raw workflow
+
+`collectors/global_market.py` collects official/public structured sources into isolated source
+families beneath `data/raw/global_market`: BGS copper statistics, CFTC COMEX Grade #1 positioning,
+IRENA power capacity, NBS copper-products output, and registered FRED controls. Responses are
+archived before canonical CSVs are atomically replaced. BGS is fully paginated; CFTC archives are
+read year-by-year and filtered to contract code `085692`; LME is deliberately excluded.
+
+`collectors/usgs_archive.py` discovers both the official legacy index and current USGS copper
+page, downloads each XLS/XLSX only once, validates the workbook signature, and records byte size
+and SHA-256 in `usgs_copper_mis_manifest.csv`. Extraction from changing workbook layouts belongs
+in an interim processing step; raw workbooks are never edited.
+
+Source definitions, exact/proxy distinctions, access class, methodology breaks, and collection
+routes are governed by `first_wave_source_dictionary.csv`. A failed source must not replace an
+existing canonical file with empty or partial output.
