@@ -19,6 +19,8 @@ dependencies = [
   "requests",
   "scikit-learn",
   "truststore",
+  "xlrd",
+  "pypdf",
 ]
 
 [project.optional-dependencies]

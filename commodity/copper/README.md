@@ -7,10 +7,22 @@ reuses the existing LME history and never reacquires it.
 ## Global copper-market data foundation
 
 Public first-wave sources are organized under `data/raw/global_market/<source>` with immutable
-source responses or files and atomic canonical manifests/tables. As of 2026-09-01 the collected
+source responses or files and atomic canonical manifests/tables. As of 2026-09-02 the collected
 foundation contains BGS world copper statistics (13,836 rows), main-contract COMEX copper CFTC
 positioning (869 weekly rows), IRENA world power capacity (543 rows), NBS China copper-products
-output (44 rows), and 206 USGS monthly copper survey workbooks. Exact licensed PRA benchmarks
+output (44 rows), 206 USGS monthly copper survey workbooks, and COCHILCO company-level Chilean
+mine production (5,852 rows; continuous country totals from 2006-01 through 2026-05). CME now
+includes 76 preserved official Copper Stocks workbooks (2,065 warehouse/status rows covering 76
+activity dates from 2012-05-09 through 2026-08-31) and 131 preserved official metals bulletins
+(124 unique HG futures activity dates from 2014-06-27 through 2026-08-28, with Globex,
+open-outcry, and PNT/PIT volume plus open interest and its daily change). The
+SHFE foundation now contains 54,426 official copper contract-date observations across 4,536
+trading dates from 2008-01-02 through 2026-09-02, plus daily copper warrants for 2,798 dates
+from 2014-05-19 through 2025-11-17 and weekly inventory/capacity for 557 dates from 2014-05-23
+through 2025-11-14. Warrants and weekly physical inventory remain separate measures. The
+unauthenticated UN Comtrade preview returned 781 China copper-trade aggregates for a
+non-continuous 2010-2024 sample; it is retained with an explicit incomplete-preview flag and is
+not promoted as full history. Exact licensed PRA benchmarks
 (Yangshan/US/Europe premiums and spot TC/RC) remain entitlement-gated and are not replaced with
 fabricated free series.
 
@@ -66,6 +78,12 @@ python .\commodity\copper\src\copper\collectors\certificate.py
 python .\commodity\copper\src\copper\collectors\physical.py
 python .\commodity\copper\src\copper\collectors\global_market.py --sources nbs irena bgs cftc
 python .\commodity\copper\src\copper\collectors\usgs_archive.py
+python .\commodity\copper\src\copper\collectors\cochilco.py --report-year 2026 --report-month 6 --backfill
+python .\commodity\copper\src\copper\collectors\comtrade.py
+python .\commodity\copper\src\copper\collectors\cme.py
+python .\commodity\copper\src\copper\collectors\cme_bulletins.py
+python .\commodity\copper\src\copper\collectors\shfe.py
+python .\commodity\copper\src\copper\collectors\shfe_inventory.py
 python .\commodity\copper\src\copper\processing\build_physical_benchmark.py
 python .\commodity\copper\src\copper\processing\build_intrinsic_bubbles.py
 python .\commodity\copper\src\copper\processing\build_certificate_bubble.py

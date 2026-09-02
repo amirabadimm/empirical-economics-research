@@ -214,3 +214,37 @@ in an interim processing step; raw workbooks are never edited.
 Source definitions, exact/proxy distinctions, access class, methodology breaks, and collection
 routes are governed by `first_wave_source_dictionary.csv`. A failed source must not replace an
 existing canonical file with empty or partial output.
+
+`collectors/cochilco.py --backfill` uses five pinned January bulletin vintages plus the latest
+bulletin to construct a continuous company-level monthly panel. It parses Spanish-formatted kMT
+copper-content values, rejects vector/header mismatches, retains annual and monthly frequencies
+separately, and resolves overlaps in favor of the latest publication vintage.
+
+`collectors/comtrade.py` archives one official preview response per requested month for China's
+world-partner imports and exports of HS 2603, 7403, and 7404. The unauthenticated preview endpoint
+is demonstrably incomplete and must retain `source_access_tier=unauthenticated_preview_incomplete`.
+It cannot be used as continuous trade history until rerun through the free authenticated API.
+
+`collectors/cme.py` queries the Internet Archive CDX index for distinct captures of CME's official
+`Copper_Stocks.xls`, preserves every immutable workbook, parses warehouse-level registered,
+eligible, and total short tons, and selects the latest capture for each activity date. Older
+workbooks that publish only the exchange total remain valid rather than receiving invented status
+detail. `collectors/cme_bulletins.py` similarly preserves distinct official Section 62 metals
+bulletins and extracts only the unambiguous HG aggregate row. It retains Globex, legacy
+open-outcry, and PNT/PIT volume separately, derives their sum, and records open interest and its
+published change. Every output row carries its archive capture and replay URL; manifests expose
+the original CME URL and any parse error. Contract-month settlements remain raw-PDF evidence
+until a geometry-aware parser is separately validated.
+
+`collectors/shfe.py` incrementally checks official dated Daily Express JSON files, archives each
+published trading-day response once, normalizes legacy fixed-width identifiers, and filters only
+the exchange's `cu_f` futures contracts. The canonical table preserves each expiry rather than
+inventing a continuous contract. Prices remain CNY per metric tonne; volume and open interest
+remain SHFE lots; turnover is retained in the source's 10,000-CNY convention. Missing OHLC on an
+untraded expiry is valid, while settlement, volume, and open interest are required.
+
+`collectors/shfe_inventory.py` separately archives Daily Warrant and Weekly Inventory JSON files.
+It preserves Total, Total (Tax included), and Total (Bonded) rows. Daily warrant tonnes must not
+be relabelled as weekly physical inventory; weekly reports additionally retain inventory,
+inventory change, and warehouse capacity. The public dated endpoints currently end in November
+2025, so later missing periods remain missing until the replacement official route is identified.
