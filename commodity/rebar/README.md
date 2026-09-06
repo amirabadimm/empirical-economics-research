@@ -10,13 +10,13 @@ Canonical physical and certificate records remain separate under `data/raw/{phys
 The optional A3 / 12 mm physical analysis lives under `data/processed/physical`. A separate
 exploratory exact-date A3 / 18 mm bubble lives under `data/processed/bubble`.
 
-Physical collection refreshed on 2026-08-29: 31,641 rebar-labelled IME rows from 1387/06/03
-through 1405/06/07. The active exploratory chart scope is plainly specified straight A3 / 12 mm
-rebar under cash or cash-matching contracts. The broad raw scope remains immutable, and no
+Physical collection refreshed on 2026-09-06: 31,752 rebar-labelled IME rows from 1387/06/03
+through 1405/06/15. The active exploratory chart scope is plainly specified straight A3 / 12 mm
+rebar under cash or cash-matching contracts. The broad raw selection remains unchanged, and no
 producer/delivery-validated comparable-product benchmark has been approved.
 
-Continuous-certificate collection now covers 268 official daily records from 2025-10-20 through
-2026-08-27, including 194 traded days. Certificate/physical comparison remains exploratory.
+Continuous-certificate collection now covers 275 official daily records from 2025-10-20 through
+2026-09-05, including 199 traded days. Certificate/physical comparison remains exploratory.
 
 The raw scope includes every IME row whose normalized `GoodsName` identifies rebar, including all producers, standards, diameters, symbols, contract types, settlement terms, currencies, and zero-quantity offers. This is a source scope, not an assertion of economic comparability.
 
@@ -32,7 +32,7 @@ python .\commodity\rebar\src\rebar\processing\build_a3_18_exact_bubble.py
 python .\commodity\rebar\src\rebar\processing\build_a3_12_exact_bubble.py
 ```
 
-The initial run queries all available IME months. Later runs refresh the current Jalali month and two preceding months. Complete responses are archived once in `shared/data/raw/ime/physical`; the historical Rebar-local archive is frozen but remains a valid rebuild input. Use `--start-month` and `--end-month` only for bounded recovery, and `--rebuild-from-snapshots` to reproduce the canonical CSV from shared plus legacy evidence.
+The initial run queries all available IME months. Later runs start two months before the latest stored Jalali month and continue through the current date. Complete responses are archived once in `shared/data/raw/ime/physical`; the historical Rebar-local archive is frozen but remains a valid rebuild input. Use `--start-month` and `--end-month` only for bounded recovery, and `--rebuild-from-snapshots` to reproduce the canonical CSV from shared plus legacy evidence.
 
 See [`docs/WORKFLOW.md`](docs/WORKFLOW.md) for the source contract, data governance, validation, and the decision gates required before building any derived benchmark.
 
@@ -55,8 +55,8 @@ only the processed exact-date CSV and never constructs a comparison inside the n
 ## Certificate data
 
 The official continuous rebar certificate collector uses commodity ID `29`, legacy code
-`CD1RBR0001`, and current code `SteelRebar`. The current canonical history has 268 records from
-2025-10-20 through 2026-08-27, including 194 traded days.
+`CD1RBR0001`, and current code `SteelRebar`. The current canonical history has 275 records from
+2025-10-20 through 2026-09-05, including 199 traded days.
 
 ## Exploratory exact-date A3 / 18 mm bubble
 
@@ -78,7 +78,24 @@ approved economic benchmark. The A3 / 12 mm series remains a separate physical e
 
 At the researcher's request, `build_a3_12_exact_bubble.py` applies the same positive-trade,
 cash/cash-matching, exact-date mechanics to plainly specified straight A3 / 12 mm physical trades.
-It produces 46 observations from 2025-11-12 through 2026-08-26 using
+It produces 48 observations from 2025-11-12 through 2026-09-02 using
 `100 × (certificate settlement / A3/12 physical cash VWAP − 1)`. The CSV explicitly records
 `intentional_cross_diameter_diagnostic_not_underlying_match`; it must not be interpreted as a
 deliverable-underlying arbitrage series. It is useful as a nearby-diameter market diagnostic only.
+
+## Refresh verification (2026-09-06)
+
+The physical collector queried 1405/04 through 1405/06/15; the certificate collector queried
+2026-08-13 through 2026-09-06. Latest observations are 1405/06/15 for physical and
+2026-09-05 for certificates; a successful refresh does not imply a trade on every calendar day.
+The rebuilt A3 / 12 mm physical table has 188 dates from 1387/07/14 through 1405/06/11.
+
+Run the five commands above in order, stopping if any command fails, using a Python environment
+with the repository dependencies installed. For the dashboard, install the `notebooks` extra;
+for tests, install the `dev` extra. Validate with `python -m pytest commodity/rebar/tests -q`.
+The notebook discovers the workspace from either the repository root or its own folder and
+regenerates `outputs/figures/rebar_cash_vs_offer_base_price.html` when executed.
+Refresh and validation evidence is local under `logs/*20260906.log`.
+
+Saved notebook outputs are cleared to avoid retaining stale counts or bulk charts in Git;
+execute the notebook for current inline views. The refreshed HTML chart remains local in `outputs/figures`.

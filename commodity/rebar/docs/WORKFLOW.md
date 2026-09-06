@@ -1,12 +1,12 @@
 # Steel Rebar Physical-Market Workflow
 
-Last reviewed: 2026-08-29
+Last reviewed: 2026-09-06
 
 ## Objective and boundary
 
 This project collects official Iran Mercantile Exchange (IME) physical-market and continuous-
 certificate observations for steel rebar. It defines an exploratory A3 / 12 mm physical screen,
-but no certificate/physical comparison or approved homogeneous benchmark.
+plus exploratory exact-date certificate comparisons; no approved homogeneous benchmark exists.
 
 Rebar can vary materially by standard, diameter, grade, producer, bundle/lot terms, warehouse or delivery location, tax and quotation basis, contract type, settlement condition, and currency. None of these characteristics may be silently pooled in a derived series.
 
@@ -31,15 +31,15 @@ The collector retains zero-trade offers and all source fields. It never changes 
 3. Only the documented broad rebar rows are copied into the canonical CSV; schema and scope are validated before writing.
 4. Refreshes replace only the selected trailing months in the canonical CSV, preserving all older rows. The CSV is written to a sibling temporary file and atomically replaced only after validation succeeds.
 
-The first run begins at 1386/01. Subsequent runs refresh the current month and two prior Jalali months. New full-market responses are content-addressed in the shared archive. `--rebuild-from-snapshots` chooses the newest shared or frozen legacy response for each month and modifies no snapshot.
+The first run begins at 1386/01. Subsequent runs start two months before the latest stored Jalali month and fetch through the current date, including any intervening missing months. New full-market responses are content-addressed in the shared archive. `--rebuild-from-snapshots` chooses the newest shared or frozen legacy response for each month and modifies no snapshot.
 
 ## Data architecture and validation
 
 - `data/raw` contains the canonical raw CSV and frozen pre-consolidation snapshots; new complete responses belong to the shared archive.
 - `data/interim` may hold reproducible temporary cleaning/alignment stages.
-- `data/processed/physical` holds approved physical derivatives; `processed/certificate` is
+- `data/processed/physical` holds physical derivatives (currently exploratory); `processed/certificate` is
   reserved for certificate-only derivatives; `processed/bubble` holds reproducible comparison tables.
-- `src/rebar/collectors` owns source acquisition; `src/rebar/processing` will own deterministic derived builders when a specification is approved.
+- `src/rebar/collectors` owns source acquisition; `src/rebar/processing` owns the three deterministic exploratory derived builders described below.
 - Notebooks may inspect data but must never modify canonical raw data.
 
 The active notebook uses `shared/notebook_tools/commodity_dashboard.py` for the standard read-only,
@@ -108,8 +108,8 @@ benchmark.
 
 `src/rebar/processing/build_a3_12_exact_bubble.py` reuses the exact same validated engine but
 changes the physical predicate to strict straight A3 / 12 mm. The output is
-`data/processed/bubble/rebar_a3_12_exact_date_bubble.csv`, with 46 exact-date observations from
-2025-11-12 through 2026-08-26. Its formula is
+`data/processed/bubble/rebar_a3_12_exact_date_bubble.csv`, with 48 exact-date observations from
+2025-11-12 through 2026-09-02. Its formula is
 `100 × (certificate TodaySettlementPrice / A3/12 physical cash Price VWAP − 1)`.
 
 Because the certificate launch description identifies A3 / 18 mm rather than A3 / 12 mm, every
@@ -121,3 +121,29 @@ equivalence is inferred.
 The required architecture is three separate datasets: canonical certificate records, canonical
 physical records, and a reproducible derived bubble table. A bubble table must
 never replace or act as the storage location for either source dataset.
+
+## Complete refresh and verification
+
+1. Run `python commodity/rebar/src/rebar/collectors/physical.py` from the repository root.
+2. Run `python commodity/rebar/src/rebar/collectors/certificate.py`. Its default overlap starts
+   14 days before the latest stored certificate date and ends today; existing older dates remain.
+3. Run `python commodity/rebar/src/rebar/processing/build_a3_12_cash_daily.py`.
+4. Run `python commodity/rebar/src/rebar/processing/build_a3_18_exact_bubble.py`.
+5. Run `python commodity/rebar/src/rebar/processing/build_a3_12_exact_bubble.py`.
+6. Run `python -m pytest commodity/rebar/tests -q`, then execute
+   `notebooks/01_physical_price_analysis.ipynb` to refresh the dashboard and exported HTML chart.
+
+Stop on a failed stage; do not report downstream outputs as refreshed until both collectors and
+all builders succeed. Use a Python environment with the repository dependencies and the `dev`
+and `notebooks` extras. Notebook workspace discovery supports repository-root and notebook-folder
+launches. Keep execution logs in `logs`, HTML in `outputs`, and generated data outside Git.
+Canonical CSV changes occur only through the documented atomic collectors; source snapshots
+are never rewritten by processing or notebook execution.
+
+The 2026-09-06 refresh queried physical months 1405/04?1405/06 (through day 15) and certificate
+dates 2026-08-13?2026-09-06. It produced 31,752 physical rows, 275 certificate rows (199 traded),
+188 A3/12 physical daily rows, 5 A3/18 comparisons, and 48 A3/12 comparisons. The A3/12 daily
+coverage is 1387/07/14?1405/06/11. Report source observation dates separately from retrieval dates.
+
+Saved notebook outputs are cleared to avoid retaining stale counts or bulk charts in Git;
+execute the notebook for current inline views. The refreshed HTML chart remains local in `outputs/figures`.
