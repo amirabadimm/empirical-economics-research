@@ -7,8 +7,8 @@ Stage: exploratory exact-date A3 / 18 mm bubble built; specification QA remains 
 
 - Product project created for IME steel rebar physical-market data.
 - Broad source filter retains every normalized rebar-labelled row without quality, producer, symbol, contract, settlement, or trade-status exclusions.
-- The refreshed physical collection contains 31,752 source rows from 1387/06/03 through 1405/06/15; the canonical raw file remains local, the former monthly archive is frozen, and future complete responses use the shared content-addressed IME archive. All remain excluded from Git.
-- The standardized notebook dashboard counts 630 distinct `GoodsName` labels across all 31,752
+- The refreshed physical collection contains 31,753 source rows from 1387/06/03 through 1405/06/15; the canonical raw file remains local, the former monthly archive is frozen, and future complete responses use the shared content-addressed IME archive. All remain excluded from Git.
+- The standardized notebook dashboard counts 630 distinct `GoodsName` labels across all 31,753
   physical records and adds separate physical/certificate activity and price views. Its bubble
   panel reads the reproducible processed exact-date comparison.
 - The active chart scope is plainly specified straight A3 / 12 mm rebar under cash or cash-matching contracts. A deterministic builder produces its daily VWAP and percentage-difference output; the notebook visualizes it on source Jalali dates.
@@ -32,7 +32,7 @@ fees; then decide whether the exploratory exact-date diagnostic can become an ap
 ## Refresh verification ? 2026-09-06
 
 - Both incremental official collectors completed successfully through the current query date.
-  Physical rows increased by 111; certificate rows increased by 7, with 5 additional traded days.
+  Physical rows increased by 112; certificate rows increased by 7, with 5 additional traded days.
 - All three derived tables were rebuilt. The physical A3/12 table has 188 daily observations
   through 1405/06/11; the A3/12 comparison grew to 48 observations through 2026-09-02.
   The A3/18 series remains at 5 because no additional eligible exact-date matches were produced.
@@ -47,3 +47,9 @@ fees; then decide whether the exploratory exact-date diagnostic can become an ap
 
 Saved notebook outputs are cleared to avoid retaining stale counts or bulk charts in Git;
 execute the notebook for current inline views. The refreshed HTML chart remains local in `outputs/figures`.
+
+Refresh rechecked on 2026-09-06T13:41:53 (local time): both collectors queried through
+2026-09-06. Physical coverage is 31,753 rows through 1405/06/15; certificates remain at
+275 rows through 2026-09-05 (199 traded days). All three derived CSVs were rebuilt
+(188 physical daily rows, 5 A3/18 and 48 A3/12 exact-date comparisons); eight pipeline tests passed.
+Timestamped collector logs are retained under `logs/refresh_*_20260906T*.log`.

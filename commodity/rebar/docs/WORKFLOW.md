@@ -141,9 +141,15 @@ Canonical CSV changes occur only through the documented atomic collectors; sourc
 are never rewritten by processing or notebook execution.
 
 The 2026-09-06 refresh queried physical months 1405/04?1405/06 (through day 15) and certificate
-dates 2026-08-13?2026-09-06. It produced 31,752 physical rows, 275 certificate rows (199 traded),
+dates 2026-08-13?2026-09-06. It produced 31,753 physical rows, 275 certificate rows (199 traded),
 188 A3/12 physical daily rows, 5 A3/18 comparisons, and 48 A3/12 comparisons. The A3/12 daily
 coverage is 1387/07/14?1405/06/11. Report source observation dates separately from retrieval dates.
 
 Saved notebook outputs are cleared to avoid retaining stale counts or bulk charts in Git;
 execute the notebook for current inline views. The refreshed HTML chart remains local in `outputs/figures`.
+
+Refresh rechecked on 2026-09-06T13:41:53 (local time): both collectors queried through
+2026-09-06. Physical coverage is 31,753 rows through 1405/06/15; certificates remain at
+275 rows through 2026-09-05 (199 traded days). All three derived CSVs were rebuilt
+(188 physical daily rows, 5 A3/18 and 48 A3/12 exact-date comparisons); eight pipeline tests passed.
+Timestamped collector logs are retained under `logs/refresh_*_20260906T*.log`.

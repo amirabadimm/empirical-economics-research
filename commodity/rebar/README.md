@@ -10,7 +10,7 @@ Canonical physical and certificate records remain separate under `data/raw/{phys
 The optional A3 / 12 mm physical analysis lives under `data/processed/physical`. A separate
 exploratory exact-date A3 / 18 mm bubble lives under `data/processed/bubble`.
 
-Physical collection refreshed on 2026-09-06: 31,752 rebar-labelled IME rows from 1387/06/03
+Physical collection refreshed on 2026-09-06: 31,753 rebar-labelled IME rows from 1387/06/03
 through 1405/06/15. The active exploratory chart scope is plainly specified straight A3 / 12 mm
 rebar under cash or cash-matching contracts. The broad raw selection remains unchanged, and no
 producer/delivery-validated comparable-product benchmark has been approved.
@@ -99,3 +99,9 @@ Refresh and validation evidence is local under `logs/*20260906.log`.
 
 Saved notebook outputs are cleared to avoid retaining stale counts or bulk charts in Git;
 execute the notebook for current inline views. The refreshed HTML chart remains local in `outputs/figures`.
+
+Refresh rechecked on 2026-09-06T13:41:53 (local time): both collectors queried through
+2026-09-06. Physical coverage is 31,753 rows through 1405/06/15; certificates remain at
+275 rows through 2026-09-05 (199 traded days). All three derived CSVs were rebuilt
+(188 physical daily rows, 5 A3/18 and 48 A3/12 exact-date comparisons); eight pipeline tests passed.
+Timestamped collector logs are retained under `logs/refresh_*_20260906T*.log`.
