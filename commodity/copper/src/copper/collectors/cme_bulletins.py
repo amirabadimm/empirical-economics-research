@@ -11,6 +11,7 @@ from pathlib import Path
 
 import requests
 import truststore
+import pdfplumber
 from pypdf import PdfReader
 
 
@@ -18,6 +19,14 @@ PROJECT_DIR = Path(__file__).resolve().parents[3]
 SOURCE_DIR = PROJECT_DIR / "data" / "raw" / "global_market" / "cme"
 CDX_URL = "https://web.archive.org/cdx/search/cdx"
 BULLETIN_URL = "www.cmegroup.com/daily_bulletin/current/Section62_Metals_Futures_Products.pdf"
+CONTRACT_FIELDS = [
+    "trade_date", "contract_month", "globex_open_usd_per_lb", "globex_high_usd_per_lb",
+    "globex_low_usd_per_lb", "settlement_usd_per_lb", "settlement_change_usd_per_lb",
+    "settlement_unchanged", "settlement_nominal", "globex_volume_contracts",
+    "open_outcry_volume_contracts", "pnt_pit_volume_contracts", "open_interest_contracts",
+    "open_interest_change_contracts",
+    "archive_capture_utc", "original_source_url", "replay_url",
+]
 
 
 def capture_index(session: requests.Session, timeout: int) -> list[dict]:
@@ -80,6 +89,116 @@ def parse_bulletin(payload: bytes) -> dict:
     }
 
 
+def _number(text: str, integer: bool = False) -> float | int | None:
+    value = text.strip().replace(",", "").replace("/", "")
+    value = re.sub(r"[ABNP]$", "", value)
+    if value in {"", "----", "--"}:
+        return None
+    match = re.search(r"[-+]?\d+" if integer else r"[-+]?\d+(?:\.\d+)?", value)
+    if not match:
+        return None
+    return int(match.group()) if integer else float(match.group())
+
+
+def _line_groups(words: list[dict]) -> list[list[dict]]:
+    groups: list[list[dict]] = []
+    for word in sorted(words, key=lambda item: (item["top"], item["x0"])):
+        if not groups or abs(groups[-1][0]["top"] - word["top"]) > 1.0:
+            groups.append([word])
+        else:
+            groups[-1].append(word)
+    return [sorted(group, key=lambda item: item["x0"]) for group in groups]
+
+
+def _bin_text(words: list[dict], lower: float, upper: float) -> str:
+    return "".join(word["text"] for word in words if lower <= word["x0"] < upper)
+
+
+def parse_contract_prices(payload: bytes, trade_date: str) -> list[dict]:
+    """Parse HG contract rows using PDF coordinates, not flattened-text spacing."""
+    rows: list[dict] = []
+    with pdfplumber.open(io.BytesIO(payload)) as document:
+        legacy_layout = "OPEN OUTCRY" in "\n".join(page.extract_text() or "" for page in document.pages)
+        in_hg = False
+        for page in document.pages:
+            for words in _line_groups(page.extract_words()):
+                line = " ".join(word["text"] for word in words)
+                if line.startswith("HG FUT COMEX COPPER FUTURES"):
+                    in_hg = True
+                    continue
+                if not in_hg:
+                    continue
+                if line.startswith("TOTAL HG FUT"):
+                    in_hg = False
+                    continue
+                contract = words[0]["text"] if words else ""
+                if not re.fullmatch(r"[A-Z]{3}\d{2}", contract):
+                    continue
+                open_text = _bin_text(words, 35, 75) if legacy_layout else _bin_text(words, 110, 180)
+                high_low_text = "".join(
+                    word["text"] for word in words
+                    if ((125 <= word["x0"] < 195) if legacy_layout
+                        else (180 <= word["x0"] < 270))
+                )
+                high_low = re.findall(r"\d+(?:\.\d+)?", high_low_text)
+                high_text = high_low[0] if high_low else ""
+                low_text = high_low[1] if len(high_low) > 1 else ""
+                settlement_text = (
+                    _bin_text(words, 350, 387) if legacy_layout else _bin_text(words, 270, 315)
+                )
+                change_words = [
+                    word["text"] for word in words
+                    if ((387 <= word["x0"] < 430) if legacy_layout
+                        else (315 <= word["x0"] < 400))
+                ]
+                change_text = "".join(change_words)
+                unchanged = "UNCH" in change_text
+                change = 0.0 if unchanged else _number(change_text.replace("+", ""))
+                if change is not None and change_text.startswith("-"):
+                    change = -abs(float(change))
+                rows.append({
+                    "trade_date": trade_date,
+                    "contract_month": contract,
+                    "globex_open_usd_per_lb": _number(open_text),
+                    "globex_high_usd_per_lb": _number(high_text),
+                    "globex_low_usd_per_lb": _number(low_text),
+                    "settlement_usd_per_lb": _number(settlement_text),
+                    "settlement_change_usd_per_lb": change,
+                    "settlement_unchanged": unchanged,
+                    "settlement_nominal": settlement_text.endswith("N"),
+                    "globex_volume_contracts": _number(
+                        _bin_text(words, 460, 504) if legacy_layout else _bin_text(words, 400, 470),
+                        integer=True,
+                    ),
+                    "open_outcry_volume_contracts": _number(
+                        _bin_text(words, 425, 460), integer=True
+                    ) if legacy_layout else None,
+                    "pnt_pit_volume_contracts": _number(
+                        _bin_text(words, 500, 530) if legacy_layout else _bin_text(words, 470, 530),
+                        integer=True,
+                    ),
+                    "open_interest_contracts": _number(
+                        _bin_text(words, 530, 558) if legacy_layout else _bin_text(words, 530, 562),
+                        integer=True,
+                    ),
+                    "open_interest_change_contracts": _signed_integer(
+                        words, 558 if legacy_layout else 562
+                    ),
+                })
+    if not rows:
+        raise RuntimeError("missing coordinate-parsed HG contract rows")
+    return rows
+
+
+def _signed_integer(words: list[dict], lower: float) -> int | None:
+    text = "".join(word["text"] for word in words if word["x0"] >= lower)
+    if "UNCH" in text:
+        return 0
+    sign = -1 if text.startswith("-") else 1
+    value = _number(text.lstrip("+-"), integer=True)
+    return None if value is None else sign * int(value)
+
+
 def download(session: requests.Session, url: str, timeout: int) -> bytes:
     last_error: Exception | None = None
     for attempt in range(5):
@@ -106,6 +225,7 @@ def collect(timeout: int, delay: float) -> tuple[Path, int]:
     captures = capture_index(session, timeout)
     manifest_rows: list[dict] = []
     observations: list[dict] = []
+    contracts: list[dict] = []
     for index, capture in enumerate(captures, start=1):
         timestamp = capture["timestamp"]
         replay_url = f"https://web.archive.org/web/{timestamp}id_/{capture['original']}"
@@ -123,6 +243,14 @@ def collect(timeout: int, delay: float) -> tuple[Path, int]:
                 "replay_url": replay_url,
             }
             observations.append(row)
+            contracts.extend(
+                contract | {
+                    "archive_capture_utc": timestamp,
+                    "original_source_url": capture["original"],
+                    "replay_url": replay_url,
+                }
+                for contract in parse_contract_prices(payload, row["trade_date"])
+            )
         except Exception as exc:
             error = f"{type(exc).__name__}: {exc}"
         manifest_rows.append(capture | {"replay_url": replay_url, "snapshot": snapshot.name, "parse_error": error})
@@ -148,7 +276,20 @@ def collect(timeout: int, delay: float) -> tuple[Path, int]:
         writer.writeheader()
         writer.writerows(rows)
     output.with_suffix(".csv.tmp").replace(output)
+    latest_contracts = {}
+    for row in contracts:
+        key = (row["trade_date"], row["contract_month"])
+        if key not in latest_contracts or row["archive_capture_utc"] > latest_contracts[key]["archive_capture_utc"]:
+            latest_contracts[key] = row
+    contract_rows = sorted(latest_contracts.values(), key=lambda row: (row["trade_date"], row["contract_month"]))
+    contract_output = SOURCE_DIR / "comex_copper_contract_prices_raw.csv"
+    with contract_output.with_suffix(".csv.tmp").open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=CONTRACT_FIELDS)
+        writer.writeheader()
+        writer.writerows(contract_rows)
+    contract_output.with_suffix(".csv.tmp").replace(contract_output)
     print(f"cme bulletins: {len(captures)} official PDFs; {len(rows)} unique trade dates")
+    print(f"cme contract prices: {len(contract_rows)} contract-date rows -> {contract_output}")
     return output, len(rows)
 
 

@@ -1,0 +1,260 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+\definecolor{complete}{HTML}{1B7F3A}
+\definecolor{partial}{HTML}{B36B00}
+\definecolor{blocked}{HTML}{A32222}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\done}{\textcolor{complete}{Collected}}
+\newcommand{\partialdone}{\textcolor{partial}{Partial}}
+\newcommand{\blockedstatus}{\textcolor{blocked}{Blocked}}
+
+\title{Global Copper Data Inventory and Completion Roadmap}
+\author{Copper Research Workspace}
+\date{Repository checkpoint: 2 September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This document records what global copper data are currently held in the Copper project, how the
+datasets should be counted, what each dataset contains, its principal limitation, and the work
+required to complete the global-market research layer. It is intended to be self-contained so it
+can be supplied to another ChatGPT session without access to the repository.
+\end{abstract}
+
+\section{Executive answer}
+
+The project currently has \textbf{nine collected source families} inside
+\code{commodity/copper/data/raw/global_market}. They yield \textbf{twelve canonical analytical
+CSV tables}, together with \textbf{one USGS raw-workbook collection} containing 206 official
+files that has not yet been normalized into a canonical analytical table. Thus, the most useful
+headline count is \textbf{13 global-market dataset products}: 12 tabular datasets and one
+workbook archive.
+
+The existing LME copper file is deliberately stored outside \code{global_market} and reused
+rather than reacquired. If it is included in the broad business count, the project has
+\textbf{14 source-level global copper holdings}. That LME file supplies three distinct raw
+indicators---cash price, three-month price, and visible stock---plus a planned derived
+cash-minus-three-month spread.
+
+Two CSV manifests for CME and one manifest each for SHFE and USGS are provenance/control tables,
+not separate economic datasets. Immutable JSON, PDF, XLS/XLSX, and other source snapshots are
+evidence files and are likewise not counted as analytical datasets.
+
+\section{Collected global-market datasets}
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.6cm}
+                  >{\raggedright\arraybackslash}p{2.5cm}
+                  >{\raggedright\arraybackslash}p{3.3cm}
+                  >{\raggedright\arraybackslash}p{2.2cm}
+                  >{\raggedright\arraybackslash}p{4.6cm}}
+\caption{Canonical tables under \code{data/raw/global_market}.}\label{tab:inventory}\\
+\toprule
+No. & Source and dataset & Coverage / size & Status & Content and principal caveat \\
+\midrule
+\endfirsthead
+\toprule
+No. & Source and dataset & Coverage / size & Status & Content and principal caveat \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+1 & BGS world copper statistics & 13,836 rows; from 1970 depending on table & \done &
+Country-level production/trade-style mineral statistics with statistic, sub-commodity, unit and
+year retained. Table-dependent coverage means series must not be treated as one balanced panel.\\
+
+2 & CFTC COMEX copper positioning & 869 weekly rows; 2010-01-05 to 2026-08-25 & \done &
+Disaggregated futures-only positions for COMEX Grade No. 1 copper, contract code 085692. Annual
+schemas are unioned and the stable as-of field is used to construct a unique report date.\\
+
+3 & CME COMEX warehouse stocks & 2,065 rows over 76 activity dates; 2012-05-09 to 2026-08-31 &
+\done & Registered, eligible and total copper stock observations by delivery point where the
+source provides that detail. Historical archive dates are sparse and units remain short tons in raw.\\
+
+4 & CME HG daily aggregate activity & 124 unique trade dates; 2014-06-27 to 2026-08-28 & \done &
+Globex, legacy open-outcry and PNT/PIT volume, total futures volume, open interest and published
+change. It is official archive-backed evidence, but not a continuous daily history.\\
+
+5 & CME HG contract prices & 3,294 contract-date rows over the same 124 dates & \done &
+Per-expiry Globex open/high/low, official settlement and change, volume channels and open
+interest. The geometry-aware parser is validated against bulletin aggregates; archive spacing
+still prevents treating it as a complete trading calendar.\\
+
+6 & COCHILCO Chile mine production by company & 5,852 rows; continuous country totals from
+2006-01 to 2026-05 & \done & Monthly and annual company-level copper-content production from
+pinned bulletin vintages. Publication vintage and provisional status must remain visible.\\
+
+7 & UN Comtrade China copper trade & 781 rows in a non-continuous 2010--2024 sample &
+\partialdone & China/world imports and exports for HS 2603, 7403 and 7404. The unauthenticated
+preview response is explicitly incomplete and cannot be promoted to continuous trade history.\\
+
+8 & IRENA world power capacity & 543 rows; 2000--2025 & \done & Generating capacity by region,
+technology and grid-connection status. This is an end-use/infrastructure proxy, not measured
+copper demand.\\
+
+9 & NBS/DBnomics China copper-products output & 44 current-vintage rows & \done & Official NBS
+copper-products output delivered through DBnomics. The present panel is short and
+current-vintage; revision/vintage limitations must be retained.\\
+
+10 & SHFE copper futures by contract & 54,426 contract-date rows over 4,536 trading dates;
+2008-01-02 to 2026-09-02 & \done & Per-expiry OHLC, prior/current settlement, volume, open
+interest, open-interest change and turnover. Raw prices are CNY/tonne and activity uses SHFE lots;
+no continuous contract is invented.\\
+
+11 & SHFE daily copper warrants & 8,976 rows over 2,992 dates; 2014-05-19 to 2026-09-02 & \done &
+Three published tax-status categories per date. Daily warrant tonnage is kept distinct from
+weekly physical inventory.\\
+
+12 & SHFE weekly copper inventory & 1,782 rows over 594 dates; 2014-05-23 to 2026-08-28 & \done &
+Three categories per date with inventory, change, warrants, warrant change and warehouse
+capacity. The collector preserves a 2025 publication-format transition without changing schema.\\
+\end{longtable}
+\normalsize
+
+\subsection{USGS archive awaiting normalization}
+
+The thirteenth product is a manifest-backed collection of \textbf{206 official USGS monthly
+Copper Mineral Industry Survey workbooks}, spanning 2005--2025 with gaps as published. Each file
+is immutable and recorded with URL, byte size, SHA-256 digest and status. Because workbook layouts
+change, extraction must occur in \code{data/interim}; the raw workbooks must never be edited.
+
+\subsection{Existing LME source reused by the global study}
+
+The pre-existing \code{data/raw/lme/copper_lme_raw.csv} contains 4,719 observations through
+2026-08-28 according to the current project checkpoint. It provides LME cash copper, LME
+three-month copper and visible LME stock. It is not duplicated below \code{global_market}.
+The first required derived table should compute the explicitly signed spread
+$\text{cash}-\text{three-month}$ and stock changes without altering the raw file.
+
+\section{What is already strong}
+
+\begin{itemize}[leftmargin=*]
+  \item Exchange coverage is strongest for SHFE: long daily, maturity-level price and activity
+        history plus separate daily warrants and weekly inventory.
+  \item COMEX now has official, archive-backed stocks and bulletins with traceable replay URLs,
+        although bulletin dates are sparse.
+  \item Positioning is usable: the CFTC series has complete, unique canonical report dates.
+  \item Chilean mine supply has a continuous monthly country total and company detail with vintage
+        handling.
+  \item All collectors preserve source responses before atomic canonical refreshes; failed or
+        partial requests must not replace valid canonical data.
+\end{itemize}
+
+\section{Remaining work}
+
+\subsection{Immediate work using data already held}
+
+These tasks need no new external data and should be completed first:
+
+\begin{enumerate}[leftmargin=*]
+  \item Build \code{lme_curve_and_stock_daily.csv}: cash, three-month, signed spread, curve regime,
+        stock and 1/5/20-observation stock changes.
+  \item Normalize the 206 USGS workbooks into version-aware interim tables, with layout detection,
+        unit checks, duplicate-key tests and explicit published gaps.
+  \item Build deterministic nearby/deferred COMEX and SHFE research series from individual
+        expiries. Preserve selected contract and roll flags; do not overwrite maturity-level raw.
+  \item Add daily/weekly inventory changes and comparable unit conversions in processed tables.
+        Never merge LME, COMEX and SHFE stocks without preserving geography, eligibility and unit.
+  \item Extend the governed event timeline with event type, geography, affected market module,
+        publication timestamp, source and observed-versus-interpreted flag.
+\end{enumerate}
+
+\subsection{Access and completeness blockers}
+
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{UN Comtrade:} obtain a free API key and rerun every requested month for China/world
+        flows of HS 2603, 7403 and 7404. Validate continuity, uniqueness and gross-flow signs before
+        removing the incomplete-preview label.
+  \item \textbf{CME complete daily history:} acquire licensed delivery or user-supplied official
+        daily-volume files. The live host prohibits automated retrieval; sparse Internet Archive
+        bulletins must not be presented as a continuous history.
+  \item \textbf{FRED/BLS controls:} collect the broad dollar, policy rate, nominal and real yields,
+        CNY/USD and selected official macro/scrap controls when network access is available. Store
+        cross-commodity inputs under the shared market-data owner, not in Copper-local raw data.
+  \item \textbf{US data-centre construction:} use a Census API key or approved official files for
+        the exact monthly series beginning in 2014. Do not substitute an unlabeled third-party series.
+  \item \textbf{IEA electric vehicles / data centres:} obtain an authenticated official workbook
+        or accessible chart export, recording historical versus estimate/forecast boundaries.
+\end{enumerate}
+
+\subsection{Missing physical and upstream fundamentals}
+
+\begin{enumerate}[leftmargin=*]
+  \item Document official LME, COMEX and SHFE contract, warehouse, warrant and delivery rules before
+        calculating cross-exchange spreads or claims about deliverability.
+  \item Select properly licensed regional cathode-premium series (Yangshan, United States and
+        Europe) with grade, location, currency, quotation, tax and freight basis documented.
+  \item Add mine production by country/mine, disruptions and company guidance; keep expected lost
+        output separate from realized production.
+  \item Add spot and benchmark treatment/refining charges (TC/RC), global concentrate balance,
+        smelter/refinery capacity and utilization, cuts, refined output, SX-EW and secondary supply.
+  \item Add ICSG-style refined production, usage, balance and inventory concepts as separate fields,
+        with publication vintage and statistical definition preserved.
+\end{enumerate}
+
+\subsection{Demand, cross-market analysis and modelling}
+
+\begin{enumerate}[leftmargin=*]
+  \item Add China refined/concentrate trade after Comtrade authentication, an explicitly defined
+        China import premium, semis/grid/property/EV indicators, and broader fabrication proxies.
+  \item Construct COMEX--LME and SHFE--LME comparisons only after normalizing units, FX, VAT/duty,
+        freight, financing, contract timing and delivery eligibility.
+  \item Preserve release timestamps, align frequencies without look-ahead, and test lead/lag and
+        regime behavior out of sample.
+  \item Build composite tightness scores or price models only after the individual inputs have
+        stable definitions and validated behavior. Global analytical outputs belong in
+        \code{data/processed/analysis}; domestic bubble models remain in
+        \code{data/processed/bubble}.
+\end{enumerate}
+
+\section{Recommended execution order}
+
+\begin{enumerate}[leftmargin=*]
+  \item Finish documentation and derived LME/SHFE/COMEX tables from existing holdings.
+  \item Authenticate and complete Comtrade; normalize the USGS workbook archive.
+  \item Resolve shared macro collectors and official contract/delivery documentation.
+  \item Secure licensed physical premiums and TC/RC data; add mine, smelter and refined balances.
+  \item Add demand proxies and normalized cross-exchange economics.
+  \item Only then perform event studies, composites and forecasting.
+\end{enumerate}
+
+\section{Governance and completion test}
+
+Raw source files and snapshots are immutable. Collectors alone may refresh canonical raw CSVs,
+and must do so incrementally, idempotently and atomically. Derived files belong only in
+\code{data/interim} or the appropriate \code{data/processed} subdirectory. Cross-commodity inputs
+belong under the shared owner and must be referenced rather than copied. Credentials must come
+from the environment and must never be written to code or documentation.
+
+The global-market layer is complete only when every active module has: (1) a documented source
+contract; (2) immutable canonical raw evidence; (3) a validated derived table; (4) a reproducible
+update procedure; (5) automated tests; (6) a coverage record; and (7) explicit limitations.
+
+\section{Repository references}
+
+The authoritative local references used for this inventory are:
+
+\begin{itemize}[leftmargin=*]
+  \item \code{commodity/copper/README.md}
+  \item \code{commodity/copper/docs/STATUS.md}
+  \item \code{commodity/copper/docs/WORKFLOW.md}
+  \item \code{commodity/copper/docs/GLOBAL_MARKET_FRAMEWORK.md}
+  \item \code{commodity/copper/docs/FIRST_WAVE_SOURCE_ASSURANCE.md}
+  \item \code{commodity/copper/docs/first_wave_source_dictionary.csv}
+  \item \code{commodity/copper/docs/global_market_source_backlog.csv}
+\end{itemize}
+
+\end{document}

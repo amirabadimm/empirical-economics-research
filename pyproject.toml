@@ -21,6 +21,7 @@ dependencies = [
   "truststore",
   "xlrd",
   "pypdf",
+  "pdfplumber",
 ]
 
 [project.optional-dependencies]

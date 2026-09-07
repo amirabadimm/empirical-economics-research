@@ -204,7 +204,11 @@ sample is the principal constraint on structural interpretation.
 families beneath `data/raw/global_market`: BGS copper statistics, CFTC COMEX Grade #1 positioning,
 IRENA power capacity, NBS copper-products output, and registered FRED controls. Responses are
 archived before canonical CSVs are atomically replaced. BGS is fully paginated; CFTC archives are
-read year-by-year and filtered to contract code `085692`; LME is deliberately excluded.
+read year-by-year and filtered to contract code `085692`. The collector derives canonical
+`report_date` from CFTC's stable `As_of_Date_In_Form_YYMMDD`, validates it against the archive year,
+unions fields across every annual schema, and rejects duplicate report dates. This avoids treating
+the sparsely populated legacy display-date column as the observation key. LME is deliberately
+excluded.
 
 `collectors/usgs_archive.py` discovers both the official legacy index and current USGS copper
 page, downloads each XLS/XLSX only once, validates the workbook signature, and records byte size
@@ -232,7 +236,10 @@ workbooks that publish only the exchange total remain valid rather than receivin
 detail. `collectors/cme_bulletins.py` similarly preserves distinct official Section 62 metals
 bulletins and extracts only the unambiguous HG aggregate row. It retains Globex, legacy
 open-outcry, and PNT/PIT volume separately, derives their sum, and records open interest and its
-published change. Every output row carries its archive capture and replay URL; manifests expose
+published change. A geometry-aware parser also creates `comex_copper_contract_prices_raw.csv`;
+it uses the labelled pre-2015 and current CME column layouts to retain contract month, Globex
+open/high/low, official settlement and change, all volume channels, and open interest. Every output
+row carries its archive capture and replay URL; manifests expose
 the original CME URL and any parse error. Contract-month settlements remain raw-PDF evidence
 until a geometry-aware parser is separately validated.
 
@@ -243,8 +250,10 @@ inventing a continuous contract. Prices remain CNY per metric tonne; volume and 
 remain SHFE lots; turnover is retained in the source's 10,000-CNY convention. Missing OHLC on an
 untraded expiry is valid, while settlement, volume, and open interest are required.
 
-`collectors/shfe_inventory.py` separately archives Daily Warrant and Weekly Inventory JSON files.
+`collectors/shfe_inventory.py` separately archives Daily Warrant and Weekly Inventory source files.
 It preserves Total, Total (Tax included), and Total (Bonded) rows. Daily warrant tonnes must not
 be relabelled as weekly physical inventory; weekly reports additionally retain inventory,
-inventory change, and warehouse capacity. The public dated endpoints currently end in November
-2025, so later missing periods remain missing until the replacement official route is identified.
+inventory change, and warehouse capacity. It uses the historical all-product JSON endpoints first,
+then falls back to SHFE's official product-specific HTML route introduced after 2025-11-17. The
+canonical schema is unchanged across the source-format transition, and the boundary totals must
+reconcile using each report's published change field.

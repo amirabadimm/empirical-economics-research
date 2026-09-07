@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import http.client
 import io
 import json
 import time
@@ -61,7 +62,12 @@ def _request(url: str, timeout: int, data: bytes | None = None, retries: int = 5
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 return response.read()
-        except (OSError, urllib.error.HTTPError, urllib.error.URLError) as error:
+        except (
+            OSError,
+            http.client.IncompleteRead,
+            urllib.error.HTTPError,
+            urllib.error.URLError,
+        ) as error:
             last_error = error
             if isinstance(error, urllib.error.HTTPError) and error.code < 500 and error.code != 429:
                 raise
@@ -228,13 +234,23 @@ def collect_cftc(timeout: int, start_year: int) -> tuple[Path, int]:
                 "COMMODITY EXCHANGE" in market.upper()
                 and contract_code == "85692"
             ):
+                compact_date = str(row.get("As_of_Date_In_Form_YYMMDD", "")).strip()
+                report_date = datetime.strptime(compact_date, "%y%m%d").date()
+                if report_date.year != year:
+                    raise RuntimeError(
+                        f"CFTC source-year/date mismatch: {year=} {compact_date=}"
+                    )
+                row["report_date"] = report_date.isoformat()
                 row["source_year"] = year
                 row["source_url"] = url
                 rows.append(row)
         time.sleep(0.1)
     if not rows:
         raise RuntimeError("CFTC archives contained no COMEX copper rows")
-    fields = list(rows[0])
+    fields = sorted({key for row in rows for key in row})
+    rows.sort(key=lambda row: row["report_date"])
+    if len({row["report_date"] for row in rows}) != len(rows):
+        raise RuntimeError("CFTC COMEX copper rows contain duplicate report dates")
     return _write_csv("cftc", "comex_copper_disaggregated_cot_raw.csv", fields, rows), len(rows)
 
 
@@ -242,7 +258,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sources", nargs="+", default=["fred", "nbs", "irena", "bgs", "cftc"])
     parser.add_argument("--timeout", type=int, default=120)
-    parser.add_argument("--cftc-start-year", type=int, default=2006)
+    parser.add_argument("--cftc-start-year", type=int, default=2010)
     args = parser.parse_args()
     collectors = {
         "fred": lambda: collect_fred(args.timeout),

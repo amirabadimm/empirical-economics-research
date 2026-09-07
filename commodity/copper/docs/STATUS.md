@@ -7,7 +7,7 @@ Last updated: 2026-09-02
 The global-market subsystem has been added without modifying the existing LME raw history.
 Completed public collections are: BGS world copper statistics (13,836 observations, 1970 onward
 depending on table), CFTC main COMEX Grade #1 disaggregated futures-only positioning (869 weekly
-observations from 2010), IRENA world generating capacity by technology/grid status (543
+observations from 2010-01-05 through 2026-08-25), IRENA world generating capacity by technology/grid status (543
 observations, 2000-2025), NBS China copper-products output via DBnomics (44 current-vintage
 observations), and 206 official USGS monthly Copper Mineral Industry Survey workbooks spanning
 2005-2025 with source gaps as published.
@@ -25,19 +25,19 @@ the collectors use Internet Archive replay of official CME files and preserve ev
 All 76 distinct Copper Stocks XLS workbooks parse to 2,065 canonical warehouse/status rows across
 76 activity dates from 2012-05-09 through 2026-08-31. All 131 distinct metals-bulletin PDFs parse
 to 124 unique HG futures trade dates from 2014-06-27 through 2026-08-28. The bulletin table retains
-Globex, legacy open-outcry, and PNT/PIT volume separately, their summed futures volume, open
-interest, and the published daily open-interest change. Contract-month settlement extraction is
-not yet promoted because the PDF text geometry requires a separate validation pass.
+3,294 unique contract-date price rows across those dates, including Globex OHLC, official
+settlement/change, volume channels, and open interest. Contract-level volume reconciles to each
+published aggregate after including the four legacy open-outcry dates. The dates remain sparse.
 
 The SHFE presentation-layer slider is also no longer a data block. Official dated Daily Express
 JSON files produced 54,426 copper contract observations across 4,536 trading dates from
 2008-01-02 through 2026-09-02, including OHLC, previous/current settlement, volume, open interest,
 open-interest change, and turnover where published. Official Daily Warrant files produced three
-tax-status totals for 2,798 dates from 2014-05-19 through 2025-11-17. Official Weekly Inventory
-files produced the same three categories for 557 dates from 2014-05-23 through 2025-11-14,
+tax-status totals for 2,992 dates from 2014-05-19 through 2026-09-02. Official Weekly Inventory
+files produced the same three categories for 594 dates from 2014-05-23 through 2026-08-28,
 retaining physical inventory, inventory change, warrants, warrant change, and warehouse capacity.
-The known warrant and weekly-inventory endpoints cease publishing after November 2025; this is
-recorded as an endpoint transition, not forward-filled.
+The collector handles SHFE's 2025-11-18 publication transition from all-product JSON files to
+official product-specific HTML files. Daily and weekly totals reconcile exactly across that break.
 
 FRED is registered but its server repeatedly reset connections during this collection session;
 no partial canonical FRED file was written. IEA Global EV Outlook 2026 is free but its XLSX
@@ -45,7 +45,10 @@ download currently requires an IEA account session. Licensed physical-premium an
 series remain explicit entitlement inputs, not reconstructed substitutes.
 
 The live CME host still returns an IP/WAF denial, but its stock and bulletin datasets are now
-collected through preserved official files. SHFE's report pages still show an interactive slider,
+collected through preserved official files. CME's official `/ftp/daily_volume/` index exposes
+dated workbooks from 2014 onward, but scripted workbook retrieval from the current environment
+returns CME's explicit automated-access prohibition; the index is therefore discovered but not
+misrepresented as collected. SHFE's report pages still show an interactive slider,
 but dated official JSON data files are directly collectible. BLS's public API and bulk host remain
 blocked from the current network.
 

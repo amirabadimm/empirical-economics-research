@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
 import json
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -11,6 +12,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 import requests
+import pandas as pd
 import truststore
 
 
@@ -18,6 +20,13 @@ PROJECT_DIR = Path(__file__).resolve().parents[3]
 SOURCE_DIR = PROJECT_DIR / "data" / "raw" / "global_market" / "shfe"
 DAILY_URL = "https://www.shfe.com.cn/data/tradedata/future/dailydata/{date}dailystock.dat"
 WEEKLY_URL = "https://www.shfe.com.cn/data/tradedata/future/weeklydata/{date}weeklystock.dat"
+DAILY_HTML_URL = "https://www.shfe.cn/data/tradedata/future/stockdata/dailystock_{date}/ZH/shfe/cu.html"
+WEEKLY_HTML_URL = "https://www.shfe.cn/data/tradedata/future/stockdata/weeklystock_{date}/ZH/shfe/cu.html"
+CATEGORY_NAMES = {
+    "保税商品总计": "Total (Bonded)",
+    "完税商品总计": "Total (Tax included)",
+    "总计": "Total",
+}
 
 
 def english(value: object) -> str:
@@ -49,6 +58,51 @@ def parse_totals(payload: bytes, source_url: str, snapshot: str, frequency: str)
     return rows
 
 
+def parse_html_totals(payload: bytes, source_url: str, snapshot: str, frequency: str) -> list[dict]:
+    tables = pd.read_html(io.StringIO(payload.decode("utf-8")))
+    if len(tables) < 2:
+        raise RuntimeError("SHFE stock HTML lacks its data table")
+    table = tables[1]
+    raw_date = snapshot.rsplit("_", 1)[-1].removesuffix(".html")
+    report_date = f"{raw_date[:4]}-{raw_date[4:6]}-{raw_date[6:8]}"
+    rows = []
+    if frequency == "daily":
+        for source in table.to_dict("records"):
+            category = CATEGORY_NAMES.get(str(source.get("仓库", "")).strip())
+            if category:
+                rows.append({
+                    "report_date": report_date,
+                    "inventory_category": category,
+                    "inventory_tonnes": None,
+                    "inventory_change_tonnes": None,
+                    "warrants_tonnes": int(source["期货"]),
+                    "warrant_change_tonnes": int(source["增减"]),
+                    "warehouse_capacity_tonnes": None,
+                    "frequency": frequency,
+                    "source_url": source_url,
+                    "snapshot": snapshot,
+                })
+    else:
+        for source in table.to_dict("records"):
+            category = CATEGORY_NAMES.get(str(source.get(("仓库", "仓库"), "")).strip())
+            if category:
+                rows.append({
+                    "report_date": report_date,
+                    "inventory_category": category,
+                    "inventory_tonnes": int(source[("本周库存", "小计")]),
+                    "inventory_change_tonnes": int(source[("库存增减", "小计")]),
+                    "warrants_tonnes": int(source[("本周库存", "期货")]),
+                    "warrant_change_tonnes": int(source[("库存增减", "期货")]),
+                    "warehouse_capacity_tonnes": int(source[("可用库容量", "本周")]),
+                    "frequency": frequency,
+                    "source_url": source_url,
+                    "snapshot": snapshot,
+                })
+    if len(rows) != 3:
+        raise RuntimeError(f"expected three SHFE copper total categories, found {len(rows)}")
+    return rows
+
+
 def dates(start: date, end: date, weekly: bool) -> list[date]:
     values = []
     current = start
@@ -59,7 +113,7 @@ def dates(start: date, end: date, weekly: bool) -> list[date]:
     return values
 
 
-def fetch(task: tuple[date, str, str], timeout: int) -> tuple[date, str, str, bytes | None]:
+def fetch(task: tuple[date, str, str], timeout: int) -> tuple[date, str, str, bytes | None, str]:
     day, frequency, template = task
     url = template.format(date=f"{day:%Y%m%d}")
     last_error: Exception | None = None
@@ -67,11 +121,21 @@ def fetch(task: tuple[date, str, str], timeout: int) -> tuple[date, str, str, by
         try:
             response = requests.get(url, headers={"User-Agent": "Mozilla/5.0 empirical-research"}, timeout=timeout)
             if response.status_code == 404:
-                return day, frequency, url, None
+                html_template = DAILY_HTML_URL if frequency == "daily" else WEEKLY_HTML_URL
+                html_url = html_template.format(date=f"{day:%Y%m%d}")
+                html_response = requests.get(
+                    html_url, headers={"User-Agent": "Mozilla/5.0 empirical-research"}, timeout=timeout
+                )
+                if html_response.status_code == 404:
+                    return day, frequency, html_url, None, "html"
+                html_response.raise_for_status()
+                if not html_response.content.lstrip().lower().startswith(b"<html"):
+                    raise RuntimeError(f"non-HTML SHFE response: {html_url}")
+                return day, frequency, html_url, html_response.content, "html"
             response.raise_for_status()
             if not response.content.lstrip().startswith(b"{"):
                 raise RuntimeError(f"non-JSON SHFE response: {url}")
-            return day, frequency, url, response.content
+            return day, frequency, url, response.content, "json"
         except (requests.RequestException, RuntimeError) as error:
             last_error = error
             if attempt < 4:
@@ -87,15 +151,18 @@ def collect(start: date, end: date, timeout: int, workers: int) -> tuple[Path, P
     pending = []
     for task in tasks:
         day, frequency, _ = task
-        snapshot = SOURCE_DIR / f"{frequency}_inventory_snapshots" / f"shfe_{frequency}_inventory_{day:%Y%m%d}.json"
-        if not snapshot.exists():
+        folder = SOURCE_DIR / f"{frequency}_inventory_snapshots"
+        stem = folder / f"shfe_{frequency}_inventory_{day:%Y%m%d}"
+        if not stem.with_suffix(".json").exists() and not stem.with_suffix(".html").exists():
             pending.append(task)
     with ThreadPoolExecutor(max_workers=workers) as executor:
-        for index, (day, frequency, _, payload) in enumerate(executor.map(lambda task: fetch(task, timeout), pending), 1):
+        for index, (day, frequency, _, payload, file_type) in enumerate(
+            executor.map(lambda task: fetch(task, timeout), pending), 1
+        ):
             if payload is not None:
                 folder = SOURCE_DIR / f"{frequency}_inventory_snapshots"
                 folder.mkdir(exist_ok=True)
-                with (folder / f"shfe_{frequency}_inventory_{day:%Y%m%d}.json").open("xb") as handle:
+                with (folder / f"shfe_{frequency}_inventory_{day:%Y%m%d}.{file_type}").open("xb") as handle:
                     handle.write(payload)
             if index % 250 == 0:
                 print(f"shfe inventory: checked {index}/{len(pending)} reports", flush=True)
@@ -107,6 +174,14 @@ def collect(start: date, end: date, timeout: int, workers: int) -> tuple[Path, P
         for snapshot in sorted(folder.glob("*.json")) if folder.exists() else []:
             stamp = snapshot.stem.rsplit("_", 1)[-1]
             rows.extend(parse_totals(snapshot.read_bytes(), template.format(date=stamp), snapshot.name, frequency))
+        html_template = DAILY_HTML_URL if frequency == "daily" else WEEKLY_HTML_URL
+        for snapshot in sorted(folder.glob("*.html")) if folder.exists() else []:
+            stamp = snapshot.stem.rsplit("_", 1)[-1]
+            rows.extend(
+                parse_html_totals(
+                    snapshot.read_bytes(), html_template.format(date=stamp), snapshot.name, frequency
+                )
+            )
         rows.sort(key=lambda row: (row["report_date"], row["inventory_category"]))
         output = SOURCE_DIR / f"shfe_copper_{'warrants_daily' if frequency == 'daily' else 'inventory_weekly'}_raw.csv"
         temporary = output.with_suffix(".csv.tmp")
