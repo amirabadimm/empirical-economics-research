@@ -1,0 +1,6 @@
+﻿asset_id,label,asset_class,currency,price_unit,source_path,date_column,price_column,calendar,return_basis,enabled
+tehran_housing,Tehran residential sale price per square metre,housing,,,,,,,price_only,false
+gold_18k,TGJU 18-karat gold 750,gold,,,,,,,price_only,false
+fixed_income,Fixed-income candidates: CBI one-year bank-deposit series plus separately collected ETF and اخزا proxies,fixed_income,IRR,annual deposit rate,"data/raw/fixed_income/bank_deposits/cbi_one_year_deposit_rate_annual.csv",jalali_year,selected_one_year_rate_percent,Jalali,annual_nominal_rate,true
+tse_total_index,Tehran Stock Exchange total index,equity,,index_points,,,,,methodology_to_verify,false
+

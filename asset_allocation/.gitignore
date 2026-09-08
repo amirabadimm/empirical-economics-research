@@ -1,0 +1,17 @@
+﻿data/raw/**
+data/interim/**
+data/processed/**
+logs/**
+outputs/**
+reports/**
+!**/
+!**/.gitkeep
+!reports/*.md
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
+.cache/
+.venv/
+.env
+.env.*
+*.log
