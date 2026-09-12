@@ -21,9 +21,9 @@ finite valuation and retained source path/date, units, currency, and return basi
 derived data and must never replace raw sources. Instruments requiring different return
 methods must be identified by their adapters.
 
-Current outputs are aligned valuations, returns, and coverage diagnostics. Portfolio weights
-and performance outputs are intentionally absent until a revised risk-adjusted methodology is
-specified and approved.
+Current persisted outputs are aligned valuations, returns, and coverage diagnostics. Stage I
+weights and performance diagnostics are computed in the notebook but are not published as a
+canonical result dataset. Stage II outputs remain absent pending a risk-policy input.
 
 Official CBI Tehran housing PDFs are raw immutable evidence under
 `data/raw/housing/cbi/reports/`. The extracted workbook is interim, not canonical raw or
@@ -31,8 +31,11 @@ curated output. Its citywide grain is one row per Jalali month; price unit is mi
 per square metre. Required lineage fields include source PDF and provenance method.
 
 
-No yearly optimization contract is active. Any future model must define its reward, risk,
-constraints, estimation window, benchmarks, and treatment of 1405 YTD before implementation.
+The notebook's Stage I contract uses full years 1396-1404 plus 1405/01-05 YTD, with
+gold/equity/housing as the risky
+sleeve, Etemad as the investable benchmark, long-only risky weights summing to one, buy-and-hold
+intra-year drift, and an annualized mean differential-return-to-tracking-error objective. It is
+explicitly ex-post. No Stage II contract is active.
 
 ## TSETMC fixed-income source: اعتماد
 
@@ -79,12 +82,20 @@ referenced by active configuration or processing and must not be merged into thi
 - `data/processed/analysis/monthly_asset_returns.csv`: 125 months from 1395/01 through 1405/05
   crossed with all four assets. Each valid return equals current month-end level divided by the
   preceding month-end level minus one.
+- `data/processed/analysis/housing_data_quality_audit.csv`: one row per official CBI month,
+  preserving normalized and original extracted levels, source PDF, provenance, verification
+  evidence, quality flag, reconstructed return, and non-destructive extreme-return diagnostic.
 
 The key is unique on `(jalali_period, asset_id)`. The files retain units, source observation
 dates, source method, source path, return definition, quality flags, and missing reasons. Daily
 gold and TEDPIX use the last valid observation in the Jalali month. اعتماد uses the final traded
 observation. Housing uses CBI through 1403/05 and chain-linked Kilid afterward. No return is
 zero-filled, forward-filled, or interpolated.
+
+`config/housing_cbi_overrides.csv` is the reproducible adjudication layer. Each row records the
+original extracted value, corrected or retained value, normalized unit, primary and verification
+reports, evidence, reason, audit date, and quality flag. The builder refuses an override if its
+recorded original no longer equals the workbook extraction.
 
 The primary housing input is the CBI interim workbook with one Tehran-wide row per Jalali month,
 price in million IRR/m², source PDF, provenance method and extraction method through 1403/05.
@@ -94,6 +105,6 @@ raw level, factor, source path, regime, and the flag `secondary_proxy_low_overla
 
 ## Portfolio-analysis status
 
-The canonical monthly levels and returns are inputs, not portfolio recommendations. The former
-annual allocation outputs and diagnostics were retired. No optimizer output is part of the
-current data contract; a new risk-adjusted methodology must be documented before regeneration.
+The canonical monthly levels and returns are inputs, not recommendations. Stage I diagnostics
+are notebook outputs only and are not part of the persisted data contract. No Stage II output is
+authorized until the investor's risk policy is documented.

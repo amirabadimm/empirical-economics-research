@@ -4,10 +4,10 @@
     "end_jalali":  "1405-05-31",
     "requested_end_year_jalali":  1405,
     "base_currency":  "IRR",
-    "base_currency_status":  "proposed",
+    "base_currency_status":  "authoritative",
     "analysis_frequency":  "monthly",
     "analysis_frequency_status":  "authoritative_monthly_return_inputs_complete",
-    "objective":  "pending_revised_risk_adjusted_methodology",
+    "objective":  "ex_post_stage_i_benchmark_relative_risky_sleeve",
   "fixed_income_preference":  ["etf_etemad_only"],
   "fixed_income_candidate": {
     "fund_name": "صندوق سرمایه گذاری اعتمادآفرین پارسیان",
@@ -27,7 +27,7 @@
   ],
     "allow_silent_proxy_splicing":  false,
     "require_full_coverage_audit":  true,
-    "portfolio_methodology_status":  "pending",
+    "portfolio_methodology_status":  "stage_i_implemented_stage_ii_pending_risk_policy",
     "collection_order":  [
                              "fixed_income",
                              "gold_18k",

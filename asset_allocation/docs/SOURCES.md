@@ -37,3 +37,7 @@ The official CBI monthly report corpus is primary. Its 87 PDFs support a 101-row
 extraction covering 1395/01–1403/05. The processed panel retains CBI through that endpoint and
 uses chain-linked Kilid afterward, with source-specific provenance and quality flags. See
 [HOUSING.md](HOUSING.md).
+Source-verified extraction adjudications are recorded in `config/housing_cbi_overrides.csv`.
+They preserve the original workbook value and cite both the primary report and adjacent official
+verification where available. The processed series is regenerated from this layer; the notebook
+does not contain housing corrections.

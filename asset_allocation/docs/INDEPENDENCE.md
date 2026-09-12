@@ -6,8 +6,9 @@ runnable for a professional portfolio.
 ## Asset allocation
 
 Own README, scope, source contract, dependency manifest, and local data/output layout.
-No sibling source imports exist. Source adapters are not implemented. Source paths in future
-code must resolve from this project or explicit configuration, never a hard-coded workstation.
+No sibling source imports exist. Project-local collectors, housing audit code, panel construction,
+tests, and the analysis notebook are implemented. Source paths resolve from this project or
+explicit configuration, never from a hard-coded workstation.
 The project is still a folder in the parent Git repository, not a separate repository.
 
 ## Existing workspace audit
@@ -27,5 +28,5 @@ research project. Common infrastructure can remain a separately installable, ver
 shared raw inputs retain one canonical owner and are provided through explicit configuration.
 Avoid copying evolving helpers or moving immutable snapshots as a shortcut.
 
-Repository topology is pending: separate Git repositories versus independently runnable folders
-in one portfolio repository. No existing projects have been moved, repackaged, or split yet.
+The project remains an independently runnable folder in the parent portfolio repository. A future
+repository split is optional and is not required for reproducible local execution.

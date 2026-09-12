@@ -2,8 +2,8 @@
 
 ## Research objective
 
-Build and validate a four-asset monthly-return panel from 1395/01/01 through 1405/05/31.
-Portfolio optimization is a later stage and remains pending a revised risk-adjusted design.
+Build and validate a four-asset monthly-return panel from 1395/01/01 through 1405/05/31,
+then perform an ex-post Stage I risky-sleeve allocation analysis for complete CBI years.
 
 The four assets are:
 1. Fixed income: exchange-traded Iranian fixed-income funds (صندوق درآمد ثابت بورسی).
@@ -13,10 +13,16 @@ The four assets are:
 
 ## Mathematical specification
 
-No portfolio objective is currently approved. The previous return-to-volatility formulation
-and its results were retired. Before implementing a new model, document the economic meaning of
-reward and risk, estimation window, annual/YTD handling, rebalancing rule, constraints, and
-robustness checks. Do not infer these choices from the return panel.
+Stage I allocates the risky sleeve across gold, equity, and Tehran housing. Etemad is the
+investable benchmark. For each complete year—and separately for 1405/01-05 YTD—positions are
+bought once and held, and the model
+maximizes `sqrt(12) * mean(risky_sleeve_return - benchmark_return) / sample_std(...)` subject to
+nonnegative risky weights summing to one. This is an ex-post information-ratio-style statistic,
+not a forecast or an unqualified Sharpe ratio.
+
+Stage II will choose the total-wealth share assigned to the Stage I sleeve. It requires an
+explicit volatility target, drawdown constraint, or risk-aversion input and is not inferred from
+market history alone.
 
 ## Stage 1: collect fixed-income history first
 
@@ -62,6 +68,17 @@ Keep ChatGPT-assisted extracted workbooks in `data/interim` until continuity,
 duplicates, positivity, units, recomputed returns, source-file lineage and provenance
 all pass validation. CBI observations take priority over every secondary housing source.
 
+Never patch a housing level or return in the analysis notebook. Record source adjudications in
+`config/housing_cbi_overrides.csv` with the original value, corrected value, unit, primary report,
+verification report, evidence, reason, date, and quality flag. The builder must verify the
+original value before applying the correction. Regenerate the level panel, return panel, and
+housing quality audit together.
+
+Use adjacent official reports to cross-check current-month levels against the previous-month
+column in the following report and, where useful, the same-month-prior-year column. Treat large
+changes as diagnostic flags only. Correct a level only after direct source review; otherwise
+retain it with an unresolved or revision-disagreement flag.
+
 Audit Kilid against CBI over 1402/06–1403/05. Because level and return agreement is weak, treat
 Kilid as a secondary proxy, not an equivalent source. Keep CBI unchanged through 1403/05. Convert
 Kilid from million toman/m² to million IRR/m², chain-link it at 1403/05 using `885 / 866`, and use
@@ -100,13 +117,16 @@ annual price observations provides only one annual return, which is insufficient
 within-year volatility/covariance. If monthly housing history is unavailable, revise the
 estimation design explicitly rather than manufacture observations.
 
-## Stage 6: portfolio methodology, pending
+## Stage 6: portfolio methodology
 
-Do not calculate or publish portfolio weights until the revised risk-adjusted scenario is
-specified. A future design must distinguish ex-post description from investable out-of-sample
-analysis, address the small number of monthly observations per year, and define how incomplete
-1405 is handled. New model code, tests, diagnostics, and outputs must be introduced together
-only after that contract is approved.
+Stage I is implemented in `notebooks/asset_allocation_analysis.ipynb` for 1396-1404 and the
+five-month 1405 YTD period. Each solution is checked against corner
+portfolios, equal weights, and 25,000 deterministic random simplex portfolios. Results are
+reported as hindsight diagnostics and retain the 12-observation annual-sample limitation.
+
+Stage II remains pending. Do not publish a total allocation until an investor risk policy is
+specified. Incomplete 1405 is optimized and reported strictly as a five-month YTD diagnostic,
+never as a full-year result.
 
 ## Data governance and independent execution
 
@@ -120,8 +140,8 @@ historical snapshots. Validate unique keys and reject conflicting records. Crede
 only from the environment.
 
 Derived data goes only to data/interim or data/processed/analysis. Numerical returns, weights,
-coverage tables, and model diagnostics belong there. Notebooks go in notebooks, logs in logs,
-and presentation artifacts in outputs or reports. Raw, snapshots, logs, caches, environments,
+coverage tables, and model diagnostics belong there. Notebooks go in `notebooks/`; presentation
+artifacts should be created under `reports/` only when needed. Raw, snapshots, logs, caches, environments,
 and bulk results stay out of Git. Update README, WORKFLOW, STATUS, and relevant contracts when
 sources, schemas, paths, formulas, or stage status change.
 
@@ -139,5 +159,6 @@ and Esfand-only proxy workflows are retired and must not be regenerated.
 
 ### Portfolio analysis
 
-No active optimization procedure exists. Preserve the canonical return panel unchanged while a
-new risk-adjusted methodology is designed and reviewed.
+Run the notebook only after rebuilding and testing the canonical panels. The notebook may read
+the processed data but must not modify it. Preserve the distinction between ex-post Stage I
+results and any future investable, out-of-sample Stage II analysis.

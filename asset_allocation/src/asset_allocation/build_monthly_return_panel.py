@@ -21,6 +21,7 @@ GOLD_PATH = PROJECT_ROOT / "data/raw/gold_18k/tgju_gold_18k_daily.csv"
 EQUITY_PATH = PROJECT_ROOT / "data/raw/tse_total_index/tedpix_daily.csv"
 FIXED_INCOME_PATH = PROJECT_ROOT / "data/raw/fixed_income/etf/etemad.csv"
 HOUSING_PATH = PROJECT_ROOT / "data/interim/cbi_tehran_housing_monthly_1395_1403M05.xlsx"
+HOUSING_OVERRIDES_PATH = PROJECT_ROOT / "config/housing_cbi_overrides.csv"
 KILID_PATH = PROJECT_ROOT / "data/raw/housing/kilid/snapshots/455cd4d7f670e77bd8a5928301d3e321b6e879157ac38b2beff9a4751755c807.html"
 LEVELS_PATH = PROJECT_ROOT / "data/processed/analysis/monthly_asset_levels.csv"
 RETURNS_PATH = PROJECT_ROOT / "data/processed/analysis/monthly_asset_returns.csv"
@@ -50,7 +51,7 @@ LEVEL_FIELDS = (
     "jalali_period", "jalali_year", "jalali_month", "asset_id", "month_end_level",
     "raw_source_level", "link_factor", "unit",
     "source_observation_date", "source_method", "source_file", "return_definition",
-    "data_quality_flag",
+    "source_report", "provenance_method", "audit_note", "data_quality_flag",
 )
 RETURN_FIELDS = (
     "jalali_period", "jalali_year", "jalali_month", "asset_id", "previous_jalali_period",
@@ -156,6 +157,36 @@ def read_housing() -> dict[str, dict[str, str]]:
         if not level.is_finite() or level <= 0:
             raise ValueError(f"Invalid housing level in {period}: {level}")
         result[period] = row
+    with HOUSING_OVERRIDES_PATH.open(encoding="utf-8-sig", newline="") as source:
+        for override in csv.DictReader(source):
+            period = override["jalali_period"]
+            if period not in result:
+                raise ValueError(f"Housing override month is absent from extraction: {period}")
+            original = Decimal(override["original_extracted_value_million_irr_m2"])
+            extracted = Decimal(result[period]["avg_price_million_irr_per_m2"])
+            if extracted != original:
+                raise ValueError(
+                    f"Housing override original mismatch in {period}: {extracted} != {original}"
+                )
+            corrected = Decimal(override["corrected_value_million_irr_m2"])
+            if not corrected.is_finite() or corrected <= 0:
+                raise ValueError(f"Invalid corrected housing level in {period}: {corrected}")
+            result[period] = {
+                **result[period],
+                "avg_price_million_irr_per_m2": format(corrected, "f"),
+                "_raw_level": format(original, "f"),
+                "_source_method": "CBI_source_adjudicated_override",
+                "_source_report": f"data/raw/housing/cbi/reports/{override['primary_source_pdf']}",
+                "_quality_flag": override["quality_flag"],
+                "_audit_note": (
+                    f"original={format(original, 'f')}; corrected={format(corrected, 'f')}; "
+                    f"verification={override['verification_source_pdf']}; reason={override['reason']}"
+                ),
+                "_verification_source": (
+                    f"data/raw/housing/cbi/reports/{override['verification_source_pdf']}"
+                ),
+                "_verification_evidence": override["verification_evidence"],
+            }
     return result
 
 
@@ -217,11 +248,18 @@ def build() -> dict[str, int | str]:
     for period, row in cbi_housing.items():
         housing[period] = {
             **row,
-            "_raw_level": row["avg_price_million_irr_per_m2"],
+            "_raw_level": row.get("_raw_level", row["avg_price_million_irr_per_m2"]),
             "_link_factor": "1",
-            "_source_method": "CBI_reported_monthly_value",
+            "_source_method": row.get("_source_method", "CBI_reported_monthly_value"),
             "_source_file": "data/interim/cbi_tehran_housing_monthly_1395_1403M05.xlsx",
-            "_quality_flag": "ok",
+            "_source_report": row.get(
+                "_source_report", f"data/raw/housing/cbi/reports/{row['source_pdf']}"
+            ),
+            "_provenance_method": row["provenance_method"],
+            "_audit_note": row.get("_audit_note", ""),
+            "_verification_source": row.get("_verification_source", ""),
+            "_verification_evidence": row.get("_verification_evidence", ""),
+            "_quality_flag": row.get("_quality_flag", "ok"),
         }
     for period, row in kilid_housing.items():
         if period <= "1403/05":
@@ -236,6 +274,9 @@ def build() -> dict[str, int | str]:
             "_link_factor": format(kilid_link_factor, ".12f"),
             "_source_method": "Kilid_chain_linked_to_CBI_1403_05",
             "_source_file": "data/raw/housing/kilid/snapshots/455cd4d7f670e77bd8a5928301d3e321b6e879157ac38b2beff9a4751755c807.html",
+            "_source_report": "data/raw/housing/kilid/snapshots/455cd4d7f670e77bd8a5928301d3e321b6e879157ac38b2beff9a4751755c807.html",
+            "_provenance_method": "Kilid monthly page snapshot",
+            "_audit_note": "chain-linked at 1403/05; low overlap similarity to CBI",
             "_quality_flag": "secondary_proxy_low_overlap_similarity",
         }
     sources = {
@@ -259,6 +300,9 @@ def build() -> dict[str, int | str]:
             link_factor = ""
             flag = "missing_source_observation"
             source_file = SOURCE_FILES[asset_id]
+            source_report = ""
+            provenance_method = ""
+            audit_note = ""
             if row is not None:
                 level = row[field]
                 raw_level = row.get("_raw_level", level)
@@ -271,6 +315,9 @@ def build() -> dict[str, int | str]:
                     flag = row.get("_quality_flag", "ok")
                 method = row.get("_source_method", method)
                 source_file = row.get("_source_file", source_file)
+                source_report = row.get("_source_report", "")
+                provenance_method = row.get("_provenance_method", "")
+                audit_note = row.get("_audit_note", "")
             record = {
                 "jalali_period": period,
                 "jalali_year": year,
@@ -284,6 +331,9 @@ def build() -> dict[str, int | str]:
                 "source_method": method,
                 "source_file": source_file,
                 "return_definition": RETURN_DEFINITIONS[asset_id],
+                "source_report": source_report,
+                "provenance_method": provenance_method,
+                "audit_note": audit_note,
                 "data_quality_flag": flag,
             }
             levels.append(record)
@@ -327,6 +377,9 @@ def build() -> dict[str, int | str]:
 
     atomic_write(LEVELS_PATH, LEVEL_FIELDS, levels)
     atomic_write(RETURNS_PATH, RETURN_FIELDS, returns)
+    from asset_allocation.audit_housing import build_audit_report
+
+    housing_audit = build_audit_report()
     return {
         "level_rows": len(levels),
         "return_rows": len(returns),
@@ -334,6 +387,8 @@ def build() -> dict[str, int | str]:
         "return_periods": len(periods(START_RETURN_PERIOD, END_PERIOD)),
         "levels_output": str(LEVELS_PATH),
         "returns_output": str(RETURNS_PATH),
+        "housing_audit_rows": housing_audit["row_count"],
+        "housing_audit_output": housing_audit["output"],
     }
 
 

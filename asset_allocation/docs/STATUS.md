@@ -12,9 +12,9 @@ repository raw layer and the extraction workbook to its staging layer.
 
 The study covers Tehran housing sale price per square metre, TGJU 18-karat gold, fixed income,
 and Tehran Stock Exchange equities from 1395/01 through 1405/05. Canonical monthly levels and
-returns are retained. The earlier annual optimization and all generated allocation results were
-retired because a proper risk-adjusted scenario has not yet been specified. Any future treatment
-of 1405 must remain YTD through Mordad.
+returns are retained. The notebook implements ex-post Stage I risky-sleeve optimization for the
+years 1396-1404 and a five-month 1405 YTD period through Mordad. Results after 1403/05 use the
+documented chain-linked Kilid housing proxy. Stage II remains pending an investor risk policy.
 
 ## Fixed income
 
@@ -48,8 +48,11 @@ cloud.
 - TEDPIX TSETMC raw collection: complete for the active window.
 - Canonical level panel: complete, 126 months × four assets, including explicit missing levels.
 - Canonical return panel: complete, 125 months × four assets, without filling missing returns.
-- Portfolio optimization and allocation results: intentionally removed; revised risk-adjusted
-  methodology pending.
+- CBI housing extraction audit: complete; four source-verified corrections are applied through
+  a checked override layer and a 101-row quality report is regenerated with the panels.
+- Stage I benchmark-relative risky-sleeve analysis: implemented and numerically validated in the
+  notebook for 1396-1404 and 1405/01-05 YTD, with explicit housing-source-regime disclosure.
+- Stage II total-portfolio allocation: pending an explicit investor risk policy.
 
 ## Gold collection
 
@@ -64,3 +67,6 @@ does not show close equivalence: level MAPE is 10.97%, maximum absolute level ga
 monthly-return correlation is 0.288, and return MAE is 2.29 percentage points. Kilid is anchored
 to CBI at 1403/05 with factor 1.021939953811 and every later row carries a low-similarity flag.
 Housing now has 124 valid monthly returns; only 1395/01 remains missing for lack of 1394/12.
+The corrected 1397 sequence removes the artificial -99%/+13,000% pair. Its housing returns now
+have 4.06% monthly sample volatility and 14.08% annualized volatility. Official revision
+disagreements for 1396/12 and 1398/08 remain explicitly flagged under the current-report rule.
