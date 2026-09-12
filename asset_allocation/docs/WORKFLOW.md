@@ -20,9 +20,9 @@ maximizes `sqrt(12) * mean(risky_sleeve_return - benchmark_return) / sample_std(
 nonnegative risky weights summing to one. This is an ex-post information-ratio-style statistic,
 not a forecast or an unqualified Sharpe ratio.
 
-Stage II will choose the total-wealth share assigned to the Stage I sleeve. It requires an
-explicit volatility target, drawdown constraint, or risk-aversion input and is not inferred from
-market history alone.
+Stage II chooses the total-wealth share assigned to the Stage I sleeve for an explicit
+risk-aversion parameter. The notebook reports sensitivity over a documented parameter grid;
+it does not infer an investor's risk preference from market history.
 
 ## Stage 1: collect fixed-income history first
 
@@ -124,9 +124,19 @@ five-month 1405 YTD period. Each solution is checked against corner
 portfolios, equal weights, and 25,000 deterministic random simplex portfolios. Results are
 reported as hindsight diagnostics and retain the 12-observation annual-sample limitation.
 
-Stage II remains pending. Do not publish a total allocation until an investor risk policy is
-specified. Incomplete 1405 is optimized and reported strictly as a five-month YTD diagnostic,
-never as a full-year result.
+Stage II keeps the Stage I risky composition fixed and performs a deterministic grid search over
+the risky share from zero to one. For each documented risk-aversion value, it maximizes realized
+mean-variance utility, defined as period compounded return minus one-half gamma times annualized
+monthly variance. Treat every result as ex-post sensitivity, not an investor-specific policy.
+Incomplete 1405 is optimized and reported strictly as a five-month YTD diagnostic, never as a
+full-year result.
+
+The notebook also contains an alternative fixed-volatility specification. It estimates the
+annualized asset covariance matrix and risky-minus-fixed-income covariance matrix once from all
+113 aligned monthly observations in 1396–1405/05. These matrices are held fixed across yearly
+optimizations. Yearly returns remain realized, period-specific inputs. Because the risk model uses
+the complete sample, this alternative is a descriptive look-ahead comparison and not an
+investable backtest.
 
 ## Data governance and independent execution
 
@@ -160,5 +170,5 @@ and Esfand-only proxy workflows are retired and must not be regenerated.
 ### Portfolio analysis
 
 Run the notebook only after rebuilding and testing the canonical panels. The notebook may read
-the processed data but must not modify it. Preserve the distinction between ex-post Stage I
-results and any future investable, out-of-sample Stage II analysis.
+the processed data but must not modify it. Preserve the distinction between the ex-post Stage I
+and Stage II diagnostics and any future investable, out-of-sample allocation analysis.

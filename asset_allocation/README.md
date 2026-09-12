@@ -18,9 +18,17 @@ and اخزا proxies were evaluated and retired after the research window change
 Four assets are registered, and the canonical month-end level and monthly-return panels have
 been built. The analysis notebook implements a source-audited, ex-post Stage I allocation of
 gold, equity, and housing relative to the Etemad fixed-income benchmark for 1396-1404 and
-the five-month 1405 YTD period. Stage II,
-which determines total wealth allocated to the risky sleeve, remains pending an investor risk
-policy: `notebooks/asset_allocation_analysis.ipynb`.
+the five-month 1405 YTD period. Stage II now reports an ex-post mean-variance sensitivity
+analysis over an explicit grid of risk-aversion values; it is diagnostic and is not an
+investor-specific recommendation: `notebooks/asset_allocation_analysis.ipynb`.
+
+The notebook ends with a parallel alternative specification requested for comparison. It
+estimates one covariance matrix from all aligned months in 1396–1405/05 and holds that risk
+model fixed across yearly optimizations, while yearly realized returns continue to vary.
+
+A presentation-ready account of the complete workflow, exact result tables, interpretation,
+limitations, suggested storyline, and likely questions is available in
+[`reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md`](reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md).
 
 ## Independent setup
 
@@ -106,7 +114,8 @@ verification report, audit note, provenance method, and quality flag remain visi
 
 No standalone portfolio-result CSV is authoritative. Stage I is executed transparently inside
 the notebook and includes deterministic multi-start optimization plus comparison with corner,
-equal-weight, and 25,000 random portfolios. Stage II remains unimplemented.
+equal-weight, and 25,000 random portfolios. Stage II keeps each Stage I risky sleeve fixed and
+searches the long-only risky share on a deterministic grid for several risk-aversion values.
 
 ## TGJU 18-karat gold collector
 

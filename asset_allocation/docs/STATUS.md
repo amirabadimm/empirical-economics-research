@@ -14,7 +14,8 @@ The study covers Tehran housing sale price per square metre, TGJU 18-karat gold,
 and Tehran Stock Exchange equities from 1395/01 through 1405/05. Canonical monthly levels and
 returns are retained. The notebook implements ex-post Stage I risky-sleeve optimization for the
 years 1396-1404 and a five-month 1405 YTD period through Mordad. Results after 1403/05 use the
-documented chain-linked Kilid housing proxy. Stage II remains pending an investor risk policy.
+documented chain-linked Kilid housing proxy. Stage II is implemented as ex-post risk-aversion
+sensitivity, not as an investor-specific allocation recommendation.
 
 ## Fixed income
 
@@ -52,7 +53,12 @@ cloud.
   a checked override layer and a 101-row quality report is regenerated with the panels.
 - Stage I benchmark-relative risky-sleeve analysis: implemented and numerically validated in the
   notebook for 1396-1404 and 1405/01-05 YTD, with explicit housing-source-regime disclosure.
-- Stage II total-portfolio allocation: pending an explicit investor risk policy.
+- Stage II total-portfolio allocation: ex-post mean-variance sensitivity implemented for
+  gamma values from 0 through 50 on the documented grid; an investor-specific policy remains
+  unspecified.
+- Alternative fixed-volatility analysis: implemented at the end of the notebook. One annualized
+  covariance model estimated from all 113 aligned months in 1396–1405/05 is reused in every year
+  for both Stage I tracking error and Stage II total-portfolio volatility.
 
 ## Gold collection
 

@@ -23,7 +23,8 @@ methods must be identified by their adapters.
 
 Current persisted outputs are aligned valuations, returns, and coverage diagnostics. Stage I
 weights and performance diagnostics are computed in the notebook but are not published as a
-canonical result dataset. Stage II outputs remain absent pending a risk-policy input.
+canonical result dataset. Stage II sensitivity outputs are also notebook-only diagnostics and
+are not a canonical allocation dataset.
 
 Official CBI Tehran housing PDFs are raw immutable evidence under
 `data/raw/housing/cbi/reports/`. The extracted workbook is interim, not canonical raw or
@@ -35,7 +36,12 @@ The notebook's Stage I contract uses full years 1396-1404 plus 1405/01-05 YTD, w
 gold/equity/housing as the risky
 sleeve, Etemad as the investable benchmark, long-only risky weights summing to one, buy-and-hold
 intra-year drift, and an annualized mean differential-return-to-tracking-error objective. It is
-explicitly ex-post. No Stage II contract is active.
+explicitly ex-post. Stage II keeps the Stage I composition fixed, searches the long-only risky
+share on a 5,001-point grid, and reports mean-variance utility sensitivity for gamma values
+0, 1, 2, 4, 6, 8, 10, 15, 20, 25, 30, 35, 40, 45, and 50. It does not define an
+investor-specific policy. A parallel notebook-only specification estimates full-sample
+annualized covariance once from the 113 aligned months in 1396–1405/05 and holds it fixed across
+years. Its use of later observations in earlier-year risk estimates is explicitly ex-post.
 
 ## TSETMC fixed-income source: اعتماد
 
@@ -105,6 +111,6 @@ raw level, factor, source path, regime, and the flag `secondary_proxy_low_overla
 
 ## Portfolio-analysis status
 
-The canonical monthly levels and returns are inputs, not recommendations. Stage I diagnostics
-are notebook outputs only and are not part of the persisted data contract. No Stage II output is
-authorized until the investor's risk policy is documented.
+The canonical monthly levels and returns are inputs, not recommendations. Stage I and Stage II
+diagnostics are notebook outputs only and are not part of the persisted data contract. No single
+Stage II sensitivity row is an authorized investor recommendation without a documented policy.
