@@ -4,16 +4,20 @@ Study historical allocation across Tehran residential housing prices per square 
 TGJU 18-karat gold (750), an exchange-traded Iranian fixed-income fund, and the Tehran Stock
 Exchange total index.
 
-ETF, اخزا, and bank-deposit histories are collected separately before a fixed-income proxy is
-chosen. The initial ETF candidate is اعتمادآفرین پارسیان (ticker: اعتماد), reported to have
-begun in 1394. IRR and monthly analysis are proposed, pending source and housing-frequency
-validation.
+The primary housing corpus contains 87 official CBI Tehran transaction-market reports.
+Raw PDFs are preserved under `data/raw/housing/cbi/reports/`; the reconstructed monthly
+workbook remains in `data/interim` pending independent validation.
+
+The fixed-income asset is اعتمادآفرین پارسیان (ticker: اعتماد). Competing deposit-rate
+and اخزا proxies were evaluated and retired after the research window changed to
+1395/01–1405/05. See the [fixed-income decision](docs/FIXED_INCOME.md).
 
 ## Current stage
 
-Four assets are registered. Local inventory completed with the access limitation recorded in
-[status](docs/STATUS.md). Fixed-income source collection has started; return construction,
-optimization, and backtesting are not implemented yet.
+Four assets are registered, and the canonical month-end level and monthly-return panels have
+been built. Earlier portfolio-optimization results were removed because the risk-adjusted
+objective requires a new specification. The analysis notebook now audits the retained inputs
+only: `analysis/asset_allocation_analysis.ipynb`.
 
 ## Independent setup
 
@@ -33,22 +37,19 @@ require duplicating or modifying them. No FX input is currently required by the 
 
 ## Research objective and collection sequence
 
-Find the best four-asset weight basket for each Solar Hijri year by maximizing
-`(w.T @ expected_returns) / sqrt(w.T @ covariance @ w)`, subject to `sum(w) = 1`.
-This uses portfolio covariance and does not subtract a risk-free rate. Short-selling rules
-and weight caps remain unresolved. The working interpretation is a retrospective optimum
-for each year, with incomplete 1405 labeled year-to-date.
+The completed data objective is a canonical monthly-return history for all four assets from
+1395/01 through 1405/05. The portfolio objective, risk measure, constraints, and estimation
+design will be specified before any new weights are calculated. Treat 1405/01–1405/05 as YTD.
 
 Collect and validate one asset at a time:
-1. Fixed-income candidates: اعتماد, bank deposits, and اخزا, each kept separate.
+1. Fixed income: اعتماد only.
 2. TGJU 18-karat gold.
 3. Tehran apartment sale price per square metre.
 4. Tehran Stock Exchange total index, starting with TSETMC.
 
-Only after coverage and source validation, construct comparable periodic returns and implement
-yearly optimization with an equal-weight baseline. Monthly frequency is proposed; housing
-coverage determines feasibility. Fund distributions must be included, housing appreciation
-excludes rent, and annual yields must not be used directly as monthly returns.
+Fund distributions must be included where applicable, housing appreciation excludes rent, and
+annual yields must not be used directly as monthly returns. Report actual aligned coverage
+before any future model is estimated.
 
 The fixed-income collector uses the public TSETMC closing-price API for `اعتماد`
 (`66818022341772870`) and archives each raw JSON response before atomically refreshing the
@@ -59,23 +60,43 @@ $env:PYTHONPATH = 'src'
 python -m asset_allocation.collectors.tsetmc_fixed_income
 ```
 
-The authoritative bank-deposit collector transcribes the one-year column from the CBI annual
-table supplied for this study. It selects the maximum when CBI publishes an interval:
-
-```powershell
-$env:PYTHONPATH = 'src'
-python -m asset_allocation.collectors.cbi_one_year_deposit_rate
-```
-
-
 ## Layout
 
 - `config/`: selected assets and research scope; paths are project-relative unless explicitly external.
 - `src/asset_allocation/` and `tests/`: reserved for implementation and verification.
 - `data/raw/`: project-owned canonical histories and immutable snapshots.
-- `data/interim/` and `data/processed/analysis/`: derived inputs and numerical results.
+- `data/interim/` and `data/processed/analysis/`: derived inputs and approved analytical tables.
 - `notebooks/`, `logs/`, `outputs/`, `reports/`: exploration, logs, and presentation.
 
 See [workflow](docs/WORKFLOW.md), [data contract](docs/DATA_CONTRACT.md), and
 [source register](docs/SOURCES.md), and [independence audit](docs/INDEPENDENCE.md).
 
+
+## Canonical monthly asset panel
+
+After collecting the authoritative daily sources, build Solar Hijri month-end levels and returns:
+
+```powershell
+$env:PYTHONPATH = 'src'
+python -m asset_allocation.build_monthly_return_panel
+```
+
+The builder writes `data/processed/analysis/monthly_asset_levels.csv` and
+`data/processed/analysis/monthly_asset_returns.csv`. Daily assets use the last valid observation
+within each Jalali month; اعتماد additionally requires `has_trade=true`. Returns are calculated
+from adjacent month-end levels and missing values remain blank with an explicit reason.
+
+No portfolio-result dataset is currently authoritative. The previous annual allocation engine,
+its generated results, and its diagnostics were retired pending a revised risk-adjusted design.
+
+## TGJU 18-karat gold collector
+
+Collect the daily price series with:
+
+```powershell
+$env:PYTHONPATH = 'src'
+python -m asset_allocation.collectors.tgju_gold_18k
+```
+Housing uses official CBI monthly values through 1403/05 and an explicitly flagged, chain-linked
+Kilid extension afterward. The common-period audit found weak agreement, so the extension is a
+secondary proxy rather than an equivalent continuation; see [housing](docs/HOUSING.md).

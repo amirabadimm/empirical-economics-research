@@ -21,11 +21,18 @@ finite valuation and retained source path/date, units, currency, and return basi
 derived data and must never replace raw sources. Instruments requiring different return
 methods must be identified by their adapters.
 
-Planned outputs are aligned valuations, returns, coverage diagnostics, weights, and portfolio
-performance. Exact numerical schemas and formulas will be versioned with implementation.
+Current outputs are aligned valuations, returns, and coverage diagnostics. Portfolio weights
+and performance outputs are intentionally absent until a revised risk-adjusted methodology is
+specified and approved.
+
+Official CBI Tehran housing PDFs are raw immutable evidence under
+`data/raw/housing/cbi/reports/`. The extracted workbook is interim, not canonical raw or
+curated output. Its citywide grain is one row per Jalali month; price unit is million IRR
+per square metre. Required lineage fields include source PDF and provenance method.
 
 
-Yearly optimization contract: one output row per eligible Solar Hijri year, with four weights, expected return, covariance-based portfolio volatility, return/volatility ratio, sample window and count, fixed-income proxy regimes, and solver diagnostics. The current year is explicitly year-to-date. Source fund distributions and deposit terms must support return construction. The objective does not subtract a risk-free rate. See WORKFLOW.md for formulas and unresolved constraints.
+No yearly optimization contract is active. Any future model must define its reward, risk,
+constraints, estimation window, benchmarks, and treatment of 1405 YTD before implementation.
 
 ## TSETMC fixed-income source: اعتماد
 
@@ -40,38 +47,53 @@ volume. Zero-volume reference rows are preserved as source evidence and must not
 used as realizable returns. TSETMC closing prices alone are not yet a final total-return series;
 distribution treatment remains to be audited.
 
-## Bank-deposit source: World Bank annual deposit interest rate
+## Removed fixed-income alternatives
 
-Collector: `src/asset_allocation/collectors/bank_deposit_world_bank.py`. Public endpoint: World
-Bank indicator `FR.INR.DPST` for Iran (`IRN`). Canonical CSV:
-`data/raw/fixed_income/bank_deposits/world_bank_deposit_interest_rate_annual.csv`. Immutable
-source responses: `data/raw/fixed_income/bank_deposits/world_bank_snapshots/<sha256>.json`.
+Deposit-rate and اخزا sources are not part of the active data contract. Their datasets and
+source-specific collectors were retired on 2026-09-09 after اعتماد
+was selected as the sole fixed-income asset for the revised 1395/01–1405/05 window. The
+decision and remaining distribution audit are documented in [FIXED_INCOME.md](FIXED_INCOME.md).
+Immutable historical raw evidence remains frozen under its original path as required by
+workspace policy, but it is not referenced by active configuration or processing.
 
-Each row is the provider's annual percentage observation, with its Gregorian source year. World
-Bank identifies this as an IMF/IFS series that can cover demand, time, or savings deposits and
-uses country-specific averaging. It is not a verified quoted rate for a particular Iranian bank
-term or a realized fund return. It remains separate from ETF and اخزا data until a proxy regime
-and accrual rule are specified.
+## TSETMC TEDPIX source
 
-## Iranian one-year term-deposit policy schedule
+Collector: src/asset_allocation/collectors/tsetmc_tedpix.py. Public endpoint:
+Index/GetIndexB2History/32097828799138957. Canonical CSV:
+data/raw/tse_total_index/tedpix_daily.csv; immutable API responses are archived at
+data/raw/tse_total_index/tsetmc_snapshots/<sha256>.json.
 
-Collector: `src/asset_allocation/collectors/iranian_term_deposit_schedule.py`. Canonical CSV:
-`data/raw/fixed_income/bank_deposits/iranian_one_year_term_deposit_policy_schedule.csv`.
-Downloaded source pages are archived byte-for-byte under
-`data/raw/fixed_income/bank_deposits/iranian_source_snapshots/<sha256>.html`.
+The active equity derivative is part of the canonical panels built by
+`src/asset_allocation/build_monthly_return_panel.py`. Each month uses the final valid official
+TSETMC close and its actual Gregorian observation date. Returns are changes in the TEDPIX level,
+treated as a total-return index subject to the documented index-definition audit.
 
-Rows are effective-dated published policy events for one-year deposits. They retain rate type,
-policy status, source publisher and URL, publication date, and transcription note. This is a
-schedule of announced rates, not actual bank-by-bank paid yields; unknown intervals remain absent.
+Historical annual and TGJU stock-index files are inactive immutable evidence. They are not
+referenced by active configuration or processing and must not be merged into this series.
+## Canonical month-end levels and returns
 
-## Canonical bank-deposit source: CBI annual one-year rate
+`src/asset_allocation/build_monthly_return_panel.py` writes two long-form tables:
 
-Collector: cbi_one_year_deposit_rate.py. Canonical CSV:
-data/raw/fixed_income/bank_deposits/cbi_one_year_deposit_rate_annual.csv. Official reference:
-https://cbi.ir/simplelist/1515.aspx.
+- `data/processed/analysis/monthly_asset_levels.csv`: 126 months from 1394/12 through 1405/05
+  crossed with all four assets. Missing levels remain blank.
+- `data/processed/analysis/monthly_asset_returns.csv`: 125 months from 1395/01 through 1405/05
+  crossed with all four assets. Each valid return equals current month-end level divided by the
+  preceding month-end level minus one.
 
-This is the selected source for 1384–1396. The one_year_rate_text_percent field preserves the CBI
-table entry and selected_one_year_rate_percent is the series used for analysis. When CBI gives an
-interval, the selected value is the upper endpoint, as directed by the user. The table was
-transcribed from the official CBI material supplied by the user because CBI blocks automated
-retrieval; its URL and that extraction basis are retained in every row.
+The key is unique on `(jalali_period, asset_id)`. The files retain units, source observation
+dates, source method, source path, return definition, quality flags, and missing reasons. Daily
+gold and TEDPIX use the last valid observation in the Jalali month. اعتماد uses the final traded
+observation. Housing uses CBI through 1403/05 and chain-linked Kilid afterward. No return is
+zero-filled, forward-filled, or interpolated.
+
+The primary housing input is the CBI interim workbook with one Tehran-wide row per Jalali month,
+price in million IRR/m², source PDF, provenance method and extraction method through 1403/05.
+Kilid is converted from million toman/m² to million IRR/m² and multiplied by the boundary factor
+`885 / 866`. It extends the panel from 1403/06 through 1405/05. Every secondary row retains its
+raw level, factor, source path, regime, and the flag `secondary_proxy_low_overlap_similarity`.
+
+## Portfolio-analysis status
+
+The canonical monthly levels and returns are inputs, not portfolio recommendations. The former
+annual allocation outputs and diagnostics were retired. No optimizer output is part of the
+current data contract; a new risk-adjusted methodology must be documented before regeneration.

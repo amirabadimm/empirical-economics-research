@@ -1,6 +1,6 @@
 ﻿asset_id,label,asset_class,currency,price_unit,source_path,date_column,price_column,calendar,return_basis,enabled
-tehran_housing,Tehran residential sale price per square metre,housing,,,,,,,price_only,false
-gold_18k,TGJU 18-karat gold 750,gold,,,,,,,price_only,false
-fixed_income,Fixed-income candidates: CBI one-year bank-deposit series plus separately collected ETF and اخزا proxies,fixed_income,IRR,annual deposit rate,"data/raw/fixed_income/bank_deposits/cbi_one_year_deposit_rate_annual.csv",jalali_year,selected_one_year_rate_percent,Jalali,annual_nominal_rate,true
-tse_total_index,Tehran Stock Exchange total index,equity,,index_points,,,,,methodology_to_verify,false
+tehran_housing,Tehran residential sale price per square metre,housing,million IRR,price per square metre,"data/interim/cbi_tehran_housing_monthly_1395_1403M05.xlsx; data/raw/housing/kilid/snapshots/455cd4d7f670e77bd8a5928301d3e321b6e879157ac38b2beff9a4751755c807.html",date_jalali,avg_price_million_irr_per_m2,Jalali,CBI_then_chain_linked_Kilid_transaction_price_appreciation_excludes_rent,true
+gold_18k,TGJU 18-karat gold 750,gold,IRR,price per gram,data/raw/gold_18k/tgju_gold_18k_daily.csv,source_date_jalali,price_close_irr_per_gram,Jalali,last_valid_month_end_price_return,true
+fixed_income,اعتمادآفرین پارسیان fixed-income fund,fixed_income,IRR,fund unit price,data/raw/fixed_income/etf/etemad.csv,source_date_gregorian,closing_price_irr,Gregorian,last_traded_month_end_market_price_return_no_periodic_distribution,true
+tse_total_index,Tehran Stock Exchange total index (TEDPIX),equity,IRR,index points,"data/raw/tse_total_index/tedpix_daily.csv",source_date_gregorian,index_close,Gregorian,last_valid_month_end_total_return_index_change,true
 

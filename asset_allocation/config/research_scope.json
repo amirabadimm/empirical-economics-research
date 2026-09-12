@@ -1,51 +1,33 @@
 ﻿{
-    "start_jalali":  "1384-01-01",
-    "end_policy":  "latest_verified_observation_at_collection",
+    "start_jalali":  "1395-01-01",
+    "end_policy":  "fixed_research_cutoff",
+    "end_jalali":  "1405-05-31",
     "requested_end_year_jalali":  1405,
     "base_currency":  "IRR",
     "base_currency_status":  "proposed",
     "analysis_frequency":  "monthly",
-    "analysis_frequency_status":  "proposed_pending_housing_coverage",
-    "objective":  "maximize_expected_portfolio_return_divided_by_portfolio_standard_deviation",
-  "fixed_income_preference":  [
-                                    "cbi_one_year_bank_deposit_rate_1384_through_1395",
-                                    "etf_etemad_from_1396_01_01",
-                                    "akhza_retained_as_unselected_research_input"
-                                ],
+    "analysis_frequency_status":  "authoritative_monthly_return_inputs_complete",
+    "objective":  "pending_revised_risk_adjusted_methodology",
+  "fixed_income_preference":  ["etf_etemad_only"],
   "fixed_income_candidate": {
     "fund_name": "صندوق سرمایه گذاری اعتمادآفرین پارسیان",
     "ticker": "اعتماد",
     "reported_activity_start_jalali": "1394-02-05",
     "first_trade_date_status": "pending_tsetmc_verification",
-    "selection_basis": "selected fixed-income proxy from 1396-01-01; price and distribution audit remains required"
+    "selection_basis": "sole fixed-income asset for 1395-01-01 through 1405-05-31; distribution audit remains required"
   },
   "fixed_income_proxy_regimes": [
     {
-      "jalali_start": "1384-01-01",
-      "jalali_end": "1395-12-29",
-      "proxy": "CBI annual one-year term-deposit rate",
-      "source_path": "data/raw/fixed_income/bank_deposits/cbi_one_year_deposit_rate_annual.csv",
-      "return_method": "annual nominal rate; selected maximum when CBI reports an interval"
-    },
-    {
-      "jalali_start": "1396-01-01",
-      "jalali_end": "latest_verified_observation_at_collection",
+      "jalali_start": "1395-01-01",
+      "jalali_end": "1405-05-31",
       "proxy": "اعتمادآفرین پارسیان ETF (اعتماد)",
       "source_path": "data/raw/fixed_income/etf/etemad.csv",
-      "return_method": "pending documented total-return or verified close-price treatment"
+      "return_method": "monthly last-traded closing price; distribution treatment pending audit"
     }
   ],
     "allow_silent_proxy_splicing":  false,
     "require_full_coverage_audit":  true,
-    "optimization_frequency":  "solar_hijri_year",
-    "estimation_design":  "retrospective_within_year_proposed_interpretation",
-    "portfolio_volatility":  "sqrt(w.T @ covariance @ w)",
-    "subtract_risk_free_rate":  false,
-    "constraints":  {
-                        "sum_weights":  1,
-                        "short_selling":  "unresolved",
-                        "weight_caps":  "unresolved"
-                    },
+    "portfolio_methodology_status":  "pending",
     "collection_order":  [
                              "fixed_income",
                              "gold_18k",
