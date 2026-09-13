@@ -1,0 +1,568 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,longtable}
+\usepackage{graphicx,xcolor,hyperref,pdflscape,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+\setlist{nosep}
+
+\newcommand{\IR}{\mathrm{IR}}
+\newcommand{\TE}{\mathrm{TE}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+
+\title{\textbf{Ex-Post Cross-Asset Allocation in Iran}\\
+\large Data Construction, Portfolio Optimization, Volatility Specifications,\\
+and Risk-Aversion Sensitivity Analysis}
+\author{Research report generated from the reproducible asset-allocation notebook}
+\date{13 September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This study examines monthly returns on Iranian 18-karat gold, the Tehran Stock Exchange
+total-return index (TEDPIX), Tehran residential housing, and the Etemad fixed-income ETF.
+It separates portfolio choice into two stages. Stage I determines the composition of the risky
+sleeve by maximizing a benchmark-relative efficiency measure. Stage II combines that risky
+sleeve with fixed income and reports the complete response of the optimal risky share to a grid
+of risk-aversion coefficients. Two volatility definitions are compared: year-specific realized
+volatility and one full-sample covariance model held fixed across years. The results are strictly
+ex post. They describe historical regimes and model sensitivity; they are neither forecasts nor
+investment recommendations.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Research Objective}
+
+The research asks two related but distinct questions:
+
+\begin{enumerate}
+  \item \textbf{Risky-sleeve composition:} What combination of gold, equity, and housing was
+  most efficient relative to Etemad in each historical period?
+  \item \textbf{Total risky exposure:} How does the utility-maximizing share assigned to that
+  risky sleeve change across a broad range of risk-aversion assumptions?
+\end{enumerate}
+
+The separation is essential. Stage I answers \emph{what to hold inside the risky sleeve}.
+Stage II answers \emph{how much of the risky sleeve to hold}. No single value of the risk-aversion
+coefficient $\gamma$ is selected as preferred, representative, or investor-specific. The Stage II
+result is the entire sensitivity curve $\alpha_y^*(\gamma)$.
+
+\section{Assets, Sample, and Sources}
+
+The processed sample covers Solar Hijri 1395/01 through 1405/05. Optimization begins in 1396
+because the missing 1394/12 housing level prevents calculation of the 1395/01 housing return.
+Years 1396--1404 contain 12 aligned monthly observations. The 1405 result contains only five
+months through Mordad and is always identified as year to date (YTD).
+
+\begin{table}[ht]
+\centering
+\caption{Active assets and return definitions}
+\begin{tabular}{p{2.5cm}p{5.4cm}p{5.2cm}}
+\toprule
+Asset & Source and monthly convention & Economic interpretation \\
+\midrule
+Gold & TGJU 18-karat gold; final valid monthly close; IRR per gram
+& Price appreciation \\
+Equity & Official TSETMC TEDPIX; final valid monthly index close
+& Total-return-index level change, subject to index-definition audit \\
+Housing & CBI Tehran average transaction price through 1403/05;
+chain-linked Kilid thereafter & Capital appreciation only; excludes rent and ownership costs \\
+Fixed income & Etemad ETF; final traded close in each Jalali month
+& Market-price return; historical distribution policy remains provisional \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The canonical level panel contains 126 months, from 1394/12 through 1405/05, crossed with four
+assets. The return panel contains 125 months, from 1395/01 through 1405/05, crossed with four
+assets. For a price or index level $P_t$, the monthly return is
+
+\begin{equation}
+r_t=\frac{P_t}{P_{t-1}}-1.
+\end{equation}
+
+Returns are calculated only when adjacent month-end levels exist. Missing observations remain
+missing; no value is interpolated, forward-filled, smoothed, or replaced with zero.
+
+\section{Housing Data Integrity}
+
+Housing required a dedicated source audit. The extracted workbook is treated as interim evidence,
+while corrections are stored in a reproducible override layer and verified against official CBI
+reports.
+
+\begin{table}[ht]
+\centering
+\caption{Source-verified housing corrections (million IRR per square metre)}
+\begin{tabular}{lrrp{7.2cm}}
+\toprule
+Month & Extracted & Verified & Treatment \\
+\midrule
+1396/12 & 48.987 & 57.591 & Current official report retained; adjacent revision disagreement disclosed \\
+1397/01 & 55.220 & 55.280 & Corrected from agreeing official reports \\
+1397/04 & 91.728 & 69.728 & Corrected from agreeing official reports \\
+1397/07 & 0.6811 & 86.109 & Corrected after visual review of a damaged right-to-left PDF text layer \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The malformed 1397/07 extraction generated an artificial return pair of approximately
+$-99\%$ and $+13{,}000\%$. Correcting Mehr alone reduced 1397 annualized housing volatility
+from $13{,}379.56\%$ to $46.12\%$. Applying all verified corrections reduced it further to
+$14.08\%$. Corrected compounded housing appreciation in 1397 is $91.72\%$.
+
+Official CBI coverage ends at 1403/05. Kilid values are converted from million toman to million
+IRR and chain-linked at the boundary using
+
+\begin{equation}
+L=\frac{P_{\text{CBI},1403/05}}{P_{\text{Kilid},1403/05}}
+=\frac{885}{866}=1.021939953811.
+\end{equation}
+
+The linked level after the boundary is $P_t^{\text{linked}}=L P_t^{\text{Kilid}}$. This prevents
+an artificial discontinuity but does not make the sources equivalent. During their overlap,
+level MAPE is $10.97\%$, the maximum level gap is $19.61\%$, monthly-return correlation is
+$0.288$, and return MAE is 2.29 percentage points. Results for 1403 therefore contain a source
+transition; 1404 and 1405 housing observations use the secondary proxy.
+
+\section{Return, Wealth, and Volatility}
+
+For asset $i$ in year $y$, compounded period return is
+
+\begin{equation}
+R_{i,y}=\prod_{m=1}^{M_y}(1+r_{i,y,m})-1,
+\end{equation}
+
+where $M_y=12$ for full years and $M_{1405}=5$. The original annualized realized volatility is
+
+\begin{equation}
+\sigma_{i,y}^{\text{ann}}=\sqrt{12}\,s(r_{i,y,1},\ldots,r_{i,y,M_y}),
+\end{equation}
+
+with $s(\cdot)$ denoting sample standard deviation.
+
+For a buy-and-hold risky portfolio with initial weights $w_i$, asset wealth evolves as
+
+\begin{equation}
+V_{i,m}=w_i\prod_{k=1}^{m}(1+r_{i,k}),
+\qquad
+V_{p,m}=\sum_i V_{i,m}.
+\end{equation}
+
+The portfolio's realized monthly return is
+
+\begin{equation}
+r_{p,m}=\frac{V_{p,m}}{V_{p,m-1}}-1.
+\end{equation}
+
+Because there is no monthly rebalancing, portfolio weights drift naturally as assets realize
+different returns.
+
+\section{Asset-Level Results}
+
+Table~\ref{tab:asset-results} reports nominal compounded returns and annualized monthly
+volatility. The 1405 YTD period is excluded because this table reports complete years.
+
+\begin{landscape}
+\begin{table}[p]
+\centering
+\small
+\caption{Realized return and volatility by asset (percent)}
+\label{tab:asset-results}
+\begin{tabular}{rrrrrrrrr}
+\toprule
+Year & Gold R & Gold Vol & Equity R & Equity Vol & Housing R & Housing Vol & Fixed R & Fixed Vol \\
+\midrule
+1396 & 32.92 & 13.05 & 24.68 & 9.87 & 26.09 & 8.68 & 23.91 & 1.41 \\
+1397 & 180.34 & 57.00 & 85.54 & 39.86 & 91.72 & 14.08 & 22.26 & 0.89 \\
+1398 & 40.18 & 18.85 & 187.08 & 20.59 & 41.55 & 15.75 & 22.85 & 1.60 \\
+1399 & 80.14 & 43.64 & 154.96 & 81.08 & 93.71 & 17.14 & 21.56 & 7.38 \\
+1400 & 13.60 & 19.02 & 4.55 & 26.35 & 16.00 & 8.40 & 20.98 & 0.52 \\
+1401 & 114.14 & 28.86 & 43.39 & 35.89 & 85.77 & 15.79 & 23.42 & 0.30 \\
+1402 & 23.21 & 22.30 & 11.97 & 27.55 & 24.83 & 14.73 & 26.17 & 0.32 \\
+1403 & 149.24 & 34.33 & 23.46 & 26.03 & 15.07 & 5.99 & 31.56 & 0.53 \\
+1404 & 117.52 & 45.54 & 37.04 & 43.15 & 37.84 & 9.02 & 34.95 & 0.76 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{landscape}
+
+Fixed income has much lower measured volatility than the risky assets. Leadership among risky
+assets changes substantially: gold leads in several currency- and inflation-sensitive periods,
+equity dominates 1398, and housing combines high nominal appreciation with relatively smooth
+measured returns in some years. Housing smoothness must not be interpreted as direct economic
+equivalence to traded-asset risk because transaction averaging and illiquidity suppress measured
+month-to-month variation.
+
+\section{Stage I: Risky-Sleeve Composition}
+
+Let Etemad's monthly return be $r_{b,m}$. The differential return is
+
+\begin{equation}
+d_m(w)=r_{p,m}(w)-r_{b,m}.
+\end{equation}
+
+The original Stage I objective is the annualized information-ratio-style statistic
+
+\begin{equation}
+w_y^*=\arg\max_{w}
+\left[
+\sqrt{12}\frac{\overline{d_y(w)}}{s(d_y(w))}
+\right],
+\end{equation}
+
+subject to
+
+\begin{equation}
+w_i\ge 0,
+\qquad
+\sum_{i=1}^{3}w_i=1.
+\end{equation}
+
+Etemad is an investable benchmark, not a theoretical risk-free asset. Consequently, the
+objective is not described as a conventional Sharpe ratio.
+
+The nonlinear optimization uses SLSQP with equal weights, all three corner portfolios, and
+30 deterministic random starting points. Each solution is checked against corners, equal
+weights, and 25,000 deterministic random simplex portfolios. Every reported optimum equals or
+exceeds the best sampled score within numerical tolerance.
+
+\begin{landscape}
+\begin{table}[p]
+\centering
+\small
+\caption{Original Stage I results (percent except score)}
+\begin{tabular}{rrrrrrrrr}
+\toprule
+Year & Gold & Equity & Housing & Risky R & Benchmark R & Volatility & Tracking Error & Score \\
+\midrule
+1396 & 84.37 & 0.00 & 15.63 & 31.85 & 23.91 & 11.23 & 11.75 & 0.59 \\
+1397 & 4.40 & 0.00 & 95.60 & 95.62 & 22.26 & 14.07 & 13.86 & 3.58 \\
+1398 & 0.00 & 100.00 & 0.00 & 187.08 & 22.85 & 20.59 & 21.51 & 4.24 \\
+1399 & 0.00 & 1.35 & 98.65 & 94.54 & 21.56 & 17.39 & 17.84 & 2.79 \\
+1400 & 100.00 & 0.00 & 0.00 & 13.60 & 20.98 & 19.02 & 18.80 & -0.25 \\
+1401 & 23.71 & 0.00 & 76.29 & 92.50 & 23.42 & 15.75 & 15.61 & 3.02 \\
+1402 & 100.00 & 0.00 & 0.00 & 23.21 & 26.17 & 22.30 & 22.35 & -0.01 \\
+1403 & 100.00 & 0.00 & 0.00 & 149.24 & 31.56 & 34.33 & 34.13 & 2.11 \\
+1404 & 100.00 & 0.00 & 0.00 & 117.52 & 34.95 & 45.54 & 45.37 & 1.31 \\
+1405 YTD & 15.56 & 10.87 & 73.57 & 58.52 & 14.89 & 17.33 & 17.53 & 4.74 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{landscape}
+
+The allocation is strongly regime-dependent. Gold dominates five periods, housing four, and
+equity one. Five solutions lie exactly at a corner. In 1400 and 1402 the best available risky
+sleeve has a negative benchmark-relative score. A 100\% gold Stage I result in these years does
+not mean that gold was attractive; it means that gold was the least unfavorable asset inside a
+risky sleeve that the constraints required to be fully invested.
+
+\section{Stage II: Risk-Aversion Sensitivity}
+
+Stage II keeps the Stage I risky composition $w_y^*$ fixed. A share $\alpha$ is assigned to the
+risky sleeve and $1-\alpha$ to fixed income:
+
+\begin{equation}
+x_y(\alpha)=\left(\alpha w_y^*,\,1-\alpha\right),
+\qquad 0\le\alpha\le1.
+\end{equation}
+
+For every value of $\gamma$ on the sensitivity grid, utility is
+
+\begin{equation}
+U_y(\alpha;\gamma)
+=R_y(\alpha)-\frac{\gamma}{2}\sigma_y^2(\alpha),
+\end{equation}
+
+and the selected exposure is
+
+\begin{equation}
+\alpha_y^*(\gamma)=
+\arg\max_{0\le\alpha\le1}U_y(\alpha;\gamma).
+\end{equation}
+
+The grid is
+
+\begin{equation}
+\Gamma=\{0,1,2,4,6,8,10,15,20,25,30,35,40,45,50\}.
+\end{equation}
+
+For each $\gamma$, 5,001 values of $\alpha$ are evaluated. No individual $\gamma$ is chosen as
+the answer. The object of inference is the complete mapping
+$\gamma\mapsto\alpha_y^*(\gamma)$.
+
+\begin{landscape}
+\begin{table}[p]
+\centering
+\scriptsize
+\caption{Original Stage II risky allocation $100\alpha_y^*(\gamma)$ (percent), lower grid}
+\begin{tabular}{rrrrrrrrr}
+\toprule
+Year & $\gamma=0$ & 1 & 2 & 4 & 6 & 8 & 10 & 15 \\
+\midrule
+1396 & 100.00&100.00&100.00&100.00&97.32&76.18&62.94&44.56\\
+1397 & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&100.00\\
+1398 & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&100.00\\
+1399 & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&100.00\\
+1400 & 0.00&0.00&0.00&0.00&0.00&0.00&0.00&0.00\\
+1401 & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&100.00\\
+1402 & 0.00&0.00&0.00&0.00&0.00&0.00&0.00&0.00\\
+1403 & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&70.16\\
+1404 & 100.00&100.00&100.00&100.00&69.64&45.54&33.24&19.56\\
+1405 YTD & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&97.72\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[p]
+\centering
+\scriptsize
+\caption{Original Stage II risky allocation $100\alpha_y^*(\gamma)$ (percent), upper grid}
+\begin{tabular}{rrrrrrrr}
+\toprule
+Year & $\gamma=20$ & 25 & 30 & 35 & 40 & 45 & 50 \\
+\midrule
+1396 & 35.04&29.22&25.30&22.48&20.34&18.68&17.34\\
+1397 & 100.00&100.00&100.00&100.00&100.00&90.54&78.86\\
+1398 & 100.00&100.00&100.00&100.00&100.00&100.00&100.00\\
+1399 & 100.00&100.00&95.84&80.58&69.72&61.62&55.40\\
+1400 & 0.00&0.00&0.00&0.00&0.00&0.00&0.00\\
+1401 & 100.00&100.00&100.00&100.00&76.32&61.48&51.56\\
+1402 & 0.00&0.00&0.00&0.00&0.00&0.00&0.00\\
+1403 & 43.70&31.68&24.80&20.36&17.24&14.92&13.14\\
+1404 & 13.78&10.60&8.58&7.20&6.20&5.42&4.82\\
+1405 YTD & 72.60&57.74&47.94&41.02&35.86&31.88&28.72\\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{landscape}
+
+The response curves are weakly decreasing: raising risk aversion never increases the selected
+risky share on the evaluated grid. The speed of adjustment differs sharply by regime. Years 1400
+and 1402 select fixed income throughout because the risky sleeve underperformed Etemad. Several
+high-return years remain fully risky over a large portion of the grid because their realized
+nominal return advantage dominates the variance penalty. Interior responses emerge earlier in
+1396 and 1404. These patterns describe sensitivity; they do not identify the correct risk
+preference for an investor.
+
+\section{Alternative Fixed Full-Sample Volatility}
+
+The alternative specification implements volatility as the total variation across all aligned
+months. One covariance matrix is estimated from the 113 common monthly observations in
+1396--1405/05 and held fixed across yearly optimizations:
+
+\begin{equation}
+\Sigma^{\text{fixed}}=12\Cov(r_1,\ldots,r_T),
+\qquad T=113.
+\end{equation}
+
+For weights $x$, fixed portfolio volatility is
+
+\begin{equation}
+\sigma^{\text{fixed}}(x)
+=\sqrt{x^\top\Sigma^{\text{fixed}}x}.
+\end{equation}
+
+Using the full covariance matrix is necessary because portfolio risk depends on both individual
+variances and cross-asset covariances. Adding weighted individual standard deviations would ignore
+diversification.
+
+\begin{table}[ht]
+\centering
+\caption{Fixed annualized volatility estimated from all aligned months}
+\begin{tabular}{lr}
+\toprule
+Asset & Volatility (percent) \\
+\midrule
+Gold & 35.03 \\
+Equity & 40.76 \\
+Housing & 15.04 \\
+Fixed income & 2.74 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For Stage I, define the vector of risky-asset excess returns
+$e_m=r_m^{\text{risky}}-r_{b,m}\mathbf{1}$ and
+
+\begin{equation}
+\Sigma_{e}^{\text{fixed}}=12\Cov(e_1,\ldots,e_T).
+\end{equation}
+
+The alternative objective is
+
+\begin{equation}
+w_{y,\text{fixed}}^*=\arg\max_w
+\frac{12\,\overline{d_y(w)}}
+{\sqrt{w^\top\Sigma_e^{\text{fixed}}w}},
+\end{equation}
+
+under the same long-only, fully invested constraints. The numerator changes by year; the risk
+model does not.
+
+\begin{landscape}
+\begin{table}[p]
+\centering
+\small
+\caption{Alternative Stage I results with fixed full-sample risk}
+\begin{tabular}{rrrrrrrr}
+\toprule
+Year & Gold & Equity & Housing & Risky R & Benchmark R & Fixed TE & Score \\
+\midrule
+1396 & 50.83&0.00&49.17&29.56&23.91&20.46&0.24\\
+1397 & 28.07&0.13&71.80&116.58&22.26&15.93&3.89\\
+1398 & 0.49&47.04&52.47&110.00&22.85&22.46&2.52\\
+1399 & 5.65&17.98&76.37&103.96&21.56&15.68&3.64\\
+1400 & 100.00&0.00&0.00&13.60&20.98&34.81&-0.14\\
+1401 & 16.32&0.00&83.68&90.40&23.42&14.79&3.11\\
+1402 & 100.00&0.00&0.00&23.21&26.17&34.81&-0.01\\
+1403 & 98.08&0.00&1.92&146.66&31.56&34.20&2.07\\
+1404 & 100.00&0.00&0.00&117.52&34.95&34.81&1.70\\
+1405 YTD & 0.00&3.94&96.06&66.02&14.89&14.96&6.41\\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{landscape}
+
+Fixing risk produces more diversified Stage I portfolios in several periods. In 1396, the
+original 84.37\% gold allocation becomes approximately equal gold and housing. In 1398, the
+original equity corner becomes a 47.04\% equity and 52.47\% housing mix. Nevertheless, 1400,
+1402, and 1404 remain gold corners, and 1403 remains almost entirely gold. Fixed volatility
+removes instability caused by noisy year-specific risk estimates, but it cannot remove changes
+caused by sharply different annual returns.
+
+Alternative Stage II uses
+
+\begin{equation}
+U_y^{\text{fixed}}(\alpha;\gamma)
+=R_y(\alpha)-\frac{\gamma}{2}
+x_y(\alpha)^\top\Sigma^{\text{fixed}}x_y(\alpha).
+\end{equation}
+
+The complete alternative sensitivity surface is retained in the notebook. Relative to
+year-specific volatility, these curves begin reducing exposure earlier in some periods and
+decline more smoothly at high risk aversion. The interpretation remains curve-based: no single
+$\gamma$ is selected.
+
+\section{Interpretation of the Combined Evidence}
+
+\subsection{Regime dependence}
+
+The identity of the hindsight-efficient risky asset or mix changes materially across years.
+This rejects the idea that the sample reveals one timeless Iranian portfolio. Gold dominates
+currency-sensitive periods, housing benefits from high appreciation combined with smooth measured
+returns, and equity dominates only in its exceptional 1398 regime.
+
+\subsection{Why boundary solutions occur}
+
+Short annual samples, long-only constraints, and very large differences in nominal returns make
+corner solutions mathematically plausible. A corner is not by itself a solver failure. The
+random-portfolio validation supports the numerical solutions. Economically, however, frequent
+corners are evidence of instability and omitted real-world constraints rather than proof that
+concentrated portfolios are advisable.
+
+\subsection{Role of fixed income}
+
+Etemad dominates in 1400 and 1402 under both Stage II volatility definitions because the risky
+sleeve earns less and bears more risk. In other periods, high nominal risky returns can dominate
+the quadratic risk penalty over substantial parts of the sensitivity grid.
+
+\subsection{Meaning of the volatility comparison}
+
+The original model allows both returns and estimated risk to vary by year. The alternative model
+holds covariance fixed, so cross-year allocation changes are driven primarily by annual return
+conditions and the composition of the optimized sleeve. Differences between the two sets of
+results quantify how much year-specific risk estimation affects the allocation.
+
+\section{Supported and Unsupported Conclusions}
+
+The evidence supports the following statements:
+
+\begin{itemize}
+  \item historical risky-asset leadership changed substantially across years;
+  \item data correction materially changes measured housing risk and portfolio inference;
+  \item Etemad was superior to the risky opportunity set in 1400 and 1402 under the stated models;
+  \item optimal risky exposure is weakly decreasing in $\gamma$ on the evaluated grid;
+  \item fixed full-sample risk creates more diversification in several years but does not produce
+  a universal stable portfolio; and
+  \item numerical comparisons support the reported Stage I optima.
+\end{itemize}
+
+The evidence does \emph{not} support the following claims:
+
+\begin{itemize}
+  \item that displayed weights were knowable at the beginning of each year;
+  \item that any value of $\gamma$ represents an investor or the intended audience;
+  \item that 100\% allocations are suitable for implementation;
+  \item that housing's measured volatility is economically equivalent to liquid market risk;
+  \item that nominal IRR returns equal real purchasing-power gains; or
+  \item that five-month 1405 YTD results predict the complete year.
+\end{itemize}
+
+\section{Methodological Limitations}
+
+\begin{enumerate}
+  \item Full-year models use only 12 observations; 1405 YTD uses five.
+  \item Both analyses are in-sample and use realized returns, creating hindsight bias.
+  \item Returns are nominal IRR returns; inflation and real purchasing power are not modeled.
+  \item Housing is an average transaction price rather than a constant-quality repeat-sales
+  index and excludes rent, vacancy, maintenance, taxes, leverage, transaction costs, and
+  illiquidity.
+  \item TEDPIX is an index rather than a directly investable fund; fees and tracking error are
+  omitted.
+  \item Etemad is not a risk-free asset, and its full distribution and corporate-action history
+  remains under audit.
+  \item Housing changes from CBI to a weakly similar Kilid proxy after 1403/05.
+  \item Stage II combines compounded period return with annualized monthly variance. The 1405
+  YTD return horizon is five months while volatility is annualized.
+  \item The fixed-risk model estimates covariance using the complete 1396--1405/05 sample.
+  Earlier-year risk estimates therefore contain later information and are unsuitable as an
+  investable backtest.
+  \item Long-only constraints, buy-and-hold implementation, and zero transaction costs simplify
+  real portfolio management.
+\end{enumerate}
+
+\section{Conclusion}
+
+The principal conclusion is not a particular allocation and not a particular value of
+$\gamma$. The evidence shows that ex-post efficiency changed sharply across Iranian market
+regimes. A full-sample definition of volatility reduces noise from estimating risk with only
+12 observations and generates more diversification in some years, but return variation remains
+powerful enough to preserve concentration in others.
+
+The correct Stage II output is a sensitivity function rather than a recommendation:
+
+\begin{equation}
+\boxed{\gamma\longmapsto\alpha_y^*(\gamma)}.
+\end{equation}
+
+Thus credible portfolio decisions require three components: clean and auditable data, an explicit
+definition of risk, and an investor-specific preference or constraint supplied outside this
+historical analysis.
+
+\section{Reproducibility}
+
+From the \texttt{asset\_allocation} project directory:
+
+\begin{verbatim}
+$env:PYTHONPATH = "src"
+python -m asset_allocation.build_monthly_return_panel
+python -m pytest -q
+python -m jupyter execute --inplace notebooks/asset_allocation_analysis.ipynb
+\end{verbatim}
+
+The executed notebook contains 57 cells, including 33 code cells, and no error outputs. The
+project test suite contains eight passing tests. The LaTeX report summarizes notebook outputs;
+it does not modify canonical data.
+
+\end{document}

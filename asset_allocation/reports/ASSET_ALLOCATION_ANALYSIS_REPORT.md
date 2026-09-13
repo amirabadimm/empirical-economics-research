@@ -159,7 +159,9 @@ exposure, not the relative composition inside the risky sleeve.
 
 ## Stage II results and interpretation
 
-Optimal risky allocation (`alpha`) in percent:
+Optimal risky allocation (`alpha`) in percent is reported across the complete sensitivity grid.
+The grid is split into two tables only for readability; no gamma value is designated as the
+preferred or representative case.
 
 | Year | γ=0 | γ=1 | γ=2 | γ=4 | γ=6 | γ=8 | γ=10 | γ=15 |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -174,16 +176,26 @@ Optimal risky allocation (`alpha`) in percent:
 | 1404 | 100.00 | 100.00 | 100.00 | 100.00 | 69.64 | 45.54 | 33.24 | 19.56 |
 | 1405 YTD | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 97.72 |
 
-At the notebook's illustrative `gamma = 4`, the total portfolio equals the Stage I sleeve in
-1396–1399, 1401, and 1403–1405 YTD. It is 100% fixed income in 1400 and 1402. This should not be
-presented as a recommended risk setting; gamma 4 is one sensitivity point.
+| Year | γ=20 | γ=25 | γ=30 | γ=35 | γ=40 | γ=45 | γ=50 |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1396 | 35.04 | 29.22 | 25.30 | 22.48 | 20.34 | 18.68 | 17.34 |
+| 1397 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 90.54 | 78.86 |
+| 1398 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 |
+| 1399 | 100.00 | 100.00 | 95.84 | 80.58 | 69.72 | 61.62 | 55.40 |
+| 1400 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| 1401 | 100.00 | 100.00 | 100.00 | 100.00 | 76.32 | 61.48 | 51.56 |
+| 1402 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| 1403 | 43.70 | 31.68 | 24.80 | 20.36 | 17.24 | 14.92 | 13.14 |
+| 1404 | 13.78 | 10.60 | 8.58 | 7.20 | 6.20 | 5.42 | 4.82 |
+| 1405 YTD | 72.60 | 57.74 | 47.94 | 41.02 | 35.86 | 31.88 | 28.72 |
 
 The boundary-heavy pattern has a straightforward explanation. Iranian nominal asset returns in
 several years were very large relative to annualized variance, so the specified utility still
 favored full risky exposure. In 1400 and 1402 the risky sleeve's return was below fixed income,
 so both return and risk favored the benchmark. Interior diversification appears most clearly in
-1396 and 1404 as gamma rises. The model is therefore sensitive to realized regimes and to the
-chosen utility scale.
+1396 and 1404 as gamma rises. Across the grid, higher risk aversion weakly reduces risky exposure,
+but the speed and point of adjustment vary substantially by realized market regime. The result
+is the entire response curve, not any individual allocation on that curve.
 
 ## What can and cannot be concluded
 
@@ -203,7 +215,7 @@ Unsupported conclusions:
 - That 100% allocations are suitable for a real investor.
 - That housing volatility is economically equivalent to traded-asset volatility.
 - That nominal returns represent gains in purchasing power; inflation is not deducted.
-- That gamma 4, or any other gamma, represents the audience's risk preference.
+- That any gamma value in the grid represents the audience's risk preference.
 - That five-month 1405 YTD behavior predicts the complete year.
 
 ## Methodological limitations
@@ -282,9 +294,10 @@ python -m jupyter execute --inplace notebooks/asset_allocation_analysis.ipynb
 The notebook also ends with an alternative fixed-volatility analysis. That specification uses
 all 113 aligned months to estimate one annualized covariance matrix, then reuses it in every
 year. Fixed annualized asset volatility is 35.03% for gold, 40.76% for equity, 15.04% for
-housing, and 2.74% for fixed income. At gamma 4, its Stage II result differs most visibly in
-1396: 33.76% risky and 66.24% fixed income, compared with 100% risky under year-specific
-volatility. The full-sample method is more stable but contains look-ahead information.
+housing, and 2.74% for fixed income. Its Stage II output is interpreted only through the complete
+risk-aversion response curve. Relative to year-specific volatility, the fixed-risk curves begin
+reducing exposure earlier in some periods and decline more smoothly at higher risk aversion.
+The full-sample method is more stable but contains look-ahead information.
 
 The final notebook contains 57 cells, including 33 executed code cells, with zero error outputs.
 The project test suite passes all eight tests.

@@ -29,6 +29,8 @@ model fixed across yearly optimizations, while yearly realized returns continue 
 A presentation-ready account of the complete workflow, exact result tables, interpretation,
 limitations, suggested storyline, and likely questions is available in
 [`reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md`](reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md).
+The same analysis is also available as a typeset-ready LaTeX document:
+[`reports/ASSET_ALLOCATION_ANALYSIS.tex`](reports/ASSET_ALLOCATION_ANALYSIS.tex).
 
 ## Independent setup
 
