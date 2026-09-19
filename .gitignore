@@ -20,8 +20,8 @@ coverage.xml
 # Raw source data and snapshots are preserved locally, not versioned in Git.
 commodity/*/data/raw/**
 !commodity/*/data/raw/**/.gitkeep
-Goods/*/data/raw/**
-!Goods/*/data/raw/**/.gitkeep
+goods/*/data/raw/**
+!goods/*/data/raw/**/.gitkeep
 
 # Workspace-wide market inputs shared by multiple commodity projects.
 shared/data/raw/**
