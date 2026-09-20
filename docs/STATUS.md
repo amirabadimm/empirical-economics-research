@@ -3,6 +3,9 @@
 Documentation review: 2026-08-29
 Latest data checkpoint: 2026-08-29
 
+The prior options research project was retired on 2026-09-20. Its code, documentation,
+and derived analysis were removed. The former project-local raw directory is no longer present.
+
 Workspace-wide USD/IRR is a single shared canonical input with 13,079 dates through 1405/06/05;
 Copper and Zinc no longer maintain project-local copies.
 
