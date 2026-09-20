@@ -35,6 +35,7 @@ restricted raw market data.
 | [Warehouse fees](commodity/warehouse_fees/README.md) | How have daily storage fees for all documented commodity certificates changed? | Official notices plus archived official tables | 43 exact-date intervals and 30 observations back to 2016 |
 | [Iran Energy Exchange](energy_exchange/README.md) | Is the certificate market sufficiently active for a broader empirical project? | Public-source mapping plus complete 21-symbol certificate-history feasibility test | Closed: activity too sparse and concentrated for the intended project |
 | [National Copper — Codal](codal/national_copper/README.md) | What can issuer disclosures reveal about National Iranian Copper Industries Company? | Cumulative-to-quarter conversion with explicit audit lineage | 75 valid quarters; 18 complete years |
+| [Ahrom options](options/README.md) | What is the historical contract universe and available daily option history for the Ahrom ETF? | TSETMC instrument discovery with OptionBaaz daily response archive | 996 contracts; 8,903 rows since 2025-12-17; older OptionBaaz gap |
 
 Current data coverage and next actions are summarized in [docs/STATUS.md](docs/STATUS.md).
 

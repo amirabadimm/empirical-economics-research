@@ -5,6 +5,9 @@ Latest data checkpoint: 2026-08-29
 
 The prior options research project was retired on 2026-09-20. Its code, documentation,
 and derived analysis were removed. The former project-local raw directory is no longer present.
+An independent Ahrom options pipeline discovered 996 contracts and collected 8,903
+OptionBaaz daily rows from 2025-12-17 onward; see `options/docs/STATUS.md` for
+the substantial earlier-history gap.
 
 Workspace-wide USD/IRR is a single shared canonical input with 13,079 dates through 1405/06/05;
 Copper and Zinc no longer maintain project-local copies.

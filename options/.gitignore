@@ -1,0 +1,9 @@
+/access_token.txt
+/data/raw/
+/data/interim/
+/data/processed/
+/logs/
+/outputs/
+/cache/
+__pycache__/
+.pytest_cache/

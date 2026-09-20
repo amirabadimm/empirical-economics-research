@@ -25,6 +25,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+parquet = ["pyarrow"]
 notebooks = [
   "ipython",
   "jupyterlab",
@@ -54,6 +55,6 @@ select = ["E9", "F63", "F7", "F82"]
 packages = []
 
 [tool.pytest.ini_options]
-testpaths = ["commodity", "codal", "energy_exchange", "shared"]
-pythonpath = ["."]
+testpaths = ["commodity", "codal", "energy_exchange", "shared", "options"]
+pythonpath = [".", "options/src"]
 addopts = "-ra"
