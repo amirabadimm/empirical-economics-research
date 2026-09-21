@@ -1,6 +1,17 @@
 # Copper Warehouse-Receipt Certificate: Research Workflow
 
-Last reviewed: 2026-08-29
+The refresh also runs `build_bubble_distribution.py`. It maps each explicit copper bubble series
+to the shared schema, writes `data/processed/bubble/copper_bubble_distribution.csv` atomically, and saves
+three-panel distribution, empirical-CDF, and absolute-exceedance plots under
+`data/processed/analysis`. Certificate/physical distributions include observed anchors and
+bounded linear interpolations, flagged by `point_method` and `is_interpolated`. The table has
+1,215 rows across certificate/physical,
+certificate/intrinsic, and physical/intrinsic types at the 2026-09-21 checkpoint.
+Active notebooks render the same three measures as clean, interactive Plotly panels.
+
+Power BI reads this project's `outputs/power_bi/copper_certificate_physical_comparison.csv`. Double-click `refresh_powerbi.cmd` to rebuild the physical benchmark, analytical comparison, and presentation CSV from existing raw inputs. The export retains observed versus interpolated physical-price methods. Run the collectors first when new source data is needed.
+
+Last reviewed: 2026-09-19
 
 ## Research objective
 
@@ -13,15 +24,15 @@ valuation remains anchored to observed domestic physical trades.
 
 | Source | Coverage |
 |---|---|
-| LME cash copper | 4,719 observations through 2026-08-28 |
-| Free-market USD/IRR | 13,079 observations through 1405/06/05 |
-| Certificate | 268 calendar rows; 194 positive-trading days through 2026-08-27 |
-| Broad physical copper cathode | 1,171 rows through 1405/06/02 |
-| Approved NCI cash benchmark | 795 trading days through 2026-08-24 |
+| LME cash copper | 4,733 observations through 2026-09-18 |
+| Free-market USD/IRR | 13,096 observations through 1405/06/26 |
+| Certificate | 288 calendar rows; 210 positive-trading days through 2026-09-20 |
+| Broad physical copper cathode | 1,175 rows through 1405/06/29 |
+| Approved NCI cash benchmark | 799 trading days through 1405/06/29 |
 
-The primary certificate output contains 188 dates from 2025-10-26 through 2026-08-24: 32 exact
-physical anchors and 156 interpolated observations. Its mean estimated premium is 5.64% and its
-median is 7.17%.
+The primary certificate output contains 206 dates from 2025-10-26 through 2026-09-20: 36 observed
+physical anchors and 170 interpolated observations. Its mean estimated premium is 5.72% and its
+median is 7.10%. No extrapolation is applied after the last supported anchor.
 
 ## Repository architecture
 
@@ -158,7 +169,7 @@ maturity and financing adjustments have not been established.
 
 ## Notebooks and presentation outputs
 
-Both active notebooks include the shared read-only dashboard for source coverage, separate
+Both active notebooks use Plotly for their analytical figures and include the shared read-only dashboard for source coverage, separate
 physical/certificate activity and prices, physical goods counts, and existing validated bubble
 series. Copper-specific LME and valuation analysis remains local.
 

@@ -1,6 +1,12 @@
 # Copper Project Status
 
-Last updated: 2026-09-02
+As of 2026-09-21, the standardized bubble-distribution output contains 1,215 observations:
+206 certificate-versus-physical (36 observed and 170 interpolated), 210 certificate-versus-intrinsic, and 799
+physical-versus-intrinsic. Matching figures and notebook cells are available.
+
+The project-local Power BI certificate/physical CSV has 201 rows at this checkpoint.
+
+Last updated: 2026-09-19
 
 ## Global copper-market collection checkpoint
 
@@ -63,11 +69,21 @@ physical/certificate activity, goods composition, prices, and validated bubble v
 The market-input collectors and all dependent valuation outputs have been refreshed. Processed
 physical outputs now live under `data/processed/physical`, bubble/model outputs under
 `data/processed/bubble`, and presentation tables under `data/processed/analysis`. Current
-coverage is LME through 2026-08-28, shared free-market USD/IRR through 1405/06/05, certificate data
-through 2026-08-27, and the approved NCI cash benchmark through 2026-08-24.
+coverage is LME through 2026-09-18, shared free-market USD/IRR through 1405/06/26, certificate data
+through 2026-09-20, and the approved NCI cash benchmark through 1405/06/29.
 
-The primary certificate bubble contains 188 observations from 2025-10-26 through 2026-08-24,
-including 32 exact physical anchors and 156 interpolated dates. Its mean premium is 5.64% and
-its median is 7.17%. Certificate transaction value is present as `certificate_trades_value_irr`;
+The primary certificate bubble contains 206 observations from 2025-10-26 through 2026-09-20,
+including 36 observed physical anchors and 170 interpolated dates. Its mean premium is 5.72% and
+its median is 7.10%. Certificate transaction value is present as `certificate_trades_value_irr`;
 physical transaction value is now present as `physical_trades_value_irr` in the daily benchmark
 and physical-versus-intrinsic output.
+
+The 2026-09-21 incremental refresh reached 288 certificate rows (210 traded days), 1,175
+canonical physical rows, 4,733 LME observations, and 13,096 shared FX observations. Rebuilt
+physical, intrinsic, primary bubble, regression, presentation, and forward-gap outputs; the
+primary bubble is bounded by observed physical anchors. Twenty copper tests passed and all 27
+code cells in the certificate analysis notebook executed in memory.
+
+On 2026-09-19, both active copper notebooks were converted from Matplotlib/Seaborn plots to
+interactive Plotly figures. The LME and certificate notebooks executed all 17 and 27 code cells,
+respectively; saved notebook outputs remain cleared.

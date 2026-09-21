@@ -1,5 +1,7 @@
 # Steel Rebar Physical-Market Research
 
+Double-click `refresh_powerbi.cmd` in this project to rebuild both exact-date comparisons and `outputs/power_bi/rebar_certificate_physical_comparison.csv`. Power BI can distinguish A3/18 from cross-diameter A3/12 by `comparison`.
+
 ## Research objective
 
 Build an auditable physical-market dataset for Iranian steel rebar from the official Iran Mercantile Exchange (IME). The initial project is intentionally an exploratory data pipeline: it preserves the full rebar-labelled source universe before any analytical comparison, price benchmark, or eligibility basket is approved.
@@ -10,13 +12,13 @@ Canonical physical and certificate records remain separate under `data/raw/{phys
 The optional A3 / 12 mm physical analysis lives under `data/processed/physical`. A separate
 exploratory exact-date A3 / 18 mm bubble lives under `data/processed/bubble`.
 
-Physical collection refreshed on 2026-09-06: 31,753 rebar-labelled IME rows from 1387/06/03
-through 1405/06/15. The active exploratory chart scope is plainly specified straight A3 / 12 mm
+Physical collection refreshed on 2026-09-19: 31,953 rebar-labelled IME rows from 1387/06/03
+through 1405/06/28. The active exploratory chart scope is plainly specified straight A3 / 12 mm
 rebar under cash or cash-matching contracts. The broad raw selection remains unchanged, and no
 producer/delivery-validated comparable-product benchmark has been approved.
 
-Continuous-certificate collection now covers 275 official daily records from 2025-10-20 through
-2026-09-05, including 199 traded days. Certificate/physical comparison remains exploratory.
+Continuous-certificate collection now covers 286 official daily records from 2025-10-20 through
+2026-09-17, including 208 traded days. Certificate/physical comparison remains exploratory.
 
 The raw scope includes every IME row whose normalized `GoodsName` identifies rebar, including all producers, standards, diameters, symbols, contract types, settlement terms, currencies, and zero-quantity offers. This is a source scope, not an assertion of economic comparability.
 
@@ -55,8 +57,8 @@ only the processed exact-date CSV and never constructs a comparison inside the n
 ## Certificate data
 
 The official continuous rebar certificate collector uses commodity ID `29`, legacy code
-`CD1RBR0001`, and current code `SteelRebar`. The current canonical history has 275 records from
-2025-10-20 through 2026-09-05, including 199 traded days.
+`CD1RBR0001`, and current code `SteelRebar`. The current canonical history has 286 records from
+2025-10-20 through 2026-09-17, including 208 traded days.
 
 ## Exploratory exact-date A3 / 18 mm bubble
 
@@ -78,7 +80,7 @@ approved economic benchmark. The A3 / 12 mm series remains a separate physical e
 
 At the researcher's request, `build_a3_12_exact_bubble.py` applies the same positive-trade,
 cash/cash-matching, exact-date mechanics to plainly specified straight A3 / 12 mm physical trades.
-It produces 48 observations from 2025-11-12 through 2026-09-02 using
+It produces 49 observations from 2025-11-12 through 2026-09-16 using
 `100 × (certificate settlement / A3/12 physical cash VWAP − 1)`. The CSV explicitly records
 `intentional_cross_diameter_diagnostic_not_underlying_match`; it must not be interpreted as a
 deliverable-underlying arbitrage series. It is useful as a nearby-diameter market diagnostic only.
@@ -105,3 +107,17 @@ Refresh rechecked on 2026-09-06T13:41:53 (local time): both collectors queried t
 275 rows through 2026-09-05 (199 traded days). All three derived CSVs were rebuilt
 (188 physical daily rows, 5 A3/18 and 48 A3/12 exact-date comparisons); eight pipeline tests passed.
 Timestamped collector logs are retained under `logs/refresh_*_20260906T*.log`.
+
+## Refresh verification (2026-09-19)
+
+Official incremental collection produced 31,953 physical rows through 1405/06/28 and 286
+certificate rows through 2026-09-17 (208 traded days). The A3/12 cash daily table has 189
+dates through 1405/06/25. The strict A3/18 comparison remains at 5 exact-date observations;
+the explicitly cross-diameter A3/12 diagnostic has 49 through 2026-09-16. All three derived
+tables were rebuilt, eight pipeline tests passed, and the analysis notebook executed in memory.
+No certificate-underlying benchmark has been approved.
+# Historical bubble distributions
+
+`data/processed/bubble/rebar_bubble_distribution.csv` standardizes the A3/18 comparison and A3/12
+sensitivity diagnostic for Power BI. It contains signed bubble percentages, empirical `F(x)`,
+and `P(|Bubble| >= |x|)`. Figures are written to `data/processed/analysis`.

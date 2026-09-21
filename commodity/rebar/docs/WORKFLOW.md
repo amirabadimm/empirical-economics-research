@@ -1,5 +1,7 @@
 # Steel Rebar Physical-Market Workflow
 
+Power BI reads this project's `outputs/power_bi/rebar_certificate_physical_comparison.csv`. Double-click `refresh_powerbi.cmd` to rebuild both exact-date analytical comparisons and the presentation CSV from existing raw inputs. The two comparison statuses remain distinct. Run the collectors first when new source data is needed.
+
 Last reviewed: 2026-09-06
 
 ## Objective and boundary
@@ -153,3 +155,17 @@ Refresh rechecked on 2026-09-06T13:41:53 (local time): both collectors queried t
 275 rows through 2026-09-05 (199 traded days). All three derived CSVs were rebuilt
 (188 physical daily rows, 5 A3/18 and 48 A3/12 exact-date comparisons); eight pipeline tests passed.
 Timestamped collector logs are retained under `logs/refresh_*_20260906T*.log`.
+
+The 2026-09-19 incremental refresh queried official physical and certificate sources and rebuilt
+all three derived tables. Current source coverage is 31,953 physical rows through 1405/06/28 and
+286 certificate rows through 2026-09-17 (208 traded days). The A3/12 cash table has 189 dates
+through 1405/06/25, the strict A3/18 comparison remains at 5 exact matches, and the marked
+A3/12 cross-diameter diagnostic has 49 through 2026-09-16. Eight tests and in-memory notebook
+execution passed. The source datasets remain independent; no benchmark approval is implied.
+# Bubble distribution stage
+
+The refresh runs `build_bubble_distribution.py` after both exact-date bubble builders. It writes
+the standard table atomically under `data/processed/bubble` and separate three-panel figures
+under `data/processed/analysis`. The 2026-09-21 checkpoint contains 54 rows: 5 A3/18 underlying
+diagnostics and 49 explicitly labelled A3/12 cross-diameter sensitivity observations.
+The active notebook renders both series as clean, interactive Plotly panels.

@@ -1,24 +1,26 @@
 # Steel Rebar Research Status
 
-Last updated: 2026-09-06
+The project-local Power BI certificate/physical CSV has 54 rows: 5 A3/18 and 49 cross-diameter A3/12.
+
+Last updated: 2026-09-19
 Stage: exploratory exact-date A3 / 18 mm bubble built; specification QA remains open
 
 ## Current state
 
 - Product project created for IME steel rebar physical-market data.
 - Broad source filter retains every normalized rebar-labelled row without quality, producer, symbol, contract, settlement, or trade-status exclusions.
-- The refreshed physical collection contains 31,753 source rows from 1387/06/03 through 1405/06/15; the canonical raw file remains local, the former monthly archive is frozen, and future complete responses use the shared content-addressed IME archive. All remain excluded from Git.
-- The standardized notebook dashboard counts 630 distinct `GoodsName` labels across all 31,753
+- The refreshed physical collection contains 31,953 source rows from 1387/06/03 through 1405/06/28; the canonical raw file remains local, the former monthly archive is frozen, and future complete responses use the shared content-addressed IME archive. All remain excluded from Git.
+- The standardized notebook dashboard counts 632 distinct `GoodsName` labels across all 31,953
   physical records and adds separate physical/certificate activity and price views. Its bubble
   panel reads the reproducible processed exact-date comparison.
 - The active chart scope is plainly specified straight A3 / 12 mm rebar under cash or cash-matching contracts. A deterministic builder produces its daily VWAP and percentage-difference output; the notebook visualizes it on source Jalali dates.
 - The notebook now includes a reproducible initial screen that ranks plainly specified, single-diameter/single-grade straight rebar groups by cash-trade frequency. This screening does not approve a benchmark or resolve producer and delivery comparability.
-- Continuous-certificate collection covers commodity ID 29 across `CD1RBR0001` and `SteelRebar`: 275 records from 2025-10-20 through 2026-09-05, including 199 traded days.
+- Continuous-certificate collection covers commodity ID 29 across `CD1RBR0001` and `SteelRebar`: 286 records from 2025-10-20 through 2026-09-17, including 208 traded days.
 - A strict A3 / 18 mm cash-only, exact-Gregorian-date builder produces 5 gross quoted-price bubble
   observations from 2026-03-15 through 2026-05-26. All physical anchors are Isfahan Steel trades;
   no interpolation, forward pooling, or cost adjustment is used.
-- A separate requested A3 / 12 mm cash-only exact-date sensitivity contains 48 observations from
-  2025-11-12 through 2026-09-02. Its schema explicitly marks the diameter mismatch and prevents it
+- A separate requested A3 / 12 mm cash-only exact-date sensitivity contains 49 observations from
+  2025-11-12 through 2026-09-16. Its schema explicitly marks the diameter mismatch and prevents it
   from being presented as the certificate-underlying comparison.
 - Network-free tests cover certificate identity, both strict product scopes, cash filtering,
   exact-date alignment, VWAP, bubble arithmetic, and the mandatory cross-diameter warning.
@@ -53,3 +55,16 @@ Refresh rechecked on 2026-09-06T13:41:53 (local time): both collectors queried t
 275 rows through 2026-09-05 (199 traded days). All three derived CSVs were rebuilt
 (188 physical daily rows, 5 A3/18 and 48 A3/12 exact-date comparisons); eight pipeline tests passed.
 Timestamped collector logs are retained under `logs/refresh_*_20260906T*.log`.
+
+## Refresh verification - 2026-09-19
+
+- Official physical and certificate collectors completed incrementally: 31,953 physical rows
+  through 1405/06/28, and 286 certificate rows through 2026-09-17 (208 traded days).
+- Rebuilt A3/12 cash daily (189 dates through 1405/06/25), strict A3/18 exact-date bubble
+  (5 unchanged), and marked A3/12 cross-diameter diagnostic (49 through 2026-09-16).
+- Eight tests passed and all notebook code cells executed in memory. Specification and cost
+  verification remains open; neither comparison is an approved arbitrage benchmark.
+# Bubble distribution status
+
+As of 2026-09-21, the standardized distribution table contains 54 observations across the A3/18
+comparison and A3/12 sensitivity series. Matching figures and notebook cells are available.

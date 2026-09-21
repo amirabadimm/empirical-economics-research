@@ -1,7 +1,9 @@
 # Iron-Ore Pellet Research Status
 
-Last updated: 2026-08-15
+Last updated: 2026-09-19
 Stage: exploratory exact-date certificate valuation
+
+The 23-row comparison has a reproducible processed CSV at `data/processed/bubble/pellet_certificate_bubble.csv` and a project-local Power BI delivery CSV at `outputs/power_bi/pellet_certificate_physical_comparison.csv`. Producer-composition risk remains open.
 
 ## Objective
 
@@ -9,22 +11,22 @@ Estimate the warehouse-receipt premium or discount relative to comparable domest
 
 ## Data checkpoint
 
-- Certificate: 268 calendar observations and 194 positive-trading days through 2026-08-27.
-- Physical market: 3,535 rows and 1,658 positive trades through 1405/06/07.
+- Certificate: 286 calendar observations and 208 positive-trading days through 2026-09-17.
+- Physical market: 3,588 rows and 1,706 positive trades through 1405/06/23.
 - Raw files and immutable snapshots remain unchanged.
 - The active notebook now includes the governed workspace dashboard for source coverage,
   physical/certificate activity, goods composition, prices, and validated bubble visualization.
-- The exploratory bubble contains 23 exact-date observations; no standalone processed benchmark has yet been approved.
+- The exploratory bubble contains 23 exact-date observations through 1405/05/25; no standalone processed benchmark has yet been approved.
 
 ## Benchmark rule
 
 The candidate producers are Gol Gohar (`GOLG-PELL-00`) and Gohar Zamin (`GHZ-PELL-00`). Eligible observations require a cash or cash-matching contract, an explicitly cash settlement, and positive price and quantity. Cash/credit trades are excluded.
 
-A single-producer day uses that producer's observed price; a two-producer day uses the simple mean. Certificate comparisons are exact-date only and require positive volume and price. No interpolation or carry-forward is used. Coverage is 16 single-producer and six two-producer days.
+A single-producer day uses that producer's observed price; a two-producer day uses the simple mean. Certificate comparisons are exact-date only and require positive volume and price. No interpolation or carry-forward is used. Coverage is 17 single-producer and six two-producer days.
 
 ## Selection rationale
 
-Selection uses all positive physical trades since certificate inception. Gol Gohar represents 30.75% and Gohar Zamin 23.10%, for a combined 53.86%. Chadormalu represents 9.81% and Sangan Khorasan 5.66%; both are excluded. The decision affects analysis only and never alters raw data.
+Selection uses all positive physical trades since certificate inception. Gol Gohar represents 32.69% and Gohar Zamin 22.85%, for a combined 55.54%. Chadormalu represents 9.77% and Sangan Khorasan 6.21%; both are excluded. The decision affects analysis only and never alters raw data.
 
 ## Validation findings
 
@@ -39,3 +41,10 @@ On 1404/10/21 the benchmark is Gol Gohar's IRR 94,566/kg cash price. The certifi
 ## Next step
 
 Extend exact-date coverage, report single- and two-producer results separately, and promote the benchmark to a processed output only after final approval. Until then, the notebook series remains exploratory.
+
+The active notebook now uses interactive Plotly charts and executed successfully against the
+2026-09-19 checkpoint. Static reports retain their earlier data vintage.
+# Bubble distribution status
+
+As of 2026-09-21, the standardized certificate-versus-physical distribution contains 23
+observations. The existing producer-composition comparability warning remains applicable.

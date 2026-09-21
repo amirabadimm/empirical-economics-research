@@ -1,6 +1,8 @@
 # Zinc-Ingot Warehouse-Receipt Certificate: Research Workflow
 
-Last reviewed: 2026-08-29
+Power BI reads this project's `outputs/power_bi/zinc_certificate_physical_comparison.csv`. Double-click `refresh_powerbi.cmd` to rebuild the physical benchmark, analytical comparison, and presentation CSV from existing raw inputs. The export retains observed versus interpolated physical-price methods. Run the collectors first when new source data is needed.
+
+Last reviewed: 2026-09-19
 
 ## Research objective
 
@@ -12,11 +14,11 @@ and preserves grade composition in every benchmark observation.
 
 | Source | Coverage |
 |---|---|
-| Certificate | 268 calendar rows; 194 positive-trading days through 2026-08-27 |
-| Broad physical zinc market | 6,325 rows; 3,512 positive trades through 1405/06/04 |
-| LME cash zinc | 4,719 dates from 2008-01-02 through 2026-08-28 |
-| Shared free-market USD/IRR | 13,079 dates through 1405/06/05 |
-| Approved physical benchmark | 554 days through 2026-08-09 |
+| Certificate | 288 calendar rows; 210 positive-trading days through 2026-09-20 |
+| Broad physical zinc market | 6,398 rows; 3,581 positive trades through 1405/06/25 |
+| LME cash zinc | 4,733 dates from 2008-01-02 through 2026-09-18 |
+| Shared free-market USD/IRR | 13,096 dates through 1405/06/26 |
+| Approved physical benchmark | 563 days through 1405/06/29 |
 
 ## Architecture and source governance
 
@@ -127,3 +129,23 @@ python .\commodity\zinc\src\zinc\processing\build_intrinsic_regression.py
 
 The intrinsic proxy is a transparent external factor, not a complete domestic parity model. Basket
 composition and sparse physical anchors should be considered when interpreting certificate bubbles.
+
+## Refresh verification - 2026-09-19
+
+The incremental official collectors produced 288 certificate rows (210 traded days) and 6,417
+physical rows (3,581 positive trades). LME cash zinc reached 4,733 dates; shared FX remained at
+13,098 dates. Rebuilt outputs contain 563 physical benchmark days, 210 direct certificate versus
+intrinsic dates, and 206 bounded primary bubble dates through 2026-09-20 (50 observed anchors,
+156 interpolated). Both analysis notebooks use Plotly and executed successfully in memory.
+The static research report has not been regenerated for this checkpoint.
+# Bubble distribution stage
+
+The refresh runs `build_bubble_distribution.py` after the bubble builders. It atomically writes
+the standard table to `data/processed/bubble/zinc_bubble_distribution.csv` and saves distribution,
+empirical-CDF, and absolute-exceedance figures under `data/processed/analysis`.
+Certificate/physical distributions include observed anchors and bounded linear interpolations,
+flagged by `point_method` and `is_interpolated`.
+The 2026-09-21
+checkpoint has 979 rows across certificate/physical, certificate/intrinsic, and
+physical/intrinsic types.
+Active notebooks render the same three measures as clean, interactive Plotly panels.

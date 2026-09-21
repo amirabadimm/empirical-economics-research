@@ -1,6 +1,8 @@
 # Iron-Ore Pellet Warehouse-Receipt Certificate: Research Workflow
 
-Last reviewed: 2026-08-29
+The notebook's strict-cash Gol Gohar/Gohar Zamin exact-date comparison is also rebuilt by `src/pellet/processing/build_certificate_bubble.py`. It writes `data/processed/bubble/pellet_certificate_bubble.csv` atomically. The physical price is each producer's daily quantity-weighted price, then the simple mean when both producers trade. Double-click `refresh_powerbi.cmd` to rebuild the comparison and project-local `outputs/power_bi/pellet_certificate_physical_comparison.csv` from existing raw inputs. The comparison remains exploratory.
+
+Last reviewed: 2026-09-19
 
 ## Research objective
 
@@ -16,8 +18,8 @@ prices, exchange rates, and external intrinsic-value models are outside scope.
 
 | Source | Coverage |
 |---|---|
-| Certificate | 268 calendar rows; 194 positive-trading days through 2026-08-27 |
-| Broad physical pellet market | 3,535 rows; 1,658 positive trades through 1405/06/07 |
+| Certificate | 286 calendar rows; 208 positive-trading days through 2026-09-17 |
+| Broad physical pellet market | 3,588 rows; 1,706 positive trades through 1405/06/23 |
 | Exploratory exact-date bubble | 23 observations |
 
 Raw data and immutable monthly snapshots remain unchanged. New complete IME responses are written
@@ -43,13 +45,13 @@ price rules are applied.
 
 | Producer | Symbol | Volume share |
 |---|---|---:|
-| Gol Gohar | `GOLG-PELL-00` | 30.75% |
-| Gohar Zamin | `GHZ-PELL-00` | 23.10% |
-| Chadormalu | `CHMI-PELL-00` | 9.81% |
-| Sangan Khorasan | `SSMI-PELL-00` | 5.66% |
+| Gol Gohar | `GOLG-PELL-00` | 32.69% |
+| Gohar Zamin | `GHZ-PELL-00` | 22.85% |
+| Chadormalu | `CHMI-PELL-00` | 9.77% |
+| Sangan Khorasan | `SSMI-PELL-00` | 6.21% |
 
-Gol Gohar and Gohar Zamin jointly represent 53.86% and are retained. Chadormalu and Sangan
-Khorasan jointly represent 15.47% and are excluded from the candidate benchmark. This is an
+Gol Gohar and Gohar Zamin jointly represent 55.54% and are retained. Chadormalu and Sangan
+Khorasan jointly represent 15.98% and are excluded from the candidate benchmark. This is an
 analytical decision only; excluded observations remain in raw data.
 
 ## Strict-cash benchmark rule
@@ -65,8 +67,8 @@ Cash/credit observations are excluded. A single-producer day uses that producer'
 a two-producer day uses the simple mean. The certificate is joined only on exact dates with
 positive volume and settlement price. No interpolation or carry-forward is used.
 
-The exploratory sample contains 16 single-producer dates and six two-producer dates. Mean bubble
-is -12.18%, median is -11.55%, minimum is -24.93%, and maximum is +11.03%.
+The exploratory sample contains 17 single-producer dates and six two-producer dates. Mean bubble
+is -12.18%, median is -12.07%, minimum is -24.93%, and maximum is +11.03%.
 
 ## Cross-producer validation
 
@@ -113,3 +115,12 @@ python .\commodity\pellet\src\pellet\collectors\physical.py
 Then execute `notebooks/01_physical_analysis.ipynb` with the project kernel. The next research step
 is to extend exact-date coverage and continue separating single- and two-producer results. A
 production processed benchmark should be created only after final approval of the selection rule.
+
+The 2026-09-19 refresh adds one exact-date overlap through 1405/05/25. The active notebook uses
+interactive Plotly charts and executed successfully; static reports retain their prior checkpoint.
+# Bubble distribution stage
+
+The refresh runs `build_bubble_distribution.py` after the certificate bubble builder. It writes
+the standard table atomically under `data/processed/bubble` and its three-panel figure under
+`data/processed/analysis`. The 2026-09-21 checkpoint contains 23 observations.
+The active notebook renders the distribution as a clean, interactive Plotly figure.
