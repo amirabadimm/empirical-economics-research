@@ -1,6 +1,10 @@
 import pandas as pd
 
-from shared.market_analysis.bubble_distribution import BubbleSeriesSpec, empirical_distribution
+from shared.market_analysis.bubble_distribution import (
+    BubbleSeriesSpec,
+    empirical_distribution,
+    plot_distribution_plotly,
+)
 
 
 SPEC = BubbleSeriesSpec(
@@ -78,3 +82,9 @@ def test_empirical_distribution_flags_interpolated_points() -> None:
 
     assert result["point_type"].tolist() == ["observed", "interpolated"]
     assert result["is_interpolated"].tolist() == [False, True]
+
+    figure = plot_distribution_plotly(result, "Test distribution")
+
+    assert len(figure.data) == 3
+    assert list(figure.data[1].marker.color) == ["#2F5597", "#ED7D31"]
+    assert any("Orange markers" in annotation.text for annotation in figure.layout.annotations)

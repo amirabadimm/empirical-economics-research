@@ -146,8 +146,6 @@ def plot_distribution(frame: pd.DataFrame, destination: Path, title: str) -> Non
     magnitude = frame.assign(abs_bubble_pct=frame["bubble_pct"].abs()).sort_values(
         "abs_bubble_pct"
     )
-    ordered_colors = np.where(ordered["is_interpolated"], "#ED7D31", "#2F5597")
-    magnitude_colors = np.where(magnitude["is_interpolated"], "#ED7D31", "#C00000")
     fig, axes = plt.subplots(1, 3, figsize=(15, 4.5), constrained_layout=True)
 
     axes[0].hist(
@@ -211,6 +209,8 @@ def plot_distribution_plotly(frame: pd.DataFrame, title: str):
     magnitude = frame.assign(abs_bubble_pct=frame["bubble_pct"].abs()).sort_values(
         "abs_bubble_pct"
     )
+    ordered_colors = np.where(ordered["is_interpolated"], "#ED7D31", "#2F5597")
+    magnitude_colors = np.where(magnitude["is_interpolated"], "#ED7D31", "#C00000")
     figure = make_subplots(
         rows=1,
         cols=3,
