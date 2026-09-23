@@ -1,5 +1,15 @@
 # Zinc Research Status
 
+## Valuation presentation (2026-09-23)
+
+The valuation notebook opens with the approved certificate-to-physical bubble.
+Certificate-to-intrinsic and physical-to-intrinsic comparisons each have a separate
+supporting chart. Intrinsic value is LME cash USD/kg multiplied by USD/IRR.
+Shared dashboards explicitly select these three approved outputs, primary first;
+experimental regression files are not mixed into the headline chart.
+Historical investigations remain in a labeled research appendix. No valuation
+formula, source data, or project completion status changed in this presentation update.
+
 The project-local Power BI certificate/physical CSV has 201 rows at this checkpoint.
 
 Last updated: 2026-09-19

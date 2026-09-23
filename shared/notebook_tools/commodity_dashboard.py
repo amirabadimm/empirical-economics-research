@@ -233,8 +233,47 @@ def plot_goods_type_counts(physical: pd.DataFrame, title: str, top_n: int = 30) 
     return table
 
 
+def valuation_figures(project_dir: Path, title: str) -> list[go.Figure]:
+    """Three approved comparisons, primary first; never discover experimental CSVs."""
+    root = project_dir / "data" / "processed" / "bubble"
+    specs = [
+        (f"{project_dir.name}_certificate_bubble.csv", "certificate_bubble_pct",
+         "Primary | Certificate vs physical", "#175A8C"),
+        ("certificate_vs_intrinsic_bubble.csv", "certificate_vs_intrinsic_bubble_pct",
+         "Supporting | Certificate vs intrinsic", "#B66A16"),
+        ("physical_vs_intrinsic_bubble.csv", "physical_vs_intrinsic_bubble_pct",
+         "Supporting | Physical vs intrinsic", "#387B63"),
+    ]
+    figures = []
+    for filename, column, label, color in specs:
+        frame = pd.read_csv(root / filename, parse_dates=["date"]).sort_values("date")
+        fig = go.Figure(go.Scatter(
+            x=frame["date"], y=frame[column], mode="lines", name=label,
+            line={"color": color, "width": 2}, connectgaps=False,
+            hovertemplate="%{x|%Y-%m-%d}<br>%{y:.2f}%<extra></extra>",
+        ))
+        if "physical_ratio_method" in frame:
+            observed = frame.loc[frame["physical_ratio_method"].eq("observed")]
+            fig.add_trace(go.Scatter(
+                x=observed["date"], y=observed[column], mode="markers",
+                name="Observed physical anchors", marker={"color": "#25364A", "size": 7},
+            ))
+        fig.add_hline(y=0, line_color="#687787", line_dash="dash", line_width=1)
+        fig.update_layout(title=f"{title} — {label}", yaxis_title="Premium / discount (%)",
+                          xaxis_title="Date", template="plotly_white", height=520,
+                          hovermode="x unified")
+        _style_figure(fig)
+        figures.append(fig)
+    return figures
+
+
 def plot_available_bubbles(project_dir: Path, title: str) -> list[str]:
     """Plot validated processed bubble series, or show explicitly that none exists."""
+    if project_dir.name in {"copper", "zinc"}:
+        figures = valuation_figures(project_dir, title)
+        for figure in figures:
+            figure.show(config=PLOTLY_CONFIG)
+        return [figure.layout.title.text for figure in figures]
     bubble_dir = project_dir / "data" / "processed" / "bubble"
     candidates = sorted(bubble_dir.glob("*.csv")) if bubble_dir.exists() else []
     plotted: list[str] = []

@@ -1,5 +1,15 @@
 # Copper Certificate Valuation
 
+## Valuation presentation (2026-09-23)
+
+The valuation notebook opens with the approved certificate-to-physical bubble.
+Certificate-to-intrinsic and physical-to-intrinsic comparisons each have a separate
+supporting chart. Intrinsic value is LME cash USD/kg multiplied by USD/IRR.
+Shared dashboards explicitly select these three approved outputs, primary first;
+experimental regression files are not mixed into the headline chart.
+Historical investigations remain in a labeled research appendix. No valuation
+formula, source data, or project completion status changed in this presentation update.
+
 Double-click `refresh_powerbi.cmd` in this project to rebuild its physical benchmark, comparison, and `outputs/power_bi/copper_certificate_physical_comparison.csv` for Power BI from existing raw inputs.
 
 This commodity workspace now contains two governed research systems: the original Iranian

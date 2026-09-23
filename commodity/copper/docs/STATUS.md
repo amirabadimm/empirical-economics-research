@@ -1,5 +1,15 @@
 # Copper Project Status
 
+## Valuation presentation (2026-09-23)
+
+The valuation notebook opens with the approved certificate-to-physical bubble.
+Certificate-to-intrinsic and physical-to-intrinsic comparisons each have a separate
+supporting chart. Intrinsic value is LME cash USD/kg multiplied by USD/IRR.
+Shared dashboards explicitly select these three approved outputs, primary first;
+experimental regression files are not mixed into the headline chart.
+Historical investigations remain in a labeled research appendix. No valuation
+formula, source data, or project completion status changed in this presentation update.
+
 As of 2026-09-21, the standardized bubble-distribution output contains 1,215 observations:
 206 certificate-versus-physical (36 observed and 170 interpolated), 210 certificate-versus-intrinsic, and 799
 physical-versus-intrinsic. Matching figures and notebook cells are available.
