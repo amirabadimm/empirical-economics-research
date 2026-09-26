@@ -47,7 +47,7 @@ def _single(frame: pd.DataFrame, column: str, title: str, color: str, output: Pa
     plt.close(fig)
 
 
-def build(processed: Path, output: Path, commodity: str, main_filename: str) -> None:
+def build(processed: Path, output: Path, commodity: str, main_filename: str, combined: bool = True) -> None:
     output.mkdir(parents=True, exist_ok=True)
     datasets = [
         ("physical_vs_intrinsic_bubble.csv", "physical_vs_intrinsic_bubble_pct", "Physical vs Intrinsic", "physical"),
@@ -60,6 +60,8 @@ def build(processed: Path, output: Path, commodity: str, main_filename: str) -> 
         loaded.append((frame, column, label, key))
         _single(frame, column, f"{commodity.title()}: {label}", COLORS[key], output / f"{commodity}_{key}_bubble.png")
 
+    if not combined:
+        return
     fig, axes = plt.subplots(3, 1, figsize=(10.5, 10.0), constrained_layout=True)
     for axis, (frame, column, label, key) in zip(axes, loaded, strict=True):
         axis.plot(frame["date"], frame[column], color=COLORS[key], linewidth=1.35)

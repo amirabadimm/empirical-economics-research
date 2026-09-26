@@ -1,0 +1,19 @@
+{
+  "collectors": [
+    "shared/market_data/fx.py",
+    "commodity/copper/src/copper/collectors/lme.py",
+    "commodity/copper/src/copper/collectors/certificate.py",
+    "commodity/copper/src/copper/collectors/physical.py"
+  ],
+  "builders": [
+    "src/copper/processing/build_physical_benchmark.py",
+    "src/copper/processing/build_valuation.py",
+    "src/copper/processing/build_bubble_distribution.py"
+  ],
+  "sources": [
+    [
+      "primary",
+      "copper_certificate_bubble.csv"
+    ]
+  ]
+}

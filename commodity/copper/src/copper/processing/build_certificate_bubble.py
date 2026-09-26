@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import bisect
-import csv
 import sys
 from datetime import date
 from decimal import Decimal, getcontext
@@ -12,6 +11,8 @@ from pathlib import Path
 WORKSPACE_ROOT = Path(__file__).resolve().parents[5]
 if str(WORKSPACE_ROOT) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_ROOT))
+
+from valuation_inputs import load_inputs, write_atomic
 
 from shared.market_analysis.common import (
     asof_value,
@@ -48,80 +49,10 @@ OUTPUT_COLUMNS = [
 ]
 
 
-def build(project_dir: Path) -> list[dict[str, str]]:
-    copper_dir = project_dir
-    certificate_path = project_dir / "data" / "raw" / "certificate" / "copper_certificate_raw.csv"
-    physical_path = project_dir / "data" / "processed" / "physical" / "nci_copper_cash_daily.csv"
-    lme_path = copper_dir / "data" / "raw" / "lme" / "copper_lme_raw.csv"
-    usd_path = project_dir.parents[1] / "shared" / "data" / "raw" / "fx" / "usd_to_rial.csv"
-    output_path = project_dir / "data" / "processed" / "bubble" / "copper_certificate_bubble.csv"
-
-    certificate_rows = read_csv(certificate_path)
-    physical_rows = read_csv(physical_path)
-    lme_rows = read_csv(lme_path)
-    usd_rows = read_csv(usd_path)
-
-    certificates: dict[date, dict[str, Decimal]] = {}
-    for row in certificate_rows:
-        row_date = date.fromisoformat(row["DT"][:10])
-        volume = number(row["TradesVolume"], "TradesVolume", str(row_date))
-        if volume <= 0:
-            continue
-        value = number(row["TradesValue"], "TradesValue", str(row_date))
-        settlement = number(row["TodaySettlementPrice"], "TodaySettlementPrice", str(row_date))
-        calculated = value / volume
-        # The API settlement is the volume-weighted price rounded to whole IRR.
-        if abs(calculated - settlement) > Decimal("0.500001"):
-            raise ValueError(
-                f"Certificate VWAP mismatch on {row_date}: {calculated} vs {settlement}"
-            )
-        certificates[row_date] = {"price": settlement, "volume": volume, "value": value}
-
-    physical: dict[date, Decimal] = {}
-    for row in physical_rows:
-        row_date = date.fromisoformat(row["physical_trade_date_gregorian"])
-        price = number(row["physical_weighted_price"], "physical_weighted_price", str(row_date))
-        if price <= 0:
-            raise ValueError(f"Non-positive physical price on {row_date}")
-        physical[row_date] = price
-
-    lme: dict[date, Decimal] = {}
-    for row in lme_rows:
-        if row["cash_settlement"].strip() == "-":
-            continue
-        row_date = date.fromisoformat(row["date"])
-        value = number(row["cash_settlement"], "cash_settlement", str(row_date))
-        if value <= 0:
-            raise ValueError(f"Non-positive LME price on {row_date}")
-        lme[row_date] = value
-
-    usd: dict[date, Decimal] = {}
-    for row in usd_rows:
-        row_date = parse_mixed_gregorian(row["date_gr"])
-        value = number(row["price_irr"], "price_irr", str(row_date))
-        if value <= 0:
-            raise ValueError(f"Non-positive USD/IRR on {row_date}")
-        if row_date in usd and usd[row_date] != value:
-            raise ValueError(f"Conflicting USD/IRR values on {row_date}")
-        usd[row_date] = value
-
-    lme_dates, usd_dates = sorted(lme), sorted(usd)
-
-    def market_inputs(target: date) -> dict[str, Decimal | date | int]:
-        lme_date, lme_ton = asof_value(target, lme_dates, lme, "LME")
-        usd_date, usd_irr = asof_value(target, usd_dates, usd, "USD/IRR")
-        lme_kg = lme_ton / Decimal(1000)
-        intrinsic = lme_kg * usd_irr
-        return {
-            "lme_date": lme_date,
-            "lme_age": (target - lme_date).days,
-            "lme_ton": lme_ton,
-            "lme_kg": lme_kg,
-            "usd_date": usd_date,
-            "usd_age": (target - usd_date).days,
-            "usd_irr": usd_irr,
-            "intrinsic": intrinsic,
-        }
+def build(project_dir: Path, prepared=None) -> list[dict[str, str]]:
+    certificates, physical_records, market_inputs = prepared if prepared is not None else load_inputs(project_dir)
+    physical = {day: row['price'] for day, row in physical_records.items()}
+    output_path = project_dir / 'data/processed/bubble/copper_certificate_bubble.csv'
 
     # Only physical trades occurring on certificate trading dates are anchors.
     anchor_dates = sorted(set(certificates) & set(physical))
@@ -196,13 +127,7 @@ def build(project_dir: Path) -> list[dict[str, str]]:
 
     if not output:
         raise ValueError("Bubble output is empty")
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = output_path.with_suffix(output_path.suffix + ".tmp")
-    with temporary.open("w", encoding="utf-8-sig", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=OUTPUT_COLUMNS)
-        writer.writeheader()
-        writer.writerows(output)
-    temporary.replace(output_path)
+    write_atomic(output_path, OUTPUT_COLUMNS, output)
     return output
 
 

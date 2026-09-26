@@ -16,4 +16,5 @@ if __name__ == "__main__":
         output=Path(__file__).resolve().parent / "figures",
         commodity="copper",
         main_filename="copper_certificate_bubble.csv",
+        combined=False,
     )

@@ -1,5 +1,16 @@
 # Copper Warehouse-Receipt Certificate: Research Workflow
 
+## Production consolidation (2026-09-26)
+
+The production refresh now calls `build_valuation.py`, preparing all copper inputs
+once through `valuation_inputs.py` for the three approved comparisons. Individual
+builders remain usable. CSV names, economic formulas and coverage rules are unchanged.
+Power BI now copies canonical copper bubble values, with an independent consistency
+check rather than publishing a separately calculated percentage.
+See [output ownership](OUTPUTS.md) (in `docs/OUTPUTS.md` from the project root) for
+routine versus research outputs. The English report now leads with the primary
+comparison and uses data-driven figures instead of fixed numerical claims.
+
 ## Valuation presentation (2026-09-23)
 
 The valuation notebook opens with the approved certificate-to-physical bubble.
