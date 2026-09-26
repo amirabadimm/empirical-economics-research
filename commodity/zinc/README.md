@@ -1,5 +1,20 @@
 # Zinc Certificate Valuation
 
+## Distribution update (2026-09-26)
+
+The distribution CSV now contains signed bubbles and two chronological expanding
+percentiles: `expanding_percentile` (equal observation weights) and
+`recent_weighted_percentile` (exponential calendar-day weights, 90-day half-life).
+The builder's `HALF_LIFE_DAYS` is configurable. Each date includes itself and ties
+using <=; the first observation ranks at 100. History count and effective weighted
+count expose small-sample limitations. Values are not smoothed or made absolute.
+Standalone CDF and absolute-exceedance plots/columns are replaced for this project;
+other commodities retain their existing behavior. Rebuild the distribution before
+running the updated notebook cells. The histogram is full-sample; percentile ranks
+use only rows through each date. Interpolated source values can still use later
+anchors, so these are not vintage-safe backtest signals. Primary and both intrinsic
+comparisons remain separate. Canonical bubble calculations are unchanged.
+
 ## Valuation presentation (2026-09-23)
 
 The valuation notebook opens with the approved certificate-to-physical bubble.
