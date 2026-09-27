@@ -1,0 +1,16 @@
+{
+  "collectors": [
+    "commodity/pellet/src/pellet/collectors/certificate.py",
+    "commodity/pellet/src/pellet/collectors/physical.py"
+  ],
+  "builders": [
+    "src/pellet/processing/build_certificate_bubble.py",
+    "src/pellet/processing/build_bubble_distribution.py"
+  ],
+  "sources": [
+    [
+      "gol_gohar_gohar_zamin",
+      "pellet_certificate_bubble.csv"
+    ]
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "collectors": [
+    "goods/pista/src/pista/collectors/certificate.py"
+  ],
+  "builders": [
+    "analysis/build_certificate_bubble.py",
+    "analysis/build_bubble_distribution.py"
+  ],
+  "sources": [
+    [
+      "dahan_bast_weekly_alignment",
+      "pista_certificate_bubble.csv"
+    ]
+  ],
+  "manual_input": "Abtahi weekly prices are supplied manually; --collect refreshes certificate observations only."
+}

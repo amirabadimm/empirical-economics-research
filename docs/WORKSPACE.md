@@ -1,5 +1,12 @@
 # Workspace Architecture
 
+## Certificate execution engine
+
+`shared/certificate_pipeline/refresh.py` orchestrates all six certificate products using
+their local `pipeline.json` manifests. Product filters and valuation builders remain local.
+Legacy project launchers delegate to the engine. Offline rebuild, source refresh, and
+read-only plan inspection are explicit modes. See `shared/certificate_pipeline/README.md`.
+
 ## Purpose
 
 This workspace supports reproducible empirical economics projects. Commodity studies share a
@@ -10,7 +17,10 @@ domains with their own package boundaries and data contracts.
 
 ```text
 empirical-economics-research/
-├── commodity/{bitumen,copper,pellet,zinc}/
+├── commodity/{bitumen,copper,pellet,rebar,warehouse_fees,zinc}/
+├── goods/pista/
+├── asset_allocation/
+├── economic_usd/
 ├── energy_exchange/
 ├── codal/national_copper/
 ├── shared/ime_data/
@@ -43,6 +53,16 @@ The Codal domain uses one independent project per listed issuer under `codal/<co
 disclosure collection must remain separate from both `shared/ime_data` and the Energy Exchange
 package. Reusable Codal logic should be extracted only after a stable source contract exists. The
 first issuer project is `codal/national_copper`.
+
+The `economic_usd/` domain is an independent macroeconomic data project. It retains its own raw and processed inputs and does not depend on the Housing or commodity project directory structures.
+
+Power BI certificate/physical delivery files are project-local under `outputs/power_bi/<product>_certificate_physical_comparison.csv`. Analytical benchmark and valuation tables stay in `data/processed`; presentation CSVs stay in `outputs`. Each product with a comparison has a local `refresh_powerbi.cmd` and `refresh_powerbi.py`; no combined cross-product Power BI table is maintained. The launcher rebuilds from current local raw inputs, so source collectors must run first when new market data is required. Bitumen and pistachio retain their unapproved/provisional status labels.
+
+The delivery schema is consistent across projects. `premium_discount_pct` equals
+`100 * (certificate_price_irr_per_kg / physical_price_irr_per_kg - 1)`;
+`comparability_status` and `physical_price_method` preserve research limitations.
+Power BI users should filter those fields before comparing products. Certificate
+volume remains in each source's units and must not be pooled across products.
 
 ## Execution model
 
@@ -85,13 +105,12 @@ At each project's latest documented checkpoint:
 
 | Project | Certificate rows | Physical rows | Positive physical trades |
 |---|---:|---:|---:|
-| Bitumen | 268 | 47,124 | 24,179 |
-| Copper | 268 | 1,171 | 1,162 |
-| Iron-ore pellet | 268 | 3,535 | 1,658 |
-| Steel rebar | 268 | 31,641 | 16,697 |
-| Zinc | 268 | 6,325 | 3,512 |
+| Bitumen | 286 | 47,191 | 24,201 |
+| Copper | 286 | 1,174 | 1,165 |
+| Iron-ore pellet | 286 | 3,588 | 1,706 |
+| Steel rebar | 286 | 31,953 | 16,968 |
+| Zinc | 286 | 6,398 | 3,581 |
 
-All commodity sources were refreshed on 2026-08-29; Zinc now has 268 certificate rows and 6,325 broad physical
-rows. Its processed pipeline contains a 554-day 99.97/99.98 benchmark, two direct bubble series,
-a 178-day primary certificate bubble with 41 exact anchors, and regression sensitivity outputs.
-See [STATUS.md](STATUS.md) for the current state.
+These are the 2026-09-19 source checkpoints. Zinc's processed pipeline has a 562-day
+99.97/99.98 benchmark and a 201-day primary certificate comparison with 49 exact physical
+anchors. See [STATUS.md](STATUS.md) and each project's status for current research stages.

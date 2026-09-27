@@ -1,5 +1,16 @@
 # Steel Rebar Physical-Market Workflow
 
+## Shared execution checkpoint (2026-09-22)
+
+The delivered comparison uses the shared engine in `shared/certificate_pipeline`.
+Project-specific collectors, builders, and comparison sources are registered in `pipeline.json`.
+Run `python refresh_powerbi.py` to rebuild from local sources, add `--collect` to fetch
+new available source data first, or add `--plan` to preview the steps without writing.
+The existing double-click launcher retains its local-rebuild behavior.
+The engine stops on a failed step and publishes the delivery CSV only after all builders succeed.
+Product eligibility, alignment methods, and economic interpretation remain product-specific.
+Completed software delivery does not itself resolve the economic assumptions documented below.
+
 Power BI reads this project's `outputs/power_bi/rebar_certificate_physical_comparison.csv`. Double-click `refresh_powerbi.cmd` to rebuild both exact-date analytical comparisons and the presentation CSV from existing raw inputs. The two comparison statuses remain distinct. Run the collectors first when new source data is needed.
 
 Last reviewed: 2026-09-06

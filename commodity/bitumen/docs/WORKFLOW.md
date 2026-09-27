@@ -1,6 +1,24 @@
 # Bitumen Certificate Research Workflow
 
-Last reviewed: 2026-08-29
+## Shared execution checkpoint (2026-09-22)
+
+The delivered comparison uses the shared engine in `shared/certificate_pipeline`.
+Project-specific collectors, builders, and comparison sources are registered in `pipeline.json`.
+Run `python refresh_powerbi.py` to rebuild from local sources, add `--collect` to fetch
+new available source data first, or add `--plan` to preview the steps without writing.
+The existing double-click launcher retains its local-rebuild behavior.
+The engine stops on a failed step and publishes the delivery CSV only after all builders succeed.
+Product eligibility, alignment methods, and economic interpretation remain product-specific.
+Completed software delivery does not itself resolve the economic assumptions documented below.
+
+Bitumen now persists its existing comparison in `data/processed/bubble/bitumen_certificate_bubble.csv`
+and builds the same empirical-distribution output as the other products. The original numeric
+method and delivery filename are preserved; older statements that no processed comparison exists
+are superseded by this checkpoint.
+
+The project-local Power BI input is `outputs/power_bi/bitumen_certificate_physical_comparison.csv`. Double-click `refresh_powerbi.cmd` after updating raw sources. It reproduces the notebook's domestic 60/70 standard-cash, observed-cash, exact-date VWAP diagnostic and marks every row as unverified for certificate units and specification. It is not an approved valuation.
+
+Last reviewed: 2026-09-19
 
 ## Research objective
 
@@ -15,9 +33,9 @@ Statistical liquidity alone does not establish deliverability or technical compa
 
 | Source | Current coverage |
 |---|---|
-| Certificate | 268 calendar observations through 2026-08-27; 194 positive-trading days |
-| Broad physical market | 47,124 rows through 1405/06/07; 24,179 positive trades |
-| Exploratory notebook | Executed successfully; 34 cells, no external analytical outputs |
+| Certificate | 286 calendar observations through 2026-09-17; 208 positive-trading days |
+| Broad physical market | 47,191 rows through 1405/06/28; 24,201 positive trades |
+| Exploratory notebook | 18 code cells executed with Plotly; no external analytical outputs |
 | Working analytical underlying | Conventional domestic penetration-grade 60/70 |
 | Conservative physical specification | Standard cash contract and observed cash settlement |
 | Approved physical benchmark | Not yet approved |
@@ -26,6 +44,12 @@ Statistical liquidity alone does not establish deliverability or technical compa
 Broad raw collection is complete and current. Exploratory work is performed in
 `notebooks/01_bitumen_physical_analysis.ipynb`. The notebook reads canonical raw data without
 writing interim or processed files.
+
+The 2026-09-19 notebook run finds 12,161 focused domestic 60/70 rows, 32 strict physical
+cash-cash dates, and 31 exact positive-certificate overlaps through 1405/06/15. Of the latter,
+16 fall in 1405, with a median certificate/physical difference of 161.79%. Later detailed
+historical diagnostics below retain their earlier run's counts and should not be mistaken for
+this refreshed checkpoint. Specification and price-basis approval remain unresolved.
 
 The research specification is now fixed for the current diagnostic: certificate observations are
 compared with conventional domestic 60/70 physical trades executed under standard cash contracts

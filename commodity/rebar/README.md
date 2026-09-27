@@ -1,5 +1,16 @@
 # Steel Rebar Physical-Market Research
 
+## Shared execution checkpoint (2026-09-22)
+
+The delivered comparison uses the shared engine in `shared/certificate_pipeline`.
+Project-specific collectors, builders, and comparison sources are registered in `pipeline.json`.
+Run `python refresh_powerbi.py` to rebuild from local sources, add `--collect` to fetch
+new available source data first, or add `--plan` to preview the steps without writing.
+The existing double-click launcher retains its local-rebuild behavior.
+The engine stops on a failed step and publishes the delivery CSV only after all builders succeed.
+Product eligibility, alignment methods, and economic interpretation remain product-specific.
+Completed software delivery does not itself resolve the economic assumptions documented below.
+
 Double-click `refresh_powerbi.cmd` in this project to rebuild both exact-date comparisons and `outputs/power_bi/rebar_certificate_physical_comparison.csv`. Power BI can distinguish A3/18 from cross-diameter A3/12 by `comparison`.
 
 ## Research objective

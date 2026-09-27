@@ -1,0 +1,21 @@
+{
+  "collectors": [
+    "commodity/rebar/src/rebar/collectors/certificate.py",
+    "commodity/rebar/src/rebar/collectors/physical.py"
+  ],
+  "builders": [
+    "src/rebar/processing/build_a3_18_exact_bubble.py",
+    "src/rebar/processing/build_a3_12_exact_bubble.py",
+    "src/rebar/processing/build_bubble_distribution.py"
+  ],
+  "sources": [
+    [
+      "a3_18",
+      "rebar_a3_18_exact_date_bubble.csv"
+    ],
+    [
+      "a3_12_sensitivity",
+      "rebar_a3_12_exact_date_bubble.csv"
+    ]
+  ]
+}

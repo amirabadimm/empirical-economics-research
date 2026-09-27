@@ -1,13 +1,13 @@
 # Status
 
-Last verified build: 2026-08-11.
+Last verified build: 2026-09-19.
 
 - Canonical output: `data/processed/warehouse_fees_daily.csv`
-- Rows: 31,471
+- Rows: 32,290
 - Commodities: 21
-- Overall date range: 2016-10-29 through 2026-08-11
+- Overall date range: 2016-10-29 through 2026-09-19
 - Key uniqueness: `(date, commodity)`
-- Current official table: 11 assets captured on 2026-08-11
+- Current official table: 12 assets captured on 2026-09-19
 - Exact official storage-fee events: 43
 - Archived official-table observations: 30 across 16 commodities/assets
 - Earliest exact event: copper cathode, 2022-01-01

@@ -1,5 +1,16 @@
 # Zinc Research Status
 
+## Source refresh checkpoint (2026-09-26)
+
+Online FX, Westmetall/LME, IME certificate and physical collectors completed.
+LME coverage ends 2026-09-25; shared FX ends 2026-09-24 (1405/07/02).
+Certificate raw coverage ends 2026-09-24, but the latest positive-volume
+certificate comparison is 2026-09-23 (213 observations). Eligible physical
+benchmark and bounded primary bubble end 2026-09-20 (206 primary observations).
+No extrapolation was added. All three production comparisons, both percentile
+methods, Power BI delivery and report figures were rebuilt. Research-only
+regression, historical gap studies and timelines were not refreshed.
+
 ## Distribution update (2026-09-26)
 
 The distribution CSV now contains signed bubbles and two chronological expanding
@@ -24,6 +35,17 @@ Shared dashboards explicitly select these three approved outputs, primary first;
 experimental regression files are not mixed into the headline chart.
 Historical investigations remain in a labeled research appendix. No valuation
 formula, source data, or project completion status changed in this presentation update.
+
+## Shared execution checkpoint (2026-09-22)
+
+The delivered comparison uses the shared engine in `shared/certificate_pipeline`.
+Project-specific collectors, builders, and comparison sources are registered in `pipeline.json`.
+Run `python refresh_powerbi.py` to rebuild from local sources, add `--collect` to fetch
+new available source data first, or add `--plan` to preview the steps without writing.
+The existing double-click launcher retains its local-rebuild behavior.
+The engine stops on a failed step and publishes the delivery CSV only after all builders succeed.
+Product eligibility, alignment methods, and economic interpretation remain product-specific.
+Completed software delivery does not itself resolve the economic assumptions documented below.
 
 The project-local Power BI certificate/physical CSV has 201 rows at this checkpoint.
 

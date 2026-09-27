@@ -1,5 +1,16 @@
 # Steel Rebar Research Status
 
+## Shared execution checkpoint (2026-09-22)
+
+The delivered comparison uses the shared engine in `shared/certificate_pipeline`.
+Project-specific collectors, builders, and comparison sources are registered in `pipeline.json`.
+Run `python refresh_powerbi.py` to rebuild from local sources, add `--collect` to fetch
+new available source data first, or add `--plan` to preview the steps without writing.
+The existing double-click launcher retains its local-rebuild behavior.
+The engine stops on a failed step and publishes the delivery CSV only after all builders succeed.
+Product eligibility, alignment methods, and economic interpretation remain product-specific.
+Completed software delivery does not itself resolve the economic assumptions documented below.
+
 The project-local Power BI certificate/physical CSV has 54 rows: 5 A3/18 and 49 cross-diameter A3/12.
 
 Last updated: 2026-09-19

@@ -1,5 +1,10 @@
 # Empirical Economics Research
 
+The six certificate research products share an execution engine and explicit per-product
+pipeline manifests. See [Certificate research engine](shared/certificate_pipeline/README.md)
+for offline rebuilds, optional source refresh, and the distinction between delivered
+software and product-specific economic assumptions.
+
 [![CI](https://github.com/amirabadimm/empirical-economics-research/actions/workflows/ci.yml/badge.svg)](https://github.com/amirabadimm/empirical-economics-research/actions/workflows/ci.yml)
 
 This repository is a portfolio of reproducible empirical economics research on price
@@ -30,8 +35,8 @@ restricted raw market data.
 | [Zinc](commodity/zinc/README.md) | How does the zinc-ingot certificate compare with an eligible 99.97/99.98 domestic basket? | Grade-filtered volume weighting; three bubble definitions; time-series regression sensitivity | Complete benchmark and valuation pipeline |
 | [Iron-ore pellet](commodity/pellet/README.md) | Which physical-market basket is economically comparable with the pellet certificate? | Producer/contract exploration before benchmark approval | Exploratory stage |
 | [Bitumen](commodity/bitumen/README.md) | Which grade, market, and delivery terms match the bitumen certificate? | Broad raw collection followed by eligibility research | Data collection complete; underlying unresolved |
-| [Steel rebar](commodity/rebar/README.md) | How does the certificate compare with same-day A3/18 cash trades and an A3/12 sensitivity? | Strict exact-date bubbles with explicit cross-diameter labeling | 5 A3/18 matches and 46 A3/12 sensitivity dates; specification QA open |
-| [Pista](goods/pista/README.md) | What is the trading history of the reopened continuous pistachio certificate? | Official IME collection plus assessment of Abtahi-provided weekly prices | 21 certificate rows; 578 weekly company-price rows; comparability unverified |
+| [Steel rebar](commodity/rebar/README.md) | How does the certificate compare with same-day A3/18 cash trades and an A3/12 sensitivity? | Strict exact-date bubbles with explicit cross-diameter labeling | 5 A3/18 matches and 49 A3/12 sensitivity dates; specification QA open |
+| [Pista](goods/pista/README.md) | What is the trading history of the reopened continuous pistachio certificate? | Official IME collection, Abtahi weekly-price audit, and bounded proxy comparison | 16 indicative premium dates; price unit and product match unconfirmed |
 | [Warehouse fees](commodity/warehouse_fees/README.md) | How have daily storage fees for all documented commodity certificates changed? | Official notices plus archived official tables | 43 exact-date intervals and 30 observations back to 2016 |
 | [Iran Energy Exchange](energy_exchange/README.md) | Is the certificate market sufficiently active for a broader empirical project? | Public-source mapping plus complete 21-symbol certificate-history feasibility test | Closed: activity too sparse and concentrated for the intended project |
 | [National Copper — Codal](codal/national_copper/README.md) | What can issuer disclosures reveal about National Iranian Copper Industries Company? | Cumulative-to-quarter conversion with explicit audit lineage | 75 valid quarters; 18 complete years |
@@ -101,6 +106,8 @@ docs/                      Workspace architecture, status, and data policy
 
 Future research domains can be added beside `commodity/` rather than forced into the commodity
 schema—for example, `energy_exchange/`.
+
+`economic_usd/` is an independent, data-preparation-only project for future fundamental USD/IRR research. It owns copies of its Iranian liquidity, free-market USD, Iranian CPI, and U.S. CPI inputs and does not import sibling-project code.
 
 ## Environment
 

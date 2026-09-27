@@ -114,3 +114,11 @@ raw level, factor, source path, regime, and the flag `secondary_proxy_low_overla
 The canonical monthly levels and returns are inputs, not recommendations. Stage I and Stage II
 diagnostics are notebook outputs only and are not part of the persisted data contract. No single
 Stage II sensitivity row is an authorized investor recommendation without a documented policy.
+
+The historical notebook is a pilot execution of the algorithm. The final project requires a
+separate expert-survey input and forward-looking allocation output. Their schemas are intentionally
+not invented before the survey instrument is received. When available, preserve the original survey
+export as source evidence, define a processed response table and expert asset-view distribution, and
+record the mapping from those views to the optimizer. The final risk input must be estimated from a
+documented trailing window of recent years ending before the allocation date, not from the months
+inside the year being predicted.

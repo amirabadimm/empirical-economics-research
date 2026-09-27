@@ -1,6 +1,6 @@
 ﻿# Status
 
-Updated: 2026-09-12
+Updated: 2026-09-22
 
 ## Confirmed scope
 
@@ -10,12 +10,13 @@ The CBI Tehran housing corpus has been corrected to the project lifecycle layout
 SHA-256 equality checks. The same byte-identical corpus was copied to the Housing
 repository raw layer and the extraction workbook to its staging layer.
 
-The study covers Tehran housing sale price per square metre, TGJU 18-karat gold, fixed income,
+The project covers Tehran housing sale price per square metre, TGJU 18-karat gold, fixed income,
 and Tehran Stock Exchange equities from 1395/01 through 1405/05. Canonical monthly levels and
-returns are retained. The notebook implements ex-post Stage I risky-sleeve optimization for the
+returns are retained. The notebook implements an ex-post pilot Stage I risky-sleeve optimization for the
 years 1396-1404 and a five-month 1405 YTD period through Mordad. Results after 1403/05 use the
 documented chain-linked Kilid housing proxy. Stage II is implemented as ex-post risk-aversion
-sensitivity, not as an investor-specific allocation recommendation.
+sensitivity, not as an investor-specific allocation recommendation. The principal objective is a
+forward-looking optimal portfolio informed by an expert survey; that final stage is not complete.
 
 ## Fixed income
 
@@ -37,10 +38,12 @@ under the immutable-source policy and are not merged with the official series.
 
 ## Local inventory
 
-No ready-to-use histories for the four selected assets were found in readable E:/Work or E:/Housing
-files. Housing has standardized liquidity, CPI, and construction-input series, not a Tehran
-residential sale-price-per-square-metre series. This does not claim a search of every drive or
-cloud.
+At the initial inventory, no ready-to-use history covered all four assets. As of 2026-09-19,
+the separate E:/Housing repository now has an independently built, curated 101-month CBI
+Tehran transaction-price series through 1403/05. Its source PDFs and staging workbook have
+matching SHA-256 hashes with this project's preserved copies; all 101 CBI-period price levels
+match this project's housing panel. This project continues to own its broader four-asset panel
+and chain-linked Kilid extension separately.
 
 ## Stage
 
@@ -59,6 +62,19 @@ cloud.
 - Alternative fixed-volatility analysis: implemented at the end of the notebook. One annualized
   covariance model estimated from all 113 aligned months in 1396–1405/05 is reused in every year
   for both Stage I tracking error and Stage II total-portfolio volatility.
+
+## Work required for the final project
+
+- Receive and document the expert survey instrument and its completed responses.
+- Analyze the responses and estimate the experts' expected distribution across the four assets.
+- Define how those expert views enter the forward-looking return or allocation model.
+- Replace the pilot's within-year volatility estimate with a trailing recent-years risk estimate.
+  The final lookback length, weighting rule, and minimum history must be selected through research
+  and tested without using information that was unavailable at the allocation date.
+- Run the revised algorithm and produce the final forward-looking optimal portfolio.
+
+Until these steps are complete, the project status is **in progress**. The data foundation and
+historical algorithm run are complete, but the expert-informed forecast and final allocation are not.
 
 ## Gold collection
 

@@ -1,0 +1,17 @@
+{
+  "collectors": [
+    "commodity/bitumen/src/bitumen/collectors/certificate.py",
+    "commodity/bitumen/src/bitumen/collectors/physical.py"
+  ],
+  "builders": [
+    "src/bitumen/processing/build_certificate_bubble.py",
+    "src/bitumen/processing/build_bubble_distribution.py"
+  ],
+  "sources": [
+    [
+      "domestic_6070_cash_diagnostic",
+      "bitumen_certificate_bubble.csv"
+    ]
+  ],
+  "passthrough": true
+}

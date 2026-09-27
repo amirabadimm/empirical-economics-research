@@ -1,9 +1,15 @@
 ﻿# Workflow
 
+The CBI-period housing levels were cross-checked against the independently curated
+101-month CBI series in `E:/Housing` on 2026-09-19; all levels agree. This project
+continues to generate its own four-asset panel and post-1403/05 Kilid extension.
+
 ## Research objective
 
 Build and validate a four-asset monthly-return panel from 1395/01/01 through 1405/05/31,
-then perform an ex-post Stage I risky-sleeve allocation analysis for complete CBI years.
+use a historical run to test the allocation algorithm, and then produce a forward-looking optimal
+portfolio informed by an expert survey. The completed ex-post analysis is a pilot and data-building
+stage; it is not the final purpose of the project.
 
 The four assets are:
 1. Fixed income: exchange-traded Iranian fixed-income funds (صندوق درآمد ثابت بورسی).
@@ -23,6 +29,11 @@ not a forecast or an unqualified Sharpe ratio.
 Stage II chooses the total-wealth share assigned to the Stage I sleeve for an explicit
 risk-aversion parameter. The notebook reports sensitivity over a documented parameter grid;
 it does not infer an investor's risk preference from market history.
+
+For the final project, completed expert-survey responses must be analyzed to estimate the experts'
+expected asset-allocation distribution. Those views will supply forward-looking information to the
+allocation process. The exact survey schema and mapping from responses to model inputs must be
+documented after the survey is received; neither is inferred in the current historical notebook.
 
 ## Stage 1: collect fixed-income history first
 
@@ -124,19 +135,106 @@ five-month 1405 YTD period. Each solution is checked against corner
 portfolios, equal weights, and 25,000 deterministic random simplex portfolios. Results are
 reported as hindsight diagnostics and retain the 12-observation annual-sample limitation.
 
+### Original year-specific volatility specification
+
+For every candidate risky-sleeve weight vector, reconstruct the within-year buy-and-hold wealth
+path and calculate monthly portfolio returns. Let the monthly differential from Etemad be
+`d_m(w) = r_p,m(w) - r_b,m`. Stage I maximizes
+
+```text
+sqrt(12) * mean(d_m(w)) / sample_std(d_m(w))
+```
+
+subject to nonnegative risky weights summing to one. Both the numerator and tracking-error
+denominator are estimated separately for each year. The selected weights and their risk estimates
+are therefore allowed to change with the realized yearly sample.
+
+### Stage II sensitivity workflow
+
 Stage II keeps the Stage I risky composition fixed and performs a deterministic grid search over
-the risky share from zero to one. For each documented risk-aversion value, it maximizes realized
-mean-variance utility, defined as period compounded return minus one-half gamma times annualized
-monthly variance. Treat every result as ex-post sensitivity, not an investor-specific policy.
+5,001 risky-share values from zero to one. For every value in the complete sensitivity grid
+
+```text
+gamma = {0, 1, 2, 4, 6, 8, 10, 15, 20, 25, 30, 35, 40, 45, 50}
+```
+
+maximize realized mean-variance utility:
+
+```text
+U_y(alpha; gamma) = compounded_period_return_y(alpha)
+                    - 0.5 * gamma * annualized_volatility_y(alpha)^2
+```
+
+The output is the full response curve `gamma -> alpha_y*(gamma)` for each year. Do not designate
+any gamma as preferred, representative, or investor-specific. Treat every result as ex-post
+sensitivity, not an investor policy.
 Incomplete 1405 is optimized and reported strictly as a five-month YTD diagnostic, never as a
 full-year result.
 
-The notebook also contains an alternative fixed-volatility specification. It estimates the
-annualized asset covariance matrix and risky-minus-fixed-income covariance matrix once from all
-113 aligned monthly observations in 1396–1405/05. These matrices are held fixed across yearly
-optimizations. Yearly returns remain realized, period-specific inputs. Because the risk model uses
-the complete sample, this alternative is a descriptive look-ahead comparison and not an
-investable backtest.
+### Alternative sigma fixed over time
+
+The notebook repeats both stages with one risk model estimated over the complete analysis sample.
+Use all 113 aligned monthly observations in 1396–1405/05 to calculate
+
+```text
+Sigma_fixed = 12 * covariance(monthly asset returns)
+Sigma_excess_fixed = 12 * covariance(risky asset returns - Etemad return)
+```
+
+The annualized volatility of total weights `x` is
+
+```text
+sigma_fixed(x) = sqrt(x' * Sigma_fixed * x)
+```
+
+and fixed Stage I tracking error is
+
+```text
+TE_fixed(w) = sqrt(w' * Sigma_excess_fixed * w)
+```
+
+Use covariance matrices rather than weighted standalone volatilities so cross-asset co-movement
+and diversification remain represented. The resulting fixed annualized asset volatilities are
+35.03% for gold, 40.76% for equity, 15.04% for housing, and 2.74% for fixed income.
+
+In alternative Stage I, annual realized differential return continues to change by year, while
+`TE_fixed(w)` does not. In alternative Stage II, yearly compounded returns continue to change,
+while `sigma_fixed(x)` is used for every year. Run the same complete gamma grid and report the
+entire sensitivity curve.
+
+### Interpretation and cross-method checks
+
+For both volatility definitions, confirm that risky exposure is weakly non-increasing as gamma
+rises. Both methods select zero risky exposure throughout 1400 and 1402. The fixed-sigma method
+de-risks earlier in 1396 and 1398, while retaining more high-gamma risky exposure in 1399, 1401,
+1403, 1404, and 1405 YTD. These differences measure sensitivity to the risk definition; they do
+not establish that either curve is an investor recommendation.
+
+Because the fixed covariance matrices use the complete 1396–1405/05 sample, earlier-year risk
+estimates include information from later observations. The second specification is therefore a
+descriptive look-ahead comparison, not an investable backtest. A future investable extension must
+estimate volatility using only information available before each allocation date, for example
+with a rolling or expanding window.
+
+## Stage 7: expert survey and forward-looking allocation
+
+The final stage begins when the survey instrument and completed expert responses are available.
+Preserve the original response export, document question meanings and coding, and derive an explicit
+distribution of expert views across housing, gold, equity, and fixed income. Record how missing,
+inconsistent, or incomplete responses are handled. Do not present expert weights or forecasts before
+the survey evidence exists.
+
+Redesign the risk model before calculating the final portfolio. The original pilot estimated
+volatility separately inside each year, which uses too few observations and does not represent the
+information set for a forward-looking decision. Estimate covariance from a documented trailing
+window of recent years ending before the allocation date. Compare reasonable lookback lengths and,
+if used, weighting or decay rules; select the specification through recorded diagnostics rather than
+an arbitrary single year.
+
+Combine the processed expert views with the revised trailing-risk estimate under a documented
+optimization objective and constraints. Publish the resulting portfolio only after the survey
+analysis, risk specification, and reproducible model run are complete. The final output must clearly
+separate expert expectations, historical risk estimates, and optimizer decisions.
 
 ## Data governance and independent execution
 
@@ -172,3 +270,6 @@ and Esfand-only proxy workflows are retired and must not be regenerated.
 Run the notebook only after rebuilding and testing the canonical panels. The notebook may read
 the processed data but must not modify it. Preserve the distinction between the ex-post Stage I
 and Stage II diagnostics and any future investable, out-of-sample allocation analysis.
+The current notebook is the historical pilot. The future expert-informed model must be implemented
+as a separate, reproducible stage so that its assumptions and outputs cannot be confused with the
+ex-post results.

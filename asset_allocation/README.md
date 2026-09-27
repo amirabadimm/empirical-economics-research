@@ -1,6 +1,10 @@
 ﻿# Iran Cross-Asset Allocation
 
-Study historical allocation across Tehran residential housing prices per square metre,
+The separate `E:/Housing` repository now publishes the same 101 CBI-period Tehran price
+levels through 1403/05 from byte-identical source evidence. This project's four-asset panel
+and post-CBI Kilid extension remain independent; see `docs/HOUSING.md`.
+
+Develop a forward-looking allocation process across Tehran residential housing prices per square metre,
 TGJU 18-karat gold (750), an exchange-traded Iranian fixed-income fund, and the Tehran Stock
 Exchange total index.
 
@@ -16,17 +20,18 @@ and اخزا proxies were evaluated and retired after the research window change
 ## Current stage
 
 Four assets are registered, and the canonical month-end level and monthly-return panels have
-been built. The analysis notebook implements a source-audited, ex-post Stage I allocation of
+been built. The analysis notebook implements a source-audited, ex-post pilot Stage I allocation of
 gold, equity, and housing relative to the Etemad fixed-income benchmark for 1396-1404 and
 the five-month 1405 YTD period. Stage II now reports an ex-post mean-variance sensitivity
-analysis over an explicit grid of risk-aversion values; it is diagnostic and is not an
-investor-specific recommendation: `notebooks/asset_allocation_analysis.ipynb`.
+analysis over an explicit grid of risk-aversion values. This historical exercise was used to
+assemble the data and run the allocation algorithm once; it is diagnostic and is not the final
+forecast or investor-specific recommendation: `notebooks/asset_allocation_analysis.ipynb`.
 
 The notebook ends with a parallel alternative specification requested for comparison. It
 estimates one covariance matrix from all aligned months in 1396–1405/05 and holds that risk
 model fixed across yearly optimizations, while yearly realized returns continue to vary.
 
-A presentation-ready account of the complete workflow, exact result tables, interpretation,
+A presentation-ready account of the completed historical pilot, exact result tables, interpretation,
 limitations, suggested storyline, and likely questions is available in
 [`reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md`](reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md).
 The same analysis is also available as a typeset-ready LaTeX document:
@@ -56,12 +61,24 @@ Verify the installation and data pipeline with:
 
 ## Research objective and collection sequence
 
-The completed data objective is a canonical monthly-return history for all four assets from
-1395/01 through 1405/05. Stage I maximizes the annualized mean differential return of a
+The main project objective is to produce a forward-looking optimal portfolio after expert-survey
+responses have been collected and analyzed. The survey will be used to extract the experts'
+expected asset-allocation distribution and provide the forward-looking views required by the
+final allocation stage. The survey instrument and responses have not yet been delivered to the
+project, so no expert distribution or final recommended portfolio has been calculated.
+
+The completed foundation is a canonical monthly-return history for all four assets from
+1395/01 through 1405/05 and one historical execution of the algorithm. In that pilot, Stage I
+maximizes the annualized mean differential return of a
 buy-and-hold risky sleeve over Etemad divided by the sample volatility of that differential,
 subject to long-only risky weights summing to one. Results are historical hindsight diagnostics,
 not forecasts. Treat the 1405/01–1405/05 optimization strictly as a YTD diagnostic, not a
 full-year result.
+
+Before the final model is produced, its risk estimate must also be redesigned. The pilot estimates
+volatility inside each individual year; the operational model must estimate risk from a documented
+trailing window of recent years, using only information available at the allocation date. The
+window length and weighting rule remain research decisions to be tested and recorded.
 
 Collect and validate one asset at a time:
 1. Fixed income: اعتماد only.

@@ -1,0 +1,12 @@
+{
+  "ayar": {
+    "name": "Mofid Ayar Gold Fund",
+    "ins_code": "34144395039913458",
+    "nav_fund_id": "12",
+    "nav_basket_id": "12",
+    "start_date": "2018-01-01",
+    "nav_api": "https://p.mofidfund.com/vhive/HivePortal/12/12/Nav/GetNavListByDate",
+    "nav_report_type": "Raw",
+    "half_life_days": 90
+  }
+}

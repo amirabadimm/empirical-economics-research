@@ -46,3 +46,8 @@ used only when the official evidence supports zero or no separate fixed fee.
 - The current raw CSV is refreshed only by its collector, using an atomic replacement.
 - Derived files belong only in `data/interim` or `data/processed`.
 - The canonical processed directory contains one consumer-facing CSV.
+
+The 2026-09-19 refresh archived the current official table (12 assets), checked the Wayback
+inventory (110 unique archived-page records), and rebuilt the daily panel to 32,290 rows
+for 21 commodities through 2026-09-19. Historical notice and archived-table interpretation
+remains governed by the same boundary-quality fields.

@@ -1,5 +1,16 @@
 # Iron-Ore Pellet Warehouse-Receipt Certificate: Research Workflow
 
+## Shared execution checkpoint (2026-09-22)
+
+The delivered comparison uses the shared engine in `shared/certificate_pipeline`.
+Project-specific collectors, builders, and comparison sources are registered in `pipeline.json`.
+Run `python refresh_powerbi.py` to rebuild from local sources, add `--collect` to fetch
+new available source data first, or add `--plan` to preview the steps without writing.
+The existing double-click launcher retains its local-rebuild behavior.
+The engine stops on a failed step and publishes the delivery CSV only after all builders succeed.
+Product eligibility, alignment methods, and economic interpretation remain product-specific.
+Completed software delivery does not itself resolve the economic assumptions documented below.
+
 The notebook's strict-cash Gol Gohar/Gohar Zamin exact-date comparison is also rebuilt by `src/pellet/processing/build_certificate_bubble.py`. It writes `data/processed/bubble/pellet_certificate_bubble.csv` atomically. The physical price is each producer's daily quantity-weighted price, then the simple mean when both producers trade. Double-click `refresh_powerbi.cmd` to rebuild the comparison and project-local `outputs/power_bi/pellet_certificate_physical_comparison.csv` from existing raw inputs. The comparison remains exploratory.
 
 Last reviewed: 2026-09-19

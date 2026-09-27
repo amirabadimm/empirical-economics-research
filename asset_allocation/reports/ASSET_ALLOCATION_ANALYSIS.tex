@@ -18,7 +18,7 @@
 \newcommand{\Var}{\operatorname{Var}}
 \newcommand{\Cov}{\operatorname{Cov}}
 
-\title{\textbf{Ex-Post Cross-Asset Allocation in Iran}\\
+\title{\textbf{Historical Pilot for Cross-Asset Allocation in Iran}\\
 \large Data Construction, Portfolio Optimization, Volatility Specifications,\\
 and Risk-Aversion Sensitivity Analysis}
 \author{Research report generated from the reproducible asset-allocation notebook}
@@ -28,6 +28,10 @@ and Risk-Aversion Sensitivity Analysis}
 \maketitle
 
 \begin{abstract}
+This report documents the completed historical pilot rather than the final project. The principal
+project objective is a forward-looking optimal portfolio informed by an expert survey. Final
+delivery requires analysis of the completed survey and a risk model estimated from a trailing
+window of recent years rather than only within each individual year.
 This study examines monthly returns on Iranian 18-karat gold, the Tehran Stock Exchange
 total-return index (TEDPIX), Tehran residential housing, and the Etemad fixed-income ETF.
 It separates portfolio choice into two stages. Stage I determines the composition of the risky
@@ -43,6 +47,13 @@ investment recommendations.
 \newpage
 
 \section{Research Objective}
+
+The historical exercise assembled the required data and ran the allocation algorithm once. Its
+results are diagnostic. In the final stage, expert-survey responses will be analyzed to derive the
+experts' expected distribution across the four assets. Those views will be combined with a revised
+trailing-window estimate of risk to calculate the forward-looking optimal portfolio. The survey
+instrument and completed responses have not yet been supplied, so that final allocation is not part
+of this report.
 
 The research asks two related but distinct questions:
 
@@ -454,6 +465,60 @@ year-specific volatility, these curves begin reducing exposure earlier in some p
 decline more smoothly at high risk aversion. The interpretation remains curve-based: no single
 $\gamma$ is selected.
 
+\begin{landscape}
+\begin{table}[p]
+\centering
+\scriptsize
+\caption{Fixed-sigma Stage II risky allocation $100\alpha_y^*(\gamma)$ (percent), lower grid}
+\begin{tabular}{rrrrrrrrr}
+\toprule
+Year & $\gamma=0$ & 1 & 2 & 4 & 6 & 8 & 10 & 15 \\
+\midrule
+1396 & 100.00&100.00&67.52&33.76&22.52&16.88&13.52&9.02\\
+1397 & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&100.00\\
+1398 & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&100.00\\
+1399 & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&100.00\\
+1400 & 0.00&0.00&0.00&0.00&0.00&0.00&0.00&0.00\\
+1401 & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&100.00\\
+1402 & 0.00&0.00&0.00&0.00&0.00&0.00&0.00&0.00\\
+1403 & 100.00&100.00&100.00&100.00&100.00&100.00&98.12&65.30\\
+1404 & 100.00&100.00&100.00&100.00&100.00&84.86&67.82&45.12\\
+1405 YTD & 100.00&100.00&100.00&100.00&100.00&100.00&100.00&100.00\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[p]
+\centering
+\scriptsize
+\caption{Fixed-sigma Stage II risky allocation $100\alpha_y^*(\gamma)$ (percent), upper grid}
+\begin{tabular}{rrrrrrrr}
+\toprule
+Year & $\gamma=20$ & 25 & 30 & 35 & 40 & 45 & 50 \\
+\midrule
+1396 & 6.76&5.42&4.52&3.88&3.38&3.02&2.72\\
+1397 & 100.00&100.00&100.00&100.00&93.64&83.32&75.06\\
+1398 & 86.38&69.10&57.58&49.36&43.18&38.38&34.54\\
+1399 & 100.00&100.00&100.00&96.56&84.60&75.28&67.84\\
+1400 & 0.00&0.00&0.00&0.00&0.00&0.00&0.00\\
+1401 & 100.00&100.00&100.00&88.72&77.78&69.28&62.48\\
+1402 & 0.00&0.00&0.00&0.00&0.00&0.00&0.00\\
+1403 & 48.90&39.06&32.50&27.80&24.30&21.56&19.38\\
+1404 & 33.76&26.94&22.40&19.16&16.72&14.82&13.32\\
+1405 YTD & 100.00&93.12&77.88&67.00&58.84&52.48&47.40\\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{landscape}
+
+The fixed-sigma curves remain weakly decreasing but differ materially from the original curves.
+Exposure falls especially early in 1396 and reaches 2.72\% at the upper end of the grid. In
+1398, the original method remains fully risky across the grid, whereas fixed sigma reduces the
+risky share to 34.54\% at the upper end. The fixed-sigma method retains more upper-grid risky
+exposure in 1399, 1401, 1403, 1404, and 1405 YTD. Thus the volatility definition changes both
+the timing and steepness of de-risking. The robust cross-method results are zero risky exposure
+throughout 1400 and 1402 and a non-increasing relationship between $\gamma$ and risky exposure.
+
 \section{Interpretation of the Combined Evidence}
 
 \subsection{Regime dependence}
@@ -549,6 +614,10 @@ The correct Stage II output is a sensitivity function rather than a recommendati
 Thus credible portfolio decisions require three components: clean and auditable data, an explicit
 definition of risk, and an investor-specific preference or constraint supplied outside this
 historical analysis.
+
+Accordingly, the project remains in progress. Its next stage is to analyze the expert survey,
+replace within-year volatility with a documented estimate based on recent prior years, and execute
+the final forward-looking allocation model.
 
 \section{Reproducibility}
 

@@ -1,0 +1,20 @@
+{
+  "collectors": [
+    "shared/market_data/fx.py",
+    "commodity/zinc/src/zinc/collectors/lme.py",
+    "commodity/zinc/src/zinc/collectors/certificate.py",
+    "commodity/zinc/src/zinc/collectors/physical.py"
+  ],
+  "builders": [
+    "src/zinc/processing/build_physical_benchmark.py",
+    "src/zinc/processing/build_certificate_bubble.py",
+    "src/zinc/processing/build_intrinsic_bubbles.py",
+    "src/zinc/processing/build_bubble_distribution.py"
+  ],
+  "sources": [
+    [
+      "primary",
+      "zinc_certificate_bubble.csv"
+    ]
+  ]
+}

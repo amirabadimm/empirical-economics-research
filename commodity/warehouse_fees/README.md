@@ -9,7 +9,7 @@ certificates listed by the Iran Mercantile Exchange (IME).
 It contains one unique row per calendar date and commodity. Do not use files in
 `data/raw` or `data/interim` directly for analysis.
 
-Current coverage: 21 commodities from 2016-10-29 through the build date. Coverage
+Current coverage: 32,290 daily rows for 21 commodities from 2016-10-29 through 2026-09-19. Coverage
 starts independently for each commodity at its first recoverable official record.
 
 Important quality fields:

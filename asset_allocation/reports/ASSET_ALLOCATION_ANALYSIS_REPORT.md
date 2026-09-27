@@ -1,8 +1,14 @@
-# Iran Cross-Asset Allocation: Complete Analysis and Interpretation
+# Iran Cross-Asset Allocation: Historical Pilot Analysis and Interpretation
 
-Updated: 2026-09-12
+Updated: 2026-09-13
 
 ## Executive summary
+
+This report documents the completed historical pilot, not the final project. The project's main
+objective is a forward-looking optimal portfolio informed by an expert survey. The pilot assembled
+the four-asset dataset and executed the allocation algorithm once on historical data. Final delivery
+still requires analysis of completed survey responses and a revised risk model based on a trailing
+window of recent years rather than volatility estimated only within each individual year.
 
 This study compares four Iranian assets—18-karat gold, TEDPIX, Tehran residential housing,
 and the Etemad fixed-income ETF—using monthly observations from Solar Hijri 1395/01 through
@@ -197,6 +203,48 @@ so both return and risk favored the benchmark. Interior diversification appears 
 but the speed and point of adjustment vary substantially by realized market regime. The result
 is the entire response curve, not any individual allocation on that curve.
 
+## Alternative Stage II results: sigma fixed over time
+
+The second volatility method estimates one covariance matrix from all 113 aligned monthly
+observations and reuses it in every year. The tables below report the complete sensitivity of
+the optimal risky share. They are split only for readability; no gamma is selected as the answer.
+
+| Year | γ=0 | γ=1 | γ=2 | γ=4 | γ=6 | γ=8 | γ=10 | γ=15 |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1396 | 100.00 | 100.00 | 67.52 | 33.76 | 22.52 | 16.88 | 13.52 | 9.02 |
+| 1397 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 |
+| 1398 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 |
+| 1399 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 |
+| 1400 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| 1401 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 |
+| 1402 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| 1403 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 98.12 | 65.30 |
+| 1404 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 84.86 | 67.82 | 45.12 |
+| 1405 YTD | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 | 100.00 |
+
+| Year | γ=20 | γ=25 | γ=30 | γ=35 | γ=40 | γ=45 | γ=50 |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1396 | 6.76 | 5.42 | 4.52 | 3.88 | 3.38 | 3.02 | 2.72 |
+| 1397 | 100.00 | 100.00 | 100.00 | 100.00 | 93.64 | 83.32 | 75.06 |
+| 1398 | 86.38 | 69.10 | 57.58 | 49.36 | 43.18 | 38.38 | 34.54 |
+| 1399 | 100.00 | 100.00 | 100.00 | 96.56 | 84.60 | 75.28 | 67.84 |
+| 1400 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| 1401 | 100.00 | 100.00 | 100.00 | 88.72 | 77.78 | 69.28 | 62.48 |
+| 1402 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| 1403 | 48.90 | 39.06 | 32.50 | 27.80 | 24.30 | 21.56 | 19.38 |
+| 1404 | 33.76 | 26.94 | 22.40 | 19.16 | 16.72 | 14.82 | 13.32 |
+| 1405 YTD | 100.00 | 93.12 | 77.88 | 67.00 | 58.84 | 52.48 | 47.40 |
+
+The fixed-sigma curves remain weakly decreasing, but they differ materially from the original
+curves. Risky exposure begins falling especially early in 1396: it reaches 67.52% at the third
+grid point and 2.72% at the upper end. In 1398, the original method remains fully risky across
+the grid, whereas the fixed-sigma method falls to 34.54% at the upper end. Conversely, the
+fixed-sigma method retains more risky exposure at the upper end in 1399, 1401, 1403, 1404, and
+1405 YTD. The difference shows that the estimated timing and steepness of de-risking depend on
+the volatility definition. The robust cross-method findings are the complete rejection of the
+risky sleeve in 1400 and 1402 and the non-increasing relationship between risk aversion and
+risky exposure.
+
 ## What can and cannot be concluded
 
 Supported conclusions:
@@ -217,6 +265,8 @@ Unsupported conclusions:
 - That nominal returns represent gains in purchasing power; inflation is not deducted.
 - That any gamma value in the grid represents the audience's risk preference.
 - That five-month 1405 YTD behavior predicts the complete year.
+- That this pilot is the final forward-looking portfolio; expert views and the revised trailing-risk
+  model have not yet been incorporated.
 
 ## Methodological limitations
 

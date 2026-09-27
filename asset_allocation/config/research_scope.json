@@ -7,7 +7,7 @@
     "base_currency_status":  "authoritative",
     "analysis_frequency":  "monthly",
     "analysis_frequency_status":  "authoritative_monthly_return_inputs_complete",
-    "objective":  "ex_post_stage_i_benchmark_relative_risky_sleeve",
+    "objective":  "forward_looking_expert_informed_optimal_portfolio",
   "fixed_income_preference":  ["etf_etemad_only"],
   "fixed_income_candidate": {
     "fund_name": "صندوق سرمایه گذاری اعتمادآفرین پارسیان",
@@ -27,7 +27,10 @@
   ],
     "allow_silent_proxy_splicing":  false,
     "require_full_coverage_audit":  true,
-    "portfolio_methodology_status":  "stage_i_implemented_stage_ii_pending_risk_policy",
+    "historical_pilot_status":  "data_panel_complete_ex_post_algorithm_run_complete",
+    "portfolio_methodology_status":  "in_progress_pending_expert_survey_and_trailing_risk_model",
+    "expert_survey_status":  "instrument_and_responses_not_yet_received",
+    "risk_model_next_step":  "replace_within_year_volatility_with_documented_trailing_recent_years_estimate",
     "collection_order":  [
                              "fixed_income",
                              "gold_18k",
