@@ -1,13 +1,31 @@
 # Global Copper Market Research Framework
 
-Last reviewed: 2026-09-01
-Stage: architecture and source-contract backlog; no global-market dataset is yet canonical
+> Cancelled (2026-09-27): historical reference only. The global research collectors
+> and their tests have been removed. Collection commands and implementation claims
+> below describe the former system, not an available workflow. Raw evidence remains frozen.
+
+Last reviewed: 2026-09-22
+Stage: closed after delivery of the analytical framework and first-wave data foundation
+
+## Final project decision
+
+The framework began as an attempt to support a comprehensive global copper forecasting system.
+During implementation, the scope expanded from COCHILCO-based market understanding into several
+independent research programs: mine supply and disruptions, concentrate balances and TC/RC,
+smelting and refining, refined balances and regional premiums, LME/COMEX/SHFE mechanics, China and
+global demand, macro-financial conditions, and predictive modelling. The framework and substantial
+first-wave datasets were completed, but finishing every module was beyond the practical scope of
+the assignment. The broader Global Copper / COCHILCO program was therefore closed. Its documents,
+source work and collected datasets are retained as historical evidence; they do not
+constitute a completed global price model.
+
+This decision does not apply to the narrower Iranian copper-certificate valuation project, which
+is complete, deployed, and maintained through routine updates.
 
 ## Purpose
 
-This document adapts the COCHILCO analytical framework to the existing Copper project. It is a
-research and data-governance map, not a replacement filesystem and not a claim that every listed
-series is already collected.
+This document records the COCHILCO-based analytical framework developed for the Copper project.
+It is now an archived research and data map, not an active promise to collect every listed series.
 
 The active project already answers a narrower question: valuation of the Iranian copper-cathode
 warehouse receipt against a comparable domestic physical benchmark, LME cash copper, and the

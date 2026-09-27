@@ -1,5 +1,46 @@
 # Copper Warehouse-Receipt Certificate: Research Workflow
 
+## Full copper refresh (2026-09-27)
+
+Completed the online production refresh with `refresh_powerbi.py --collect`,
+then rebuilt intrinsic regression, forward-gap analysis, presentation timelines
+and report figures. Cancelled global research collectors remain removed.
+
+- LME: 4,738 rows through 2026-09-25.
+- Shared USD/IRR: 13,103 rows through 1405/07/04 (2026-09-26).
+- Certificate raw: 293 rows through 2026-09-26; 214 positive-volume observations.
+- Physical raw: 1,175 rows; eligible daily benchmark: 799 rows through
+  1405/06/29 (2026-09-20). No newer eligible physical trade was returned.
+- Production comparisons: 206 primary, 799 physical/intrinsic and 214
+  certificate/intrinsic rows; distribution: 1,219 rows; Power BI: 206 rows.
+- Primary bubble remains bounded through 2026-09-20; no extrapolation added.
+- Regression: 214 rows and 36 anchors; forward-gap diagnostic: 16 trade dates;
+  presentation timeline: 342 daily rows and 250 events, with 36 overlaps.
+- Validation: all 17 copper and shared certificate-pipeline tests passed.
+
+This checkpoint supersedes earlier coverage and row counts below.
+
+## Cancelled global research collectors (2026-09-27)
+
+The global copper / COCHILCO research project is cancelled. Its eight collectors
+and their dedicated tests have been removed; there is no ongoing collection or
+resumption plan. Existing raw data and source snapshots remain frozen under the
+workspace preservation rules. Historical research documents are archival only.
+The active copper product uses physical, certificate and LME collectors plus shared FX.
+Run `python commodity/copper/refresh_powerbi.py --collect` from the workspace root
+to update those sources and rebuild the production outputs.
+
+## Source refresh checkpoint (2026-09-26)
+
+Online FX, Westmetall/LME, IME certificate and physical collectors completed.
+LME coverage ends 2026-09-25; shared FX ends 2026-09-24 (1405/07/02).
+Certificate raw coverage ends 2026-09-24, but the latest positive-volume
+certificate comparison is 2026-09-23 (213 observations). Eligible physical
+benchmark and bounded primary bubble end 2026-09-20 (206 primary observations).
+No extrapolation was added. All three production comparisons, both percentile
+methods, Power BI delivery and report figures were rebuilt. Research-only
+regression, historical gap studies and timelines were not refreshed.
+
 ## Distribution update (2026-09-26)
 
 The distribution CSV now contains signed bubbles and two chronological expanding
@@ -35,6 +76,17 @@ Shared dashboards explicitly select these three approved outputs, primary first;
 experimental regression files are not mixed into the headline chart.
 Historical investigations remain in a labeled research appendix. No valuation
 formula, source data, or project completion status changed in this presentation update.
+
+## Shared execution checkpoint (2026-09-22)
+
+The delivered comparison uses the shared engine in `shared/certificate_pipeline`.
+Project-specific collectors, builders, and comparison sources are registered in `pipeline.json`.
+Run `python refresh_powerbi.py` to rebuild from local sources, add `--collect` to fetch
+new available source data first, or add `--plan` to preview the steps without writing.
+The existing double-click launcher retains its local-rebuild behavior.
+The engine stops on a failed step and publishes the delivery CSV only after all builders succeed.
+Product eligibility, alignment methods, and economic interpretation remain product-specific.
+Completed software delivery does not itself resolve the economic assumptions documented below.
 
 The refresh also runs `build_bubble_distribution.py`. It maps each explicit copper bubble series
 to the shared schema, writes `data/processed/bubble/copper_bubble_distribution.csv` atomically, and saves
@@ -244,63 +296,3 @@ python .\commodity\copper\src\copper\processing\build_forward_gap_analysis.py
 
 Results are research documentation, not investment advice. The limited and uneven physical-anchor
 sample is the principal constraint on structural interpretation.
-
-## Global copper-market raw workflow
-
-`collectors/global_market.py` collects official/public structured sources into isolated source
-families beneath `data/raw/global_market`: BGS copper statistics, CFTC COMEX Grade #1 positioning,
-IRENA power capacity, NBS copper-products output, and registered FRED controls. Responses are
-archived before canonical CSVs are atomically replaced. BGS is fully paginated; CFTC archives are
-read year-by-year and filtered to contract code `085692`. The collector derives canonical
-`report_date` from CFTC's stable `As_of_Date_In_Form_YYMMDD`, validates it against the archive year,
-unions fields across every annual schema, and rejects duplicate report dates. This avoids treating
-the sparsely populated legacy display-date column as the observation key. LME is deliberately
-excluded.
-
-`collectors/usgs_archive.py` discovers both the official legacy index and current USGS copper
-page, downloads each XLS/XLSX only once, validates the workbook signature, and records byte size
-and SHA-256 in `usgs_copper_mis_manifest.csv`. Extraction from changing workbook layouts belongs
-in an interim processing step; raw workbooks are never edited.
-
-Source definitions, exact/proxy distinctions, access class, methodology breaks, and collection
-routes are governed by `first_wave_source_dictionary.csv`. A failed source must not replace an
-existing canonical file with empty or partial output.
-
-`collectors/cochilco.py --backfill` uses five pinned January bulletin vintages plus the latest
-bulletin to construct a continuous company-level monthly panel. It parses Spanish-formatted kMT
-copper-content values, rejects vector/header mismatches, retains annual and monthly frequencies
-separately, and resolves overlaps in favor of the latest publication vintage.
-
-`collectors/comtrade.py` archives one official preview response per requested month for China's
-world-partner imports and exports of HS 2603, 7403, and 7404. The unauthenticated preview endpoint
-is demonstrably incomplete and must retain `source_access_tier=unauthenticated_preview_incomplete`.
-It cannot be used as continuous trade history until rerun through the free authenticated API.
-
-`collectors/cme.py` queries the Internet Archive CDX index for distinct captures of CME's official
-`Copper_Stocks.xls`, preserves every immutable workbook, parses warehouse-level registered,
-eligible, and total short tons, and selects the latest capture for each activity date. Older
-workbooks that publish only the exchange total remain valid rather than receiving invented status
-detail. `collectors/cme_bulletins.py` similarly preserves distinct official Section 62 metals
-bulletins and extracts only the unambiguous HG aggregate row. It retains Globex, legacy
-open-outcry, and PNT/PIT volume separately, derives their sum, and records open interest and its
-published change. A geometry-aware parser also creates `comex_copper_contract_prices_raw.csv`;
-it uses the labelled pre-2015 and current CME column layouts to retain contract month, Globex
-open/high/low, official settlement and change, all volume channels, and open interest. Every output
-row carries its archive capture and replay URL; manifests expose
-the original CME URL and any parse error. Contract-month settlements remain raw-PDF evidence
-until a geometry-aware parser is separately validated.
-
-`collectors/shfe.py` incrementally checks official dated Daily Express JSON files, archives each
-published trading-day response once, normalizes legacy fixed-width identifiers, and filters only
-the exchange's `cu_f` futures contracts. The canonical table preserves each expiry rather than
-inventing a continuous contract. Prices remain CNY per metric tonne; volume and open interest
-remain SHFE lots; turnover is retained in the source's 10,000-CNY convention. Missing OHLC on an
-untraded expiry is valid, while settlement, volume, and open interest are required.
-
-`collectors/shfe_inventory.py` separately archives Daily Warrant and Weekly Inventory source files.
-It preserves Total, Total (Tax included), and Total (Bonded) rows. Daily warrant tonnes must not
-be relabelled as weekly physical inventory; weekly reports additionally retain inventory,
-inventory change, and warehouse capacity. It uses the historical all-product JSON endpoints first,
-then falls back to SHFE's official product-specific HTML route introduced after 2025-11-17. The
-canonical schema is unchanged across the source-format transition, and the boundary totals must
-reconcile using each report's published change field.

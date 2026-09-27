@@ -1,5 +1,9 @@
 # First-wave source assurance
 
+> Cancelled (2026-09-27): historical reference only. The global research collectors
+> and their tests have been removed. Collection commands and implementation claims
+> below describe the former system, not an available workflow. Raw evidence remains frozen.
+
 Last checked: 2026-09-01
 
 This note supersedes any earlier wording that treated LME data as a gap or said that the difficult first-wave families had no clean source. LME cash, three-month, and stock data are already present in this project and must be reused. The source-by-source contract is in `first_wave_source_dictionary.csv`.
