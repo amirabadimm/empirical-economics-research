@@ -1,5 +1,11 @@
 # Workspace Architecture
 
+Reviewed: 2026-09-28. See [STATUS.md](STATUS.md) for current checkpoints and
+[WORKFLOW.md](WORKFLOW.md) for execution and review steps. Gold and Silver have their own
+commodity domains and refresh entry points outside the six-product certificate engine.
+The workspace also includes independent Asset Allocation and Economic USD projects and
+the Ahrom options pipeline.
+
 ## Certificate execution engine
 
 `shared/certificate_pipeline/refresh.py` orchestrates all six certificate products using
@@ -17,14 +23,18 @@ domains with their own package boundaries and data contracts.
 
 ```text
 empirical-economics-research/
-├── commodity/{bitumen,copper,pellet,rebar,warehouse_fees,zinc}/
+├── commodity/{bitumen,copper,gold,pellet,rebar,silver,warehouse_fees,zinc}/
 ├── goods/pista/
 ├── asset_allocation/
 ├── economic_usd/
+├── options/
 ├── energy_exchange/
 ├── codal/national_copper/
 ├── shared/ime_data/
 ├── shared/market_data/
+├── shared/certificate_pipeline/
+├── shared/market_analysis/
+├── shared/notebook_tools/
 ├── reports/{copper,zinc}/
 ├── docs/
 └── .venv/                         # local only; never versioned
@@ -43,7 +53,7 @@ create a missing bubble merely to satisfy the presentation pattern.
 Each commodity project may contain `src/<commodity>`, `data/raw/{physical,certificate}`,
 `data/interim`, and `data/processed/{physical,certificate,bubble,analysis}`,
 `notebooks`, `tests`, `logs`, `outputs`, and `docs`. The existing local `Finenv` directory is
-ignored; new clones should use `.venv`.
+ignored. The workstation uses sibling `../Finenv`; new clones can use an isolated `.venv`.
 
 The Energy Exchange domain uses `energy_exchange/src/energy_exchange` for reusable domain logic
 and `energy_exchange/references` for source-document provenance. Its logic must remain separate
@@ -99,9 +109,9 @@ are prohibited.
 - 2026-08-29: duplicate Copper and Zinc USD/IRR ownership was consolidated into one shared TGJU
   collector and canonical series under `shared/market_data` and `shared/data/raw/fx`.
 
-## Validation checkpoints
+## Historical validation checkpoint (2026-09-19)
 
-At each project's latest documented checkpoint:
+These counts describe the historical checkpoint, not current coverage:
 
 | Project | Certificate rows | Physical rows | Positive physical trades |
 |---|---:|---:|---:|
@@ -111,6 +121,6 @@ At each project's latest documented checkpoint:
 | Steel rebar | 286 | 31,953 | 16,968 |
 | Zinc | 286 | 6,398 | 3,581 |
 
-These are the 2026-09-19 source checkpoints. Zinc's processed pipeline has a 562-day
-99.97/99.98 benchmark and a 201-day primary certificate comparison with 49 exact physical
-anchors. See [STATUS.md](STATUS.md) and each project's status for current research stages.
+See [STATUS.md](STATUS.md) and each project's status for subsequent refreshes and current
+research stages. Copper and Zinc each have 206 primary comparison dates through 2026-09-20
+at their latest documented production checkpoints.

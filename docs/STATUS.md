@@ -1,5 +1,46 @@
 # Research Status
 
+## Current workspace review — 2026-09-28
+
+This review reconciles project documentation, refresh entry points, pipeline manifests,
+and available local comparison CSVs. It did not collect new data or rebuild research outputs.
+The current checkpoints below supersede the historical September 19–22 summary retained
+later in this file. Data coverage differs by project.
+
+| Project | Current checkpoint | Stage / next action |
+|---|---|---|
+| [Copper](../commodity/copper/docs/STATUS.md) | Refreshed 2026-09-27: 293 certificate rows through 2026-09-26; 1,175 physical rows; 799 eligible physical dates; 206 primary comparisons through 2026-09-20 | Production and research outputs rebuilt; monitor freshness and analytical QA. Global Copper / COCHILCO research is cancelled, with evidence preserved. |
+| [Zinc](../commodity/zinc/docs/STATUS.md) | Refreshed 2026-09-26: raw certificate through 2026-09-24; 213 certificate/intrinsic dates; 563 physical benchmark dates; 206 primary comparisons through 2026-09-20 | Approved 99.97/99.98 basket and bounded valuation. Research-only regression and historical studies were not refreshed. |
+| [Gold / Ayar](../commodity/gold/docs/STATUS.md) | 2026-09-26 build: 1,947 exact-date traded observations through 2026-09-23; no traded dates missing NAV | TSETMC prices / Mofid raw NAV pipeline delivered. TSETMC NAV discovery on 2026-09-27 did not change production collection or deploy a scheduler. |
+| [Silver](../commodity/silver/docs/STATUS.md) | 2026-09-27 scaffold: collectors, strict benchmark, exact-date diagnostic, distribution, refresh entry point, and tests | No data collected or economic benchmark approved. Source validation and comparability review remain pending. |
+| [Cross-asset allocation](../asset_allocation/docs/STATUS.md) | 126 level months and 125 return months per asset, with missingness retained; historical pilot through 1405/05 | Stage I/II and fixed-covariance sensitivity implemented. Expert survey, trailing-risk design, and final forward-looking allocation pending. |
+| [Economic USD/IRR](../economic_usd/docs/STATUS.md) | USD through 1405/06/21; Iranian CPI through 1405/04; liquidity through 1404/12; U.S. CPI through 2026-08 | Data preparation and sparse monthly join implemented. Dollar-liquidity formula and five PPP anchor windows remain to be defined and calculated. |
+| [Ahrom options](../options/docs/STATUS.md) | 2026-09-20: 996 verified contracts; 8,903 OptionBaaz rows from 2025-12-17 through 2026-09-20 | Discovery, archive, build, and verification implemented; earlier history remains a material coverage gap. |
+
+Pellet, Bitumen, Rebar, Pista, Warehouse Fees, National Copper / Codal, and the closed
+Energy Exchange study retain the recorded checkpoints below. Bitumen now has a processed
+diagnostic and distribution; older claims that no processed comparison exists are superseded.
+
+Current certificate/physical Power BI row counts are Copper 206, Zinc 206, Pellet 23,
+Rebar 54, Bitumen 31, and Pista 16. Copper, Zinc, Gold, and Pista comparison counts were
+checked against local CSVs during this review. Exploratory/provisional labels remain in force.
+
+The latest shared FX checkpoint records 13,103 dates through 1405/07/04 (2026-09-26).
+A newer shared input does not imply all consuming outputs were rebuilt. Copper and Zinc
+primary comparisons remain bounded by their latest physical anchors, without extrapolation.
+Copper, Zinc, and Gold now use signed expanding equal-weight and recency-weighted percentiles
+(default 90-calendar-day half-life). Other products retain their empirical distributions.
+
+Root CI runs Ruff and pytest; root pytest discovers `commodity`, `codal`, `energy_exchange`,
+`shared`, and `options`. Pista, Asset Allocation, and Economic USD require separate test runs.
+This documentation review does not claim a new full-suite, notebook, or report execution.
+No recurring collector or NAV scheduler is deployed in the repository.
+
+## Historical workspace summary (September 19–22, 2026)
+
+Counts and stages in the following sections describe those earlier checkpoints; use the
+current review above and linked project status files for subsequent changes.
+
 ## Certificate integration checkpoint (2026-09-22)
 
 All six certificate products use the shared execution and delivery engine. Rebuilding
