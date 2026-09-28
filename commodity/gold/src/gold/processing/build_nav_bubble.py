@@ -33,15 +33,12 @@ def build(fund='ayar'):
     result = calculate(prices,nav)
     result['fund'] = fund
     _atomic_csv(result,PROJECT/f'data/processed/bubble/{fund}_nav_bubble.csv')
-    traded = prices.loc[(prices.trade_volume>0)&(prices.trade_count>0)]
-    missing = traded.loc[~traded.date.isin(nav.date)]
-    _atomic_csv(missing,PROJECT/f'data/processed/analysis/{fund}_unmatched_prices.csv')
     cfg = json.loads((PROJECT/'config/funds.json').read_text())[fund]
     ranks = build_project_distributions(project_dir=PROJECT,commodity=fund,
         specs=(BubbleSeriesSpec(f'{fund}_nav','price_vs_redemption_nav',f'{fund.title()}: close vs redemption NAV',
                    f'{fund}_nav_bubble.csv','date','bubble_pct'),),half_life_days=cfg['half_life_days'])
     _atomic_csv(ranks,PROJECT/f'outputs/{fund}_nav_monitor.csv')
-    print(f'{fund}: {len(result)} exact-date bubbles, {len(missing)} unmatched traded dates; '
+    print(f'{fund}: {len(result)} exact-date bubbles; '
           f'{result.date.min().date()} through {result.date.max().date()}')
     print(ranks[['observation_date','bubble_pct','expanding_percentile','recent_weighted_percentile']].tail(1).to_string(index=False))
     return result

@@ -1,4 +1,53 @@
-# Gold research — Ayar NAV premium
+# Gold research — daily ETF histories and Ayar NAV premium
+
+## Five-fund daily source collection (2026-09-28)
+
+The active universe is Ayar (`ayar`), Lotus Gold (`tala`), Kahroba
+(`kahroba`), Ganj (`ganj`), and Gohar (`gohar`). Zarvan began trading on
+2024-12-02 and cannot cover the full two-year window. Mesghal's historical
+NAV remains unresolved; its earlier files are retained as evidence. Run from
+workspace root:
+
+```powershell
+E:/Work/.venv/Scripts/python.exe commodity/gold/collect_daily.py
+```
+
+`--fund` selects one fund. This collector retrieves full unadjusted TSETMC daily
+trading histories into independent `data/raw/funds/<fund>/price.csv` files. It
+also retrieves TSETMC `fund.stats[].navRed` historical redemption NAV for Tala,
+Kahroba, Ganj, and Gohar into each fund's `nav.csv`. Ayar retains its existing official
+Mofid raw redemption NAV; `collect_daily.py` refreshes only its price history.
+For Ayar NAV refresh, use the existing `refresh.py --collect` workflow below.
+An explicit `--fund mesghal` still refreshes its price evidence, but the default
+five-fund collection excludes it.
+
+Every successful response is archived by SHA256 before parsing. Canonical CSVs
+are validated and atomically merged by date. A same-date exact duplicate in a
+TSETMC NAV response is collapsed; conflicting same-date NAVs fail collection.
+TSETMC's historical NAV is not established as equivalent to each manager's raw
+NAV. Do not combine the five funds into one premium series without checking
+source timing and NAV basis. See `docs/STATUS.md` for coverage and the Mesghal
+identity conflict.
+
+## Last two years of daily prices and redemption NAV
+
+The 2024-09-28 through 2026-09-28 window is built with:
+
+```powershell
+E:/Work/.venv/Scripts/python.exe commodity/gold/collect_fipiran_nav.py
+E:/Work/.venv/Scripts/python.exe commodity/gold/build_two_years.py --as-of 2026-09-28
+```
+
+Fipiran histories are separately archived in `nav_fipiran.csv` for Tala,
+Kahroba, Ganj, and Gohar; the TSETMC `nav.csv` files remain independent. The two-year
+processed files under `data/processed/analysis/<fund>_daily_price_nav_2y.csv`
+select Mofid raw NAV for Ayar and Fipiran historical NAV for those four.
+They left-join on exact trading dates, expose `nav_provider` and source hashes,
+and leave missing NAV blank. Run `refresh.py --collect` to refresh Ayar's
+manager NAV. `audit_coverage.py` prints a read-only raw coverage summary.
+The current exact-date matches are 464/464 Ayar, 464/464 Tala, 463/464 Kahroba,
+461/464 Ganj, and 463/463 Gohar. The old Mesghal processed table is superseded
+and is no longer part of the active five. See `docs/STATUS.md` for missing dates.
 
 Gold is a domain workspace, not a single-fund folder. Fund identity, official NAV
 provider and statistical settings live in `config/funds.json`; source histories
@@ -46,8 +95,6 @@ Collectors alone write canonical raw CSVs using validated, atomic merges.
 - `data/processed/bubble/ayar_nav_bubble.csv`: canonical exact-date bubble.
 - `data/processed/bubble/ayar_bubble_distribution.csv`: signed bubble plus expanding
   equal-weight and recent-weighted percentiles (90-calendar-day half-life).
-- `data/processed/analysis/ayar_unmatched_prices.csv`: traded dates lacking exact NAV.
-- `data/processed/analysis/ayar_nav_distribution.png`: histogram and percentile timeline.
 - `outputs/ayar_nav_monitor.csv`: delivery view of the statistical table.
 - `notebooks/01_ayar_nav.ipynb`: read-only interactive analysis.
 

@@ -1,5 +1,25 @@
 # TSETMC NAV endpoint verification — 2026-09-27
 
+## Follow-up: Mesghal direct TSETMC check — 2026-09-28
+
+The five-fund collection used the official TSETMC `ClosingPrice/GetClosingPriceDailyList/{InsCode}/0`
+endpoint for all five daily price histories. Mesghal's trading InsCode is
+`32469128621155736`. Its daily-price response contains prices and activity,
+but no NAV field.
+
+Direct `Fund/GetETFByInsCode/32469128621155736` returned Mesghal's current
+redemption NAV (`pRedTran`), source date 2026-09-28. Adding `?dEven=20250101`
+or `?date=20250101` still returned the 2026-09-28 observation, so this route
+cannot be treated as a historical lookup. `Fund/GetFundInDetail/11899` returned
+`mfName = صندوق س.کالای آگاه (نقراط)`, the silver fund, not Mesghal. Adding
+`groupId=2`, `fundType=2`, `fundType=5`, or `type=2` did not change that result;
+passing Mesghal's InsCode to `GetFundInDetail` returned HTTP 500. The inspected
+TSETMC frontend bundle uses only three Fund API routes:
+`GetETFByInsCode`, `GetFundInDetail`, and `GetFunds`. This does not prove no
+other historical NAV source exists, but the tested official routes do not yield
+Mesghal's two-year redemption NAV history. No Naqrat observations were copied
+into Mesghal data.
+
 ## Scope and evidence
 
 Read-only requests verified historical daily redemption NAV for Ayar and latest

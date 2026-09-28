@@ -2,11 +2,59 @@
   "ayar": {
     "name": "Mofid Ayar Gold Fund",
     "ins_code": "34144395039913458",
+    "nav_provider": "mofid_raw",
     "nav_fund_id": "12",
     "nav_basket_id": "12",
     "start_date": "2018-01-01",
     "nav_api": "https://p.mofidfund.com/vhive/HivePortal/12/12/Nav/GetNavListByDate",
     "nav_report_type": "Raw",
+    "half_life_days": 90
+  },
+  "tala": {
+    "name": "Lotus Gold Fund",
+    "symbol": "طلا",
+    "ins_code": "46700660505281786",
+    "nav_provider": "tsetmc_fund_detail",
+    "nav_reg_no": 11509,
+    "nav_fund_name": "پشتوانه چند کالایی پارسیان",
+    "fipiran_group_id": 0,
+    "half_life_days": 90
+  },
+  "kahroba": {
+    "name": "Charisma Kahroba Gold Fund",
+    "symbol": "کهربا",
+    "ins_code": "25559236668122210",
+    "nav_provider": "tsetmc_fund_detail",
+    "nav_reg_no": 11856,
+    "nav_fund_name": "مبتنی برکالای کهربا",
+    "fipiran_group_id": 0,
+    "half_life_days": 90
+  },
+  "mesghal": {
+    "name": "Agah Mesghal Gold Fund",
+    "symbol": "مثقال",
+    "ins_code": "32469128621155736",
+    "nav_provider": "unresolved",
+    "half_life_days": 90
+  },
+  "ganj": {
+    "name": "Kardan Ganj Gold Fund",
+    "symbol": "گنج",
+    "ins_code": "58514988269776425",
+    "nav_provider": "tsetmc_fund_detail",
+    "nav_reg_no": 10615,
+    "nav_fund_name": "سیمای کاردان",
+    "fipiran_group_id": 1,
+    "half_life_days": 90
+  },
+  "gohar": {
+    "name": "Kian Gohar Gold Fund",
+    "symbol": "گوهر",
+    "ins_code": "12390706505809150",
+    "nav_provider": "tsetmc_fund_detail",
+    "nav_reg_no": 11556,
+    "nav_fund_name": "مبتنی بر کالای کیان",
+    "fipiran_group_id": 0,
     "half_life_days": 90
   }
 }

@@ -2,7 +2,10 @@
 
 Reviewed: 2026-09-28. See [STATUS.md](STATUS.md) for current checkpoints and
 [WORKFLOW.md](WORKFLOW.md) for execution and review steps. Gold and Silver have their own
-commodity domains and refresh entry points outside the six-product certificate engine.
+commodity domains and entry points outside the six-product certificate engine.
+Gold now has five-fund daily price collection for Ayar, Tala, Kahroba, Ganj,
+and Gohar, independent historical NAV collectors, and a two-year analysis build
+alongside its Ayar bubble refresh. The older Mesghal investigation is preserved.
 The workspace also includes independent Asset Allocation and Economic USD projects and
 the Ahrom options pipeline.
 

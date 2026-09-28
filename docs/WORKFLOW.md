@@ -24,7 +24,13 @@ Pista's Abtahi workbook remains a manual input. The engine stops on failure and 
 a project's delivery CSV only after its builders succeed; the run is not a transaction
 across all datasets. See the [engine contract](../shared/certificate_pipeline/README.md).
 
-Gold uses `python commodity/gold/refresh.py`, optionally with `--collect` and `--full`.
+Gold uses `python commodity/gold/collect_daily.py` for daily source collection
+of Ayar, Tala, Kahroba, Ganj, and Gohar. The existing Ayar bubble workflow uses
+`python commodity/gold/refresh.py`, optionally with `--collect` and `--full`;
+Mesghal historical NAV remains unresolved and its older evidence is retained.
+`python commodity/gold/collect_fipiran_nav.py` collects separate fuller NAV
+histories for Tala, Kahroba, Ganj, and Gohar, and `python commodity/gold/build_two_years.py`
+builds exact-date two-year analysis tables without filling missing NAV.
 Silver uses `python commodity/silver/refresh.py` for offline rebuilding after inputs exist;
 its scaffold checkpoint contains no collected data. Follow project workflows for Warehouse
 Fees, Codal, options, Asset Allocation, and Economic USD. The Energy Exchange study and
