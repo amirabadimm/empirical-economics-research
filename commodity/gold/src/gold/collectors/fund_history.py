@@ -44,6 +44,8 @@ def persist(frame, path):
 
 
 def collect(fund='ayar', full=False):
+    if fund == 'ayar':
+        raise RuntimeError('Ayar Mofid collector is retired; use collect_fipiran_nav.py --fund ayar')
     cfg = json.loads((PROJECT/'config/funds.json').read_text())[fund]
     session = requests.Session()
     session.mount('https://', HTTPAdapter(max_retries=Retry(total=3,backoff_factor=1,status_forcelist=[429,500,502,503,504])))

@@ -22,18 +22,19 @@ def calculate(prices, nav):
         if not np.isfinite(result[c]).all() or (result[c]<=0).any(): raise ValueError(f'Invalid {c}')
     result['bubble_pct'] = 100 * (result.closing_price_irr / result.redemption_nav_irr - 1)
     result['spread_irr'] = result.closing_price_irr - result.redemption_nav_irr
-    result['alignment_method'] = 'exact_date_close_to_raw_redemption_nav'
+    result['alignment_method'] = 'exact_date_close_to_redemption_nav'
     return result.sort_values('date')
 
 
 def build(fund='ayar'):
     raw = PROJECT/'data/raw/funds'/fund
     prices = pd.read_csv(raw/'price.csv',parse_dates=['date'])
-    nav = pd.read_csv(raw/'nav.csv',parse_dates=['date'])
+    nav = pd.read_csv(raw/'nav_fipiran.csv',parse_dates=['date'])
     result = calculate(prices,nav)
     result['fund'] = fund
+    result['nav_provider'] = 'fipiran_historical'
     _atomic_csv(result,PROJECT/f'data/processed/bubble/{fund}_nav_bubble.csv')
-    cfg = json.loads((PROJECT/'config/funds.json').read_text())[fund]
+    cfg = json.loads((PROJECT/'config/funds.json').read_text(encoding='utf-8'))[fund]
     ranks = build_project_distributions(project_dir=PROJECT,commodity=fund,
         specs=(BubbleSeriesSpec(f'{fund}_nav','price_vs_redemption_nav',f'{fund.title()}: close vs redemption NAV',
                    f'{fund}_nav_bubble.csv','date','bubble_pct'),),half_life_days=cfg['half_life_days'])

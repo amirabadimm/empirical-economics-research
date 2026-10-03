@@ -1,11 +1,20 @@
 # Workspace Architecture
 
+Gold's five-fund research phase is closed at the September 29 data checkpoint;
+the documented incremental collectors and quality audits remain available for
+maintenance. The 2026-10-03 closeout did not refresh source data.
+
 Reviewed: 2026-09-28. See [STATUS.md](STATUS.md) for current checkpoints and
 [WORKFLOW.md](WORKFLOW.md) for execution and review steps. Gold and Silver have their own
 commodity domains and entry points outside the six-product certificate engine.
 Gold now has five-fund daily price collection for Ayar, Tala, Kahroba, Ganj,
 and Gohar, independent historical NAV collectors, and a two-year analysis build
-alongside its Ayar bubble refresh. The older Mesghal investigation is preserved.
+alongside its Ayar bubble refresh. Mesghal's 2026-09-29 live recheck verifies
+identity but still yields no accepted historical NAV; its archived evidence and
+reproducible investigation remain separate from the active panel.
+The September 29 gold reliability audit adds manager corroboration and per-date
+quality flags. Ayar now selects Fipiran (448/465 two-year matches; 1,928 bubble rows); Gohar has
+material disputed NAV and a unit-count change requiring explicit treatment.
 The workspace also includes independent Asset Allocation and Economic USD projects and
 the Ahrom options pipeline.
 

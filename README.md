@@ -1,6 +1,17 @@
 # Empirical Economics Research
 
-Documentation reviewed: 2026-09-28. Data checkpoints are project-specific; see
+Gold's five-fund NAV research phase was closed on 2026-10-03 at the September 29
+data checkpoint. Small NAV gaps and disputed Gohar dates remain flagged in the
+[reliability audit](commodity/gold/docs/NAV_RELIABILITY.md); maintenance refreshes
+remain available. The closeout did not collect newer data.
+
+Documentation reviewed: 2026-09-28; gold NAV reliability updated 2026-09-29.
+Tala, Kahroba, and Ganj match their manager records on shared dates; Gohar has
+disputed values and Ayar's selected Fipiran history has gaps. See the
+[reliability audit](commodity/gold/docs/NAV_RELIABILITY.md).
+Mesghal's live historical NAV recheck yielded no accepted series; see
+[the validation report](commodity/gold/docs/MESGHAL_NAV_VALIDATION.md).
+Data checkpoints are project-specific; see
 [current research status](docs/STATUS.md) and [workspace workflow](docs/WORKFLOW.md).
 
 The six certificate research products share an execution engine and explicit per-product
@@ -36,7 +47,7 @@ restricted raw market data.
 |---|---|---|---|
 | [Copper](commodity/copper/README.md) | How does the copper warehouse receipt trade relative to comparable domestic cathode and an LME–FX benchmark? | Volume-weighted physical benchmark; bounded physical/intrinsic ratio interpolation | 206 primary comparisons through 2026-09-20; refreshed 2026-09-27 |
 | [Zinc](commodity/zinc/README.md) | How does the zinc-ingot certificate compare with an eligible 99.97/99.98 domestic basket? | Grade-filtered volume weighting; three bubble definitions | 206 primary comparisons through 2026-09-20; refreshed 2026-09-26 |
-| [Gold ETFs](commodity/gold/README.md) | How do five liquid gold ETFs trade relative to redemption NAV? | Two-year daily TSETMC prices for Ayar, Tala, Kahroba, Ganj, Gohar; Ayar manager NAV and separate Fipiran NAV histories for the other four | Exact-date NAV matches: Ayar 464/464, Tala 464/464, Kahroba 463/464, Ganj 461/464, Gohar 463/463; Mesghal investigation preserved |
+| [Gold ETFs](commodity/gold/README.md) | How do five liquid gold ETFs trade relative to redemption NAV? | Bounded TSETMC prices; five Fipiran NAV histories, with manager corroboration | September 29 incremental refresh: Ayar 448/465, Tala 465/465, Kahroba 464/465, Ganj 462/465, Gohar 464/464 two-year matches; Gohar disputed dates flagged |
 | [Silver](commodity/silver/README.md) | How does the silver-bar certificate compare with eligible 999.9 cash trades? | Exact-date diagnostic with gram-to-kilogram conversion | Architecture and tests implemented; no data collected or benchmark approved |
 | [Iron-ore pellet](commodity/pellet/README.md) | Which physical-market basket is economically comparable with the pellet certificate? | Producer/contract exploration before benchmark approval | Exploratory stage |
 | [Bitumen](commodity/bitumen/README.md) | Which grade, market, and delivery terms match the bitumen certificate? | Broad raw collection followed by eligibility research | Data collection complete; underlying unresolved |
@@ -177,11 +188,12 @@ python -m shared.certificate_pipeline.refresh all --plan
 python -m shared.certificate_pipeline.refresh all
 # Explicit online source collection followed by a production rebuild.
 python -m shared.certificate_pipeline.refresh copper --collect
-# Five-fund daily gold histories (prices for all; NAV for four).
+# Five-fund daily gold histories (bounded prices and recent Fipiran NAV).
 python commodity/gold/collect_daily.py
 python commodity/gold/collect_fipiran_nav.py
 python commodity/gold/build_two_years.py --as-of 2026-09-28
-# Independent Ayar bubble workflow; add --collect to fetch its manager NAV first.
+# Run collectors with --full periodically to capture older revisions.
+# Independent Ayar bubble workflow; add --collect to fetch Fipiran historical NAV and TSETMC prices first.
 python commodity/gold/refresh.py
 ```
 

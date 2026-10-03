@@ -21,11 +21,13 @@ from gold.collectors.fund_history import fetch, persist
 ACTIVE_FUNDS = ("ayar", "tala", "kahroba", "ganj", "gohar")
 
 
-def collect_price(session, fund, cfg):
+def collect_price(session, fund, cfg, full=False):
     raw = PROJECT / "data/raw/funds" / fund
+    canonical = raw / "price.csv"
+    full = full or not canonical.exists()
     payload, digest = fetch(
         session,
-        f"https://cdn.tsetmc.com/api/ClosingPrice/GetClosingPriceDailyList/{cfg['ins_code']}/0",
+        f"https://cdn.tsetmc.com/api/ClosingPrice/GetClosingPriceDailyList/{cfg['ins_code']}/{0 if full else 30}",
         raw / "snapshots/tsetmc",
     )
     rows = payload["closingPriceDaily"]
@@ -46,7 +48,11 @@ def collect_price(session, fund, cfg):
     numbers = frame[["closing_price_irr", "last_price_irr", "trade_volume", "trade_count"]]
     if not np.isfinite(numbers.to_numpy(dtype=float)).all() or (numbers < 0).any().any():
         raise ValueError(f"{fund}: invalid price or activity")
-    persist(frame, raw / "price.csv")
+    if not full:
+        last_saved = pd.read_csv(canonical, usecols=["date"]).date.max()
+        if not frame.date.min() <= last_saved <= frame.date.max():
+            raise ValueError(f"{fund}: recent price response does not cover the last saved date; run --full")
+    persist(frame, canonical)
     return len(frame)
 
 
@@ -83,13 +89,17 @@ def collect_nav(session, fund, cfg):
     if (conflicting > 1).any().any():
         raise ValueError(f"{fund}: conflicting NAVs on the same source date")
     frame = frame.drop_duplicates("date")
-    persist(frame, raw / "nav.csv")
+    persist(frame, raw / ("nav_tsetmc.csv" if fund == "ayar" else "nav.csv"))
     return len(frame)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fund", choices=(*ACTIVE_FUNDS, "mesghal"))
+    parser.add_argument("--full", action="store_true",
+                        help="Fetch complete price history for initial load or older revisions")
+    parser.add_argument("--comparison-nav", action="store_true",
+                        help="Also collect complete TSETMC fund-detail NAV for comparison")
     args = parser.parse_args()
     configs = json.loads((PROJECT / "config/funds.json").read_text(encoding="utf-8"))
     session = requests.Session()
@@ -98,11 +108,10 @@ def main():
     )))
     for fund in ([args.fund] if args.fund else ACTIVE_FUNDS):
         cfg = configs[fund]
-        prices = collect_price(session, fund, cfg)
-        nav = collect_nav(session, fund, cfg)
+        prices = collect_price(session, fund, cfg, full=args.full)
+        nav = collect_nav(session, fund, cfg) if args.comparison_nav else None
         nav_status = (f"{nav} source NAV dates" if nav is not None else
-                      "existing manager NAV retained" if fund == "ayar" else
-                      "historical NAV remains unresolved")
+                      "comparison NAV skipped")
         print(f"{fund}: {prices} source price rows; {nav_status}")
 
 

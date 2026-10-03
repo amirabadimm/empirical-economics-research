@@ -1,4 +1,4 @@
-"""Collect independent Fipiran historical redemption NAV for three gold ETFs."""
+"""Collect independent Fipiran historical redemption NAV for five gold ETFs."""
 import argparse
 import hashlib
 import json
@@ -16,7 +16,7 @@ PROJECT = Path(__file__).resolve().parent
 sys.path.insert(0, str(PROJECT / "src"))
 from gold.collectors.fund_history import fetch, persist
 
-FUNDS = ("tala", "kahroba", "ganj", "gohar")
+FUNDS = ("ayar", "tala", "kahroba", "ganj", "gohar")
 
 
 def verify_identity(session, fund, cfg, archive):
@@ -65,6 +65,8 @@ def verify_identity(session, fund, cfg, archive):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fund", choices=FUNDS)
+    parser.add_argument("--full", action="store_true",
+                        help="Fetch complete history for initial load or older revisions")
     args = parser.parse_args()
     configs = json.loads((PROJECT / "config/funds.json").read_text(encoding="utf-8"))
     session = requests.Session()
@@ -75,12 +77,14 @@ def main():
     for fund in ([args.fund] if args.fund else FUNDS):
         cfg = configs[fund]
         raw = PROJECT / "data/raw/funds" / fund
+        canonical = raw / "nav_fipiran.csv"
+        full = args.full or not canonical.exists()
         verify_identity(session, fund, cfg, raw / "snapshots/fipiran_identity")
         payload, digest = fetch(
             session, "https://www.fipiran.com/services/chart/getfundchart",
             raw / "snapshots/fipiran_nav",
             {"regno": cfg["nav_reg_no"], "groupId": cfg["fipiran_group_id"],
-             "showAll": "true"},
+             "showAll": str(full).lower()},
         )
         if not isinstance(payload, list) or not payload:
             raise ValueError(f"{fund}: empty Fipiran NAV history")
@@ -99,8 +103,12 @@ def main():
         if (unique > 1).any().any():
             raise ValueError(f"{fund}: conflicting NAVs on one Fipiran date")
         frame = frame.drop_duplicates("date")
-        persist(frame, raw / "nav_fipiran.csv")
-        print(f"{fund}: {len(frame)} Fipiran NAV dates, "
+        if not full:
+            last_saved = pd.read_csv(canonical, usecols=["date"]).date.max()
+            if not frame.date.min() <= last_saved <= frame.date.max():
+                raise ValueError(f"{fund}: recent response does not cover the last saved date; run --full")
+        persist(frame, canonical)
+        print(f"{fund}: {len(frame)} {'full' if full else 'recent'} Fipiran NAV dates, "
               f"{frame.date.min()} through {frame.date.max()}")
 
 

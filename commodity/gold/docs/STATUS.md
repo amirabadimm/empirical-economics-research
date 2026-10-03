@@ -1,6 +1,89 @@
-# Gold status — 2026-09-28
+# Gold status — 2026-09-29
 
-## Active five-fund replacement checkpoint — 2026-09-28
+## Research checkpoint closed — 2026-10-03
+
+The five-fund daily price/NAV collection, two-year analysis, Ayar bubble rebuild,
+and source-reliability audit are complete at the September 29 data checkpoint.
+The small missing-NAV set and Gohar manager disagreements remain visible in the
+per-date validation table; they do not block closing this phase. Interpret the
+affected Gohar dates with that flag. Mesghal remains outside the active universe
+because no verified historical NAV series was found. Routine incremental refresh
+and periodic full-history revision checks are maintenance, not an unfinished
+research deliverable. This is a documentation closeout, not a new data refresh.
+
+## Incremental server collection — 2026-09-29
+
+Routine five-fund refresh now requests Fipiran `showAll=false` (342 Ayar and
+362–366 other recent NAV dates) and TSETMC `GetClosingPriceDailyList/{insCode}/30`
+(30 recent price rows per fund). Both modes were verified live, followed by
+the two-year build and archived reliability audits. Current build coverage is
+Ayar 448/465, Tala 465/465, Kahroba 464/465, Ganj 462/465, and Gohar 464/464.
+Initial loads and explicit `--full` request complete
+histories. The canonical files merge by date and publish atomically; recent
+responses must cover the last saved date. Full runs are needed periodically to find
+revisions older than the recent response window. TSETMC comparison fund-detail
+NAV remains a complete-history optional request via `--comparison-nav`.
+
+
+## Ayar Fipiran collection and rebuild - 2026-09-29
+
+Selected source: Fipiran, registration 11586 / group 0, `cancelNav` in IRR.
+Fresh collection: 2,997 unique NAV dates, 2018-06-20 through 2026-09-26.
+Two-year window ending 2026-09-28: 448/465 traded dates covered, 17 missing.
+Full-history bubble: 1,928 exact-date observations through 2026-09-26.
+Archived-source audits were replayed after the rebuild: all 337 two-year traded
+dates shared with saved TSETMC NAV agree exactly. The 111 additional covered
+trading dates are not all independently corroborated. Mofid was not queried.
+Previous TSETMC and Mofid files remain separate evidence. Other fund canonical
+sources and shared code were not changed; the gold notebook was not executed.
+This supersedes the earlier Ayar TSETMC selection and its 337/465, 1,536-row build.
+
+
+## Earlier reliability checkpoint (Ayar selection superseded) — 2026-09-29
+
+Live source identity/provenance checks passed for all five funds. Official
+manager histories corroborate Tala (730 shared calendar dates), Kahroba (729),
+and Ganj (724) with zero disagreements. Gohar disagrees with its manager on
+three dates; September 9 is material (+4.527521 percentage points in premium
+when using the manager value instead). Its September 27 unit count increases
+80-fold. See [the reliability report](NAV_RELIABILITY.md) and the per-date audit
+table; do not treat Gohar's complete coverage as fully validated NAV.
+
+Ayar TSETMC collection now succeeded: 2,284 source NAV dates through September 8.
+September 29 two-year build (as-of September 28): Ayar 337/465, Tala 464/464,
+Kahroba 463/464, Ganj 461/464, Gohar 463/463. Ayar alone had its canonical prices
+refreshed to September 28 during this audit. Its rebuilt full-history bubble has
+1,536 observations, July 22, 2018 through September 8, 2026. Every selected Ayar
+traded NAV agrees with the Fipiran audit history, but 128 two-year dates are missing.
+TSETMC response coverage varies across requests; this is an incomplete sample.
+
+The other four raw Fipiran histories were not changed. Their manager records are
+independent validation evidence, including values for the four missing dates.
+No source values were replaced, estimated, or filled. Mesghal remains unresolved.
+Shared code and dependent commodity datasets were not changed; the gold notebook
+was not executed. This checkpoint supersedes the earlier pending Ayar transition.
+
+## Mesghal live source validation — 2026-09-29
+
+Identity verified live: Fipiran `صندوق س.کالای آگاه (مثقال)`, registration 11899,
+group 2, InsCode 32469128621155736. Historical Fipiran response: HTTP 200, `[]`,
+zero observations. TSETMC's registration-based history was labelled نقرات and
+rejected, including the byte-identical `groupId=2` response. The verified current
+Mesghal ETF snapshot is not historical NAV. The listed manager site failed DNS.
+No canonical NAV or new Mesghal analysis was published. Source bodies and request
+metadata are archived; [full validation report](MESGHAL_NAV_VALIDATION.md).
+This supersedes the earlier unarchived investigation for these checks, without
+changing the active five-fund selection or the pending Ayar source transition.
+
+## Superseded pending Ayar transition — earlier on 2026-09-29
+
+Active Ayar code now selects TSETMC historical redemption NAV (registration 11586)
+from a separate `nav_tsetmc.csv`. The old Mofid `nav.csv` and snapshots are retained.
+Live TSETMC access failed here, so the new raw source has not been collected and
+the Ayar analysis has not been rebuilt. The Ayar 464/464 and 1,949-row counts below
+are superseded Mofid-based checkpoints, not verified TSETMC results.
+
+## Historical five-fund replacement checkpoint — 2026-09-28
 
 The Ayar bubble build no longer writes a separate
 `data/processed/analysis/ayar_unmatched_prices.csv`. That file was header-only

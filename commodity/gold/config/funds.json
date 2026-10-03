@@ -2,7 +2,10 @@
   "ayar": {
     "name": "Mofid Ayar Gold Fund",
     "ins_code": "34144395039913458",
-    "nav_provider": "mofid_raw",
+    "nav_provider": "tsetmc_fund_detail",
+    "nav_reg_no": 11586,
+    "fipiran_group_id": 0,
+    "nav_fund_name": "عیار مفید",
     "nav_fund_id": "12",
     "nav_basket_id": "12",
     "start_date": "2018-01-01",

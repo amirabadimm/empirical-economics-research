@@ -20,7 +20,7 @@ def main():
             & (prices.trade_volume > 0)
             & (prices.trade_count > 0)
         ]
-        path = ROOT / fund / "nav.csv"
+        path = ROOT / fund / "nav_fipiran.csv"
         nav = pd.read_csv(path) if path.exists() else pd.DataFrame(columns=["date"])
         nav = nav.loc[nav.date.between(args.start, args.end)]
         missing = set(traded.date) - set(nav.date)

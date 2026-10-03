@@ -33,9 +33,11 @@ def main():
         ].rename(columns={"source_snapshot": "price_source_snapshot"})
         nav_path = raw / "nav_fipiran.csv"
         nav_provider = "fipiran_historical"
-        if not nav_path.exists():
+        if fund == "ayar" and not nav_path.exists():
+            raise FileNotFoundError(f"Ayar Fipiran NAV not collected: {nav_path}")
+        if fund != "ayar" and not nav_path.exists():
             nav_path = raw / "nav.csv"
-            nav_provider = "mofid_raw" if fund == "ayar" else "tsetmc_historical"
+            nav_provider = "tsetmc_historical"
         if nav_path.exists():
             nav = pd.read_csv(nav_path, parse_dates=["date"])
             nav = nav.loc[nav.date.between(start, end),

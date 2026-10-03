@@ -1,5 +1,65 @@
 # Research Status
 
+## Gold phase closeout — 2026-10-03
+
+The September 29 five-fund gold collection, builds, and NAV reliability audit
+are accepted as the completed research checkpoint. Minor NAV gaps and Gohar
+manager disagreements remain documented per date; Mesghal remains excluded.
+Incremental collection and periodic full-history checks are maintenance.
+This closeout changes stage status only; it does not claim a newer data refresh.
+
+## Gold incremental collection — 2026-09-29
+
+The gold routine now requests the latest 30 TSETMC price rows and the Fipiran
+recent NAV window; initial loads and `--full` request complete history. All five
+live recent refreshes and dependent rebuild/audits passed. Current two-year
+NAV matches are Ayar 448/465, Tala 465/465, Kahroba 464/465, Ganj 462/465,
+and Gohar 464/464. See the gold workflow
+for the periodic full-history revision check. Other commodity pipelines were not
+changed.
+
+
+## Ayar Fipiran collection and rebuild - 2026-09-29
+
+Selected source: Fipiran, registration 11586 / group 0, `cancelNav` in IRR.
+Fresh collection: 2,997 unique NAV dates, 2018-06-20 through 2026-09-26.
+Two-year window ending 2026-09-28: 448/465 traded dates covered, 17 missing.
+Full-history bubble: 1,928 exact-date observations through 2026-09-26.
+Archived-source audits were replayed after the rebuild: all 337 two-year traded
+dates shared with saved TSETMC NAV agree exactly. The 111 additional covered
+trading dates are not all independently corroborated. Mofid was not queried.
+Previous TSETMC and Mofid files remain separate evidence. Other fund canonical
+sources and shared code were not changed; the gold notebook was not executed.
+This supersedes the earlier Ayar TSETMC selection and its 337/465, 1,536-row build.
+
+
+## Earlier gold reliability audit (Ayar build superseded) — 2026-09-29
+
+Tala, Kahroba, and Ganj's selected Fipiran histories match current manager records
+on every shared two-year date; Kahroba has one missing traded NAV and Ganj three.
+Gohar has three manager disagreements, two on trading dates; September 9 materially
+changes the premium. Its unit count also changes 80-fold on September 27.
+Ayar TSETMC collection/rebuild now succeeded with 337/465 two-year matches and
+1,536 full-history bubble rows through September 8. This incomplete source
+supersedes both the pending transition and the earlier Mofid-based Ayar counts.
+See [the report](../commodity/gold/docs/NAV_RELIABILITY.md). This was a gold-only
+validation; other project checkpoints remain unchanged.
+
+## Mesghal historical NAV recheck — 2026-09-29
+
+Gold's live Mesghal identity check passed for registration 11899 / group 2, but
+Fipiran history returned `[]`. TSETMC history was labelled نقرات and rejected;
+only current Mesghal NAV was obtained. No historical dataset or new analysis was
+published. Responses are archived and a reproducible investigation is documented
+in [the gold validation report](../commodity/gold/docs/MESGHAL_NAV_VALIDATION.md).
+
+## Superseded pending Gold Ayar transition — earlier on 2026-09-29
+
+Ayar now selects TSETMC historical NAV in code, but live collection failed in this
+environment. Existing Mofid-based Ayar processed outputs and 464/464 coverage
+are superseded until TSETMC collection and rebuild succeed. The September 28
+gold checkpoint below records the prior source selection.
+
 ## Current workspace review — 2026-09-28
 
 This review reconciles project documentation, refresh entry points, pipeline manifests,
