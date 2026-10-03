@@ -3,7 +3,8 @@
 Live and scheduled daily refresh code is in `db/run_server.py`, with versioned
 `db/gold-*.service` and `db/gold-*.timer` units. Live readings use last price/current
 redemption NAV and compare only with completed daily bubbles: rolling one year,
-rolling six months, and full history weighted with a 90-day half-life. They replace
+rolling six months, full history weighted with a 90-day half-life, and a rolling
+two-year reference bounded to 2024 onward. Polls run only 12:00-18:00 Tehran. They replace
 the previous cache rows and expire after 24 hours; they never become daily history.
 See [database deployment instructions](../db/README.md).
 
@@ -12,7 +13,8 @@ The database loader reads canonical CSVs and writes only to PostgreSQL; it never
 edits raw files. The first server deployment succeeded on 2026-10-03 at
 `/opt/empirical-economics-research`, using the existing Docker PostgreSQL database.
 Pull code updates through Git, run the documented collectors when a market refresh
-is needed, then load PostgreSQL. No automatic schedule has been installed.
+is needed, then load PostgreSQL. The daily timer runs at 23:30 Tehran and weekly
+full reconciliation runs Sunday at 03:30 Tehran.
 
 The five-fund research build is closed at the September 29 data checkpoint.
 Refresh commands below remain available for maintenance; source gaps and Gohar

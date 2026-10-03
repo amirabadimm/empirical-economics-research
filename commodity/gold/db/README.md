@@ -11,7 +11,7 @@ view and the next run purges the expired cache. Live value payloads are not logg
 These disposable responses are explicitly authorized transient inputs, distinct
 from the immutable daily-source archives.
 
-Three daily-only references are computed for each moment's bubble:
+Four daily-only references are computed for each moment's bubble:
 
 - Rolling preceding twelve calendar months: equal weights, `year_percentile`
   and `year_decile`.
@@ -20,6 +20,8 @@ Three daily-only references are computed for each moment's bubble:
   remain preserved.
 - Full completed daily history with a 90-calendar-day half-life:
   `weighted_percentile` and `weighted_decile`.
+- Rolling preceding two calendar years, never before 2024-01-01: equal weights,
+  `two_year_percentile` and `two_year_decile`.
 
 References exclude today's daily record and every intraday reading. The moment's
 bubble is compared with daily bubbles using `<=` ties; it is not itself added to
@@ -37,7 +39,8 @@ Retrieval failures replace old readings with `fetch_error`; they never appear
 as a successful new quote. Outside trading hours this status is expected.
 
 The server adapter `run_server.py` uses its existing Docker environment settings
-in memory. Versioned systemd units run the live job every five minutes, the
+in memory. Versioned systemd units run the live job every five minutes from
+12:00 through 18:00 Asia/Tehran (inclusive final 18:00 reading), the
 canonical daily collectors and DB load at 23:30 Asia/Tehran, and a full-history
 revision reconciliation on Sundays at 03:30 Asia/Tehran. Installation is:
 
@@ -50,6 +53,11 @@ sudo systemctl enable --now gold-live.timer gold-daily.timer gold-full.timer
 
 Inspect `systemctl list-timers 'gold-*'`, `journalctl -u gold-live.service`,
 and query `SELECT * FROM research.current_gold_bubbles ORDER BY instrument_key`.
+The view's `availability` marks closed market hours and missed-refresh staleness
+dynamically; a prior reading is never labelled as a new quote. The live job also
+checks the time, preventing off-hours requests after a persistent timer catch-up.
+No weekday/holiday calendar is assumed; stale source dates suppress live bubbles
+on non-trading days. Monitoring values are not logged as intraday history.
 Daily jobs refresh server canonical CSVs and PostgreSQL. Existing local and
 presentation CSVs are not implicitly rebuilt or transferred back to the workstation.
 
@@ -128,6 +136,7 @@ contains 8,521 prices, 18,032 Fipiran NAV rows, and 8,202 matched bubble rows.
 All 265 transferred source/evidence files matched the local SHA-256 manifest.
 A repeat load reproduced the same analytical values. These are the saved
 September 29 histories; deployment did not collect newer market data.
-No automatic refresh schedule is deployed. Server connection settings were
+This initial deployment checkpoint is superseded by the scheduled monitoring
+checkpoint in `docs/STATUS.md`. Server connection settings were
 constructed in memory from its existing environment configuration; no credentials
 were added to the repository.

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import calendar
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 import json
 import math
 import os
@@ -16,6 +16,11 @@ from load_gold import FUNDS, METHOD
 
 PROJECT = Path(__file__).resolve().parents[1]
 TEHRAN = ZoneInfo("Asia/Tehran")
+
+
+def is_market_time(now):
+    clock = now.astimezone(TEHRAN).time().replace(tzinfo=None)
+    return time(12) <= clock < time(18, 1)
 
 
 def source_time(day, clock):
@@ -64,6 +69,7 @@ def reference_ranks(history, bubble, cutoff):
     history = [(day, float(value)) for day, value in history if day < cutoff]
     year = [v for d, v in history if d >= months_before(cutoff, 12)]
     six = [v for d, v in history if d >= months_before(cutoff, 6)]
+    two_year = [v for d, v in history if d >= max(months_before(cutoff, 24), date(2024, 1, 1))]
     yp, yd = rank_daily(year, bubble)
     sp, sd = rank_daily(six, bubble)
     weights = [2 ** (-(cutoff - d).days / 90) for d, _ in history]
@@ -71,7 +77,8 @@ def reference_ranks(history, bubble, cutoff):
     wp = 100 * sum(w for w, (_, v) in zip(weights, history) if v <= bubble) / total if total and bubble is not None else None
     wd = max(1, min(10, math.ceil(round(wp, 8) / 10))) if wp is not None else None
     effective = total ** 2 / sum(w * w for w in weights) if total else None
-    return yp, yd, len(year), sp, sd, len(six), wp, wd, len(history), effective
+    tp, td = rank_daily(two_year, bubble)
+    return yp, yd, len(year), sp, sd, len(six), wp, wd, len(history), effective, tp, td, len(two_year)
 
 
 def fetch_fund(item):
@@ -102,6 +109,9 @@ def main():
                 print("Live refresh already running")
                 return
             cur.execute("DELETE FROM research.gold_live_state WHERE expires_at <= now()")
+            if not is_market_time(datetime.now(timezone.utc)):
+                print("Outside 12:00-18:00 Tehran polling window; no quote requests")
+                return
             with ThreadPoolExecutor(max_workers=5) as pool:
                 readings = list(pool.map(fetch_fund, [(f, cfg[f]) for f in FUNDS]))
             for fund, now, reading, price, nav, error in readings:
@@ -121,9 +131,10 @@ def main():
                     (instrument_id,retrieved_at,expires_at,price_source_at,nav_source_at,
                      last_price_irr,redemption_nav_irr,bubble_pct,year_percentile,year_decile,year_count,
                      six_month_percentile,six_month_decile,six_month_count,weighted_percentile,weighted_decile,
-                     full_history_count,weighted_effective_count,reference_last_date,
+                     full_history_count,weighted_effective_count,two_year_percentile,two_year_decile,
+                     two_year_count,reference_last_date,
                      status,detail,price_payload,nav_payload)
-                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
                     ON CONFLICT (instrument_id) DO UPDATE SET
                      retrieved_at=EXCLUDED.retrieved_at,expires_at=EXCLUDED.expires_at,
                      price_source_at=EXCLUDED.price_source_at,nav_source_at=EXCLUDED.nav_source_at,
@@ -134,6 +145,8 @@ def main():
                      six_month_count=EXCLUDED.six_month_count,weighted_percentile=EXCLUDED.weighted_percentile,
                      weighted_decile=EXCLUDED.weighted_decile,full_history_count=EXCLUDED.full_history_count,
                      weighted_effective_count=EXCLUDED.weighted_effective_count,
+                     two_year_percentile=EXCLUDED.two_year_percentile,two_year_decile=EXCLUDED.two_year_decile,
+                     two_year_count=EXCLUDED.two_year_count,
                      reference_last_date=EXCLUDED.reference_last_date,status=EXCLUDED.status,
                      detail=EXCLUDED.detail,price_payload=EXCLUDED.price_payload,nav_payload=EXCLUDED.nav_payload
                     """, (instrument_id, now, now + timedelta(hours=24), r["price_at"], r["nav_at"],

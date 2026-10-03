@@ -1,7 +1,8 @@
 # Empirical Economics Research
 
 Gold's server monitor now has disposable five-minute quote/NAV readings with
-rolling one-year, rolling six-month, and 90-day-half-life historical daily ranks.
+rolling one-year, rolling six-month, rolling two-year (2024 onward), and
+90-day-half-life historical daily ranks, polling only 12:00-18:00 Tehran.
 See [the database workflow](commodity/gold/db/README.md) for schedule and retention.
 
 Gold now has a [PostgreSQL schema and loader](commodity/gold/db/README.md) for

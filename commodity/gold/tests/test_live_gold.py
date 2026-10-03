@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "db"))
-from live_gold import evaluate, months_before, reference_ranks
+from live_gold import evaluate, is_market_time, months_before, reference_ranks
 
 
 def test_daily_windows_exclude_intraday_and_weight_recent_days():
@@ -15,6 +15,8 @@ def test_daily_windows_exclude_intraday_and_weight_recent_days():
     assert ranks[:6] == (50, 5, 2, 0, 1, 1)
     assert ranks[8] == 3
     assert 0 < ranks[6] < 50
+    assert ranks[10] == pytest.approx(200 / 3)
+    assert ranks[11:] == (7, 3)
     assert months_before(date(2024, 8, 31), 6) == date(2024, 2, 29)
 
 
@@ -26,3 +28,10 @@ def test_latest_price_nav_freshness_and_identity():
     assert evaluate(price, nav, "123", now + timedelta(hours=1))["bubble"] is None
     with pytest.raises(ValueError, match="identity"):
         evaluate(price, nav, "999", now)
+
+
+def test_market_window_in_tehran():
+    assert not is_market_time(datetime(2026, 10, 3, 8, 29, tzinfo=timezone.utc))
+    assert is_market_time(datetime(2026, 10, 3, 8, 30, tzinfo=timezone.utc))
+    assert is_market_time(datetime(2026, 10, 3, 14, 30, tzinfo=timezone.utc))
+    assert not is_market_time(datetime(2026, 10, 3, 14, 31, tzinfo=timezone.utc))

@@ -2,9 +2,9 @@
 
 ## Gold monitoring implementation — 2026-10-03
 
-Five-minute disposable price/NAV cache and three daily-history ranks are prepared
+Five-minute disposable price/NAV cache and four daily-history ranks are prepared
 with daily and weekly source-refresh units. Intraday readings never enter daily
-history. First server execution is being verified; existing daily coverage remains
+history. Live polls run only 12:00-18:00 Tehran. First server execution is being verified; existing daily coverage remains
 the checkpoint recorded below until collection succeeds.
 
 ## Gold database deployed — 2026-10-03
