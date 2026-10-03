@@ -1,5 +1,9 @@
 # Gold research — daily ETF histories and Ayar NAV premium
 
+The five-fund [PostgreSQL schema and loader](db/README.md) are prepared for a
+server database. They store daily prices, Fipiran redemption NAV, exact-date
+bubbles, expanding historical percentiles and deciles. Deployment is pending.
+
 Research checkpoint closed 2026-10-03 using the September 29 collected data.
 The five-fund panels and Ayar bubble are available. Residual NAV gaps and Gohar
 disagreements are retained as quality flags for interpretation, not blockers.

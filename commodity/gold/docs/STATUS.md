@@ -1,5 +1,13 @@
 # Gold status — 2026-09-29
 
+## PostgreSQL integration in progress — 2026-10-03
+
+Schema and five-fund loader are prepared locally for daily prices, Fipiran NAV,
+exact-date bubble history, expanding percentile, and latest historical decile.
+Local input validation succeeded; server installation, source transfer, schema
+application and live database load remain pending. This does not change the
+September 29 source and derived-output coverage below.
+
 ## Research checkpoint closed — 2026-10-03
 
 The five-fund daily price/NAV collection, two-year analysis, Ayar bubble rebuild,

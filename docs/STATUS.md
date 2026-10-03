@@ -1,5 +1,12 @@
 # Research Status
 
+## Gold database integration in progress — 2026-10-03
+
+The five-fund PostgreSQL schema and transactional loader are being prepared.
+They have not yet been deployed to `85.198.48.177`, and no database coverage
+is claimed. The September 29 gold data checkpoint remains the latest verified
+source and analysis coverage.
+
 ## Gold phase closeout — 2026-10-03
 
 The September 29 five-fund gold collection, builds, and NAV reliability audit

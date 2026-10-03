@@ -1,5 +1,9 @@
 # Workspace Workflow
 
+Gold database deployment and refresh are documented in
+[the project database workflow](../commodity/gold/db/README.md). Git transfers
+code and schema; raw CSVs and immutable snapshots require separate secure transfer.
+
 Gold's five-fund research phase was closed on 2026-10-03 against the September 29
 data checkpoint. Its commands below remain the maintenance and audit procedure.
 

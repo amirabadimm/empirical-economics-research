@@ -25,6 +25,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+database = ["psycopg[binary]>=3.2,<4"]
 parquet = ["pyarrow"]
 notebooks = [
   "ipython",

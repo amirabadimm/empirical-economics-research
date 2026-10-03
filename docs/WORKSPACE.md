@@ -1,5 +1,9 @@
 # Workspace Architecture
 
+The planned server PostgreSQL store uses `research.instruments` as a shared
+registry and distinct gold price, provider NAV, and method-versioned bubble
+tables. Its code and schema live in `commodity/gold/db`; deployment is pending.
+
 Gold's five-fund research phase is closed at the September 29 data checkpoint;
 the documented incremental collectors and quality audits remain available for
 maintenance. The 2026-10-03 closeout did not refresh source data.

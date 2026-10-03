@@ -1,5 +1,9 @@
 # Gold workflow
 
+For database setup and refresh after collection, see [the PostgreSQL workflow](../db/README.md).
+The database loader reads canonical CSVs and writes only to PostgreSQL; it never
+edits raw files. The first server deployment has not yet been run.
+
 The five-fund research build is closed at the September 29 data checkpoint.
 Refresh commands below remain available for maintenance; source gaps and Gohar
 disagreements are recorded in `NAV_RELIABILITY.md` and its per-date audit output.
