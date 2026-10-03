@@ -41,3 +41,22 @@ SELECT i.instrument_key, i.display_name, s.*,
 FROM research.gold_live_state s
 JOIN research.instruments i USING (instrument_id)
 WHERE s.expires_at > now();
+
+-- Query these daily-only weighted samples to plot any of the four distributions.
+CREATE OR REPLACE VIEW research.gold_daily_reference AS
+SELECT i.instrument_key, r.reference_method, b.observation_date, b.bubble_pct,
+    CASE WHEN r.weighted THEN power(2::numeric,
+         -((now() AT TIME ZONE 'Asia/Tehran')::date - b.observation_date) / 90.0)
+         ELSE 1::numeric END AS observation_weight
+FROM research.bubble_observations b
+JOIN research.instruments i USING (instrument_id)
+CROSS JOIN LATERAL (VALUES
+    ('one_year', ((now() AT TIME ZONE 'Asia/Tehran')::date - interval '1 year')::date, false),
+    ('six_month', ((now() AT TIME ZONE 'Asia/Tehran')::date - interval '6 months')::date, false),
+    ('two_year', greatest(date '2024-01-01', ((now() AT TIME ZONE 'Asia/Tehran')::date - interval '2 years')::date), false),
+    ('weighted_full', NULL::date, true)
+) r(reference_method, start_date, weighted)
+WHERE i.asset_class = 'gold_etf'
+  AND b.method_key = 'exact_date_close_fipiran_redemption_v1'
+  AND b.observation_date < (now() AT TIME ZONE 'Asia/Tehran')::date
+  AND (r.start_date IS NULL OR b.observation_date >= r.start_date);

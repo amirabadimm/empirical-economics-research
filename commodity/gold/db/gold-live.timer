@@ -5,6 +5,7 @@ Description=Refresh disposable gold readings every five minutes
 OnCalendar=*-*-* 12..17:00/5:00 Asia/Tehran
 OnCalendar=*-*-* 18:00:00 Asia/Tehran
 Persistent=true
+AccuracySec=1s
 Unit=gold-live.service
 
 [Install]

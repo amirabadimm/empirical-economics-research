@@ -53,6 +53,10 @@ sudo systemctl enable --now gold-live.timer gold-daily.timer gold-full.timer
 
 Inspect `systemctl list-timers 'gold-*'`, `journalctl -u gold-live.service`,
 and query `SELECT * FROM research.current_gold_bubbles ORDER BY instrument_key`.
+`research.gold_daily_reference` exposes the four reference distributions as dated
+daily bubble samples with `observation_weight`; use it to plot or inspect the
+histograms. The database has three views: latest daily bubbles, current disposable
+bubbles, and daily reference distributions.
 The view's `availability` marks closed market hours and missed-refresh staleness
 dynamically; a prior reading is never labelled as a new quote. The live job also
 checks the time, preventing off-hours requests after a persistent timer catch-up.
@@ -60,6 +64,11 @@ No weekday/holiday calendar is assumed; stale source dates suppress live bubbles
 on non-trading days. Monitoring values are not logged as intraday history.
 Daily jobs refresh server canonical CSVs and PostgreSQL. Existing local and
 presentation CSVs are not implicitly rebuilt or transferred back to the workstation.
+All three timers were enabled and the live and daily jobs verified on 2026-10-03.
+The first daily refresh produced 8,531 prices, 18,051 NAV rows, and 8,213 bubbles.
+Source price dates end September 30; selected NAV ends September 29 for Ayar and
+October 2 for the other four. Exact-date bubbles end September 29 for Ayar and
+September 30 for others. This server coverage supersedes the initial-load counts below.
 
 This store publishes the five selected ETFs' daily TSETMC prices, Fipiran
 redemption NAV, exact-date bubble observations, historical percentiles, and
@@ -131,8 +140,8 @@ WHERE i.instrument_key = 'ayar'
 ORDER BY b.observation_date;
 ```
 
-The latest query is `SELECT * FROM research.latest_gold_bubbles`. The live database
-contains 8,521 prices, 18,032 Fipiran NAV rows, and 8,202 matched bubble rows.
+The latest daily query is `SELECT * FROM research.latest_gold_bubbles`. The initial
+deployment contained 8,521 prices, 18,032 Fipiran NAV rows, and 8,202 matched bubble rows.
 All 265 transferred source/evidence files matched the local SHA-256 manifest.
 A repeat load reproduced the same analytical values. These are the saved
 September 29 histories; deployment did not collect newer market data.

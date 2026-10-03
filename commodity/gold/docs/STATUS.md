@@ -1,13 +1,22 @@
 # Gold status — 2026-09-29
 
-## Five-minute monitor implementation — 2026-10-03
+## Five-minute monitor deployed and daily data refreshed — 2026-10-03
 
 Disposable current-price/current-NAV cache and four daily-only reference ranks
 are implemented, with five-minute polling only 12:00-18:00 Tehran, daily collection at 23:30 Tehran,
 and weekly full-history reconciliation units. Latest cache replaces prior readings
-and expires after 24 hours. Live deployment
-and the first scheduled collector run are being verified; this section does not
-claim newer daily data coverage.
+and expires after 24 hours. All three timers are enabled. Seven focused gold tests
+passed locally; live readings and all four deciles returned for all five ETFs.
+Timer verification confirmed next-day noon polling after close. Expiry filtering
+was checked inside a rolled-back transaction; cache contains only five rows and
+live polling did not add to permanent daily bubble history.
+
+The first daily collector/database job succeeded. Server coverage is 8,531 prices,
+18,051 selected Fipiran NAV rows, and 8,213 bubbles. Price history ends September 30
+for all five; Ayar NAV and bubble end September 29, while other NAV histories end
+October 2 and matched bubbles end September 30. This supersedes the initial server
+load below. Local workstation sources, two-year presentation CSVs, and notebooks
+were not refreshed; their September 29 checkpoint remains separate.
 
 ## PostgreSQL integration deployed — 2026-10-03
 

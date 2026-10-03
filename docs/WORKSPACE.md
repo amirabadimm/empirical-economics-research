@@ -4,6 +4,9 @@ Gold's `research.gold_live_state` is a disposable latest-reading cache exposed
 through `research.current_gold_bubbles`, separate from permanent daily source and
 bubble tables. Its ranks use completed daily data only; intraday readings are
 replaced on each poll and expire after 24 hours.
+`research.gold_daily_reference` exposes the four daily distribution samples and
+weights. There are three gold views: latest daily, current disposable, and daily
+reference. Enabled systemd timers keep server histories and the live cache current.
 
 The deployed server PostgreSQL store uses `research.instruments` as a shared
 registry and distinct gold price, provider NAV, and method-versioned bubble

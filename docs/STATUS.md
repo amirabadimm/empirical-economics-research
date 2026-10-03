@@ -1,11 +1,16 @@
 # Research Status
 
-## Gold monitoring implementation — 2026-10-03
+## Gold scheduled monitoring deployed — 2026-10-03
 
-Five-minute disposable price/NAV cache and four daily-history ranks are prepared
-with daily and weekly source-refresh units. Intraday readings never enter daily
-history. Live polls run only 12:00-18:00 Tehran. First server execution is being verified; existing daily coverage remains
-the checkpoint recorded below until collection succeeds.
+Five-minute disposable price/NAV cache and four daily-history ranks are deployed
+with enabled daily and weekly source-refresh timers. Live polls run only
+12:00-18:00 Tehran and never enter daily history. Fresh readings and four deciles
+returned for all five funds; expiry filtering and off-hours scheduling were checked.
+The first server daily refresh succeeded: 8,531 prices through September 30,
+18,051 selected NAV rows through September 29 for Ayar / October 2 for others,
+and 8,213 bubbles through September 29 for Ayar / September 30 for others.
+This supersedes the initial server counts below. Local workstation sources,
+processed presentations and notebooks retain their prior checkpoints.
 
 ## Gold database deployed — 2026-10-03
 

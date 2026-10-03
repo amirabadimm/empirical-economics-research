@@ -4,8 +4,9 @@ The five-fund [PostgreSQL schema and loader](db/README.md) are prepared for a
 server database. They store daily prices, Fipiran redemption NAV, exact-date
 bubbles, expanding historical percentiles and deciles. Deployed on 2026-10-03
 to the server's existing PostgreSQL 17 `investment` database; 8,202 bubbles
-loaded from the saved September 29 histories. The five-minute disposable monitor
-and daily refresh units are prepared; the database workflow describes the four
+loaded from the saved September 29 histories at initial deployment. The first
+October 3 server daily refresh increased this to 8,213 bubbles. The five-minute
+disposable monitor and daily refresh units are enabled; the workflow describes the four
 daily reference distributions and cache retention.
 Live polling is restricted to 12:00-18:00 Tehran; each moment has one-year,
 six-month, two-year (2024 onward), and 90-day-half-life full-history deciles.

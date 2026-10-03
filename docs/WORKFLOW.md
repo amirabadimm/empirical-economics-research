@@ -3,6 +3,8 @@
 Gold's five-minute and daily/weekly systemd refresh units are versioned under
 `commodity/gold/db`. Live readings replace an expiring cache; permanent source
 collection and PostgreSQL daily loading remain separate scheduled jobs.
+All three timers are enabled: live every five minutes only 12:00-18:00 Tehran,
+daily source/DB refresh at 23:30 Tehran, weekly full reconciliation Sunday 03:30.
 
 Gold database deployment and refresh are documented in
 [the project database workflow](../commodity/gold/db/README.md). Git transfers
