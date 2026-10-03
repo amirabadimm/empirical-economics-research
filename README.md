@@ -7,8 +7,9 @@ See [the database workflow](commodity/gold/db/README.md) for schedule and retent
 
 Gold now has a [PostgreSQL schema and loader](commodity/gold/db/README.md) for
 the five ETFs' daily prices, redemption NAV, bubble history and deciles.
-Deployed on 2026-10-03 with 8,202 matched bubbles from the saved September 29
-histories. Git carries code and documentation; raw evidence was transferred over SSH.
+Initial deployment on 2026-10-03 loaded 8,202 bubbles from saved September 29
+histories; the first server daily refresh increased coverage to 8,213 bubbles.
+Git carries code and documentation; raw evidence was transferred over SSH.
 
 Gold's five-fund NAV research phase was closed on 2026-10-03 at the September 29
 data checkpoint. Small NAV gaps and disputed Gohar dates remain flagged in the

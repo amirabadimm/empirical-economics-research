@@ -9,7 +9,8 @@ and expires after 24 hours. All three timers are enabled. Seven focused gold tes
 passed locally; live readings and all four deciles returned for all five ETFs.
 Timer verification confirmed next-day noon polling after close. Expiry filtering
 was checked inside a rolled-back transaction; cache contains only five rows and
-live polling did not add to permanent daily bubble history.
+live polling did not add to permanent daily bubble history. The daily reference
+view reproduced all 20 cached percentiles (four per fund) within 0.000001 points.
 
 The first daily collector/database job succeeded. Server coverage is 8,531 prices,
 18,051 selected Fipiran NAV rows, and 8,213 bubbles. Price history ends September 30
@@ -18,7 +19,7 @@ October 2 and matched bubbles end September 30. This supersedes the initial serv
 load below. Local workstation sources, two-year presentation CSVs, and notebooks
 were not refreshed; their September 29 checkpoint remains separate.
 
-## PostgreSQL integration deployed — 2026-10-03
+## Initial PostgreSQL integration (superseded by scheduled refresh above) — 2026-10-03
 
 Schema and five-fund loader are prepared locally for daily prices, Fipiran NAV,
 exact-date bubble history, expanding percentile, and latest historical decile.
