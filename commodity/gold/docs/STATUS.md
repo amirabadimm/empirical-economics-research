@@ -1,12 +1,15 @@
 # Gold status — 2026-09-29
 
-## PostgreSQL integration in progress — 2026-10-03
+## PostgreSQL integration deployed — 2026-10-03
 
 Schema and five-fund loader are prepared locally for daily prices, Fipiran NAV,
 exact-date bubble history, expanding percentile, and latest historical decile.
-Local input validation succeeded; server installation, source transfer, schema
-application and live database load remain pending. This does not change the
-September 29 source and derived-output coverage below.
+Deployment succeeded on Ubuntu 24.04 at `/opt/empirical-economics-research`, using
+the existing PostgreSQL 17 Docker container and `investment` database. All 265
+source/evidence files matched the local SHA-256 manifest. The database has 8,521
+prices, 18,032 NAV rows, and 8,202 bubbles; repeat loading reproduced identical
+analytical values. Latest-decile query returned five funds. No new market refresh
+or scheduler was run. The September 29 source checkpoint remains unchanged.
 
 ## Research checkpoint closed — 2026-10-03
 

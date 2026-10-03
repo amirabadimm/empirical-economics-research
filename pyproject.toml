@@ -25,7 +25,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-database = ["psycopg[binary]>=3.2,<4"]
+database = ["psycopg[binary]>=3.2,<4", "matplotlib", "plotly"]
 parquet = ["pyarrow"]
 notebooks = [
   "ipython",

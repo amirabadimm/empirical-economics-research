@@ -28,9 +28,12 @@ calculation can use another `method_key` without replacing this series.
 
 ## Server setup
 
-The target server is `85.198.48.177`. Its repository path and PostgreSQL state
-still need inspection. After SSH access is available, clone or pull the repo and
-install Python 3.11+ and PostgreSQL. Create a database and a least-privilege
+The target server is `85.198.48.177`, Ubuntu 24.04. The repository is at
+`/opt/empirical-economics-research` with a host `.venv`. The existing Docker
+container `investment_postgres` runs PostgreSQL 17 with the `investment` database
+and a persistent volume. The first five-fund load succeeded on 2026-10-03.
+For a new deployment, clone or pull the repo and install Python 3.11+ and PostgreSQL.
+Create a database and a least-privilege
 application role using server-side administration. Keep the connection URL in the
 server environment as `GOLD_DATABASE_URL`; never commit it or put it in command
 arguments. Then, from the repository root:
@@ -67,6 +70,11 @@ WHERE i.instrument_key = 'ayar'
 ORDER BY b.observation_date;
 ```
 
-The latest query is `SELECT * FROM research.latest_gold_bubbles`. The database
-schema has not yet been applied to the server; the first live load and validation
-remain deployment tasks.
+The latest query is `SELECT * FROM research.latest_gold_bubbles`. The live database
+contains 8,521 prices, 18,032 Fipiran NAV rows, and 8,202 matched bubble rows.
+All 265 transferred source/evidence files matched the local SHA-256 manifest.
+A repeat load reproduced the same analytical values. These are the saved
+September 29 histories; deployment did not collect newer market data.
+No automatic refresh schedule is deployed. Server connection settings were
+constructed in memory from its existing environment configuration; no credentials
+were added to the repository.

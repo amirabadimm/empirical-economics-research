@@ -2,7 +2,9 @@
 
 The five-fund [PostgreSQL schema and loader](db/README.md) are prepared for a
 server database. They store daily prices, Fipiran redemption NAV, exact-date
-bubbles, expanding historical percentiles and deciles. Deployment is pending.
+bubbles, expanding historical percentiles and deciles. Deployed on 2026-10-03
+to the server's existing PostgreSQL 17 `investment` database; 8,202 bubbles
+loaded from the saved September 29 histories. No automatic refresh is scheduled.
 
 Research checkpoint closed 2026-10-03 using the September 29 collected data.
 The five-fund panels and Ayar bubble are available. Residual NAV gaps and Gohar

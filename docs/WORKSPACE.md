@@ -1,8 +1,10 @@
 # Workspace Architecture
 
-The planned server PostgreSQL store uses `research.instruments` as a shared
+The deployed server PostgreSQL store uses `research.instruments` as a shared
 registry and distinct gold price, provider NAV, and method-versioned bubble
-tables. Its code and schema live in `commodity/gold/db`; deployment is pending.
+tables. Its code and schema live in `commodity/gold/db`; the server checkout is
+`/opt/empirical-economics-research`. PostgreSQL 17 runs in `investment_postgres`
+with a persistent Docker volume and the existing `investment` database.
 
 Gold's five-fund research phase is closed at the September 29 data checkpoint;
 the documented incremental collectors and quality audits remain available for

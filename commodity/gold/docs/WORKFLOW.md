@@ -2,7 +2,10 @@
 
 For database setup and refresh after collection, see [the PostgreSQL workflow](../db/README.md).
 The database loader reads canonical CSVs and writes only to PostgreSQL; it never
-edits raw files. The first server deployment has not yet been run.
+edits raw files. The first server deployment succeeded on 2026-10-03 at
+`/opt/empirical-economics-research`, using the existing Docker PostgreSQL database.
+Pull code updates through Git, run the documented collectors when a market refresh
+is needed, then load PostgreSQL. No automatic schedule has been installed.
 
 The five-fund research build is closed at the September 29 data checkpoint.
 Refresh commands below remain available for maintenance; source gaps and Gohar
