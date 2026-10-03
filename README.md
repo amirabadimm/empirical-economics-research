@@ -1,5 +1,9 @@
 # Empirical Economics Research
 
+Gold's server monitor now has disposable five-minute quote/NAV readings with
+rolling one-year, rolling six-month, and 90-day-half-life historical daily ranks.
+See [the database workflow](commodity/gold/db/README.md) for schedule and retention.
+
 Gold now has a [PostgreSQL schema and loader](commodity/gold/db/README.md) for
 the five ETFs' daily prices, redemption NAV, bubble history and deciles.
 Deployed on 2026-10-03 with 8,202 matched bubbles from the saved September 29

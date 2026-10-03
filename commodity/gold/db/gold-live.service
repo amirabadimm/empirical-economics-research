@@ -1,0 +1,11 @@
+[Unit]
+Description=Disposable five-fund gold price NAV monitor
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/empirical-economics-research
+ExecStart=/opt/empirical-economics-research/.venv/bin/python commodity/gold/db/run_server.py live
+TimeoutStartSec=120
+Environment=PYTHONDONTWRITEBYTECODE=1

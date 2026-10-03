@@ -1,5 +1,9 @@
 # Workspace Workflow
 
+Gold's five-minute and daily/weekly systemd refresh units are versioned under
+`commodity/gold/db`. Live readings replace an expiring cache; permanent source
+collection and PostgreSQL daily loading remain separate scheduled jobs.
+
 Gold database deployment and refresh are documented in
 [the project database workflow](../commodity/gold/db/README.md). Git transfers
 code and schema; raw CSVs and immutable snapshots require separate secure transfer.

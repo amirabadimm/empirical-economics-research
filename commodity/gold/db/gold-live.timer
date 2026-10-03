@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh disposable gold readings every five minutes
+
+[Timer]
+OnCalendar=*-*-* *:00/5:00
+Persistent=true
+Unit=gold-live.service
+
+[Install]
+WantedBy=timers.target

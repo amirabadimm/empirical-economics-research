@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly full-history gold revision check
+
+[Timer]
+OnCalendar=Sun *-*-* 03:30:00 Asia/Tehran
+Persistent=true
+Unit=gold-full.service
+
+[Install]
+WantedBy=timers.target

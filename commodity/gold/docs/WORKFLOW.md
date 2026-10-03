@@ -1,5 +1,12 @@
 # Gold workflow
 
+Live and scheduled daily refresh code is in `db/run_server.py`, with versioned
+`db/gold-*.service` and `db/gold-*.timer` units. Live readings use last price/current
+redemption NAV and compare only with completed daily bubbles: rolling one year,
+rolling six months, and full history weighted with a 90-day half-life. They replace
+the previous cache rows and expire after 24 hours; they never become daily history.
+See [database deployment instructions](../db/README.md).
+
 For database setup and refresh after collection, see [the PostgreSQL workflow](../db/README.md).
 The database loader reads canonical CSVs and writes only to PostgreSQL; it never
 edits raw files. The first server deployment succeeded on 2026-10-03 at

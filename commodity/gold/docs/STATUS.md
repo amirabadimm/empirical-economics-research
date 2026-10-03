@@ -1,5 +1,14 @@
 # Gold status — 2026-09-29
 
+## Five-minute monitor implementation — 2026-10-03
+
+Disposable current-price/current-NAV cache and three daily-only reference ranks
+are implemented, with five-minute polling, daily collection at 23:30 Tehran,
+and weekly full-history reconciliation units. Latest cache replaces prior readings
+and expires after 24 hours. Six focused gold tests passed locally. Live deployment
+and the first scheduled collector run are being verified; this section does not
+claim newer daily data coverage.
+
 ## PostgreSQL integration deployed — 2026-10-03
 
 Schema and five-fund loader are prepared locally for daily prices, Fipiran NAV,

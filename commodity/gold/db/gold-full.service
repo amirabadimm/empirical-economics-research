@@ -1,0 +1,11 @@
+[Unit]
+Description=Weekly reconciliation of older gold source revisions
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/empirical-economics-research
+ExecStart=/usr/bin/flock -n /run/lock/gold-daily.lock /opt/empirical-economics-research/.venv/bin/python commodity/gold/db/run_server.py full
+TimeoutStartSec=1800
+Environment=PYTHONDONTWRITEBYTECODE=1

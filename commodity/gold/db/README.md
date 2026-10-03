@@ -1,5 +1,58 @@
 # Gold ETF PostgreSQL store
 
+## Five-minute disposable monitor
+
+`live_schema.sql` adds one replaceable cache row per ETF, exposed by
+`research.current_gold_bubbles`. `live_gold.py` uses TSETMC's latest traded
+price (`pDrCotVal`) and current redemption NAV (`pRedTran`). It does not append
+intraday observations to raw archives or daily history. The next poll replaces
+the previous payload; after 24 hours without replacement it disappears from the
+view and the next run purges the expired cache. Live value payloads are not logged.
+These disposable responses are explicitly authorized transient inputs, distinct
+from the immutable daily-source archives.
+
+Three daily-only references are computed for each moment's bubble:
+
+- Rolling preceding twelve calendar months: equal weights, `year_percentile`
+  and `year_decile`.
+- Rolling preceding six calendar months: equal weights, `six_month_percentile`
+  and `six_month_decile`. The window advances by date; underlying daily records
+  remain preserved.
+- Full completed daily history with a 90-calendar-day half-life:
+  `weighted_percentile` and `weighted_decile`.
+
+References exclude today's daily record and every intraday reading. The moment's
+bubble is compared with daily bubbles using `<=` ties; it is not itself added to
+the distribution. Decile 1 also includes a moment below the historical minimum.
+Daily reference uses unadjusted closing price/Fipiran redemption NAV; live uses
+last traded price/TSETMC current redemption NAV. The two measures can differ
+because of timing and provider basis. `reference_last_date` and sample counts
+show the actual history available, with missing daily NAV left unfilled.
+
+Source times are interpreted in Asia/Tehran and retained separately. A current
+bubble requires same-day price/NAV, neither older than 20 minutes, at most
+15 minutes between them, and recorded trading activity. Otherwise the latest
+source values are visible with `stale_or_unaligned` and null bubble/ranks.
+Retrieval failures replace old readings with `fetch_error`; they never appear
+as a successful new quote. Outside trading hours this status is expected.
+
+The server adapter `run_server.py` uses its existing Docker environment settings
+in memory. Versioned systemd units run the live job every five minutes, the
+canonical daily collectors and DB load at 23:30 Asia/Tehran, and a full-history
+revision reconciliation on Sundays at 03:30 Asia/Tehran. Installation is:
+
+```sh
+docker exec -i investment_postgres sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1 -1' < commodity/gold/db/live_schema.sql
+sudo install -m 644 commodity/gold/db/gold-*.service commodity/gold/db/gold-*.timer /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now gold-live.timer gold-daily.timer gold-full.timer
+```
+
+Inspect `systemctl list-timers 'gold-*'`, `journalctl -u gold-live.service`,
+and query `SELECT * FROM research.current_gold_bubbles ORDER BY instrument_key`.
+Daily jobs refresh server canonical CSVs and PostgreSQL. Existing local and
+presentation CSVs are not implicitly rebuilt or transferred back to the workstation.
+
 This store publishes the five selected ETFs' daily TSETMC prices, Fipiran
 redemption NAV, exact-date bubble observations, historical percentiles, and
 deciles. The raw CSVs and immutable response snapshots remain canonical source

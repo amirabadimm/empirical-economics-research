@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh daily gold history after the trading day
+
+[Timer]
+OnCalendar=*-*-* 23:30:00 Asia/Tehran
+Persistent=true
+Unit=gold-daily.service
+
+[Install]
+WantedBy=timers.target

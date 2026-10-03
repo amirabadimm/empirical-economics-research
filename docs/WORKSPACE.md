@@ -1,5 +1,10 @@
 # Workspace Architecture
 
+Gold's `research.gold_live_state` is a disposable latest-reading cache exposed
+through `research.current_gold_bubbles`, separate from permanent daily source and
+bubble tables. Its ranks use completed daily data only; intraday readings are
+replaced on each poll and expire after 24 hours.
+
 The deployed server PostgreSQL store uses `research.instruments` as a shared
 registry and distinct gold price, provider NAV, and method-versioned bubble
 tables. Its code and schema live in `commodity/gold/db`; the server checkout is
