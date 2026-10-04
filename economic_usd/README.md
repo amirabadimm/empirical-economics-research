@@ -26,7 +26,7 @@ The copied CBI publication archive contains one source document per month from 1
 
 ## Refresh
 
-From `E:\Work\economic_usd` in PowerShell:
+From the `economic_usd` project directory:
 
 ```powershell
 $env:PYTHONPATH = 'src'

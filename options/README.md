@@ -7,14 +7,14 @@ from Git. Derived tables are under `data/processed`.
 
 Use the Python environment described in the workspace README. Set
 `OPTIONBAAZ_ACCESS_TOKEN` in the process environment before collection. The collector
-does not read token files. From `E:\Work`:
+does not read token files. From the repository root:
 
 ```powershell
-..\Finenv\Scripts\python.exe options\scripts\run_pipeline.py discover
-..\Finenv\Scripts\python.exe options\scripts\run_pipeline.py availability
-..\Finenv\Scripts\python.exe options\scripts\run_pipeline.py collect
-..\Finenv\Scripts\python.exe options\scripts\run_pipeline.py build
-..\Finenv\Scripts\python.exe options\scripts\run_pipeline.py verify
+python options\scripts\run_pipeline.py discover
+python options\scripts\run_pipeline.py availability
+python options\scripts\run_pipeline.py collect
+python options\scripts\run_pipeline.py build
+python options\scripts\run_pipeline.py verify
 ```
 
 `collect` skips previously archived valid responses. `--refresh` captures a new immutable

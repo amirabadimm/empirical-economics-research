@@ -30,14 +30,14 @@ Run from the workspace root using its Python environment:
 
 ```powershell
 # Optional network refreshes; each creates an immutable raw snapshot.
-.\Finenv\Scripts\python.exe commodity\warehouse_fees\src\warehouse_fees\collect_current.py
-.\Finenv\Scripts\python.exe commodity\warehouse_fees\src\warehouse_fees\collect_wayback.py
+python commodity\warehouse_fees\src\warehouse_fees\collect_current.py
+python commodity\warehouse_fees\src\warehouse_fees\collect_wayback.py
 
 # Rebuild the single canonical output from documented inputs.
-.\Finenv\Scripts\python.exe commodity\warehouse_fees\src\warehouse_fees\build_daily.py
+python commodity\warehouse_fees\src\warehouse_fees\build_daily.py
 
 # Validate schema, uniqueness, coverage, and known tariff transitions.
-.\Finenv\Scripts\python.exe -m pytest commodity\warehouse_fees\tests -q
+python -m pytest commodity\warehouse_fees\tests -q
 ```
 
 Primary source: <https://www.ime.co.ir/WarehousesFee.html>. Row-level source URLs

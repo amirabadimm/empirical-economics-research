@@ -78,8 +78,7 @@ create a missing bubble merely to satisfy the presentation pattern.
 
 Each commodity project may contain `src/<commodity>`, `data/raw/{physical,certificate}`,
 `data/interim`, and `data/processed/{physical,certificate,bubble,analysis}`,
-`notebooks`, `tests`, `logs`, `outputs`, and `docs`. The existing local `Finenv` directory is
-ignored. The workstation uses sibling `../Finenv`; new clones can use an isolated `.venv`.
+`notebooks`, `tests`, `logs`, `outputs`, and `docs`. Local virtual environments are ignored. New clones should use an isolated `.venv` or another environment managed outside Git.
 
 The Energy Exchange domain uses `energy_exchange/src/energy_exchange` for reusable domain logic
 and `energy_exchange/references` for source-document provenance. Its logic must remain separate

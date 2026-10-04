@@ -383,7 +383,7 @@ does not supersede contract-specification validation.
 Run the notebook from the repository root with the project environment:
 
 ```powershell
-.\Finenv\Scripts\python.exe -m nbconvert --to notebook --execute --inplace `
+python -m nbconvert --to notebook --execute --inplace `
   .\commodity\bitumen\notebooks\01_bitumen_physical_analysis.ipynb `
   --ExecutePreprocessor.timeout=600
 ```
