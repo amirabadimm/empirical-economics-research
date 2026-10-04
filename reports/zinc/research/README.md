@@ -1,19 +1,19 @@
 # Zinc Research Report
 
-- LaTeX source: `zinc_research_report.tex`
+For the current visitor-facing research summary, see [`REPORT.md`](REPORT.md). It contains the current September production result and renders the three valuation figures directly on GitHub.
+
+The LaTeX file `zinc_research_report.tex` is retained as an **earlier report vintage**. Its numerical checkpoint predates the current September production refresh, so it should not be used for current headline values. `REPORT.md` and the Zinc project README are the authoritative public summaries.
+
+- Current Markdown report: `REPORT.md`
+- Earlier LaTeX report source: `zinc_research_report.tex`
 - Data-driven charts: `figures/`
 - Figure builder: `build_figures.py`
 - Bubble inputs: `commodity/zinc/data/processed/bubble/`
 
 From the workspace root:
 
-```powershell
-python .\reports\zinc\research\build_figures.py
+```bash
+python reports/zinc/research/build_figures.py
 ```
 
-From this directory, compile twice to resolve references:
-
-```powershell
-pdflatex zinc_research_report.tex
-pdflatex zinc_research_report.tex
-```
+To reproduce the older typeset artifact, compile the LaTeX source from this directory.

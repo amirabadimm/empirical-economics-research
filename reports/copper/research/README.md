@@ -1,10 +1,10 @@
 # Copper Research Report
 
-The report leads with certificate versus physical (primary), followed by two
-independent intrinsic-value comparisons. Refresh copper processed outputs before
-building figures; numerical annotations come from those inputs, not fixed prose.
-Research regression and gap-study files are not part of this report's routine results.
+For the current visitor-facing research summary, see [`REPORT.md`](REPORT.md). It leads with the research question, current primary result, supporting comparisons, limitations, and reproducibility notes, with figures rendered directly on GitHub.
 
+The LaTeX file `copper_research_report.tex` is retained as a typeset source. Its figures are data-driven, but the project README and `REPORT.md` are the authoritative public summaries for the current research checkpoint.
+
+- Current Markdown report: `REPORT.md`
 - LaTeX source: `copper_research_report.tex`
 - Data-driven charts: `figures/`
 - Figure builder: `build_figures.py`
@@ -12,13 +12,8 @@ Research regression and gap-study files are not part of this report's routine re
 
 From the workspace root:
 
-```powershell
-python .\reports\copper\research\build_figures.py
+```bash
+python reports/copper/research/build_figures.py
 ```
 
-From this directory, compile twice to resolve references:
-
-```powershell
-pdflatex copper_research_report.tex
-pdflatex copper_research_report.tex
-```
+To produce the typeset document, compile the LaTeX source twice from this directory so references resolve.
