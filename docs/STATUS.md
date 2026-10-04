@@ -111,10 +111,11 @@ primary comparisons remain bounded by their latest physical anchors, without ext
 Copper, Zinc, and Gold now use signed expanding equal-weight and recency-weighted percentiles
 (default 90-calendar-day half-life). Other products retain their empirical distributions.
 
-Root CI runs Ruff and pytest; root pytest discovers `commodity`, `codal`, `energy_exchange`,
-`shared`, and `options`. Pista, Asset Allocation, and Economic USD require separate test runs.
-This documentation review does not claim a new full-suite, notebook, or report execution.
-No recurring collector or NAV scheduler is deployed in the repository.
+Root CI runs Ruff, the root pytest suite, the dedicated Pista tests, and the network-free
+Asset Allocation collector tests. Data-dependent Asset Allocation checks and Economic USD
+contracts remain documented project-level validations rather than clean-clone CI requirements.
+This documentation review does not claim a new notebook or report execution. Gold's versioned
+systemd timers are deployed; other project collectors remain manual unless their own status says otherwise.
 
 ## Historical workspace summary (September 19–22, 2026)
 
@@ -183,7 +184,7 @@ A3 / 12 mm cross-diameter sensitivity.
   plus two verified legacy PDFs and a single 75-row quarterly core history. Five
   unavailable quarters are documented. Labor fields are explicitly provisional pending a
   schedule-layout and cumulative-reconciliation audit.
-- No collector is currently scheduled or monitored in the repository.
+- Gold has deployed live, daily, and weekly systemd refresh timers; other project collectors remain manual at this checkpoint.
 
 The independent `economic_usd` project now contains reproducible, non-modeled inputs for future USD/IRR research: daily free-market USD through 1405/06/21, monthly Iranian headline urban CPI through 1405/04, monthly CBI liquidity through 1404/12, and complete monthly FRED CPIAUCNS history through 2026-08. PPP and valuation work have not started.
 
