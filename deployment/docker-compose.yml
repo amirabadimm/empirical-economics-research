@@ -1,0 +1,40 @@
+name: investment-dashboard
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: investment_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - investment_network
+
+  python:
+    image: python:3.12-slim
+    container_name: investment_python
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ${APP_DIR:-/opt/investment-dashboard/app}:/app
+    command: sleep infinity
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - investment_network
+
+volumes:
+  postgres_data:
+
+networks:
+  investment_network:
