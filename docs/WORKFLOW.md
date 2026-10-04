@@ -9,7 +9,7 @@ daily source/DB refresh at 23:30 Tehran, weekly full reconciliation Sunday 03:30
 Gold database deployment and refresh are documented in
 [the project database workflow](../commodity/gold/db/README.md). Git transfers
 code and schema; raw CSVs and immutable snapshots require separate secure transfer.
-The deployed checkout is `/opt/empirical-economics-research` on `85.198.48.177`;
+The production checkout uses `/opt/empirical-economics-research` on a private deployment host;
 the first database load and repeat-load verification succeeded on 2026-10-03.
 
 Gold's five-fund research phase was closed on 2026-10-03 against the September 29
@@ -28,7 +28,6 @@ collect all five active funds, run `collect_daily.py` for bounded prices and
 `collect_fipiran_nav.py` for recent NAV, then `build_two_years.py`. Initial
 loads fetch complete history automatically; TSETMC comparison NAV is optional
 through `collect_daily.py --comparison-nav` and uses a complete request.
-
 
 Collect Ayar Fipiran historical NAV with `commodity/gold/collect_fipiran_nav.py --fund ayar`
 before rebuilding its two-year analysis and bubble. The Mofid raw history remains
@@ -50,7 +49,7 @@ document independent environments and data contracts.
 
 For Copper, Zinc, Pellet, Rebar, Bitumen, and Pista, run from the repository root:
 
-```powershell
+```bash
 python -m shared.certificate_pipeline.refresh all --plan
 python -m shared.certificate_pipeline.refresh copper --plan --collect
 python -m shared.certificate_pipeline.refresh copper
@@ -87,10 +86,11 @@ Delivery copies and presentation artifacts belong in `outputs` or `reports`.
 
 ## Validate and document
 
-Run checks appropriate to the change. Root CI uses `python -m ruff check .` and
-`python -m pytest -q`; Pista requires `python -m pytest -q goods/pista/tests`.
-Independent projects supply their own test commands. Documentation edits require
-link/path validation and `git diff --check`; they do not require source collection.
+Root CI runs `python -m ruff check .`, the root pytest suite, the dedicated Pista tests,
+and the network-free Asset Allocation collector tests. Independent projects with local-data
+contracts document additional validation commands in their own READMEs.
+Documentation edits require link/path validation and `git diff --check`; they do not require
+source collection.
 
 Record source coverage separately from derived coverage, retaining comparability warnings
 and pending research decisions. Software delivery does not approve an economic benchmark.
