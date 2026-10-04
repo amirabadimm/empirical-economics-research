@@ -16,9 +16,24 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - name: Install project
+
+      - name: Install root research workspace
         run: python -m pip install -e ".[dev,notebooks]"
+
       - name: Ruff
         run: python -m ruff check .
-      - name: Tests
+
+      - name: Root test suite
         run: python -m pytest -q
+
+      - name: Pistachio project tests
+        run: python -m pytest -q goods/pista/tests
+
+      - name: Install asset-allocation project
+        run: python -m pip install -e "./asset_allocation[test]"
+
+      - name: Asset-allocation collector tests
+        run: >-
+          python -m pytest -q
+          asset_allocation/tests/test_tgju_gold_18k.py
+          asset_allocation/tests/test_tsetmc_fixed_income.py
