@@ -1,149 +1,112 @@
-﻿# Iran Cross-Asset Allocation
+# Iran Cross-Asset Allocation
 
-The separate `E:/Housing` repository now publishes the same 101 CBI-period Tehran price
-levels through 1403/05 from byte-identical source evidence. This project's four-asset panel
-and post-CBI Kilid extension remain independent; see `docs/HOUSING.md`.
+## Research question
 
-Develop a forward-looking allocation process across Tehran residential housing prices per square metre,
-TGJU 18-karat gold (750), an exchange-traded Iranian fixed-income fund, and the Tehran Stock
-Exchange total index.
+How stable are hindsight-efficient allocations across Iranian gold, equities, Tehran residential housing, and fixed income, and what does that instability imply for a future forward-looking allocation framework?
 
-The primary housing corpus contains 87 official CBI Tehran transaction-market reports.
-Raw PDFs are preserved under `data/raw/housing/cbi/reports/`; the reconstructed monthly
-workbook remains in `data/interim` and is validated through a reproducible audit and
-source-adjudication layer.
+This project is deliberately split into two parts. The completed component is a historical pilot used to build, audit, and test the four-asset dataset and allocation machinery. The intended final component is forward-looking and will require explicit expectations rather than realized historical returns.
 
-The fixed-income asset is اعتمادآفرین پارسیان (ticker: اعتماد). Competing deposit-rate
-and اخزا proxies were evaluated and retired after the research window changed to
-1395/01–1405/05. See the [fixed-income decision](docs/FIXED_INCOME.md).
+## Assets and data
 
-## Current stage
+The four assets are:
 
-Four assets are registered, and the canonical month-end level and monthly-return panels have
-been built. The analysis notebook implements a source-audited, ex-post pilot Stage I allocation of
-gold, equity, and housing relative to the Etemad fixed-income benchmark for 1396-1404 and
-the five-month 1405 YTD period. Stage II now reports an ex-post mean-variance sensitivity
-analysis over an explicit grid of risk-aversion values. This historical exercise was used to
-assemble the data and run the allocation algorithm once; it is diagnostic and is not the final
-forecast or investor-specific recommendation: `notebooks/asset_allocation_analysis.ipynb`.
+- TGJU 18-karat gold;
+- TEDPIX, the Tehran Stock Exchange total index;
+- Tehran residential transaction prices per square metre;
+- Etemad (`اعتماد`), an exchange-traded Iranian fixed-income fund.
 
-The notebook ends with a parallel alternative specification requested for comparison. It
-estimates one covariance matrix from all aligned months in 1396–1405/05 and holds that risk
-model fixed across yearly optimizations, while yearly realized returns continue to vary.
+The canonical monthly panel spans Solar Hijri 1395/01 through 1405/05, with the historical optimization sample beginning in 1396 because the housing series does not contain the 1394/12 level required to compute a 1395/01 return.
 
-A presentation-ready account of the completed historical pilot, exact result tables, interpretation,
-limitations, suggested storyline, and likely questions is available in
-[`reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md`](reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md).
-The same analysis is also available as a typeset-ready LaTeX document:
-[`reports/ASSET_ALLOCATION_ANALYSIS.tex`](reports/ASSET_ALLOCATION_ANALYSIS.tex).
+Daily traded assets use the final valid observation in each Jalali month. Returns are calculated only from adjacent month-end levels; missing observations remain missing rather than being forward-filled or replaced with zero.
 
-## Independent setup
+## Housing data integrity
 
-Run from this project directory. This project has its own dependency manifest and no sibling
-project imports or required workspace data paths. Create an environment here:
+Housing required the most substantial source audit. The project reconstructs the official CBI Tehran transaction-price series and keeps source adjudications in a reproducible override layer. Four material extraction or transcription values were checked against official reports and corrected with provenance retained downstream.
 
-```powershell
+One malformed observation would otherwise have created an artificial approximately -99% / +13,000% monthly return pair. After source review and correction, the affected annual housing-volatility estimate falls from an obviously spurious level to an economically plausible range.
+
+Official CBI coverage ends at 1403/05. A Kilid-based extension is chain-linked afterward and explicitly flagged as a secondary proxy rather than treated as an equivalent continuation. Common-period diagnostics show weak enough agreement that the source transition remains an analytical limitation.
+
+Detailed evidence and decisions are documented in [`docs/HOUSING.md`](docs/HOUSING.md), [`docs/DATA_CONTRACT.md`](docs/DATA_CONTRACT.md), and [`config/housing_cbi_overrides.csv`](config/housing_cbi_overrides.csv).
+
+## Historical pilot
+
+The pilot separates two decisions that are often mixed together.
+
+### Stage I — risky-sleeve composition
+
+Stage I chooses long-only weights across gold, equity, and housing that maximize the annualized mean differential return over Etemad per unit of tracking error.
+
+The portfolio is modeled as buy-and-hold within the year rather than mechanically rebalanced every month. Optimization uses deterministic multi-start search and is checked against corner portfolios, equal weights, and 25,000 random simplex portfolios.
+
+### Stage II — risky exposure
+
+Stage II holds the selected risky sleeve fixed and varies the share of wealth allocated to that sleeve versus Etemad under an explicit mean-variance objective and a grid of risk-aversion parameters.
+
+This separates the question “what risky mix performed best?” from “how much risky exposure would the stated utility function choose?”
+
+## Main finding
+
+The central result is instability rather than a single permanent portfolio.
+
+Across the historical periods analyzed, gold is the dominant risky asset in five periods, housing in four, and equity in one. Five of the ten Stage-I solutions place the entire risky sleeve in one asset.
+
+This is an economically important finding: the hindsight-efficient risky composition is highly regime-dependent. The pilot therefore does **not** identify a stable all-weather allocation.
+
+Fixed income outperforms the best available risky sleeve on the benchmark-relative criterion in 1400 and 1402, causing Stage II to select 100% fixed income in those years across the tested risk-aversion values. In some high-return years, the model instead selects full risky exposure even at high risk aversion because realized nominal return spreads are exceptionally large.
+
+These are ex-post diagnostics, not forecasts or investor recommendations.
+
+## Current status
+
+The canonical four-asset level and return panels are complete, and the historical Stage-I and Stage-II pilot is implemented in [`notebooks/asset_allocation_analysis.ipynb`](notebooks/asset_allocation_analysis.ipynb).
+
+A presentation-ready interpretation, exact result tables, limitations, and likely discussion questions are documented in [`reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md`](reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md). A typeset-ready version is available in [`reports/ASSET_ALLOCATION_ANALYSIS.tex`](reports/ASSET_ALLOCATION_ANALYSIS.tex).
+
+The final forward-looking allocation has **not** been produced. It remains contingent on a documented expectation-building stage and a redesigned risk estimate using only information available at each allocation date.
+
+## Reproduction
+
+This project has its own dependency manifest and does not require sibling-project source code.
+
+```bash
+cd asset_allocation
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e ".[test]"
+python -m pip install -e ".[test]"
+python -m pytest -q
 ```
 
-The manifest prepares the research environment. Documented collectors refresh canonical raw
-market histories, while the panel builder validates and transforms those inputs. Optional
-external datasets must never require another project's source code.
-Existing shared canonical datasets remain under their current owner; independence does not
-require duplicating or modifying them. No FX input is currently required by the chosen scope.
+To rebuild the canonical monthly panel:
 
-Verify the installation and data pipeline with:
-
-```powershell
-.\.venv\Scripts\python.exe -m pytest -q
+```bash
+PYTHONPATH=src python -m asset_allocation.build_monthly_return_panel
 ```
 
-## Research objective and collection sequence
+On PowerShell, set `PYTHONPATH` for the current session before running the same module.
 
-The main project objective is to produce a forward-looking optimal portfolio after expert-survey
-responses have been collected and analyzed. The survey will be used to extract the experts'
-expected asset-allocation distribution and provide the forward-looking views required by the
-final allocation stage. The survey instrument and responses have not yet been delivered to the
-project, so no expert distribution or final recommended portfolio has been calculated.
+The builder writes:
 
-The completed foundation is a canonical monthly-return history for all four assets from
-1395/01 through 1405/05 and one historical execution of the algorithm. In that pilot, Stage I
-maximizes the annualized mean differential return of a
-buy-and-hold risky sleeve over Etemad divided by the sample volatility of that differential,
-subject to long-only risky weights summing to one. Results are historical hindsight diagnostics,
-not forecasts. Treat the 1405/01–1405/05 optimization strictly as a YTD diagnostic, not a
-full-year result.
+- `data/processed/analysis/monthly_asset_levels.csv`;
+- `data/processed/analysis/monthly_asset_returns.csv`;
+- `data/processed/analysis/housing_data_quality_audit.csv`.
 
-Before the final model is produced, its risk estimate must also be redesigned. The pilot estimates
-volatility inside each individual year; the operational model must estimate risk from a documented
-trailing window of recent years, using only information available at the allocation date. The
-window length and weighting rule remain research decisions to be tested and recorded.
+Project-owned raw histories and source evidence remain under `data/raw` and are excluded from Git.
 
-Collect and validate one asset at a time:
-1. Fixed income: اعتماد only.
-2. TGJU 18-karat gold.
-3. Tehran apartment sale price per square metre.
-4. Tehran Stock Exchange total index, starting with TSETMC.
+## Project structure
 
-Fund distributions must be included where applicable, housing appreciation excludes rent, and
-annual yields must not be used directly as monthly returns. Report actual aligned coverage
-before any future model is estimated.
+- `config/` — selected assets, research scope, and source-adjudication rules;
+- `src/asset_allocation/` — collectors, validation, and panel construction;
+- `tests/` — project-specific validation;
+- `data/raw/` — project-owned canonical histories and immutable source evidence;
+- `data/interim/` and `data/processed/analysis/` — reproducible derived stages;
+- `notebooks/` — historical pilot analysis;
+- `reports/` — presentation-ready interpretation and tables;
+- `docs/` — data contract, source decisions, workflow, and project status.
 
-The fixed-income collector uses the public TSETMC closing-price API for `اعتماد`
-(`66818022341772870`) and archives each raw JSON response before atomically refreshing the
-canonical CSV. Run it from this project directory with:
+## Limitations
 
-```powershell
-$env:PYTHONPATH = 'src'
-python -m asset_allocation.collectors.tsetmc_fixed_income
-```
+Housing is not observed with the same frequency or market microstructure as exchange-traded assets, so its measured monthly volatility is not directly comparable to continuously traded risk. The post-CBI housing extension is a proxy and contains an explicit source transition.
 
-## Layout
+The historical pilot also estimates performance using realized returns, so it is inherently hindsight-based. The operational model must replace realized-return inputs with a documented forward-looking expectation process and must estimate risk from an information set available at the allocation date.
 
-- `config/`: selected assets and research scope; paths are project-relative unless explicitly external.
-- `src/asset_allocation/` and `tests/`: collectors, validation, transformation, and tests.
-- `data/raw/`: project-owned canonical histories and immutable snapshots.
-- `data/interim/` and `data/processed/analysis/`: derived inputs and approved analytical tables.
-- `notebooks/`: the presentation-ready research notebook.
-
-See [workflow](docs/WORKFLOW.md), [data contract](docs/DATA_CONTRACT.md), and
-[source register](docs/SOURCES.md), and [independence audit](docs/INDEPENDENCE.md).
-
-
-## Canonical monthly asset panel
-
-After collecting the authoritative daily sources, build Solar Hijri month-end levels and returns:
-
-```powershell
-$env:PYTHONPATH = 'src'
-python -m asset_allocation.build_monthly_return_panel
-```
-
-The builder writes `data/processed/analysis/monthly_asset_levels.csv` and
-`data/processed/analysis/monthly_asset_returns.csv`, plus the CBI-only diagnostic table
-`housing_data_quality_audit.csv`. Daily assets use the last valid observation
-within each Jalali month; اعتماد additionally requires `has_trade=true`. Returns are calculated
-from adjacent month-end levels and missing values remain blank with an explicit reason.
-
-CBI extraction adjudications are tracked in `config/housing_cbi_overrides.csv`. The builder
-verifies each recorded original value before applying a source-cited correction, so workbook
-changes cannot silently invalidate an override. The original extracted value, official report,
-verification report, audit note, provenance method, and quality flag remain visible downstream.
-
-No standalone portfolio-result CSV is authoritative. Stage I is executed transparently inside
-the notebook and includes deterministic multi-start optimization plus comparison with corner,
-equal-weight, and 25,000 random portfolios. Stage II keeps each Stage I risky sleeve fixed and
-searches the long-only risky share on a deterministic grid for several risk-aversion values.
-
-## TGJU 18-karat gold collector
-
-Collect the daily price series with:
-
-```powershell
-$env:PYTHONPATH = 'src'
-python -m asset_allocation.collectors.tgju_gold_18k
-```
-Housing uses official CBI monthly values through 1403/05 and an explicitly flagged, chain-linked
-Kilid extension afterward. The common-period audit found weak agreement, so the extension is a
-secondary proxy rather than an equivalent continuation; see [housing](docs/HOUSING.md).
+For detailed source and methodological decisions, see [`docs/WORKFLOW.md`](docs/WORKFLOW.md), [`docs/SOURCES.md`](docs/SOURCES.md), [`docs/FIXED_INCOME.md`](docs/FIXED_INCOME.md), and [`docs/INDEPENDENCE.md`](docs/INDEPENDENCE.md).
