@@ -26,7 +26,7 @@ The September 29 two-year rebuild produced the following exact-date price/NAV ma
 | Ganj | 462 | 465 |
 | Gohar | 464 | 464 |
 
-The server-side daily refresh subsequently expanded the full historical PostgreSQL store to more than 8,000 matched bubble observations across the five ETFs. Current operational counts and coverage belong in [`docs/STATUS.md`](docs/STATUS.md), not in the headline research claim.
+The server-side daily refresh subsequently expanded the full historical PostgreSQL store to more than 8,000 matched daily premium/discount observations across the five ETFs. Current operational counts and coverage belong in [`docs/STATUS.md`](docs/STATUS.md), not in the headline research claim.
 
 ## Method
 
