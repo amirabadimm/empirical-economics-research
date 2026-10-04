@@ -1,4 +1,4 @@
-# Empirical Economics Research
+﻿# Empirical Economics Research
 
 **Mohammad Mahdi Amirabadi**
 Reproducible empirical research on financial, commodity, and macroeconomic markets, with a focus on Iran.
@@ -53,7 +53,7 @@ The gold project separates source reliability, daily research history, and live 
 |---|---|---|
 | [Ahrom options](options/README.md) | Contract discovery and historical daily option-data pipeline for the Ahrom ETF | Dataset/infrastructure project: 996 contracts and 8,903 historical rows in the initial build |
 | [Economic USD/IRR](economic_usd/README.md) | Iranian liquidity, free-market USD, Iranian CPI, and U.S. CPI preparation for PPP and liquidity-based valuation | Work in progress; data preparation implemented, valuation intentionally not yet claimed |
-| [National Copper — Codal](codal/national_copper/README.md) | Issuer financial-statement reconstruction from cumulative disclosures | 75 valid quarters and 18 complete years |
+| [National Copper â€” Codal](codal/national_copper/README.md) | Issuer financial-statement reconstruction from cumulative disclosures | 75 valid quarters and 18 complete years |
 | [Pistachio certificates](goods/pista/README.md) | IME certificate history and weekly physical-price audit | Exploratory; proxy and unit matching remain limitations |
 | [Iran Energy Exchange](energy_exchange/README.md) | Market and regulatory mapping plus certificate-market feasibility analysis | Closed research project; intended empirical design rejected because trading activity was too sparse and concentrated |
 | [Other commodity studies](commodity/) | Rebar, pellet, bitumen, silver, warehouse fees | Mixed completed, exploratory, and architecture-stage work; each project states its own status |
@@ -129,8 +129,8 @@ The gold project also demonstrates a production-style analytical workflow using 
 
 ## Reports
 
-- [Copper research report](reports/copper/research/copper_research_report.tex)
-- [Zinc research report](reports/zinc/research/zinc_research_report.tex)
+- [Copper research report](reports/copper/research/REPORT.md)
+- [Zinc research report](reports/zinc/research/REPORT.md)
 - [Cross-asset allocation historical pilot](asset_allocation/reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md)
 
 ## Limitations
@@ -144,3 +144,4 @@ Results in this repository are research outputs, not investment advice.
 Citation metadata is provided in [CITATION.cff](CITATION.cff). Original source code is released under the [MIT License](LICENSE). That license applies to original code and documentation only; it does not grant redistribution rights for third-party data or publications.
 
 For project-specific definitions, sample construction, caveats, and reproduction commands, follow the linked project README and workflow documentation rather than relying on the root summary alone.
+
