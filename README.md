@@ -1,238 +1,146 @@
 # Empirical Economics Research
 
-Gold's server monitor now has disposable five-minute quote/NAV readings with
-rolling one-year, rolling six-month, rolling two-year (2024 onward), and
-90-day-half-life historical daily ranks, polling only 12:00-18:00 Tehran.
-See [the database workflow](commodity/gold/db/README.md) for schedule and retention.
-
-Gold now has a [PostgreSQL schema and loader](commodity/gold/db/README.md) for
-the five ETFs' daily prices, redemption NAV, bubble history and deciles.
-Initial deployment on 2026-10-03 loaded 8,202 bubbles from saved September 29
-histories; the first server daily refresh increased coverage to 8,213 bubbles.
-Git carries code and documentation; raw evidence was transferred over SSH.
-
-Gold's five-fund NAV research phase was closed on 2026-10-03 at the September 29
-data checkpoint. Small NAV gaps and disputed Gohar dates remain flagged in the
-[reliability audit](commodity/gold/docs/NAV_RELIABILITY.md); maintenance refreshes
-remain available. The closeout did not collect newer data.
-
-Documentation reviewed: 2026-09-28; gold NAV reliability updated 2026-09-29.
-Tala, Kahroba, and Ganj match their manager records on shared dates; Gohar has
-disputed values and Ayar's selected Fipiran history has gaps. See the
-[reliability audit](commodity/gold/docs/NAV_RELIABILITY.md).
-Mesghal's live historical NAV recheck yielded no accepted series; see
-[the validation report](commodity/gold/docs/MESGHAL_NAV_VALIDATION.md).
-Data checkpoints are project-specific; see
-[current research status](docs/STATUS.md) and [workspace workflow](docs/WORKFLOW.md).
-
-The six certificate research products share an execution engine and explicit per-product
-pipeline manifests. See [Certificate research engine](shared/certificate_pipeline/README.md)
-for offline rebuilds, optional source refresh, and the distinction between delivered
-software and product-specific economic assumptions.
+**Mohammad Mahdi Amirabadi**
+Reproducible empirical research on financial, commodity, and macroeconomic markets, with a focus on Iran.
 
 [![CI](https://github.com/amirabadimm/empirical-economics-research/actions/workflows/ci.yml/badge.svg)](https://github.com/amirabadimm/empirical-economics-research/actions/workflows/ci.yml)
 
-This repository is a portfolio of reproducible empirical economics research on price
-formation, market integration, exchange-rate transmission, and applied market analysis.
-Projects cover Iranian commodity certificates, gold-fund NAV premiums, cross-asset allocation,
-macroeconomic USD/IRR inputs, issuer financial statements, and ETF options. Commodity studies
-combine domestic physical trades, international benchmarks, and exchange rates. The Iran Energy
-Exchange feasibility study is retained as a closed research project.
+This repository is a research portfolio built around a simple standard: an empirical result should be traceable to its source data, economically interpretable, reproducible from code, and explicit about measurement limits. The projects combine market data engineering with applied economic analysis in price formation, asset pricing, market integration, portfolio choice, and derivatives.
 
-The repository is designed as a living research environment. It separates source-data
-collection from analytical processing, preserves source provenance, records methodological
-decisions, and tests the main economic transformations without committing credentials or
-restricted raw market data.
+The repository is intentionally broader than a single paper. The strongest completed and near-completed projects are highlighted below; exploratory and infrastructure-heavy work is kept separate from headline research claims.
 
-## Research themes
+## Featured research
 
-- Price discovery and basis formation across related markets
-- International-to-domestic price transmission
-- Exchange-rate pass-through
-- Commodity and energy market microstructure
-- Reproducible empirical methods for markets with sparse or irregular data
-
-## Current projects
-
-| Project | Economic question | Main method | Status |
+| Project | Research question | Data and method | Selected result / status |
 |---|---|---|---|
-| [Copper](commodity/copper/README.md) | How does the copper warehouse receipt trade relative to comparable domestic cathode and an LME–FX benchmark? | Volume-weighted physical benchmark; bounded physical/intrinsic ratio interpolation | 206 primary comparisons through 2026-09-20; refreshed 2026-09-27 |
-| [Zinc](commodity/zinc/README.md) | How does the zinc-ingot certificate compare with an eligible 99.97/99.98 domestic basket? | Grade-filtered volume weighting; three bubble definitions | 206 primary comparisons through 2026-09-20; refreshed 2026-09-26 |
-| [Gold ETFs](commodity/gold/README.md) | How do five liquid gold ETFs trade relative to redemption NAV? | Bounded TSETMC prices; five Fipiran NAV histories, with manager corroboration | September 29 incremental refresh: Ayar 448/465, Tala 465/465, Kahroba 464/465, Ganj 462/465, Gohar 464/464 two-year matches; Gohar disputed dates flagged |
-| [Silver](commodity/silver/README.md) | How does the silver-bar certificate compare with eligible 999.9 cash trades? | Exact-date diagnostic with gram-to-kilogram conversion | Architecture and tests implemented; no data collected or benchmark approved |
-| [Iron-ore pellet](commodity/pellet/README.md) | Which physical-market basket is economically comparable with the pellet certificate? | Producer/contract exploration before benchmark approval | Exploratory stage |
-| [Bitumen](commodity/bitumen/README.md) | Which grade, market, and delivery terms match the bitumen certificate? | Broad raw collection followed by eligibility research | Data collection complete; underlying unresolved |
-| [Steel rebar](commodity/rebar/README.md) | How does the certificate compare with same-day A3/18 cash trades and an A3/12 sensitivity? | Strict exact-date bubbles with explicit cross-diameter labeling | 5 A3/18 matches and 49 A3/12 sensitivity dates; specification QA open |
-| [Pista](goods/pista/README.md) | What is the trading history of the reopened continuous pistachio certificate? | Official IME collection, Abtahi weekly-price audit, and bounded proxy comparison | 16 indicative premium dates; price unit and product match unconfirmed |
-| [Warehouse fees](commodity/warehouse_fees/README.md) | How have daily storage fees for all documented commodity certificates changed? | Official notices plus archived official tables | 43 exact-date intervals and 30 observations back to 2016 |
-| [Iran Energy Exchange](energy_exchange/README.md) | Is the certificate market sufficiently active for a broader empirical project? | Public-source mapping plus complete 21-symbol certificate-history feasibility test | Closed: activity too sparse and concentrated for the intended project |
-| [National Copper — Codal](codal/national_copper/README.md) | What can issuer disclosures reveal about National Iranian Copper Industries Company? | Cumulative-to-quarter conversion with explicit audit lineage | 75 valid quarters; 18 complete years |
-| [Ahrom options](options/README.md) | What is the historical contract universe and available daily option history for the Ahrom ETF? | TSETMC instrument discovery with OptionBaaz daily response archive | 996 contracts; 8,903 rows since 2025-12-17; older OptionBaaz gap |
+| [Gold ETF NAV premiums](commodity/gold/README.md) | How do liquid Iranian gold ETFs trade relative to same-date redemption NAV, and how unusual is a given premium or discount relative to each fund's own history? | Five ETFs; TSETMC prices; Fipiran redemption NAV; exact-date matching; expanding and recency-weighted empirical distributions | 8,000+ matched daily bubble observations in PostgreSQL, with explicit NAV-source reliability checks and a separate disposable intraday monitor |
+| [Copper certificate valuation](commodity/copper/README.md) | Does the copper warehouse receipt trade at a premium or discount to a comparable domestic physical-market value? | IME certificate and physical trades; LME cash copper; USD/IRR; bounded interpolation between observed physical anchors | 206 certificate-trading days; estimated certificate premium to domestic physical value averages **5.73%**, median **7.16%** |
+| [Zinc certificate valuation](commodity/zinc/README.md) | How does the zinc-ingot certificate compare with an eligible domestic physical basket and an LME-FX benchmark? | Grade-filtered physical basket; certificate trades; LME zinc; USD/IRR; bounded interpolation | 206 modeled days; certificate premium to estimated domestic physical value averages **0.80%**, versus an average direct certificate/intrinsic discount of **20.54%** |
+| [Iran cross-asset allocation](asset_allocation/README.md) | How unstable are hindsight-efficient allocations across gold, equities, Tehran housing, and fixed income? | Monthly asset panels; source-audited housing series; long-only portfolio optimization; explicit risk-aversion sensitivity | Historical optimum is strongly regime-dependent; five of ten Stage-I solutions are corner portfolios, so the exercise does not identify a stable all-weather allocation |
 
-Current data coverage and next actions are summarized in [docs/STATUS.md](docs/STATUS.md).
+## Research profile
 
-Two independent projects extend the portfolio:
+The portfolio emphasizes four recurring themes:
 
-- [Cross-asset allocation](asset_allocation/README.md): housing, gold, equities, and Etemad
-  fixed-income monthly panels; historical optimization and risk-aversion sensitivity are
-  implemented. The expert survey and final forward-looking allocation remain pending.
-- [Economic USD/IRR](economic_usd/README.md): USD, liquidity, Iranian CPI, and U.S. CPI
-  preparation is implemented. Dollar-liquidity valuation and five-anchor PPP are planned
-  but have not been calculated.
+- **Price formation and market integration:** comparing exchange-traded claims with economically comparable physical-market values.
+- **Asset pricing and relative value:** NAV premiums, discounts, empirical distributions, and benchmark construction.
+- **Macroeconomic transmission:** USD/IRR, international commodity prices, domestic price levels, and planned PPP/liquidity valuation.
+- **Reproducible market research:** source provenance, immutable evidence, explicit data contracts, tests, and versioned processing pipelines.
 
-## Economic methodology
+The work is descriptive and measurement-focused unless a project explicitly states otherwise. Interpolated values are never presented as observed transactions, and the repository distinguishes empirical evidence from assumptions used to construct economic comparables.
 
-The completed Copper and Zinc studies distinguish three related but economically different
-measures:
+## Selected empirical findings
 
-1. domestic physical price relative to an international LME–FX intrinsic proxy;
-2. certificate price relative to the same intrinsic proxy;
-3. certificate price relative to an estimated comparable domestic physical price.
+### Copper
 
-For target date \(t\), the transparent international factor is
+The primary copper comparison contains 206 certificate-trading days from 2025-10-26 through 2026-09-20. Thirty-six days have observed comparable physical anchors and 170 are bounded interpolations between anchors. The estimated certificate premium to domestic physical value averages **5.73%** with a median of **7.16%**. Interpretation is limited by the small and uneven physical-anchor sample.
 
-```text
-intrinsic_price_t = (LME_cash_USD_per_ton_t / 1000) × USD_IRR_t
-```
+### Zinc
 
-LME and FX observations are joined as-of using the latest value on or before the target date,
-with source dates and ages retained. Because domestic physical trading is sparse, the primary
-certificate estimator interpolates the observed ratio of domestic physical price to intrinsic
-price between exact certificate/physical anchors. It does not extrapolate outside the observed
-anchor range. Regression is retained as a sensitivity analysis rather than the official method.
+The primary zinc output contains 206 modeled certificate days, including 50 observed anchors and 156 bounded interpolations. The certificate premium to estimated domestic physical value averages **0.80%**, while the direct certificate-to-LME-FX comparison averages a **20.54% discount**. The difference illustrates the economic importance of the domestic physical-market basis.
 
-## Reproducibility and data governance
+### Cross-asset allocation
 
-Copper, Zinc, and Gold report signed expanding percentile ranks with equal weights and
-exponential recency weights (default half-life: 90 calendar days). These describe historical
-samples. Interpolated Copper/Zinc values can use later anchors, so their percentile histories
-are not vintage-safe backtests. Gold uses exact-date NAV without filling missing dates.
+The historical pilot compares 18-karat gold, TEDPIX, Tehran residential housing, and the Etemad fixed-income ETF. The identity of the hindsight-efficient risky asset changes sharply across regimes: gold dominates five periods, housing four, and equity one. Five of ten Stage-I solutions place the entire risky sleeve in a single asset. The result is intentionally framed as an ex-post diagnostic, not a forecast or portfolio recommendation.
 
-- Complete IME physical responses are archived once in a shared content-addressed store; historical
-  project-local snapshots remain frozen immutable evidence.
-- Canonical raw CSVs are refreshed only by documented incremental, idempotent, and atomic collectors.
-- Zero-trade source observations remain in raw data but do not enter traded-price benchmarks.
-- Derived datasets are produced by versioned scripts under `src/<project>/processing`.
-- Notebooks are analytical and presentation layers; they do not modify canonical raw data.
-- Source dates, units, calendar conversions, and data ages are validated explicitly.
-- Credentials are read only from environment variables and are never committed.
-- Cross-commodity inputs have one canonical owner; Copper and Zinc share the same USD/IRR series.
+### Gold ETFs
 
-Raw market data, source snapshots, local environments, and bulk generated datasets are excluded
-from Git. See [DATA_AVAILABILITY.md](DATA_AVAILABILITY.md) and
-[docs/DATA_POLICY.md](docs/DATA_POLICY.md) for the rationale and reconstruction process.
+The gold project separates source reliability, daily research history, and live monitoring. Daily bubbles use same-date unadjusted closing prices and redemption NAV without interpolation. Historical ranks are calculated from observed daily bubbles; live readings are compared with those distributions but are not appended to the historical sample. NAV-source disagreements and gaps are retained as explicit quality flags rather than silently repaired.
+
+## Other projects
+
+| Project | Scope | Status |
+|---|---|---|
+| [Ahrom options](options/README.md) | Contract discovery and historical daily option-data pipeline for the Ahrom ETF | Dataset/infrastructure project: 996 contracts and 8,903 historical rows in the initial build |
+| [Economic USD/IRR](economic_usd/README.md) | Iranian liquidity, free-market USD, Iranian CPI, and U.S. CPI preparation for PPP and liquidity-based valuation | Work in progress; data preparation implemented, valuation intentionally not yet claimed |
+| [National Copper — Codal](codal/national_copper/README.md) | Issuer financial-statement reconstruction from cumulative disclosures | 75 valid quarters and 18 complete years |
+| [Pistachio certificates](goods/pista/README.md) | IME certificate history and weekly physical-price audit | Exploratory; proxy and unit matching remain limitations |
+| [Iran Energy Exchange](energy_exchange/README.md) | Market and regulatory mapping plus certificate-market feasibility analysis | Closed research project; intended empirical design rejected because trading activity was too sparse and concentrated |
+| [Other commodity studies](commodity/) | Rebar, pellet, bitumen, silver, warehouse fees | Mixed completed, exploratory, and architecture-stage work; each project states its own status |
+
+Current coverage and project-stage details live in [docs/STATUS.md](docs/STATUS.md). Operational history is kept there rather than treated as a research result.
+
+## Methodological principles
+
+Across projects, the repository uses a common set of research rules:
+
+1. **Source data remain distinct from derived analysis.** Canonical physical trades, certificate trades, NAV, FX, and international benchmarks are not overwritten by analytical outputs.
+2. **Raw evidence is immutable.** Source responses are archived with retrieval metadata and, where appropriate, content hashes.
+3. **Alignment rules are explicit.** Exact-date joins, as-of joins, bounded interpolation, units, calendar conversions, and source ages are documented in project workflows.
+4. **Derived values identify their construction.** Observed anchors, interpolated values, provider choice, and method keys remain visible in outputs.
+5. **Limitations are part of the result.** Sparse trading, source transitions, publication timing, non-comparable market microstructure, and data gaps are documented rather than hidden.
+6. **Notebooks are analytical and presentation layers.** Canonical raw datasets are modified only by documented collectors and builders.
 
 ## Repository structure
 
-Commodity data follows [the shared data architecture](docs/DATA_ARCHITECTURE.md): canonical
-physical and certificate records are stored independently under `data/raw`, while every bubble
-or comparison table is derived under `data/processed/bubble`.
-
 ```text
 commodity/                 Commodity-specific empirical projects
-  copper/
-  zinc/
-  pellet/
-  bitumen/
-  rebar/
-  gold/
-  silver/
-  warehouse_fees/
-goods/pista/               Pistachio certificates and weekly-price audit
-asset_allocation/          Independent four-asset panels and historical allocation pilot
-economic_usd/              Independent macroeconomic inputs and valuation plan
-options/                   Ahrom option discovery and available daily histories
-shared/certificate_pipeline/ Six-product execution and Power BI delivery engine
-shared/ime_data/           Reusable Iran Mercantile Exchange collection logic
-shared/market_data/        Shared cross-commodity inputs such as canonical USD/IRR
-shared/market_analysis/    Commodity-invariant analysis and model-selection mechanics
-shared/notebook_tools/     Read-only standardized commodity notebook dashboards
-energy_exchange/           Iran Energy Exchange documentation and research
-codal/                     Issuer-level Codal disclosure research
-reports/                   Research reports, source documents, and reproducible figures
-docs/                      Workspace architecture, status, and data policy
+  copper/                  Copper certificate and physical-market valuation
+  zinc/                    Zinc certificate and physical-market valuation
+  gold/                    Gold ETF NAV research and monitoring
+  rebar/ pellet/ bitumen/  Additional certificate studies
+  silver/ warehouse_fees/
+goods/pista/               Pistachio certificate and physical-price audit
+asset_allocation/          Cross-asset allocation research
+economic_usd/              Macroeconomic USD/IRR data and valuation design
+options/                   Ahrom option contract and history pipeline
+codal/                     Issuer-level financial disclosure research
+energy_exchange/           Energy-market documentation and feasibility research
+shared/                    Reusable collection and analytical infrastructure
+reports/                   Research reports and reproducible figures
+docs/                      Workspace architecture, workflow, and status
 ```
 
-Future research domains can be added beside `commodity/` rather than forced into the commodity
-schema—for example, `energy_exchange/`.
+Within empirical projects, the preferred layout is:
 
-`economic_usd/` is an independent, data-preparation-only project for future fundamental USD/IRR research. It owns copies of its Iranian liquidity, free-market USD, Iranian CPI, and U.S. CPI inputs and does not import sibling-project code.
-
-## Environment
-
-Python 3.11 or newer is required. The two repositories on this workstation share the sibling
-environment `..\Finenv`. From the repository root in PowerShell:
-
-```powershell
-py -m venv ..\Finenv
-..\Finenv\Scripts\Activate.ps1
-python -m pip install -e ".[dev,notebooks]"
+```text
+data/raw/        canonical source records and immutable evidence
+data/interim/    temporary reproducible stages
+data/processed/  approved analytical tables
+src/             collection and processing code
+tests/           network-free validation where possible
+notebooks/       analysis and presentation
+docs/            methodology, workflow, and status
 ```
 
-VS Code is configured to select this shared environment automatically. `pyproject.toml` is the
-canonical dependency and CI configuration; the installation above includes development and
-notebook tools. CI creates an isolated environment. Asset Allocation and Economic USD document
-their own independent environment setup.
+## Reproducibility
 
-Run the network-free tests:
+Python 3.11 or newer is required. The root `pyproject.toml` is the canonical dependency and CI configuration for the shared workspace.
 
 ```bash
+python -m venv .venv
+# activate the environment for your platform
+python -m pip install -e ".[dev,notebooks]"
+python -m ruff check .
 python -m pytest -q
 ```
 
-Tests that validate local canonical datasets skip automatically when those unversioned datasets
-are unavailable. Parser, scope, calendar, atomic-write, and synthetic reconstruction tests remain
-fully executable in a clean clone.
+The root CI runs on GitHub Actions. Tests that require unversioned market data skip explicitly when those inputs are unavailable; parser, calendar, scope, atomic-write, and synthetic reconstruction tests remain runnable in a clean clone. Independent projects document any additional test commands in their own READMEs.
 
-Root pytest discovers `commodity`, `codal`, `energy_exchange`, `shared`, and `options`.
-Run `python -m pytest -q goods/pista/tests` separately; Asset Allocation and Economic USD
-document their own test commands. Root CI does not automatically run those three suites.
+## Data availability and governance
 
-## Rebuild and refresh
+This repository versions original research code, tests, methodological documentation, report sources, and selected reproducible figures. Complete third-party market datasets and source-response archives are not redistributed through Git. See [DATA_AVAILABILITY.md](DATA_AVAILABILITY.md) and [docs/DATA_POLICY.md](docs/DATA_POLICY.md) for source, licensing, and reconstruction policy.
 
-From the repository root after environment setup:
+Credentials are read from environment variables and are never committed. Public-source availability does not by itself imply permission to redistribute an entire historical dataset.
 
-```powershell
-# Inspect all six certificate pipelines without collecting or writing data.
-python -m shared.certificate_pipeline.refresh all --plan
-# Rebuild from existing local inputs (raw data are not included in a clean clone).
-python -m shared.certificate_pipeline.refresh all
-# Explicit online source collection followed by a production rebuild.
-python -m shared.certificate_pipeline.refresh copper --collect
-# Five-fund daily gold histories (bounded prices and recent Fipiran NAV).
-python commodity/gold/collect_daily.py
-python commodity/gold/collect_fipiran_nav.py
-python commodity/gold/build_two_years.py --as-of 2026-09-28
-# Run collectors with --full periodically to capture older revisions.
-# Independent Ayar bubble workflow; add --collect to fetch Fipiran historical NAV and TSETMC prices first.
-python commodity/gold/refresh.py
-```
+## Deployment and database work
 
-The six-product engine covers Copper, Zinc, Pellet, Rebar, Bitumen, and Pista. Each retains
-local `refresh_powerbi.py` and `.cmd` launchers. Pista requires a manually supplied Abtahi
-workbook. Gold and Silver have separate entry points; Silver's offline rebuild requires inputs
-that have not yet been collected. See [workspace workflow](docs/WORKFLOW.md).
+The gold project also demonstrates a production-style analytical workflow using PostgreSQL 17, Docker, SQL views, and scheduled refresh jobs. Deployment details are documented separately from empirical results in [commodity/gold/db/README.md](commodity/gold/db/README.md). Runtime secrets, database volumes, logs, and collected raw evidence remain outside Git by design.
 
 ## Reports
 
 - [Copper research report](reports/copper/research/copper_research_report.tex)
 - [Zinc research report](reports/zinc/research/zinc_research_report.tex)
-- [Cross-asset allocation pilot](asset_allocation/reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md)
-- [Pellet exploratory report](commodity/pellet/reports/FINAL_REPORT.md)
-
-Copper and Zinc reports document their three valuation comparisons and reproducible figures.
-Project-local reports retain their own scope and data vintage; a documentation review does
-not imply that every report or notebook has been re-executed.
+- [Cross-asset allocation historical pilot](asset_allocation/reports/ASSET_ALLOCATION_ANALYSIS_REPORT.md)
 
 ## Limitations
 
-The international intrinsic series is a transparent benchmark, not a full import-parity price.
-Taxes, transport, storage, financing, quality, delivery conditions, liquidity, and institutional
-constraints may explain part of the domestic basis. Sparse physical-market anchors also limit
-statistical precision. Results are research outputs and are not investment advice.
+The international intrinsic-price series used in commodity work is a transparent benchmark rather than a complete import-parity model. Taxes, transport, storage, financing, quality, delivery conditions, liquidity, capital controls, and institutional constraints may explain part of observed domestic bases. Sparse physical-market anchors can also limit precision. Interpolated series are not vintage-safe trading backtests when later anchors contribute to earlier fitted values.
+
+Results in this repository are research outputs, not investment advice.
 
 ## Citation and reuse
 
-Citation metadata is provided in [CITATION.cff](CITATION.cff). Source code is released under
-the [MIT License](LICENSE); that license does **not** grant redistribution rights for third-party
-market data. Contributions should follow [CONTRIBUTING.md](CONTRIBUTING.md).
+Citation metadata is provided in [CITATION.cff](CITATION.cff). Original source code is released under the [MIT License](LICENSE). That license applies to original code and documentation only; it does not grant redistribution rights for third-party data or publications.
+
+For project-specific definitions, sample construction, caveats, and reproduction commands, follow the linked project README and workflow documentation rather than relying on the root summary alone.
