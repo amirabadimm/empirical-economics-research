@@ -181,12 +181,12 @@ or a corrected NAV. Agreement statistics must always state their intersection.
 
 ```powershell
 # Fetch fresh evidence; raw canonical NAV/price CSVs are not updated by these audits.
-E:/Work/.venv/Scripts/python.exe -B commodity/gold/audit_nav_reliability.py --live
-E:/Work/.venv/Scripts/python.exe -B commodity/gold/audit_manager_nav.py --live
+python -B commodity/gold/audit_nav_reliability.py --live
+python -B commodity/gold/audit_manager_nav.py --live
 
 # Omit --live to replay the most recent archived audit requests.
-E:/Work/.venv/Scripts/python.exe -B commodity/gold/audit_nav_reliability.py
-E:/Work/.venv/Scripts/python.exe -B commodity/gold/audit_manager_nav.py
+python -B commodity/gold/audit_nav_reliability.py
+python -B commodity/gold/audit_manager_nav.py
 ```
 
 Responses and per-request metadata are preserved in

@@ -1,4 +1,4 @@
-﻿# Project independence
+# Project independence
 
 User requirement (2026-09-08): each research project should be independently presentable and
 runnable for a professional portfolio.
@@ -15,7 +15,7 @@ The project is still a folder in the parent Git repository, not a separate repos
 
 Commodity collectors import shared.ime_data. Copper/Zinc also use shared.market_data and
 shared.market_analysis. Commodity notebook infrastructure uses shared.notebook_tools. These
-projects currently depend on the workspace layout. E:/Housing is already a separate Git
+projects currently depend on the workspace layout. The Housing project is already a separate Git
 repository; this audit did not modify it. Energy Exchange, Codal, and Options need a fuller
 installation/path audit before claiming portable execution.
 

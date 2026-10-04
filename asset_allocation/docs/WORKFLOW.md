@@ -1,7 +1,7 @@
-﻿# Workflow
+# Workflow
 
 The CBI-period housing levels were cross-checked against the independently curated
-101-month CBI series in `E:/Housing` on 2026-09-19; all levels agree. This project
+101-month CBI series in the separate Housing repository on 2026-09-19; all levels agree. This project
 continues to generate its own four-asset panel and post-1403/05 Kilid extension.
 
 ## Research objective

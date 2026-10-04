@@ -1,9 +1,9 @@
 # Tehran housing data
 
-The separate E:/Housing repository now publishes an independently validated 101-month CBI
+The separate Housing repository now publishes an independently validated 101-month CBI
 series through 1403/05 from byte-identical source PDFs and staging workbook. Its 101 curated
 price levels match this project's CBI-period panel. The post-1403/05 Kilid extension remains
-specific to this asset-allocation project and is not part of the CBI dataset in E:/Housing.
+specific to this asset-allocation project and is not part of the CBI dataset in the Housing repository.
 
 ## Active sources
 

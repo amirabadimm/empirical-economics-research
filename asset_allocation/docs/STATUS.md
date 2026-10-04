@@ -1,4 +1,4 @@
-﻿# Status
+# Status
 
 Updated: 2026-09-22
 
@@ -39,7 +39,7 @@ under the immutable-source policy and are not merged with the official series.
 ## Local inventory
 
 At the initial inventory, no ready-to-use history covered all four assets. As of 2026-09-19,
-the separate E:/Housing repository now has an independently built, curated 101-month CBI
+the separate Housing repository now has an independently built, curated 101-month CBI
 Tehran transaction-price series through 1403/05. Its source PDFs and staging workbook have
 matching SHA-256 hashes with this project's preserved copies; all 101 CBI-period price levels
 match this project's housing panel. This project continues to own its broader four-asset panel

@@ -140,7 +140,7 @@ The reproducible read-only-source investigation is
 [`investigate_mesghal_nav.py`](../investigate_mesghal_nav.py):
 
 ```powershell
-E:/Work/.venv/Scripts/python.exe -B commodity/gold/investigate_mesghal_nav.py
+python -B commodity/gold/investigate_mesghal_nav.py
 ```
 
 It archives source bytes before parsing and emits a timestamped JSON report in

@@ -15,7 +15,7 @@ processed presentations and notebooks retain their prior checkpoints.
 ## Initial Gold database deployment (superseded by scheduled refresh above) — 2026-10-03
 
 The five-fund PostgreSQL schema and transactional loader are deployed to
-`85.198.48.177` in its existing `investment` database. Coverage is 8,521 price
+a private deployment host in its existing `investment` database. Coverage is 8,521 price
 rows, 18,032 NAV rows and 8,202 bubbles. Source transfer hashes and repeat-load
 analytical values were verified. The September 29 market-data checkpoint remains
 unchanged at this initial checkpoint; scheduled monitoring above supersedes it.

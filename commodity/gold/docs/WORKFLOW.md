@@ -33,7 +33,7 @@ manager endpoint mappings, Gohar's unit change, and unresolved discrepancies.
 
 ## Mesghal source investigation
 
-Run `E:/Work/.venv/Scripts/python.exe -B commodity/gold/investigate_mesghal_nav.py`
+Run `python -B commodity/gold/investigate_mesghal_nav.py`
 from workspace root to verify the live Fipiran identity, request its historical
 chart, and cross-check TSETMC and the listed manager website. Each response is
 archived before parsing under `data/raw/funds/mesghal/snapshots/nav_investigation`;
@@ -55,7 +55,7 @@ TSETMC `nav_tsetmc.csv` are preserved; neither is an Ayar analysis fallback.
 
 ## Five-fund daily data collection
 
-Run `E:/Work/.venv/Scripts/python.exe commodity/gold/collect_daily.py` from the
+Run `python commodity/gold/collect_daily.py` from the
 workspace root. The active universe is Ayar, Tala, Kahroba, Ganj, and Gohar.
 `--fund <key>` limits collection to one fund; Mesghal remains available for
 explicit price-only evidence refresh. Routine TSETMC requests return the latest
