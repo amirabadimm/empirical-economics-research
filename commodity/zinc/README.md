@@ -1,115 +1,98 @@
 # Zinc Certificate Valuation
 
-## Source refresh checkpoint (2026-09-26)
-
-Online FX, Westmetall/LME, IME certificate and physical collectors completed.
-LME coverage ends 2026-09-25; shared FX ends 2026-09-24 (1405/07/02).
-Certificate raw coverage ends 2026-09-24, but the latest positive-volume
-certificate comparison is 2026-09-23 (213 observations). Eligible physical
-benchmark and bounded primary bubble end 2026-09-20 (206 primary observations).
-No extrapolation was added. All three production comparisons, both percentile
-methods, Power BI delivery and report figures were rebuilt. Research-only
-regression, historical gap studies and timelines were not refreshed.
-
-## Distribution update (2026-09-26)
-
-The distribution CSV now contains signed bubbles and two chronological expanding
-percentiles: `expanding_percentile` (equal observation weights) and
-`recent_weighted_percentile` (exponential calendar-day weights, 90-day half-life).
-The builder's `HALF_LIFE_DAYS` is configurable. Each date includes itself and ties
-using <=; the first observation ranks at 100. History count and effective weighted
-count expose small-sample limitations. Values are not smoothed or made absolute.
-Standalone CDF and absolute-exceedance plots/columns are replaced for this project;
-other commodities retain their existing behavior. Rebuild the distribution before
-running the updated notebook cells. The histogram is full-sample; percentile ranks
-use only rows through each date. Interpolated source values can still use later
-anchors, so these are not vintage-safe backtest signals. Primary and both intrinsic
-comparisons remain separate. Canonical bubble calculations are unchanged.
-
-## Valuation presentation (2026-09-23)
-
-The valuation notebook opens with the approved certificate-to-physical bubble.
-Certificate-to-intrinsic and physical-to-intrinsic comparisons each have a separate
-supporting chart. Intrinsic value is LME cash USD/kg multiplied by USD/IRR.
-Shared dashboards explicitly select these three approved outputs, primary first;
-experimental regression files are not mixed into the headline chart.
-Historical investigations remain in a labeled research appendix. No valuation
-formula, source data, or project completion status changed in this presentation update.
-
-## Shared execution checkpoint (2026-09-22)
-
-The delivered comparison uses the shared engine in `shared/certificate_pipeline`.
-Project-specific collectors, builders, and comparison sources are registered in `pipeline.json`.
-Run `python refresh_powerbi.py` to rebuild from local sources, add `--collect` to fetch
-new available source data first, or add `--plan` to preview the steps without writing.
-The existing double-click launcher retains its local-rebuild behavior.
-The engine stops on a failed step and publishes the delivery CSV only after all builders succeed.
-Product eligibility, alignment methods, and economic interpretation remain product-specific.
-Completed software delivery does not itself resolve the economic assumptions documented below.
-
-Double-click `refresh_powerbi.cmd` in this project to rebuild its physical benchmark, comparison, and `outputs/power_bi/zinc_certificate_physical_comparison.csv` for Power BI from existing raw inputs.
-
 ## Research question
 
-How does the Iranian zinc-ingot warehouse receipt trade relative to an eligible domestic
-physical basket and to an LME–FX intrinsic benchmark?
+How does the Iranian zinc-ingot warehouse receipt trade relative to an eligible domestic physical basket and to an LME-FX intrinsic benchmark?
 
-## Current checkpoint
+The project is designed to separate three economically different objects: the domestic physical market, the exchange-traded certificate, and an international intrinsic benchmark. The headline comparison is certificate versus estimated comparable domestic physical value, not certificate versus LME alone.
 
-- Data checkpoint: 2026-09-19
-- Certificate: 288 calendar observations, 210 positive-trading days, through 2026-09-20
-- Broad physical raw data: 6,398 rows, including 3,581 positive trades, through 1405/06/25
-- LME cash zinc: 4,733 observations from 2008-01-02 through 2026-09-18
-- Shared free-market USD/IRR: 13,096 observations through 1405/06/26
-- Official physical benchmark: 563 days from 2009-08-16 through 1405/06/29
-- Test suite: 14 network-free contract and pipeline tests
+## Data
+
+The production workflow combines:
+
+- IME zinc certificate trades;
+- broad IME physical zinc-market data;
+- LME cash zinc;
+- the shared free-market USD/IRR series.
+
+The documented checkpoint contains 6,398 broad physical-market rows, including 3,581 positive trades. The approved physical benchmark contains 563 daily observations. Certificate data contain more than 200 positive-trading observations in the active sample, while the primary modeled comparison contains 206 certificate days through 2026-09-20.
+
+Raw physical data intentionally retain both zinc ingot and zinc soil for auditability. Product filtering occurs only in the reproducible benchmark builder.
 
 ## Comparable physical underlying
 
-Broad raw data intentionally retain both zinc ingot and zinc soil for auditability. Zinc soil
-is economically distinct and never enters the ingot benchmark. The approved underlying is a
-volume-weighted daily basket of 99.97 and 99.98 zinc ingots traded through cash or cash-matching
-contracts with positive executed price and quantity.
+Zinc soil is economically distinct from zinc ingot and never enters the approved benchmark.
 
-The primary method interpolates the physical/intrinsic ratio between exact certificate/physical
-anchors without extrapolation. Three measures are reported separately: physical versus intrinsic,
-certificate versus intrinsic, and certificate versus estimated domestic physical value.
+The benchmark is a volume-weighted daily basket of 99.97 and 99.98 zinc ingots traded through cash or cash-matching contracts with positive executed price and quantity. This scope is explicit so that a statistically convenient but economically different product cannot silently enter the valuation.
 
-## Main current result
+## Method
 
-The primary output contains 206 modeled certificate days from 2025-10-26 through 2026-09-20:
-50 observed anchors and 156 interpolated days. The certificate premium to estimated domestic
-physical value averages 0.80%, compared with an average direct certificate/intrinsic discount
-of 20.54%. This difference demonstrates the economic importance of the domestic physical basis.
+The transparent international benchmark is
 
-## Reproduction from the repository root
-
-Canonical physical and certificate trades remain separate under `data/raw/{physical,certificate}`.
-The physical benchmark is written to `data/processed/physical`; every bubble and regression table
-is written to `data/processed/bubble`.
-
-```powershell
-python .\commodity\zinc\src\zinc\collectors\certificate.py
-python .\commodity\zinc\src\zinc\collectors\physical.py
-python .\commodity\zinc\src\zinc\collectors\lme.py
-python .\shared\market_data\fx.py
-python .\commodity\zinc\src\zinc\processing\build_physical_benchmark.py
-python .\commodity\zinc\src\zinc\processing\build_intrinsic_bubbles.py
-python .\commodity\zinc\src\zinc\processing\build_certificate_bubble.py
-python .\commodity\zinc\src\zinc\processing\build_intrinsic_regression.py
+```text
+intrinsic_price = LME_cash_USD_per_kg × USD_IRR
 ```
 
-The manual grade-analysis notebook is `notebooks/01_zinc_analysis.ipynb`; the presentation
-notebook is `notebooks/02_bubble_analysis.ipynb`. Detailed methodology is in
-[`docs/WORKFLOW.md`](docs/WORKFLOW.md), and the English report is in
-[`reports/zinc/research`](../../reports/zinc/research/).
+The primary method estimates the domestic physical basis by interpolating the observed physical-to-intrinsic ratio between exact certificate/physical anchors. Interpolation is bounded by observed anchors; there is no extrapolation outside the supported range.
 
-Both notebooks use interactive Plotly figures and were executed against this checkpoint.
-The static research report retains its prior data vintage.
-# Historical bubble distributions
+Three valuation measures remain separate throughout the project:
 
-`data/processed/bubble/zinc_bubble_distribution.csv` is the standardized Power BI table for all
-computed zinc bubble types. Certificate-versus-physical rows include observed physical anchors
-and bounded linear interpolations. `point_method` and `is_interpolated` identify every row. The table contains signed bubble percentages,
-empirical `F(x)`, and `P(|Bubble| >= |x|)`. Distribution figures are written to
-`data/processed/analysis`.
+- domestic physical price versus LME-FX intrinsic value;
+- certificate price versus LME-FX intrinsic value;
+- certificate price versus estimated comparable domestic physical value.
+
+This separation matters because a large direct certificate-to-LME discount can coexist with a much smaller certificate-to-domestic-physical premium once the domestic basis is modeled.
+
+## Main result
+
+The primary output contains **206 modeled certificate days** from 2025-10-26 through 2026-09-20. Of these, **50** are observed physical anchors and **156** are bounded interpolations.
+
+The certificate premium to estimated domestic physical value averages **0.80%**.
+
+By contrast, the direct certificate-to-LME-FX comparison shows an average **20.54% discount**.
+
+The difference is the central empirical finding of the project: the domestic physical-market basis is economically important, and using the international benchmark alone gives a very different view of relative valuation.
+
+## Historical distributions
+
+The standardized distribution table keeps signed bubble values and chronological empirical ranks. It reports an expanding equal-weight percentile and a recent-weighted percentile with a configurable 90-calendar-day half-life.
+
+Certificate-versus-physical rows preserve `point_method` and `is_interpolated`, so observed anchors and model-derived days remain identifiable. Because bounded interpolation can use later anchors, these historical ranks are descriptive and are not presented as vintage-safe trading backtests.
+
+## Reproduction
+
+From the repository root:
+
+```bash
+python commodity/zinc/src/zinc/collectors/certificate.py
+python commodity/zinc/src/zinc/collectors/physical.py
+python commodity/zinc/src/zinc/collectors/lme.py
+python shared/market_data/fx.py
+python commodity/zinc/src/zinc/processing/build_physical_benchmark.py
+python commodity/zinc/src/zinc/processing/build_intrinsic_bubbles.py
+python commodity/zinc/src/zinc/processing/build_certificate_bubble.py
+python commodity/zinc/src/zinc/processing/build_intrinsic_regression.py
+```
+
+For the standard production workflow, `python commodity/zinc/refresh_powerbi.py --collect` refreshes documented sources and rebuilds approved outputs. The shared certificate engine can also inspect or rebuild the pipeline from its manifest.
+
+## Outputs
+
+- `data/processed/physical/` — approved physical benchmark;
+- `data/processed/bubble/` — certificate and intrinsic comparison tables;
+- `data/processed/analysis/` — distribution and presentation outputs;
+- `notebooks/01_zinc_analysis.ipynb` — manual grade and scope analysis;
+- `notebooks/02_bubble_analysis.ipynb` — presentation-oriented valuation analysis;
+- [`reports/zinc/research`](../../reports/zinc/research/) — English research report and reproducible figures.
+
+Canonical physical and certificate records remain separate under `data/raw/{physical,certificate}`. Notebooks are read-only with respect to those canonical sources.
+
+## Reproducibility and validation
+
+The project documents 14 network-free contract and pipeline tests at its research checkpoint. Detailed methodology, source contracts, and processing rules are maintained in [`docs/WORKFLOW.md`](docs/WORKFLOW.md), while current coverage and operational refresh history belong in [`docs/STATUS.md`](docs/STATUS.md).
+
+## Limitations
+
+The LME-FX series is not a complete import-parity model. Transport, financing, storage, grade, delivery terms, market segmentation, liquidity, capital controls, and institutional constraints can contribute to the domestic basis.
+
+The primary model is also limited by the density and timing of physical anchors. Interpolated values are transparent model outputs, not observed transactions. Results are research outputs, not investment advice.
