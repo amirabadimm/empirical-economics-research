@@ -21,4 +21,4 @@ def test_weekly_lags_follow_friday_grid_and_share_same_pairs():
     assert lags.paired_weeks.nunique() == 1
     assert lags.correlation.notna().sum() == 5
     assert models.status.iloc[0] == "reported"
-    assert pd.notna(models.joint_usd_fdr_pvalue.iloc[0])
+    assert "joint_usd_fdr_pvalue" not in models.columns

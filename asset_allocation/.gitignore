@@ -7,6 +7,7 @@ reports/**
 !**/
 !**/.gitkeep
 !reports/*.md
+!reports/*.tex
 __pycache__/
 .ipynb_checkpoints/
 .pytest_cache/

@@ -5,7 +5,7 @@ series through 1403/05 from byte-identical source PDFs and staging workbook. Its
 price levels match this project's CBI-period panel. The post-1403/05 Kilid extension remains
 specific to this asset-allocation project and is not part of the CBI dataset in the Housing repository.
 
-The active four-fund REIT notebook also compares reconstructed fund monthly returns with housing price appreciation in the **same** Jalali month, without lag or filling. The 1403/07–1405/06 comparison lies entirely in the flagged Kilid extension. The processed pair grid and Pearson summary are `data/processed/analysis/reit_housing_monthly_{pairs,correlation}.csv`; Kakh's four paired months are below the 17-pair reporting minimum.
+The active four-fund REIT notebook compares reconstructed fund monthly returns with housing price appreciation in the **same** Jalali month, without lag or filling, for trailing 12, 24, and 36 months. The active results are in `data/processed/analysis/reit_requested_correlation_heatmaps.csv`; each heatmap cell shows its paired count and suppresses estimates below five pairs or 70% coverage. The 1403/07–1405/06 comparison lies entirely in the flagged Kilid extension. Arzesh Maskan and Danik have 22 of 24 pairs because their REIT returns are missing in 1405/01–02; Kelid also lacks 1403/07 and has 21. Kakh's four paired months are insufficient. The earlier `reit_housing_monthly_{pairs,correlation}.csv` files are historical derivatives. Housing publishes monthly observations only; daily and weekly housing returns are neither available nor imputed.
 
 ## Active sources
 

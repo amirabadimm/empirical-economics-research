@@ -1,0 +1,324 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.2cm]{geometry}
+
+\usepackage[T1]{fontenc}
+
+\usepackage{lmodern}
+
+\usepackage{booktabs,graphicx,amsmath,microtype,hyperref}
+
+\hypersetup{colorlinks=true,linkcolor=blue!55!black}
+
+\setlength{\parindent}{0pt}
+
+\setlength{\parskip}{0.6em}
+
+\title{\textbf{Iranian REIT Cross-Asset Return Analysis}\\\large Dividend-Reinvested Returns, Correlation Windows, and Dollar Leads}
+
+\author{Asset Allocation research workflow}
+
+\date{2026-10-06 22:09 Asia/Tehran}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\begin{abstract}
+
+Four Iranian real-estate funds are compared with TEDPIX, USD/IRR, and Tehran housing. The market endpoint is 2026-10-02 and the monthly housing endpoint is 2026-09-22. Fund returns use raw traded closes and immediate reinvestment of the three recorded approved distributions. Six correlation grids contain 80 cells; 66 pass the observation and coverage rules. The results describe historical association rather than causal effects or investable forecasts.
+
+\end{abstract}
+
+\section{Data, return construction, and sample rules}
+
+The fund series values fractional units at raw traded closes. Recorded cash is assumed available on the assembly date and buys units at the first traded close on or afterward. Actual cash dates and complete distribution histories remain unaudited. Arzesh Maskan and Kakh have no approved cash event in the current ledger; equality of their reconstructed and traded-close paths does not establish zero distributions.
+
+Daily comparisons align observed Gregorian dates; weekly comparisons align completed Friday-ending weeks; monthly comparisons align the same Jalali month. A return is missing across a long trading gap or the USD/IRR source-method boundary. No missing return is filled or interpolated. Housing is monthly only: official CBI observations through 1403/05 and a flagged chain-linked Kilid listing-price extension afterward. The 36-month housing window spans both regimes; the 12- and 24-month windows lie entirely in the extension.
+
+Each Pearson coefficient requires at least five paired returns, at least 70\% nominal-window coverage, and variation in both series. Daily coverage assumes 20 trading sessions per month, weekly coverage 52/12 weeks per month, and monthly coverage one return per month. The two-year dollar-lead sample requires at least 74 pairs. A dash in any table marks an unreported coefficient; the paired count remains visible.
+
+\section{Two-year cumulative returns}
+
+Each asset is rebased at its own first observed point inside the two-year window; dates and observation counts differ. The REIT rows reflect recorded-dividend reinvestment. Kakh is excluded because its available cumulative history begins much later. Housing is monthly price appreciation only; rent and ownership costs are excluded.
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Asset & Baseline & Last observed & Observed points & Cumulative return \\
+\midrule
+TEDPIX & 2024-10-04 & 2026-10-02 & 105 weeks & +267.2\% \\
+USD/IRR & 2024-10-04 & 2026-10-02 & 104 weeks & +312.8\% \\
+Arzesh Maskan & 2024-10-04 & 2026-10-02 & 94 weeks & +156.8\% \\
+Kelid & 2024-10-04 & 2026-10-02 & 93 weeks & +97.9\% \\
+Danik & 2024-10-04 & 2026-10-02 & 94 weeks & +74.3\% \\
+Tehran housing & 2024-10-21 & 2026-09-22 & 24 months & +160.7\% \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\section{Recorded distributions and reinvestment}
+
+The three ledger events are shown below. The purchase date is the first traded close on or after the assembly date; this is a scenario rather than a verified cash-payment schedule.
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Fund & Assembly date & Purchase date & IRR/unit & Purchase close IRR & Units after \\
+\midrule
+Kelid & 2025-10-08 & 2025-10-11 & 907 & 10,380 & 1.087380 \\
+Kelid & 2026-09-16 & 2026-09-19 & 864 & 16,461 & 1.144454 \\
+Danik & 2025-08-18 & 2025-08-18 & 1,800 & 11,057 & 1.162793 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+For funds with recorded events, the following whole-history comparison separates traded-close appreciation from the specified reinvestment scenario. These baselines are each fund's first traded observation, so this table is not a common-period ranking.
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Fund & First trade & Last trade & Traded close & Reinvested & Difference \\
+\midrule
+Kelid & 2024-09-28 & 2026-10-04 & +76.6\% & +102.1\% & +25.5\% \\
+Danik & 2023-08-01 & 2026-10-04 & +57.9\% & +83.6\% & +25.7\% \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\section{Recent reconstructed fund returns}
+
+The next two tables retain the notebook's latest observed weekly and monthly dividend-reinvested returns. A dash denotes a missing return, not zero. Weekly periods end Friday; monthly periods use Jalali year/month.
+
+\subsection{Latest eight weekly returns}
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Friday-ending week & Arzesh Maskan & Kelid & Danik & Kakh \\
+\midrule
+2026-08-14 & -3.20\% & -2.92\% & -3.51\% & -0.18\% \\
+2026-08-21 & -1.68\% & -1.19\% & -0.56\% & +0.68\% \\
+2026-08-28 & +9.91\% & +10.56\% & -3.72\% & +5.43\% \\
+2026-09-04 & -1.45\% & -2.75\% & +1.25\% & -2.86\% \\
+2026-09-11 & +10.29\% & +4.48\% & +6.40\% & +3.56\% \\
+2026-09-18 & -2.09\% & -0.19\% & -3.06\% & -1.26\% \\
+2026-09-25 & -1.68\% & -3.69\% & -2.13\% & +1.36\% \\
+2026-10-02 & +5.39\% & +6.13\% & +6.34\% & +2.06\% \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\subsection{Latest eight monthly returns}
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Jalali month & Arzesh Maskan & Kelid & Danik & Kakh \\
+\midrule
+1404/10 & -1.26\% & -6.95\% & -12.05\% & -- \\
+1404/11 & +7.69\% & +4.41\% & +3.02\% & -- \\
+1404/12 & -11.48\% & -8.33\% & -9.80\% & -- \\
+1405/02 & -- & -- & -- & -- \\
+1405/03 & +1.03\% & +7.87\% & -2.83\% & -6.52\% \\
+1405/04 & -9.04\% & +2.56\% & +2.47\% & -2.54\% \\
+1405/05 & +5.70\% & +4.87\% & +3.57\% & +8.02\% \\
+1405/06 & +13.61\% & +6.52\% & -3.71\% & +6.07\% \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\section{Frequency-matched Pearson correlations}
+
+Every cell gives Pearson $r$ and its paired observation count $n$. Columns marked m are trailing Jalali months; columns marked w are prior completed weeks of USD/IRR returns. REITs are rows throughout. Correlations are descriptive and are not causal estimates.
+
+\subsection{Daily REIT and TEDPIX returns: same-day correlation}
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+REIT & 1m & 3m & 6m & 12m \\
+\midrule
+Arzesh Maskan & +0.593 (n=21) & +0.539 (n=58) & +0.348 (n=100) & +0.459 (n=200) \\
+Kelid & +0.512 (n=20) & +0.500 (n=57) & +0.342 (n=99) & +0.485 (n=198) \\
+Danik & +0.543 (n=21) & +0.291 (n=57) & +0.202 (n=99) & +0.354 (n=199) \\
+Kakh & +0.238 (n=21) & +0.211 (n=58) & +0.157 (n=97) & -- (n=99) \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\subsection{Weekly REIT and TEDPIX returns: same-week correlation}
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+REIT & 1m & 3m & 6m & 12m & 24m \\
+\midrule
+Arzesh Maskan & +0.717 (n=5) & +0.614 (n=14) & +0.336 (n=21) & +0.370 (n=43) & +0.468 (n=92) \\
+Kelid & +0.844 (n=5) & +0.557 (n=14) & +0.353 (n=21) & +0.436 (n=43) & +0.484 (n=89) \\
+Danik & +0.643 (n=5) & -0.122 (n=14) & -0.124 (n=21) & +0.163 (n=43) & +0.251 (n=92) \\
+Kakh & +0.331 (n=5) & +0.195 (n=14) & +0.028 (n=21) & -- (n=21) & -- (n=21) \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\subsection{Monthly REIT and TEDPIX returns: same-month correlation}
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+REIT & 12m & 24m & 36m \\
+\midrule
+Arzesh Maskan & +0.434 (n=10) & +0.393 (n=22) & +0.359 (n=34) \\
+Kelid & +0.492 (n=10) & +0.628 (n=21) & -- (n=21) \\
+Danik & +0.209 (n=10) & +0.257 (n=22) & +0.225 (n=33) \\
+Kakh & -- (n=4) & -- (n=4) & -- (n=4) \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\subsection{Monthly REIT and Tehran housing price returns: same-month correlation}
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+REIT & 12m & 24m & 36m \\
+\midrule
+Arzesh Maskan & -0.062 (n=10) & -0.064 (n=22) & -0.045 (n=34) \\
+Kelid & +0.049 (n=10) & +0.094 (n=21) & -- (n=21) \\
+Danik & -0.121 (n=10) & -0.178 (n=22) & -0.156 (n=33) \\
+Kakh & -- (n=4) & -- (n=4) & -- (n=4) \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+Only monthly housing observations exist. Daily and weekly housing heatmaps would require a separate observed high-frequency source and are not calculated here.
+
+\subsection{Daily REIT and USD/IRR returns: same-day correlation}
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrr}
+\toprule
+REIT & 1m & 3m \\
+\midrule
+Arzesh Maskan & +0.021 (n=21) & -0.200 (n=58) \\
+Kelid & -0.153 (n=20) & -0.273 (n=57) \\
+Danik & -0.042 (n=21) & -0.170 (n=57) \\
+Kakh & -0.278 (n=21) & -0.239 (n=58) \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\subsection{Weekly REIT returns and earlier USD/IRR returns: two-year lead correlations}
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+REIT & 4w & 13w & 26w \\
+\midrule
+Arzesh Maskan & -0.017 (n=89) & -0.040 (n=89) & -0.121 (n=90) \\
+Kelid & -0.049 (n=86) & -0.044 (n=86) & -0.139 (n=87) \\
+Danik & -0.176 (n=89) & -0.020 (n=89) & -0.098 (n=90) \\
+Kakh & -- (n=20) & -- (n=20) & -- (n=21) \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+The dollar is observed 4, 13, or 26 completed weeks before the REIT return (approximately 1, 3, or 6 months). All three columns use the last 24 Jalali months of REIT weeks; a coefficient is suppressed if coverage is too short.
+
+\section{Conditional weekly predictive regression}
+
+The separate model is $r^{\mathrm{REIT}}_t=\alpha+\phi r^{\mathrm{REIT}}_{t-1}+\beta_1 r^{\mathrm{USD}}_{t-1}+\beta_2 r^{\mathrm{USD}}_{t-2}+\gamma r^{\mathrm{TEDPIX}}_{t-1}+\varepsilon_t$. The joint USD p-value uses unadjusted HAC/Newey--West standard errors with four lags. Incremental $R^2$ compares the full model with a model using only the REIT and TEDPIX lag terms on identical rows. At least 52 complete weeks are required.
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+Fund & Weeks & USD lag 1 beta & USD lag 2 beta & Joint p & Incremental R2 & Status \\
+\midrule
+Arzesh Maskan & 87 & +0.437 & +0.095 & 0.0020 & +0.064 & Reported \\
+Kelid & 84 & +0.187 & +0.007 & 0.0431 & +0.036 & Reported \\
+Danik & 87 & +0.283 & +0.180 & 0.0041 & +0.053 & Reported \\
+Kakh & 18 & -- & -- & -- & -- & Insufficient history \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\section{Correlation-grid coverage summary}
+
+Reported cells satisfy the observation-count, coverage, and variation rules. The complete grid tables above retain paired counts for suppressed cells.
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Benchmark & Frequency & Columns & Cells & Reported \\
+\midrule
+TEDPIX & daily & 1/3/6/12 & 16 & 15 \\
+TEDPIX & weekly & 1/3/6/12/24 & 20 & 18 \\
+TEDPIX & monthly & 12/24/36 & 12 & 8 \\
+Tehran housing & monthly & 12/24/36 & 12 & 8 \\
+USD/IRR & daily & 1/3 & 8 & 8 \\
+USD/IRR leads REIT & weekly & 4/13/26 & 12 & 9 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\section{Results and interpretation}
+
+In the two-year cumulative comparison, USD/IRR had the largest nominal change (+312.8\%), followed by TEDPIX (+267.2\%). The three included REIT scenarios ranged from +74.3\% to +156.8\%; Tehran housing price appreciation was +160.7\%. These values use each asset's stated baseline and are not equal-horizon risk-adjusted returns.
+
+The 24-month weekly TEDPIX correlations for the three longer-history funds range from +0.251 to +0.484. Kakh's 12- and 24-month weekly coefficients are suppressed because its history does not cover enough of those windows. Short windows with five weekly pairs should be treated as unstable descriptive estimates even when they pass the formal threshold.
+
+The reportable 24-month monthly housing coefficients are Arzesh Maskan -0.064 (22 pairs), Kelid +0.094 (21 pairs), Danik -0.178 (22 pairs). REIT returns are missing in 1405/01--02 for Arzesh Maskan and Danik; Kelid also lacks 1403/07. The housing source is a listing-price proxy in this interval, so these coefficients should not be read as transaction-price or rent-return relationships.
+
+The three-month daily USD/IRR coefficients range from -0.273 to -0.170. The two-year dollar-leading-weekly-return coefficients for the three longer-history funds range from -0.176 to -0.017; Kakh is suppressed for insufficient two-year coverage. These simple correlations do not by themselves establish a stable dollar lead at the specified 4/13/26-week offsets. The separate one- and two-week conditional regression has unadjusted joint p-values below 0.05 for 3 funds, but it is in-sample, uses different lags, and is not evidence of causation or out-of-sample forecasting skill.
+
+\section{Limitations and reproducibility}
+
+Only three approved distributions are in the current reinvestment ledger. Additional annual payments and actual payment dates need verification before these reconstructed paths can be called complete total returns. The 36-month housing comparison crosses the CBI-to-Kilid source boundary. Daily and weekly housing returns are unavailable. Pair counts vary because source and fund observations are missing; no interpolation or synthetic return is used. Multiple windows are exploratory and their coefficients should not be interpreted as independent confirmations.
+
+\textbf{Rebuild order.} Run the documented REIT reinvestment, cumulative-return, weekly/monthly-return, regression, and monthly housing builders; then run \texttt{python -m asset\_allocation.build\_reit\_requested\_heatmaps} and \texttt{python -m asset\_allocation.build\_reit\_latex\_report}. The report reads processed data only and does not alter canonical sources.
+
+\end{document}

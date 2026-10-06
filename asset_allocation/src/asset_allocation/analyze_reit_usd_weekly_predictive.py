@@ -8,7 +8,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
-from statsmodels.stats.multitest import multipletests
 
 from asset_allocation.analyze_reit_tedpix_weekly import atomic_frame, latest_complete_friday, shift_jalali_months
 from asset_allocation.build_reit_reinvested_correlations import TEDPIX, USD, WEEKLY_RETURNS, returns
@@ -93,11 +92,6 @@ def analyze(panel: pd.DataFrame, cutoff: date, anchor: date,
                 row["status"] = "singular_design"
         model_rows.append(row)
     models = pd.DataFrame(model_rows)
-    models["joint_usd_fdr_pvalue"] = np.nan
-    eligible = models.joint_usd_pvalue.notna()
-    if eligible.any():
-        models.loc[eligible, "joint_usd_fdr_pvalue"] = multipletests(
-            models.loc[eligible, "joint_usd_pvalue"], method="fdr_bh")[1]
     return pd.DataFrame(lag_rows), models
 
 
