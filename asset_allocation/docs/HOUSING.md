@@ -107,6 +107,8 @@ Kilid-derived row is flagged `secondary_proxy_low_overlap_similarity`.
 
 Housing levels and returns are published as rows in `monthly_asset_levels.csv` and
 `monthly_asset_returns.csv`. The panel uses CBI through 1403/05 and linked Kilid thereafter.
+
+On 2026-10-06 the incremental Kilid collector archived a new immutable page response and validated its overlap with the earlier snapshot before publishing `data/raw/housing/kilid/tehran_monthly.csv`. The canonical raw series now has 37 complete months through 1405/06. The page also contains 1405/07, which is incomplete and excluded. The new 1405/06 raw level is 220 million toman/m² (2,200 million IRR/m²); its linked level is 2,248.267898 million IRR/m² and its monthly appreciation is 4.7619%. This is a Kilid listing-price proxy, not verified CBI transaction-price data. Source coverage and derived-output coverage both end at 1405/06; the two-year housing chart has 24 monthly observations through 2026-09-22.
 The 1395/01 return remains missing because 1394/12 is unavailable. Raw Kilid levels, link factors,
 source regimes, and quality flags are retained in the level panel. Earlier SCI, D-learn,
 Aloomelek, Esfand-only and other mixed-source outputs remain retired.

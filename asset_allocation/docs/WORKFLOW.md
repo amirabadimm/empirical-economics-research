@@ -2,11 +2,11 @@
 
 The CBI-period housing levels were cross-checked against the independently curated
 101-month CBI series in the separate Housing repository on 2026-09-19; all levels agree. This project
-continues to generate its own four-asset panel and post-1403/05 Kilid extension.
+continues to generate its own four-asset panel and post-1403/05 Kilid extension. Refresh Kilid with `python -m asset_allocation.collectors.kilid_housing` before rebuilding the monthly panel; the collector archives exact responses, validates overlapping values, writes the canonical raw CSV atomically, and excludes the incomplete current month.
 
 ## Research objective
 
-Build and validate a four-asset monthly-return panel from 1395/01/01 through 1405/05/31,
+Build and validate a four-asset monthly-return panel from 1395/01/01 through 1405/06/31,
 use a historical run to test the allocation algorithm, and then produce a forward-looking optimal
 portfolio informed by an expert survey. The completed ex-post analysis is a pilot and data-building
 stage; it is not the final purpose of the project.
@@ -20,7 +20,7 @@ The four assets are:
 ## Mathematical specification
 
 Stage I allocates the risky sleeve across gold, equity, and Tehran housing. Etemad is the
-investable benchmark. For each complete year—and separately for 1405/01-05 YTD—positions are
+investable benchmark. For each complete year—and separately for 1405/01-06 YTD—positions are
 bought once and held, and the model
 maximizes `sqrt(12) * mean(risky_sleeve_return - benchmark_return) / sample_std(...)` subject to
 nonnegative risky weights summing to one. This is an ex-post information-ratio-style statistic,
@@ -48,7 +48,7 @@ Initial collection on 2026-09-08 found a TSETMC reference/trading segment beginn
 2015-05-17. Preserve this finding as source evidence. Establish the usable return start only
 after the listing-history and fund-distribution audit; do not bridge the gap by interpolation.
 
-اعتماد is the sole fixed-income asset for 1395/01–1405/05. Deposit rates, اخزا and other
+اعتماد is the sole fixed-income asset for 1395/01–1405/06. Deposit rates, اخزا and other
 funds are not active inputs and must not be spliced into this series. Select the final
 traded close in each Jalali month; exclude zero-volume reference rows. The return method
 and rejected alternatives are recorded in [FIXED_INCOME.md](FIXED_INCOME.md).
@@ -131,7 +131,7 @@ estimation design explicitly rather than manufacture observations.
 ## Stage 6: portfolio methodology
 
 Stage I is implemented in `notebooks/asset_allocation_analysis.ipynb` for 1396-1404 and the
-five-month 1405 YTD period. Each solution is checked against corner
+six-month 1405 YTD period. Each solution is checked against corner
 portfolios, equal weights, and 25,000 deterministic random simplex portfolios. Results are
 reported as hindsight diagnostics and retain the 12-observation annual-sample limitation.
 
@@ -168,13 +168,13 @@ U_y(alpha; gamma) = compounded_period_return_y(alpha)
 The output is the full response curve `gamma -> alpha_y*(gamma)` for each year. Do not designate
 any gamma as preferred, representative, or investor-specific. Treat every result as ex-post
 sensitivity, not an investor policy.
-Incomplete 1405 is optimized and reported strictly as a five-month YTD diagnostic, never as a
+Incomplete 1405 is optimized and reported strictly as a six-month YTD diagnostic, never as a
 full-year result.
 
 ### Alternative sigma fixed over time
 
 The notebook repeats both stages with one risk model estimated over the complete analysis sample.
-Use all 113 aligned monthly observations in 1396–1405/05 to calculate
+Use all 114 aligned monthly observations in 1396–1405/06 to calculate
 
 ```text
 Sigma_fixed = 12 * covariance(monthly asset returns)
@@ -195,7 +195,7 @@ TE_fixed(w) = sqrt(w' * Sigma_excess_fixed * w)
 
 Use covariance matrices rather than weighted standalone volatilities so cross-asset co-movement
 and diversification remain represented. The resulting fixed annualized asset volatilities are
-35.03% for gold, 40.76% for equity, 15.04% for housing, and 2.74% for fixed income.
+34.90% for gold, 40.83% for equity, 14.98% for housing, and 2.73% for fixed income.
 
 In alternative Stage I, annual realized differential return continues to change by year, while
 `TE_fixed(w)` does not. In alternative Stage II, yearly compounded returns continue to change,
@@ -210,7 +210,7 @@ de-risks earlier in 1396 and 1398, while retaining more high-gamma risky exposur
 1403, 1404, and 1405 YTD. These differences measure sensitivity to the risk definition; they do
 not establish that either curve is an investor recommendation.
 
-Because the fixed covariance matrices use the complete 1396–1405/05 sample, earlier-year risk
+Because the fixed covariance matrices use the complete 1396–1405/06 sample, earlier-year risk
 estimates include information from later observations. The second specification is therefore a
 descriptive look-ahead comparison, not an investable backtest. A future investable extension must
 estimate volatility using only information available before each allocation date, for example
@@ -236,11 +236,26 @@ optimization objective and constraints. Publish the resulting portfolio only aft
 analysis, risk specification, and reproducible model run are complete. The final output must clearly
 separate expert expectations, historical risk estimates, and optimizer decisions.
 
+## Real estate funds: current four-fund workflow
+
+The active English-language notebook is `notebooks/iran_reits_cross_asset_analysis.ipynb`. It covers Kelid, Danik, Arzesh Maskan, and Kakh. Eight funds remain in the immutable TSETMC source archive, but the active notebook displays only these four. If source prices or TEDPIX need refreshing, first run the documented incremental collectors `asset_allocation.collectors.tsetmc_reits` and `asset_allocation.collectors.tsetmc_tedpix`; validate the resulting raw coverage before rebuilding derivatives. Do not use exchange-adjusted fund prices for the current returns.
+
+From `asset_allocation` with `PYTHONPATH=src`, run the following in order:
+
+1. `python -m asset_allocation.build_reit_assembly_reinvestment`. Read `config/reit_approved_distributions.csv`, validate assembly dates and amounts, and buy fractional units at the first traded close on or after each assembly. The derived daily value is units times raw traded close. Kelid's two approved amounts and Danik's one amount are included. This assumes immediate cash availability; actual payment dates and other annual distributions remain under audit. Arzesh Maskan and Kakh have no recorded event, so their scenario currently equals traded-price change without establishing zero dividends.
+2. `python -m asset_allocation.build_reit_two_year_cumulative` and `python -m asset_allocation.build_reit_reinvested_correlations`. The first builds the Friday-ending two-year comparison with USD/IRR and TEDPIX. The second builds derived weekly and monthly fund returns from the same reinvested-value path. Its broad same-period correlation table is retained as a research derivative but is not plotted in the active notebook.
+3. `python -m asset_allocation.analyze_reit_usd_weekly_predictive`. Its 24-Jalali-month lag table compares each fund's weekly return with USD/IRR from the same or 1–4 prior completed weeks. A complete Friday grid makes a lag exactly one calendar week. All five coefficients for one fund use the same paired dates; at least 74 common weeks are required. USD returns across the shared FX source-method boundary remain missing. The regression uses fund lag 1, USD lags 1 and 2, and TEDPIX lag 1. It requires 52 complete weeks, reports a HAC(4) joint test of the USD terms, Benjamini–Hochberg-adjusted p-values across reportable funds, and incremental in-sample R² relative to a same-sample model without USD. Kakh does not yet meet the sample minimum. These statistics do not establish causation or out-of-sample prediction.
+4. Refresh housing separately with `python -m asset_allocation.collectors.kilid_housing`, `python -m asset_allocation.build_monthly_return_panel`, and `python -m asset_allocation.build_housing_two_year_cumulative` when a new complete Kilid month is available. Housing stays at observed month ends and is a flagged chain-linked listing-price proxy, excluding rent and ownership costs.
+5. Execute the notebook and check all four Plotly figures and the saved latest-return tables. It shows the two-year cumulative comparison, traded versus custom reinvested fund returns, the USD lag curve, and the compact predictive-regression table. No gaps are filled in processed data; lines may connect available observations visually.
+6. Run `python -m asset_allocation.build_reit_usd_report` to generate `reports/REIT_USD_LEAD_LAG_REPORT.html` and `.md` from the already validated derivatives. The standalone HTML contains its Plotly runtime and three interactive charts; the Markdown companion preserves the key numbers in versioned research documentation. The generator does not collect sources or modify raw data. Inspect sample dates, suppression, and chart labels before sharing.
+
+Historical-only derivatives include the earlier eight-fund traded-close panels, one-month and day/week/month lag heatmaps, exchange-adjusted-price comparison, and payment-date reinvestment audit. Preserve their raw evidence and processed outputs; do not describe them as inputs or figures in the current notebook. The separate payment-date ledger must not be combined with the assembly-date scenario, because that would count Kelid's 907 IRR distribution twice. See `docs/REIT_DIVIDEND_AUDIT.md` for unresolved payout coverage.
+
 ## Data governance and independent execution
 
 Use project-local dependencies, project-relative paths, and explicit optional external inputs.
 No sibling research-project imports or hard-coded workstation paths. Existing shared canonical
-inputs retain their owner; this scope does not require an FX series.
+inputs retain their owner; the cumulative and fund-on-USD extensions read the shared FX series directly.
 
 Collectors alone may refresh canonical raw CSVs through documented incremental, idempotent,
 atomic writes. Preserve source responses byte-for-byte; never overwrite, delete, or extend

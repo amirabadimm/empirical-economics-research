@@ -17,6 +17,8 @@ The collector validates the table shape, numeric values, Jalali/Gregorian equiva
 dates, and conflicting records. It archives the downloaded page before atomically replacing the
 canonical CSV. Copper and Zinc both read this exact file.
 
+The 2026-10-05 collector refresh added seven dates, bringing the canonical series to 13,110 dates through 1405/07/12 (2026-10-04). Asset Allocation reads this file directly for its derived weekly real estate fund versus USD/IRR comparison; its regression outputs remain under `asset_allocation/data/processed/analysis`.
+
 ## LME contract
 
 `shared/market_data/lme.py` owns Westmetall download, parsing, validation, immutable-page

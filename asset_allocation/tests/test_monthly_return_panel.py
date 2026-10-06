@@ -15,17 +15,17 @@ from asset_allocation.audit_housing import AUDIT_OUTPUT_PATH, audit_workbook
 
 def test_panel_has_complete_month_asset_grid_and_no_filled_missing_returns() -> None:
     result = build()
-    assert result["level_rows"] == 126 * 4
-    assert result["return_rows"] == 125 * 4
+    assert result["level_rows"] == 127 * 4
+    assert result["return_rows"] == 126 * 4
     with LEVELS_PATH.open(encoding="utf-8-sig", newline="") as source:
         levels = list(csv.DictReader(source))
     with RETURNS_PATH.open(encoding="utf-8-sig", newline="") as source:
         returns = list(csv.DictReader(source))
     assert {(row["jalali_period"], row["asset_id"]) for row in levels} == {
-        (period, asset) for period in periods("1394/12", "1405/05") for asset in ASSETS
+        (period, asset) for period in periods("1394/12", "1405/06") for asset in ASSETS
     }
     assert {(row["jalali_period"], row["asset_id"]) for row in returns} == {
-        (period, asset) for period in periods("1395/01", "1405/05") for asset in ASSETS
+        (period, asset) for period in periods("1395/01", "1405/06") for asset in ASSETS
     }
     housing_first = next(row for row in returns
                          if row["jalali_period"] == "1395/01" and row["asset_id"] == "tehran_housing")
@@ -52,7 +52,7 @@ def test_panel_has_complete_month_asset_grid_and_no_filled_missing_returns() -> 
     assert corrected["1397/07"]["source_method"] == "CBI_source_adjudicated_override"
 
     housing_returns = [row for row in returns if row["asset_id"] == "tehran_housing"]
-    assert sum(bool(row["monthly_return"]) for row in housing_returns) == 124
+    assert sum(bool(row["monthly_return"]) for row in housing_returns) == 125
     assert all(row["monthly_return"] for row in housing_returns[1:])
 
 

@@ -1,4 +1,6 @@
-﻿# Planned data contract
+# Planned data contract
+
+The four-REIT assembly-date reinvestment scenario writes `data/processed/analysis/reit_assembly_reinvested_daily.csv` and its event audit, then `reit_reinvested_weekly_returns.csv` and `reit_reinvested_monthly_returns.csv`. The daily level is fractional units times raw traded close, with units increased at the first traded close on or after each approved assembly date. `reit_usd_weekly_lag_correlations.csv` holds lag 0–4 Pearson coefficients, a common paired-week count per fund, sample dates, and suppression status; fewer than 74 common weeks are suppressed. `reit_usd_weekly_predictive_regressions.csv` holds the REIT-lag-1/USD-lag-1-and-2/TEDPIX-lag-1 model, complete-case count, coefficients, HAC(4) joint-test p-value, Benjamini–Hochberg-adjusted p-value across reportable funds, and same-sample baseline/full-model R². Fewer than 52 model rows are suppressed. These are derived analysis tables, not canonical raw sources or certified complete dividend total returns.
 
 `config/assets.csv` registers the four selected assets. Blank source fields are unverified; all assets remain disabled until source validation.
 
@@ -40,7 +42,7 @@ explicitly ex-post. Stage II keeps the Stage I composition fixed, searches the l
 share on a 5,001-point grid, and reports mean-variance utility sensitivity for gamma values
 0, 1, 2, 4, 6, 8, 10, 15, 20, 25, 30, 35, 40, 45, and 50. It does not define an
 investor-specific policy. A parallel notebook-only specification estimates full-sample
-annualized covariance once from the 113 aligned months in 1396–1405/05 and holds it fixed across
+annualized covariance once from the 114 aligned months in 1396–1405/06 and holds it fixed across
 years. Its use of later observations in earlier-year risk estimates is explicitly ex-post.
 
 ## TSETMC fixed-income source: اعتماد
@@ -60,10 +62,30 @@ distribution treatment remains to be audited.
 
 Deposit-rate and اخزا sources are not part of the active data contract. Their datasets and
 source-specific collectors were retired on 2026-09-09 after اعتماد
-was selected as the sole fixed-income asset for the revised 1395/01–1405/05 window. The
+was selected as the sole fixed-income asset for the revised 1395/01–1405/06 window. The
 decision and remaining distribution audit are documented in [FIXED_INCOME.md](FIXED_INCOME.md).
 Immutable historical raw evidence remains frozen under its original path as required by
 workspace policy, but it is not referenced by active configuration or processing.
+
+## Real estate fund comparison
+
+Collector: `src/asset_allocation/collectors/tsetmc_reits.py`. TSETMC instrument search must yield one real-estate instrument per configured ticker. Its canonical manifest and per-instrument daily traded-price histories live in `data/raw/real_estate_funds/`; immutable API bytes are content-addressed in `snapshots/`. `src/asset_allocation/build_reit_correlation_panel.py` creates `data/processed/analysis/reit_tedpix_monthly_returns.csv`, keyed by `(jalali_period, asset_id)`. Missing adjacent-month prices imply missing returns. This derivative is independent of the four-asset canonical panel. Fund returns are market closing-price changes, with distributions and corporate actions unaudited.
+
+`src/asset_allocation/analyze_reit_tedpix.py` writes `data/processed/analysis/reit_tedpix_trailing_windows.csv`, keyed by `(asset_id, window_months)`. Columns include the trailing start/end Jalali periods, actual paired observations, Pearson correlation, OLS intercept and slope on TEDPIX, R², and slope p-value. The most recent observed month is excluded as potentially incomplete. Undefined estimates are blank. A 48-month lookback may contain fewer than 48 paired returns for a recently listed fund.
+
+`src/asset_allocation/analyze_reit_tedpix_weekly.py` writes `data/processed/analysis/reit_tedpix_weekly_returns.csv`, keyed by `(week_end_gregorian, asset_id)`, and `reit_tedpix_weekly_windows.csv`, keyed by `(asset_id, window_months)`. Its weekly close is the final valid observed daily close in a Saturday–Friday week. Weekly return is the ratio of adjacent weekly closes minus one; fund weeks require positive trading volume. The current unfinished week is excluded. The input lookback is 24 Jalali months plus a preceding-week buffer. Window results include 1, 3, 6, 12, and 24-month cutoffs, paired-week counts, Pearson correlation, OLS beta/intercept, R², and p-value. Undefined estimates remain blank.
+
+`src/asset_allocation/analyze_reit_usd_weekly.py` reads `shared/data/raw/fx/usd_to_rial.csv` without copying it into project raw data. `data/processed/analysis/usd_irr_weekly_returns.csv` is keyed by `week_end_gregorian` and retains the IRR-per-USD level, weekly return, source observation date, current and prior price methods, method-change flag, and missing reason. A method-change return is blank. `reit_usd_weekly_windows.csv` is keyed by `(asset_id, window_months)` and contains 1, 3, 6, 12, and 24-month paired-week counts, source-method counts, Pearson correlation, and OLS fund-on-USD beta/intercept, R², and p-value. The weekly fund panel is read unchanged; TEDPIX is excluded from the USD regression universe.
+
+`src/asset_allocation/analyze_reit_usd_lags.py` reads the shared canonical FX series and the three selected canonical fund raw histories without modifying either. `three_reit_usd_lag_pairs.csv` is keyed by `(fund, frequency, lag_periods, period)` for daily, Friday-ending weekly, and complete Jalali-month returns at zero and one lag. The one-day join requires the exact previous Gregorian date, the one-week join the previous Friday, and the one-month join the previous Jalali period; absent observations remain blank. Daily returns require consecutive observed sessions no more than five calendar days apart; weekly and monthly returns require adjacent periods. USD returns crossing a price-method boundary are blank. `three_reit_usd_lag_correlations.csv` is keyed by `(fund, frequency, lag_periods, window_months)` with trailing 1, 3, 6, 12, 24, and 48-Jalali-month windows, pair counts, source-method counts, and Pearson correlation when at least three nonconstant pairs exist. These are traded-price fund returns and are not verified dividend-reinvested returns.
+
+`src/asset_allocation/collectors/tsetmc_reit_adjusted.py` archives immutable exchange member-chart responses under `data/raw/real_estate_funds/adjusted_price_snapshots/` for both adjustment modes. It validates matching dates and unadjusted closes against the canonical raw fund prices, then atomically writes the derived `data/processed/analysis/reit_adjusted_daily.csv`, keyed by `(source_date_gregorian, ins_code)`, with both closes, adjustment factor, and snapshot lineage. The adjustment feed changes Kelid, Danik, and Malek Atiyeh in the current two-year window; the other five have equal adjusted/unadjusted histories. The feed's exact dividend/corporate-action rules have not been independently audited.
+
+`src/asset_allocation/build_reit_two_year_cumulative.py` writes `data/processed/analysis/reit_usd_tedpix_two_year_cumulative.csv`, keyed by `(week_end_gregorian, asset)`, and `reit_usd_tedpix_two_year_cumulative_summary.csv`, keyed by `asset`. It uses the last complete Friday and a cutoff 24 Jalali months earlier. Each fund's level comes from the validated exchange-adjusted daily table. Each asset's first observed weekly close on or after that cutoff is its baseline; later funds are not backfilled. Cumulative change equals observed weekly level divided by baseline level minus one. Missing weeks remain blank in the processed panel; only the Plotly line visually bridges gaps. The panel retains source observation dates, units, price method, return definition, and baseline week/level. The USD level spans two documented source methods. Monthly and weekly regression inputs remain unadjusted fund closes until their return definitions are separately revised.
+
+`src/asset_allocation/build_housing_two_year_cumulative.py` reads the canonical processed monthly level panel and writes `data/processed/analysis/tehran_housing_two_year_cumulative.csv` plus `tehran_housing_two_year_cumulative_summary.csv`. Each observed Jalali month is dated at its Gregorian month end within the same 24-Jalali-month cutoff as the weekly chart. The first observed housing level is its baseline. Source method and quality flag are retained. Housing is neither converted to weekly observations nor carried past its last observed month.
+
+`config/reit_cash_distributions.csv` is a source-verified payout ledger keyed by fund instrument and Gregorian payment date, with positive cash IRR per unit and a source URL. It currently contains one Kelid and one Malek Atiyeh payment; payout-history coverage is incomplete. `src/asset_allocation/build_reit_dividend_reinvestment.py` reads that ledger and the processed daily adjusted/unadjusted price comparison, writing `reit_price_adjustment_comparison.csv` and `reit_dividend_audit.csv` under processed analysis. For a verified payment it reinvests cash into fractional fund units at the first traded close on or after payment. Without a verified event, reinvested-value fields stay missing rather than being identified with price-only return. Even where events exist, the computed path represents known payments only until the full annual history is audited.
 
 ## TSETMC TEDPIX source
 
@@ -83,9 +105,9 @@ referenced by active configuration or processing and must not be merged into thi
 
 `src/asset_allocation/build_monthly_return_panel.py` writes two long-form tables:
 
-- `data/processed/analysis/monthly_asset_levels.csv`: 126 months from 1394/12 through 1405/05
+- `data/processed/analysis/monthly_asset_levels.csv`: 127 months from 1394/12 through 1405/06
   crossed with all four assets. Missing levels remain blank.
-- `data/processed/analysis/monthly_asset_returns.csv`: 125 months from 1395/01 through 1405/05
+- `data/processed/analysis/monthly_asset_returns.csv`: 126 months from 1395/01 through 1405/06
   crossed with all four assets. Each valid return equals current month-end level divided by the
   preceding month-end level minus one.
 - `data/processed/analysis/housing_data_quality_audit.csv`: one row per official CBI month,
@@ -106,8 +128,10 @@ recorded original no longer equals the workbook extraction.
 The primary housing input is the CBI interim workbook with one Tehran-wide row per Jalali month,
 price in million IRR/m², source PDF, provenance method and extraction method through 1403/05.
 Kilid is converted from million toman/m² to million IRR/m² and multiplied by the boundary factor
-`885 / 866`. It extends the panel from 1403/06 through 1405/05. Every secondary row retains its
+`885 / 866`. It extends the panel from 1403/06 through 1405/06. Every secondary row retains its
 raw level, factor, source path, regime, and the flag `secondary_proxy_low_overlap_similarity`.
+
+`data/raw/housing/kilid/tehran_monthly.csv` is the canonical collector-owned Kilid source table, backed by immutable content-addressed page responses under `data/raw/housing/kilid/snapshots/`. The collector accepts only complete months, validates overlapping observations against the existing table, and atomically appends new months. As of the 2026-10-06 source refresh it contains 37 months through 1405/06; the incomplete 1405/07 page observation is excluded. The processed housing chart is a separate 24-point monthly series through 2026-09-22.
 
 ## Portfolio-analysis status
 

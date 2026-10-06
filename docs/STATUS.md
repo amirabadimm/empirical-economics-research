@@ -1,5 +1,34 @@
 # Research Status
 
+Asset Allocation now has a generated interactive REIT/USD report and a versioned Markdown companion, built on 2026-10-06 from processed data ending 2026-10-02 (housing: 2026-09-22). The report contains three Plotly charts, cumulative and payout-event tables, the common-week lag estimates, and the three reportable predictive models. Report generation did not refresh raw sources.
+
+Documentation review 2026-10-06: the workspace and Asset Allocation workflow documents now use the current four-fund run order and mark earlier three-fund analyses as historical. This documentation-only change did not refresh market data.
+
+Asset Allocation's active four-REIT notebook now has 12 cells and four Plotly figures. Its new 24-Jalali-month USD lag panel has 15 reportable of 20 fund/lag correlations on common per-fund weeks; Kakh's five are suppressed for only 16 pairs. Three fund-level predictive regressions meet the 52-week minimum, with HAC(4) joint USD tests and FDR-adjusted p-values; Kakh has 18 complete rows and is omitted. The previous 10-cell/three-figure heatmap checkpoint below is superseded.
+
+The compact active Asset Allocation REIT notebook now includes Kakh, has 10 cells and three Plotly figures, and uses custom reinvested-value returns throughout. The derived daily fund panel has 2,052 sessions; the two-year six-asset weekly comparison has 630 rows. Of 64 same-period correlation cells, 42 meet the 12-weekly or 6-monthly-pair rule. Earlier three-fund and low-count correlation views below are superseded for the active notebook.
+
+The Asset Allocation active three-REIT cumulative chart now uses a custom assembly-date dividend-reinvestment scenario from traded closes. Its three user-supplied events generate 1,948 daily derived rows and a 525-row two-year weekly comparison across Kelid, Danik, Arzesh Maskan, TEDPIX, and USD/IRR. The previous exchange-adjusted REIT cumulative checkpoint below is superseded for the active view. Existing correlation tables remain traded-price based pending review.
+
+Asset Allocation's Kilid source was refreshed on 2026-10-06. Its validated canonical raw housing CSV has 37 complete months through 1405/06, and its rebuilt four-asset panel has 127 level and 126 return months. The 24-point monthly housing Plotly overlay now ends on 2026-09-22. Earlier 1405/05 housing endpoints below are superseded.
+
+## Asset-allocation real estate fund extension — 2026-10-05
+
+Eight fund price histories and TEDPIX were refreshed through 2026-10-04. A separate monthly return panel and combined correlation/regression notebook are complete. The current incomplete month is excluded; cash distributions and corporate actions still require audit before the fund series can be called total returns. The original four-asset optimization sample was subsequently extended through 1405/06 with the Kilid refresh.
+
+The 1, 3, 6, 12, 24, and 48-month trailing comparison and OLS regression table are complete through 1405/06, with 48 fund-window rows and Plotly notebook views.
+
+The combined English-language notebook now includes weekly returns through Friday 2026-10-02 from a bounded 24-month lookback, with 40 fund/window correlation and regression estimates.
+
+The shared USD/IRR collector refreshed its canonical series to 13,110 dates through 2026-10-04. Asset Allocation now has a separate 102-return weekly USD panel and 40 fund/window USD regression rows through 2026-10-02; the original TEDPIX analysis is unchanged. The USD comparison reports legacy-midpoint versus TGJU-close source-method counts.
+
+Asset Allocation's final Plotly notebook section now has a 105-week, ten-asset cumulative level-change panel through 2026-10-02 using validated exchange-adjusted fund prices. Its baseline summary distinguishes full-window assets from three later-listed funds; the derived panel has 1,050 rows. The older unadjusted fund cumulative values are superseded. Plotly bridges missing weeks visually without filling the processed data; payout treatment awaits a fund-level audit. The same chart overlays 24 monthly Tehran housing observations through 2026-09-22 from a separate flagged Kilid proxy panel (+160.7% price appreciation since 2024-10-21); housing is not extrapolated to the weekly endpoint.
+
+On 2026-10-06 the active notebook was renamed `asset_allocation/notebooks/iran_reits_cross_asset_analysis.ipynb` and narrowed to Arzesh Maskan, Kelid, and Danik. Its final Plotly section adds zero- versus one-prior-day/week/Jalali-month USD correlations across six trailing windows. The three-fund processed lag table has 108 cells (96 valid) and 4,964 return-pair rows. Earlier ten-asset and eight-fund counts describe retained processed source panels, not the active notebook view. The dividend-reinvested return audit remains incomplete.
+
+The notebook now also compares Kelid, Arzesh Maskan, and Danik traded versus exchange-adjusted prices in Plotly. A separate eight-fund cash-reinvestment builder contains two verified annual payments, for Kelid and Malek Atiyeh. Remaining payout source coverage is incomplete; its known-payment paths are not certified complete dividend-reinvested total returns. Arzesh Maskan's equal adjusted and traded series must not be read as a no-dividend finding.
+The historical payout audit now lists first traded-date coverage and earlier annual-payment gaps for all eight funds in `asset_allocation/docs/REIT_DIVIDEND_AUDIT.md`. It distinguishes pre-baseline distributions from payments inside the two-year comparison and records that 1,640 IRR discussed for Danik in 1403 was audited earnings per unit, not verified cash paid.
+
 ## Gold scheduled monitoring deployed — 2026-10-03
 
 Five-minute disposable price/NAV cache and four daily-history ranks are deployed
@@ -93,7 +122,7 @@ later in this file. Data coverage differs by project.
 | [Zinc](../commodity/zinc/docs/STATUS.md) | Refreshed 2026-09-26: raw certificate through 2026-09-24; 213 certificate/intrinsic dates; 563 physical benchmark dates; 206 primary comparisons through 2026-09-20 | Approved 99.97/99.98 basket and bounded valuation. Research-only regression and historical studies were not refreshed. |
 | [Gold ETFs](../commodity/gold/docs/STATUS.md) | 2026-09-28 active two-year build: Ayar 464/464, Tala 464/464, Kahroba 463/464, Ganj 461/464, Gohar 463/463 traded dates with exact NAV | Gohar replaces Mesghal; Zarvan begins too late for two years. Mesghal investigation retained; Ayar bubble has 1,949 matched dates through 2026-09-27. |
 | [Silver](../commodity/silver/docs/STATUS.md) | 2026-09-27 scaffold: collectors, strict benchmark, exact-date diagnostic, distribution, refresh entry point, and tests | No data collected or economic benchmark approved. Source validation and comparability review remain pending. |
-| [Cross-asset allocation](../asset_allocation/docs/STATUS.md) | 126 level months and 125 return months per asset, with missingness retained; historical pilot through 1405/05 | Stage I/II and fixed-covariance sensitivity implemented. Expert survey, trailing-risk design, and final forward-looking allocation pending. |
+| [Cross-asset allocation](../asset_allocation/docs/STATUS.md) | 127 level months and 126 return months per asset, with missingness retained; historical pilot through 1405/06 | Stage I/II and fixed-covariance sensitivity implemented. Expert survey, trailing-risk design, and final forward-looking allocation pending. |
 | [Economic USD/IRR](../economic_usd/docs/STATUS.md) | USD through 1405/06/21; Iranian CPI through 1405/04; liquidity through 1404/12; U.S. CPI through 2026-08 | Data preparation and sparse monthly join implemented. Dollar-liquidity formula and five PPP anchor windows remain to be defined and calculated. |
 | [Ahrom options](../options/docs/STATUS.md) | 2026-09-20: 996 verified contracts; 8,903 OptionBaaz rows from 2025-12-17 through 2026-09-20 | Discovery, archive, build, and verification implemented; earlier history remains a material coverage gap. |
 
@@ -105,7 +134,7 @@ Current certificate/physical Power BI row counts are Copper 206, Zinc 206, Pelle
 Rebar 54, Bitumen 31, and Pista 16. Copper, Zinc, Gold, and Pista comparison counts were
 checked against local CSVs during this review. Exploratory/provisional labels remain in force.
 
-The latest shared FX checkpoint records 13,103 dates through 1405/07/04 (2026-09-26).
+The earlier shared FX checkpoint of 13,103 dates through 1405/07/04 (2026-09-26) is superseded by the 2026-10-05 refresh recorded above.
 A newer shared input does not imply all consuming outputs were rebuilt. Copper and Zinc
 primary comparisons remain bounded by their latest physical anchors, without extrapolation.
 Copper, Zinc, and Gold now use signed expanding equal-weight and recency-weighted percentiles

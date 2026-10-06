@@ -56,8 +56,17 @@ def parse_records(payload: bytes, retrieved_at_utc: str) -> list[dict[str, str]]
 def collect() -> dict[str, str | int]:
     retrieved_at = datetime.now(UTC).isoformat()
     payload = request_payload()
-    snapshot = archive_snapshot(payload)
     rows = parse_records(payload, retrieved_at)
+    if CSV_PATH.exists():
+        with CSV_PATH.open(encoding="utf-8", newline="") as file:
+            previous = {row["source_date_gregorian"]: row for row in csv.DictReader(file)}
+        for row in rows:
+            old = previous.get(row["source_date_gregorian"])
+            if old and any(old[key] != row[key] for key in CSV_FIELDS if key != "source_retrieved_at_utc"):
+                raise ValueError(f"Historical TEDPIX revision on {row['source_date_gregorian']}")
+            previous.setdefault(row["source_date_gregorian"], row)
+        rows = [previous[day] for day in sorted(previous)]
+    snapshot = archive_snapshot(payload)
     write_canonical_csv(rows)
     return {"records": len(rows), "first_date": rows[0]["source_date_gregorian"], "last_date": rows[-1]["source_date_gregorian"], "snapshot": str(snapshot), "csv": str(CSV_PATH)}
 

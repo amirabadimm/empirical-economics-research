@@ -1,5 +1,13 @@
 # Workspace Workflow
 
+## Asset Allocation: active four-fund notebook
+
+Use `asset_allocation/notebooks/iran_reits_cross_asset_analysis.ipynb` for Kelid, Danik, Arzesh Maskan, and Kakh. With `PYTHONPATH=src` from `asset_allocation`, run `python -m asset_allocation.build_reit_assembly_reinvestment`, `python -m asset_allocation.build_reit_two_year_cumulative`, `python -m asset_allocation.build_reit_reinvested_correlations`, and `python -m asset_allocation.analyze_reit_usd_weekly_predictive` in that order, then execute the notebook. If a new complete housing month is available, run the Kilid collector, four-asset monthly panel builder, and housing two-year cumulative builder before the notebook. Source collectors alone refresh canonical raw data; derivatives remain under `data/processed/analysis`.
+
+REIT returns use compounded fractional units and raw traded closes. The approved-distribution ledger assumes immediate reinvestment at the first traded close on or after assembly; actual cash dates and missing payments remain unresolved. The notebook has four Plotly figures, including a common-sample 0–4-week USD lag curve and a two-lag predictive regression with HAC(4) joint tests and FDR-adjusted p-values. Kakh stays in return plots but lacks enough paired weeks for the lag and regression estimates. Earlier three-fund heatmaps and exchange-adjusted fund charts are historical derivatives, not the active workflow. See [the project workflow](../asset_allocation/docs/WORKFLOW.md) for run order, sample rules, and limitations.
+
+To publish a local research artifact after these derivatives are current, run `python -m asset_allocation.build_reit_usd_report` from `asset_allocation` with `PYTHONPATH=src`. The self-contained interactive HTML is regenerated under `reports/`; the companion Markdown summary is versioned. This step reads processed tables only.
+
 Gold's five-minute and daily/weekly systemd refresh units are versioned under
 `commodity/gold/db`. Live readings replace an expiring cache; permanent source
 collection and PostgreSQL daily loading remain separate scheduled jobs.

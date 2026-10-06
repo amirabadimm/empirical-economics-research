@@ -5,7 +5,6 @@ from __future__ import annotations
 import csv
 import os
 import tempfile
-import re
 import zipfile
 from collections import defaultdict
 from datetime import date
@@ -22,12 +21,12 @@ EQUITY_PATH = PROJECT_ROOT / "data/raw/tse_total_index/tedpix_daily.csv"
 FIXED_INCOME_PATH = PROJECT_ROOT / "data/raw/fixed_income/etf/etemad.csv"
 HOUSING_PATH = PROJECT_ROOT / "data/interim/cbi_tehran_housing_monthly_1395_1403M05.xlsx"
 HOUSING_OVERRIDES_PATH = PROJECT_ROOT / "config/housing_cbi_overrides.csv"
-KILID_PATH = PROJECT_ROOT / "data/raw/housing/kilid/snapshots/455cd4d7f670e77bd8a5928301d3e321b6e879157ac38b2beff9a4751755c807.html"
+KILID_PATH = PROJECT_ROOT / "data/raw/housing/kilid/tehran_monthly.csv"
 LEVELS_PATH = PROJECT_ROOT / "data/processed/analysis/monthly_asset_levels.csv"
 RETURNS_PATH = PROJECT_ROOT / "data/processed/analysis/monthly_asset_returns.csv"
 START_LEVEL_PERIOD = "1394/12"
 START_RETURN_PERIOD = "1395/01"
-END_PERIOD = "1405/05"
+END_PERIOD = "1405/06"
 ASSETS = ("gold_18k", "equity_tedpix", "fixed_income_etemad", "tehran_housing")
 RETURN_DEFINITIONS = {
     "gold_18k": "price_appreciation",
@@ -191,30 +190,24 @@ def read_housing() -> dict[str, dict[str, str]]:
 
 
 def read_kilid() -> dict[str, dict[str, str]]:
-    text = KILID_PATH.read_text(encoding="utf-8")
-    pattern = re.compile(
-        r'\\"children\\":\\"([^\\"]+ - 1[34]\d{2})\\".*?'
-        r'\\"children\\":\\"([^\\"]+ میلیون تومان)\\"'
-    )
-    digit_map = str.maketrans("۰۱۲۳۴۵۶۷۸۹٫", "0123456789.")
-    month_numbers = {
-        "فروردین": 1, "اردیبهشت": 2, "خرداد": 3, "تیر": 4, "مرداد": 5,
-        "شهریور": 6, "مهر": 7, "آبان": 8, "آذر": 9, "دی": 10,
-        "بهمن": 11, "اسفند": 12,
-    }
+    with KILID_PATH.open(encoding="utf-8-sig", newline="") as file:
+        rows = list(csv.DictReader(file))
     result: dict[str, dict[str, str]] = {}
-    for label, price_label in pattern.findall(text):
-        month_name, year = (part.strip() for part in label.split("-"))
-        period = f"{year}/{month_numbers[month_name]:02}"
+    for row in rows:
+        period = row["jalali_period"]
         if period in result:
             raise ValueError(f"Duplicate Kilid housing month: {period}")
-        price_million_toman = Decimal(price_label.split()[0].translate(digit_map))
-        result[period] = {
-            "date_jalali": period,
-            "avg_price_million_irr_per_m2": str(price_million_toman * 10),
-        }
+        value = Decimal(row["avg_price_million_irr_per_m2"])
+        if value <= 0:
+            raise ValueError(f"Invalid Kilid housing level: {period}")
+        snapshot = PROJECT_ROOT / row["source_snapshot"]
+        if not snapshot.is_file():
+            raise ValueError(f"Missing Kilid source snapshot: {snapshot}")
+        result[period] = {"date_jalali": period,
+                          "avg_price_million_irr_per_m2": format(value, "f"),
+                          "_source_snapshot": row["source_snapshot"]}
     if not result:
-        raise ValueError("Kilid snapshot contains no monthly Tehran observations")
+        raise ValueError("Kilid canonical table contains no monthly Tehran observations")
     return result
 
 
@@ -273,8 +266,8 @@ def build() -> dict[str, int | str]:
             "_raw_level": format(raw_level, "f"),
             "_link_factor": format(kilid_link_factor, ".12f"),
             "_source_method": "Kilid_chain_linked_to_CBI_1403_05",
-            "_source_file": "data/raw/housing/kilid/snapshots/455cd4d7f670e77bd8a5928301d3e321b6e879157ac38b2beff9a4751755c807.html",
-            "_source_report": "data/raw/housing/kilid/snapshots/455cd4d7f670e77bd8a5928301d3e321b6e879157ac38b2beff9a4751755c807.html",
+            "_source_file": row["_source_snapshot"],
+            "_source_report": row["_source_snapshot"],
             "_provenance_method": "Kilid monthly page snapshot",
             "_audit_note": "chain-linked at 1403/05; low overlap similarity to CBI",
             "_quality_flag": "secondary_proxy_low_overlap_similarity",
