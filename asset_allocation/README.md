@@ -21,7 +21,7 @@ Daily traded assets use the final valid observation in each Jalali month. Return
 
 ## Four real estate funds and reconstructed returns
 
-The single active notebook, `notebooks/iran_reits_cross_asset_analysis.ipynb`, covers Kelid, Danik, Arzesh Maskan, and Kakh. It has four Plotly figures: a two-year cumulative comparison with TEDPIX, USD/IRR, and monthly Tehran housing; traded versus cash-reinvested fund returns; a weekly USD lead-lag curve; and a compact predictive-regression table. Daily, weekly, and monthly fund returns use compounded units times raw traded closes, never exchange-adjusted fund prices.
+The single active notebook, `notebooks/iran_reits_cross_asset_analysis.ipynb`, covers Kelid, Danik, Arzesh Maskan, and Kakh. It has five Plotly figures: a two-year cumulative comparison with TEDPIX, USD/IRR, and monthly Tehran housing; traded versus cash-reinvested fund returns; a weekly USD lead-lag curve; a compact predictive-regression table; and a same-month REIT–housing correlation chart. Daily, weekly, and monthly fund returns use compounded units times raw traded closes, never exchange-adjusted fund prices.
 
 Run `python -m asset_allocation.build_reit_assembly_reinvestment`, `python -m asset_allocation.build_reit_two_year_cumulative`, `python -m asset_allocation.build_reit_reinvested_correlations`, and `python -m asset_allocation.analyze_reit_usd_weekly_predictive` with `PYTHONPATH=src`, then execute the notebook. The approved-distribution ledger contains user-supplied Danik 1,800 IRR and Kelid 907 and 864 IRR events. Fractional units are bought at the first traded close on or after assembly, assuming immediate cash availability. Actual payment dates and complete payout histories remain unresolved. Arzesh Maskan and Kakh have no approved events in this ledger; their reconstructed paths equal traded-price paths without proving zero dividends. The separate payment-date audit is not mixed into this scenario.
 
@@ -29,7 +29,9 @@ The lag curve compares each fund's reconstructed weekly return with USD/IRR from
 
 The housing overlay stays at observed monthly frequency and is a flagged Kilid listing-price proxy. See [`docs/HOUSING.md`](docs/HOUSING.md) and [`docs/REIT_DIVIDEND_AUDIT.md`](docs/REIT_DIVIDEND_AUDIT.md) for source limitations.
 
-Generate the standalone interactive report with `python -m asset_allocation.build_reit_usd_report` after rebuilding the derivatives above. It writes `reports/REIT_USD_LEAD_LAG_REPORT.html` with three self-contained Plotly charts and four results tables, plus the tracked [`reports/REIT_USD_LEAD_LAG_REPORT.md`](reports/REIT_USD_LEAD_LAG_REPORT.md) summary. The HTML is a local presentation artifact and is regenerated rather than committed.
+After the monthly REIT-return builder and four-asset housing panel are current, run `python -m asset_allocation.analyze_reit_housing_monthly`. It matches reconstructed fund returns and observed housing returns by the same Jalali month, with no lag or filling. The last 24 complete months require at least 17 matched returns for a reported Pearson coefficient. Arzesh Maskan has 22 pairs (−0.064), Kelid 21 (+0.094), Danik 22 (−0.178), and Kakh four (suppressed) through 1405/06. This is descriptive co-movement of a flagged listing-price proxy, not causation.
+
+Generate the standalone interactive report with `python -m asset_allocation.build_reit_usd_report` after rebuilding the derivatives above. It writes `reports/REIT_USD_LEAD_LAG_REPORT.html` with four self-contained Plotly charts and five results tables, plus the tracked [`reports/REIT_USD_LEAD_LAG_REPORT.md`](reports/REIT_USD_LEAD_LAG_REPORT.md) summary. The HTML is a local presentation artifact and is regenerated rather than committed.
 
 ## Housing data integrity
 

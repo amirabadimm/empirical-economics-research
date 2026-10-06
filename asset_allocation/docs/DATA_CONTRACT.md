@@ -2,6 +2,8 @@
 
 The four-REIT assembly-date reinvestment scenario writes `data/processed/analysis/reit_assembly_reinvested_daily.csv` and its event audit, then `reit_reinvested_weekly_returns.csv` and `reit_reinvested_monthly_returns.csv`. The daily level is fractional units times raw traded close, with units increased at the first traded close on or after each approved assembly date. `reit_usd_weekly_lag_correlations.csv` holds lag 0–4 Pearson coefficients, a common paired-week count per fund, sample dates, and suppression status; fewer than 74 common weeks are suppressed. `reit_usd_weekly_predictive_regressions.csv` holds the REIT-lag-1/USD-lag-1-and-2/TEDPIX-lag-1 model, complete-case count, coefficients, HAC(4) joint-test p-value, Benjamini–Hochberg-adjusted p-value across reportable funds, and same-sample baseline/full-model R². Fewer than 52 model rows are suppressed. These are derived analysis tables, not canonical raw sources or certified complete dividend total returns.
 
+`reit_housing_monthly_pairs.csv` contains a four-fund × 24-Jalali-month grid of observed reconstructed REIT and Tehran housing monthly returns, explicit missing values, housing quality flags, and a paired indicator. `reit_housing_monthly_correlation.csv` contains one same-month Pearson estimate per fund, actual overlap count, period boundaries, and suppression status. A coefficient requires at least 17 paired months and nonconstant returns; no lag, fill, or interpolation is applied. Housing remains the flagged chain-linked Kilid listing-price proxy in this window.
+
 `config/assets.csv` registers the four selected assets. Blank source fields are unverified; all assets remain disabled until source validation.
 
 | Field | Meaning |

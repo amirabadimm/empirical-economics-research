@@ -1,5 +1,7 @@
 # Research Status
 
+Asset Allocation added a no-lag monthly correlation of its four reconstructed REIT returns with Tehran housing through 1405/06. Three funds have 21–22 paired months and report Pearson coefficients; Kakh has four and is suppressed. The active notebook now has five Plotly figures, and the regenerated local report has four interactive plots plus the versioned Markdown summary. This 2026-10-06 analysis build changed only processed derivatives and presentation artifacts, not canonical market sources. Earlier plot counts below are superseded.
+
 Asset Allocation now has a generated interactive REIT/USD report and a versioned Markdown companion, built on 2026-10-06 from processed data ending 2026-10-02 (housing: 2026-09-22). The report contains three Plotly charts, cumulative and payout-event tables, the common-week lag estimates, and the three reportable predictive models. Report generation did not refresh raw sources.
 
 Documentation review 2026-10-06: the workspace and Asset Allocation workflow documents now use the current four-fund run order and mark earlier three-fund analyses as historical. This documentation-only change did not refresh market data.

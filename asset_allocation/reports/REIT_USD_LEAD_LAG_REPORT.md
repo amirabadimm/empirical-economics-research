@@ -1,6 +1,6 @@
-# Iranian REITs and USD/IRR: returns and weekly lags
+# Iranian REITs, USD/IRR, and Tehran housing
 
-Data endpoint: 2026-10-02. Report generated: 2026-10-06 16:33 Asia/Tehran. Run `python -m asset_allocation.build_reit_usd_report` from this project to generate the [local interactive Plotly report](REIT_USD_LEAD_LAG_REPORT.html), or open the versioned [analysis notebook](../notebooks/iran_reits_cross_asset_analysis.ipynb) for its charts.
+Data endpoint: 2026-10-02. Report generated: 2026-10-06 16:46 Asia/Tehran. Run `python -m asset_allocation.build_reit_usd_report` from this project to generate the [local interactive Plotly report](REIT_USD_LEAD_LAG_REPORT.html), or open the versioned [analysis notebook](../notebooks/iran_reits_cross_asset_analysis.ipynb) for its charts.
 
 The four funds are Arzesh Maskan, Kelid, Danik, and Kakh. Returns use raw traded closes with fractional-unit reinvestment of the three approved distributions in the current ledger. This assumes immediate cash availability at assembly. Arzesh Maskan and Kakh have no recorded event; their displayed paths do not establish complete total return.
 
@@ -47,5 +47,16 @@ The weekly model includes REIT lag 1, USD lags 1 and 2, and TEDPIX lag 1. The jo
 | Kelid | 84 | +0.187 | +0.007 | 0.0431 | 0.0431 | +0.036 | Reported |
 | Danik | 87 | +0.283 | +0.180 | 0.0041 | 0.0062 | +0.053 | Reported |
 | Kakh | 18 | — | — | — | — | — | Insufficient history |
+
+## Same-month REIT–housing correlation
+
+The last 24 complete Jalali months (1403/07–1405/06) are aligned without a lag. Fund returns use the custom cash-reinvested value and housing uses the flagged chain-linked Kilid monthly price proxy. A correlation needs at least 17 observed pairs; Kakh is suppressed.
+
+| Fund | Paired months | Pearson r | Status |
+| --- | --- | --- | --- |
+| Arzesh Maskan | 22 | -0.064 | Reported |
+| Kelid | 21 | +0.094 | Reported |
+| Danik | 22 | -0.178 | Reported |
+| Kakh | 4 | — | Insufficient history |
 
 These results are descriptive and in-sample. They do not establish causation or out-of-sample forecasting skill. Dividend histories and actual cash dates need further verification. See [the workflow](../docs/WORKFLOW.md) and [dividend audit](../docs/REIT_DIVIDEND_AUDIT.md).

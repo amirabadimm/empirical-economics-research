@@ -58,10 +58,13 @@ def build() -> tuple[Path, Path]:
     events = read("reit_assembly_reinvestment_events.csv")
     lags = read("reit_usd_weekly_lag_correlations.csv")
     models = read("reit_usd_weekly_predictive_regressions.csv")
+    housing_corr = read("reit_housing_monthly_correlation.csv")
     if set(FUNDS) - set(summary.asset) or set(FUNDS) - set(daily.fund):
         raise ValueError("Current four-fund coverage is absent from the derived inputs")
     if len(lags) != 20 or not set(FUNDS).issubset(models.fund):
         raise ValueError("Lag or regression derivatives do not cover four funds")
+    if set(FUNDS) - set(housing_corr.fund) or housing_corr.window_end.nunique() != 1 or housing_corr.window_end.iloc[0] != housing.jalali_period.max():
+        raise ValueError("REIT–housing correlation is missing a fund or has a stale housing endpoint")
     if not (lags.window_end.nunique() == models.window_end.nunique() == 1 and
             lags.window_end.iloc[0] == models.window_end.iloc[0]):
         raise ValueError("Lag and regression derivatives have different anchors")
@@ -144,19 +147,41 @@ def build() -> tuple[Path, Path]:
                            f"{row.incremental_r_squared:+.3f}" if pd.notna(row.incremental_r_squared) else "—",
                            "Reported" if row.status == "reported" else "Insufficient history"])
 
-    html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Iranian REITs and USD/IRR: Returns and Weekly Lags</title><style>
+    fig_housing = go.Figure()
+    housing_rows = []
+    for fund in FUNDS:
+        row = housing_corr.loc[housing_corr.fund == fund].iloc[0]
+        reported = pd.notna(row.correlation)
+        fig_housing.add_trace(go.Bar(x=[fund], y=[row.correlation if reported else None],
+                                     marker_color="#227da8" if reported and row.correlation >= 0 else "#c85b5b" if reported else "#cbd5df",
+                                     name=fund, showlegend=False,
+                                     hovertemplate=f"{fund}<br>Pearson r: %{{y:+.3f}}<br>Paired months: {int(row.paired_months)}<extra></extra>"))
+        housing_rows.append([fund, str(int(row.paired_months)),
+                             f"{row.correlation:+.3f}" if reported else "—",
+                             "Reported" if reported else "Insufficient history"])
+    fig_housing.add_hline(y=0, line_color="gray", line_width=1)
+    kakh_housing = housing_corr.loc[housing_corr.fund.eq("Kakh")].iloc[0]
+    if pd.isna(kakh_housing.correlation):
+        fig_housing.add_annotation(x="Kakh", y=0, text=f"Insufficient<br>n={int(kakh_housing.paired_months)}",
+                                   showarrow=False, yshift=24)
+    fig_housing.update_layout(title="Same-month REIT return correlation with Tehran housing",
+                              xaxis_title="Fund", yaxis_title="Pearson correlation",
+                              yaxis=dict(range=[-1, 1]), height=480)
+
+    html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Iranian REITs, USD/IRR, and Tehran Housing</title><style>
 body{{font:16px/1.6 Arial,sans-serif;color:#203149;background:#f4f7fb;margin:0}}main{{max-width:1120px;margin:auto;background:white;padding:28px 38px 65px;box-shadow:0 2px 18px #dbe3ed}}h1{{font-size:2rem;line-height:1.2;margin-bottom:8px;color:#143050}}h2{{color:#143050;margin-top:42px;border-bottom:1px solid #dbe3ed;padding-bottom:5px}}h3{{color:#234b75;margin-top:27px}}.meta{{color:#64758a}}.lead{{font-size:1.1rem;max-width:900px}}.callout{{background:#eaf3fb;border-left:4px solid #2376ac;padding:12px 18px;margin:18px 0}}.chart{{width:100%;overflow:hidden}}.table-wrap{{overflow-x:auto}}table{{border-collapse:collapse;width:100%;margin:12px 0 22px;font-size:.94rem}}th,td{{border-bottom:1px solid #dce4ec;text-align:right;padding:9px 10px;white-space:nowrap}}th:first-child,td:first-child{{text-align:left}}th{{background:#eaf1f8;color:#143050}}tr:nth-child(even){{background:#f8fafc}}small,.foot{{color:#64758a}}code{{background:#f2f5f8;padding:2px 4px}}@media(max-width:700px){{main{{padding:18px}}h1{{font-size:1.55rem}}}}
-</style></head><body><main><h1>Iranian REITs and USD/IRR</h1><p class="meta">Interactive research report · Market endpoint: {escape(anchor)} · Generated: {escape(generated)}</p>
+</style></head><body><main><h1>Iranian REITs, USD/IRR, and Tehran housing</h1><p class="meta">Interactive research report · Market endpoint: {escape(anchor)} · Generated: {escape(generated)}</p>
 <p class="lead">Four real-estate funds are compared with the dollar price in rials, TEDPIX, and monthly Tehran housing. Fund returns use raw traded closes and a custom reinvestment of recorded approved distributions; they do not use exchange-adjusted fund prices.</p>
 <div class="callout"><strong>Main reading.</strong> Across the 24-Jalali-month weekly window, Arzesh Maskan, Danik, and Kelid have {lag_counts['Arzesh Maskan']}, {lag_counts['Danik']}, and {lag_counts['Kelid']} common weeks for the five USD lag correlations. Kakh has {lag_counts['Kakh']} and {kakh_lag_note} under the current coverage rule. The fund-specific predictive models have {model_counts['Arzesh Maskan']}, {model_counts['Danik']}, and {model_counts['Kelid']} complete weeks, respectively; their FDR-adjusted joint USD p-values are {models.loc[models.fund.eq('Arzesh Maskan'), 'joint_usd_fdr_pvalue'].iloc[0]:.4f}, {models.loc[models.fund.eq('Danik'), 'joint_usd_fdr_pvalue'].iloc[0]:.4f}, and {models.loc[models.fund.eq('Kelid'), 'joint_usd_fdr_pvalue'].iloc[0]:.4f}. These are in-sample associations, not causal or out-of-sample forecasts.</div>
 <h2>1. Two-year cumulative comparison</h2><p>Each line starts at its own first available observation; Kakh begins later. Weekly markets use observed Friday-ending points. Housing uses actual month ends and a flagged chain-linked Kilid listing-price proxy. Rent and ownership costs are excluded.</p><div class="chart">{figure_html(fig_cumulative, first=True)}</div>{html_table(['Asset','Baseline','Last observation','Observed points','Cumulative return'],summary_rows)}
 <h2>2. Dividend reinvestment</h2><p>The solid Kelid and Danik paths compound fractional units bought at the first traded close on or after each supplied assembly date. Dotted lines are traded-close appreciation. This immediate-cash assumption may precede actual payment. Arzesh Maskan and Kakh have no event in the current ledger; equality with traded-price returns does not establish zero dividends.</p><div class="chart">{figure_html(fig_dividends)}</div>{html_table(['Fund','Assembly date','Purchase date','Cash IRR/unit','Purchase close IRR','Units after','Evidence'],event_rows)}
 <h2>3. Weekly dollar lead-lag</h2><p>Lag 0 compares returns ending in the same completed week; lag 1 uses the prior completed week, and so on. All five lags for a fund use exactly the same paired dates. A fund needs at least 74 common weeks; USD returns across its source-method boundary are excluded. Pearson coefficients describe co-movement only.</p><div class="chart">{figure_html(fig_lags)}</div>{html_table(['Fund','Common weeks','Lag 0','Lag 1','Lag 2','Lag 3','Lag 4'],lag_rows)}
 <h2>4. Conditional predictive model</h2><p><code>REIT return(t) = intercept + own return(t−1) + USD return(t−1) + USD return(t−2) + TEDPIX return(t−1) + error(t)</code></p><p>The joint p-value tests both USD coefficients using HAC/Newey–West standard errors with four lags. FDR p-values apply Benjamini–Hochberg correction across the {int(models.joint_usd_pvalue.notna().sum())} reportable fund tests. ΔR² is the in-sample improvement over the own-lag and TEDPIX-lag model fitted on the same rows. At least 52 complete weeks are required; Kakh has {model_counts['Kakh']}.</p>{html_table(['Fund','Weeks','USD lag 1 β','USD lag 2 β','Joint p','FDR p','Δ in-sample R²','Status'],model_rows)}
-<h2>Interpretation and limits</h2><p>The regression adds information within this historical sample, but low p-values do not prove a trading strategy or a causal dollar effect. The USD history spans two collection methods, and returns at that boundary are omitted. Fund dividends beyond the three recorded approved events remain unaudited; the assembly-date cash assumption is optimistic if payment occurred later. Housing is a monthly listing-price proxy and is shown only in the cumulative comparison. Kakh {kakh_model_note} the regression sample minimum.</p>
-<p class="foot">Source derivatives: <code>reit_assembly_reinvested_daily.csv</code>, <code>reit_usd_tedpix_two_year_cumulative.csv</code>, <code>tehran_housing_two_year_cumulative.csv</code>, <code>reit_usd_weekly_lag_correlations.csv</code>, and <code>reit_usd_weekly_predictive_regressions.csv</code> under <code>data/processed/analysis</code>. Methods and refresh order: <code>docs/WORKFLOW.md</code>. No canonical raw source was modified to generate this report.</p></main></body></html>"""
+<h2>5. Same-month REIT–housing correlation</h2><p>The last 24 complete Jalali months, {housing_corr.window_start.iloc[0]} through {housing_corr.window_end.iloc[0]}, are matched without a lag. REIT returns use the custom dividend-reinvested value; housing uses observed monthly price appreciation from the flagged chain-linked Kilid listing-price proxy. No missing month is filled. A Pearson estimate requires at least {int(housing_corr.minimum_pairs.iloc[0])} paired months and nonconstant returns; Kakh has {int(kakh_housing.paired_months)} observed pairs and is {'suppressed' if pd.isna(kakh_housing.correlation) else 'reported'}.</p><div class="chart">{figure_html(fig_housing)}</div>{html_table(['Fund','Paired months','Pearson r','Status'],housing_rows)}
+<h2>Interpretation and limits</h2><p>The regression adds information within this historical sample, but low p-values do not prove a trading strategy or a causal dollar effect. The USD history spans two collection methods, and returns at that boundary are omitted. Fund dividends beyond the three recorded approved events remain unaudited; the assembly-date cash assumption is optimistic if payment occurred later. Housing is a monthly listing-price proxy; its same-month correlation does not establish a delayed effect. Kakh {kakh_model_note} the regression sample minimum.</p>
+<p class="foot">Source derivatives: <code>reit_assembly_reinvested_daily.csv</code>, <code>reit_usd_tedpix_two_year_cumulative.csv</code>, <code>tehran_housing_two_year_cumulative.csv</code>, <code>reit_usd_weekly_lag_correlations.csv</code>, <code>reit_usd_weekly_predictive_regressions.csv</code>, and <code>reit_housing_monthly_correlation.csv</code> under <code>data/processed/analysis</code>. Methods and refresh order: <code>docs/WORKFLOW.md</code>. No canonical raw source was modified to generate this report.</p></main></body></html>"""
 
-    markdown = f"""# Iranian REITs and USD/IRR: returns and weekly lags
+    markdown = f"""# Iranian REITs, USD/IRR, and Tehran housing
 
 Data endpoint: {anchor}. Report generated: {generated}. Run `python -m asset_allocation.build_reit_usd_report` from this project to generate the [local interactive Plotly report](REIT_USD_LEAD_LAG_REPORT.html), or open the versioned [analysis notebook](../notebooks/iran_reits_cross_asset_analysis.ipynb) for its charts.
 
@@ -183,6 +208,12 @@ Each fund's lag 0–4 estimates use the same paired weeks. A dash means fewer th
 The weekly model includes REIT lag 1, USD lags 1 and 2, and TEDPIX lag 1. The joint USD test uses HAC(4); its FDR p-value adjusts across reportable funds. ΔR² is in-sample against a same-date model without USD. At least 52 complete weeks are required.
 
 {markdown_table(['Fund','Weeks','USD lag 1 beta','USD lag 2 beta','Joint p','FDR p','Delta in-sample R2','Status'], model_rows)}
+
+## Same-month REIT–housing correlation
+
+The last 24 complete Jalali months ({housing_corr.window_start.iloc[0]}–{housing_corr.window_end.iloc[0]}) are aligned without a lag. Fund returns use the custom cash-reinvested value and housing uses the flagged chain-linked Kilid monthly price proxy. A correlation needs at least {int(housing_corr.minimum_pairs.iloc[0])} observed pairs; Kakh is suppressed.
+
+{markdown_table(['Fund','Paired months','Pearson r','Status'], housing_rows)}
 
 These results are descriptive and in-sample. They do not establish causation or out-of-sample forecasting skill. Dividend histories and actual cash dates need further verification. See [the workflow](../docs/WORKFLOW.md) and [dividend audit](../docs/REIT_DIVIDEND_AUDIT.md).
 """

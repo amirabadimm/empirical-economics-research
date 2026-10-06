@@ -2,6 +2,8 @@
 
 Updated: 2026-10-06
 
+Same-month REIT–housing extension, derived and validated 2026-10-06: the active notebook now has 14 cells and five Plotly figures. The new 24-Jalali-month processed pair grid has 96 fund/month rows through 1405/06 and its four-row Pearson summary reports Arzesh Maskan −0.064 (22 paired months), Kelid +0.094 (21), and Danik −0.178 (22). Kakh has four pairs and is suppressed below the 17-pair threshold. Housing in this window is entirely the flagged chain-linked Kilid listing-price proxy. The standalone report was regenerated with a fourth interactive plot and a fifth result table. This derivative build did not refresh canonical raw sources. The older 12-cell/four-figure and three-chart report counts below are superseded.
+
 Report generation 2026-10-06: `reports/REIT_USD_LEAD_LAG_REPORT.html` and the Markdown companion were built from the existing four-fund processed outputs, without refreshing market sources. The report contains three interactive Plotly charts, cumulative and event tables, 15 reportable of 20 USD lag coefficients, and three reportable predictive regressions; Kakh is explicitly suppressed where coverage is insufficient. The market endpoint is Friday 2026-10-02, while housing ends at the observed 2026-09-22 month end. The HTML is a regenerable local artifact; the Markdown summary is versioned.
 
 Documentation review 2026-10-06: project and workspace workflows were reconciled to the active four-fund run sequence. This documentation pass did not refresh source data or recompute derived tables; their coverage and validation dates are recorded separately below.

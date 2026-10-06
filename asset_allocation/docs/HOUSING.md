@@ -5,6 +5,8 @@ series through 1403/05 from byte-identical source PDFs and staging workbook. Its
 price levels match this project's CBI-period panel. The post-1403/05 Kilid extension remains
 specific to this asset-allocation project and is not part of the CBI dataset in the Housing repository.
 
+The active four-fund REIT notebook also compares reconstructed fund monthly returns with housing price appreciation in the **same** Jalali month, without lag or filling. The 1403/07–1405/06 comparison lies entirely in the flagged Kilid extension. The processed pair grid and Pearson summary are `data/processed/analysis/reit_housing_monthly_{pairs,correlation}.csv`; Kakh's four paired months are below the 17-pair reporting minimum.
+
 ## Active sources
 
 The primary housing source is the Central Bank of Iran publication
