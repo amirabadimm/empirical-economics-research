@@ -7,6 +7,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import pandas as pd
+from asset_allocation.reit_performance_review import sections
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data/processed/analysis"
@@ -156,10 +157,10 @@ def build() -> Path:
     parts = [r"\documentclass[11pt,a4paper]{article}",
              r"\usepackage[margin=2.2cm]{geometry}",
              r"\usepackage[T1]{fontenc}", r"\usepackage{lmodern}",
-             r"\usepackage{booktabs,graphicx,amsmath,microtype,hyperref}",
+             r"\usepackage{booktabs,graphicx,amsmath,microtype,xcolor,longtable,hyperref}",
              r"\hypersetup{colorlinks=true,linkcolor=blue!55!black}",
              r"\setlength{\parindent}{0pt}", r"\setlength{\parskip}{0.6em}",
-             r"\title{\textbf{Iranian REIT Cross-Asset Return Analysis}\\\large Dividend-Reinvested Returns, Correlation Windows, and Dollar Leads}",
+             r"\title{\textbf{Iranian REIT Performance Review}\\\large Investor Returns, Housing Tracking, Portfolio Composition, and Benchmark Shortfalls}",
              r"\author{Asset Allocation research workflow}",
              rf"\date{{{latex(generated)}}}",
              r"\begin{document}", r"\maketitle", r"\tableofcontents", r"\newpage",
@@ -208,6 +209,7 @@ def build() -> Path:
                   "Only three approved distributions are in the current reinvestment ledger. Additional annual payments and actual payment dates need verification before these reconstructed paths can be called complete total returns. The 36-month housing comparison crosses the CBI-to-Kilid source boundary. Daily and weekly housing returns are unavailable. Pair counts vary because source and fund observations are missing; no interpolation or synthetic return is used. Multiple windows are exploratory and their coefficients should not be interpreted as independent confirmations.",
                   r"\textbf{Rebuild order.} Run the documented REIT reinvestment, cumulative-return, weekly/monthly-return, regression, and monthly housing builders; then run \texttt{python -m asset\_allocation.build\_reit\_requested\_heatmaps} and \texttt{python -m asset\_allocation.build\_reit\_latex\_report}. The report reads processed data only and does not alter canonical sources.",
                   r"\end{document}"])
+    parts[-1:-1] = sections(read, tabular, latex, FUNDS)
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     REPORT.write_text("\n\n".join(parts) + "\n", encoding="utf-8")
     return REPORT

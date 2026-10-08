@@ -1,6 +1,14 @@
 # Status
 
-Updated: 2026-10-06
+Updated: 2026-10-08
+
+Management companion prepared 2026-10-08: `reports/REIT_MANAGEMENT_BRIEF.tex` presents the key performance, housing-tracking, and composition facts followed by three supporting tables. It distinguishes benchmark shortfalls from unproven management attribution. Existing processed inputs were used; no sources were refreshed. TeX compilation remains unavailable locally.
+
+Detailed performance report generated 2026-10-08 from existing processed inputs: the single English LaTeX file now includes benchmark gaps and relative wealth, calendar-day CAGR and observed weekly drawdowns, complete Arzesh/Danik composition histories, source exceptions, management-attribution discussion, full regression fit and control coefficients, complete two-year return appendices, and all 80 correlation-window audit rows. It retains the original active result tables. No source data were refreshed. LaTeX source generation was verified; no local TeX compiler is available, so PDF compilation/layout remain unverified. The earlier 13-table report description is superseded.
+
+Chart-legibility revision, notebook-validated 2026-10-08: the three allocation bands now use explicit 5–7% alpha fills and cumulative boundaries, replacing the Plotly stack-group fills that appeared opaque in the rendered notebook. The data, axes, dropdown choices, and nine-figure analysis remain unchanged. No source or processed table was refreshed.
+
+Asset-mix presentation update, derived and notebook-validated 2026-10-07: the user-supplied Codal-derived workbook was preserved unchanged as an ignored interim snapshot (SHA-256 `a2592e41fee12f28db32566224794d3a812969f1405845e852270d58f73506a1`). Its 48 rows cover 24 consecutive Jalali months, 1403/07–1405/06, for Arzesh Maskan and Danik; three rows have source quality flags. The builder validated component totals, percentages, and month continuity and wrote a processed monthly allocation table. The active 12-cell notebook executed successfully. Its main two-year cumulative Plotly figure now offers selectable month-end housing, fixed-income, and remainder shading on a separate right axis, while the weekly return series remain on the left. No market or housing canonical source was refreshed. The allocation source is user-supplied and has not been independently checked against individual Codal filings; workbook reconstruction notes remain visible in chart hover.
 
 Report-format revision, generated 2026-10-06 from existing processed derivatives: `reports/REIT_CROSS_ASSET_ANALYSIS.tex` is now the sole active REIT report. It contains the cumulative-return table, three distribution events, traded-versus-reinvested comparison, latest weekly/monthly return tables, all 80 cells of the six frequency-matched grids with paired counts, the predictive-regression and coverage tables, and conclusions computed from the current results. The HTML and Markdown report outputs and their generator were removed. No canonical data was refreshed. The earlier HTML/Markdown report checkpoints below are superseded; the Plotly notebook remains active for interactive figures.
 

@@ -6,7 +6,7 @@
 
 \usepackage{lmodern}
 
-\usepackage{booktabs,graphicx,amsmath,microtype,hyperref}
+\usepackage{booktabs,graphicx,amsmath,microtype,xcolor,longtable,hyperref}
 
 \hypersetup{colorlinks=true,linkcolor=blue!55!black}
 
@@ -14,11 +14,11 @@
 
 \setlength{\parskip}{0.6em}
 
-\title{\textbf{Iranian REIT Cross-Asset Return Analysis}\\\large Dividend-Reinvested Returns, Correlation Windows, and Dollar Leads}
+\title{\textbf{Iranian REIT Performance Review}\\\large Investor Returns, Housing Tracking, Portfolio Composition, and Benchmark Shortfalls}
 
 \author{Asset Allocation research workflow}
 
-\date{2026-10-06 22:09 Asia/Tehran}
+\date{2026-10-08 22:21 Asia/Tehran}
 
 \begin{document}
 
@@ -320,5 +320,459 @@ The three-month daily USD/IRR coefficients range from -0.273 to -0.170. The two-
 Only three approved distributions are in the current reinvestment ledger. Additional annual payments and actual payment dates need verification before these reconstructed paths can be called complete total returns. The 36-month housing comparison crosses the CBI-to-Kilid source boundary. Daily and weekly housing returns are unavailable. Pair counts vary because source and fund observations are missing; no interpolation or synthetic return is used. Multiple windows are exploratory and their coefficients should not be interpreted as independent confirmations.
 
 \textbf{Rebuild order.} Run the documented REIT reinvestment, cumulative-return, weekly/monthly-return, regression, and monthly housing builders; then run \texttt{python -m asset\_allocation.build\_reit\_requested\_heatmaps} and \texttt{python -m asset\_allocation.build\_reit\_latex\_report}. The report reads processed data only and does not alter canonical sources.
+
+\section{Performance shortfalls and investor purchasing power}
+
+Positive nominal returns do not by themselves mean successful exposure to property or preservation of dollar purchasing power. The following table reports endpoint return differences in percentage points (pp), and relative ending wealth versus each benchmark. Relative wealth is $(1+R_f)/(1+R_b)-1$; it is not the percentage-point return gap. Housing uses its separately stated monthly endpoints, so its comparison is indicative rather than exactly synchronized. Dollar and TEDPIX share the fund baseline and final weekly date.
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrrr}
+\toprule
+Fund & Return & Housing gap pp & USD gap pp & TEDPIX gap pp & Housing-relative wealth & USD-relative wealth & TEDPIX-relative wealth \\
+\midrule
+Arzesh Maskan & 156.8\% & -3.9 & -156.0 & -110.4 & -1.5\% & -37.8\% & -30.1\% \\
+Kelid & 97.9\% & -62.8 & -215.0 & -169.4 & -24.1\% & -52.1\% & -46.1\% \\
+Danik & 74.3\% & -86.4 & -238.5 & -192.9 & -33.1\% & -57.8\% & -52.5\% \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+Arzesh Maskan, Kelid, and Danik all lagged the dollar and TEDPIX over the displayed window. The housing comparison is heterogeneous: Arzesh was close to the housing proxy, whereas Kelid and Danik had much larger shortfalls. Calling all three equally poor housing substitutes would conceal this material difference. These results describe the recorded-distribution scenario; an omitted payout can understate a fund's return.
+
+\subsection{Observed drawdowns and time-scaled returns}
+
+CAGR uses actual calendar days between the displayed baseline and last observation. Drawdown is the largest fall from a prior observed weekly peak, calculated on the cumulative wealth path. Missing weeks remain unobserved; an intraweek or unobserved trough can be deeper. No Sharpe ratio is claimed without a consistent risk-free series.
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+Asset & Calendar-day CAGR & Observed weekly max drawdown & Observed weeks \\
+\midrule
+TEDPIX & 92.1\% & -24.9\% & 105 \\
+USD/IRR & 103.7\% & -21.8\% & 104 \\
+Arzesh Maskan & 60.5\% & -45.0\% & 94 \\
+Kelid & 40.8\% & -26.5\% & 93 \\
+Danik & 32.1\% & -41.7\% & 94 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\section{Portfolio composition: how much property exposure was delivered?}
+
+The user-supplied Codal-derived workbook covers Arzesh Maskan and Danik only. Housing means direct real estate; fixed income combines fixed-income funds and direct debt securities. Other combines cash, equity, and other/receivables. Reported asset shares are accounting composition, not measured return sensitivities or independently verified current market values. Monthly means below are equally weighted snapshots, not time-weighted investment exposures.
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrrr}
+\toprule
+Fund & Component & First & Latest & Change pp & Mean & Min & Max \\
+\midrule
+Arzesh Maskan & Housing & 83.3\% & 68.7\% & -14.64 & 76.5\% & 68.7\% & 83.3\% \\
+Arzesh Maskan & Fixed income & 14.2\% & 26.7\% & +12.52 & 20.4\% & 14.2\% & 26.7\% \\
+Arzesh Maskan & Other incl. cash/equity & 2.5\% & 4.6\% & +2.12 & 3.1\% & 0.6\% & 6.0\% \\
+Danik & Housing & 89.6\% & 60.2\% & -29.34 & 43.1\% & 23.9\% & 89.6\% \\
+Danik & Fixed income & 7.9\% & 12.9\% & +4.98 & 50.8\% & 7.9\% & 75.4\% \\
+Danik & Other incl. cash/equity & 2.5\% & 26.9\% & +24.36 & 6.1\% & 0.1\% & 41.8\% \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+Arzesh Maskan: housing exposure fell from 83.3\% to 68.7\%, while fixed income changed from 14.2\% to 26.7\%. Across all 24 snapshots, average housing exposure was 76.5\%, with a low of 68.7\%; fixed income reached 26.7\%. The first-to-last comparison therefore does not capture the entire allocation path. At the latest month end, cash was 2.2\%, equity 0.0\%, and other/receivables 2.4\%. Total reported assets were 2,120.6 billion IRR. Changes in total assets are not investment returns: subscriptions, redemptions, distributions, and valuation changes can all affect the total.
+
+Danik: housing exposure fell from 89.6\% to 60.2\%, while fixed income changed from 7.9\% to 12.9\%. Across all 24 snapshots, average housing exposure was 43.1\%, with a low of 23.9\%; fixed income reached 75.4\%. The first-to-last comparison therefore does not capture the entire allocation path. At the latest month end, cash was 0.1\%, equity 0.0\%, and other/receivables 26.8\%. Total reported assets were 2,804.1 billion IRR. Changes in total assets are not investment returns: subscriptions, redemptions, distributions, and valuation changes can all affect the total.
+
+Both observed portfolios held substantial non-property assets, and direct housing weights declined over the sample. This supports the narrower conclusion that their shares did not deliver pure residential-property exposure. It does not quantify how much of the shareholder return shortfall was caused by the allocation: that requires dated holdings, component total returns, flows, fees, and valuation reconciliations. Kelid and Kakh have no asset-mix observations in this workbook, so their composition cannot be inferred from these two funds.
+
+\subsection{Source reconstruction and quality exceptions}
+
+Property weights are partly reconstructed from accounting buckets. In particular, a residual classified as receivables is not automatically a liquid fixed-income investment. Three flagged source rows are retained below; they are not silently corrected or removed.
+
+Arzesh Maskan, 1404/06: fund holdings total differs from DailyAssetStructure by -6.3\%. Method: split from DailyAssetStructure other bucket using property reports.
+
+Danik, 1404/09: reported property exceeds DailyAssetStructure other bucket; harmonized property capped at bucket. Method: split from DailyAssetStructure other bucket using property reports.
+
+Danik, 1404/10: reported property exceeds DailyAssetStructure other bucket; harmonized property capped at bucket. Method: split from DailyAssetStructure other bucket using property reports.
+
+\section{Housing tracking and assessment of management}
+
+A property-oriented fund can fail to track housing in two distinct ways: its cumulative shareholder wealth can grow more slowly, and its monthly returns can have little co-movement with the housing benchmark. Correlation measures the second, not the first. A fund could have high correlation but a persistent return shortfall, or similar endpoint appreciation with low correlation. The six complete correlation tables must therefore be read alongside the endpoint and composition tables.
+
+The near-zero or negative 24-month housing correlations support weak contemporaneous tracking of this particular monthly listing-price proxy. They do not establish that the underlying properties failed to appreciate. Exchange share prices also reflect changes in discounts or premiums to NAV, liquidity, investor demand, distributions, and expectations; property valuations may adjust more slowly. Citywide residential listings may be a poor match for a fund's locations, property types, and rental exposure.
+
+The supplied evidence raises a concrete management-review question: why did direct-property weights decline while the intended property exposure was not closely replicated in monthly share returns? It does not identify mismanagement as the cause. A defensible attribution must distinguish allocation decisions, property selection and operation, fees, financing, valuation timing, and share-price discounts. A pure housing mandate, a diversified property mandate, and a liquidity reserve mandate would imply different appropriate benchmarks; no regulatory or mandate breach is asserted here.
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lr}
+\toprule
+Question & Evidence needed \\
+\midrule
+Allocation decision quality & Mandate, dated holdings, component returns and cash flows \\
+Property operating quality & Occupancy, rents, expenses, acquisitions and sale prices \\
+Share-price discount effect & Comparable historical NAV and distribution-adjusted share prices \\
+Fee and financing drag & Expense ratios, debt terms, interest and related-party charges \\
+Complete investor return & All approved payouts, actual payment dates and corporate actions \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+The strongest supported conclusion is substantial benchmark underperformance for Kelid and Danik in the current scenario, weak monthly housing co-movement across the longer-history funds, and declining property allocation in the two observed portfolios. Arzesh's endpoint housing shortfall is comparatively small. Management quality remains an attribution question rather than an identified causal result.
+
+\section{Full conditional-regression diagnostics}
+
+The earlier model table emphasizes USD coefficients. This table adds the own-return and TEDPIX controls, full-model fit, and identical-sample baseline fit. The unadjusted joint USD test concerns one- and two-week lags, not the 4/13/26-week correlations. Statistical significance with low explained variation does not imply a strong trading forecast.
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+Fund & Own lag beta & TEDPIX lag beta & Full R2 & Baseline R2 & First pair & Last pair \\
+\midrule
+Arzesh Maskan & +0.2223 & +0.0777 & +0.1149 & +0.0507 & 2024-10-11 & 2026-10-02 \\
+Danik & -0.0931 & +0.0104 & +0.0601 & +0.0072 & 2024-10-11 & 2026-10-02 \\
+Kakh & -- & -- & -- & -- & 2026-05-22 & 2026-10-02 \\
+Kelid & +0.0172 & +0.0856 & +0.0388 & +0.0025 & 2024-11-01 & 2026-10-02 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\section{Fund-by-fund assessment}
+
+Arzesh Maskan: cumulative return 156.8\%; housing correlation -0.064 from 22 monthly pairs; conditional model R-squared 0.115, incremental R-squared 0.064, joint USD p-value 0.0020. Asset-composition history is available in the appendix.
+
+Kelid: cumulative return 97.9\%; housing correlation +0.094 from 21 monthly pairs; conditional model R-squared 0.039, incremental R-squared 0.036, joint USD p-value 0.0431. No asset-composition history is supplied for this fund.
+
+Danik: cumulative return 74.3\%; housing correlation -0.178 from 22 monthly pairs; conditional model R-squared 0.060, incremental R-squared 0.053, joint USD p-value 0.0041. Asset-composition history is available in the appendix.
+
+Kakh is an exploratory short-history comparison. It remains in qualifying daily and weekly correlation cells, but is excluded from the two-year cumulative ranking. Its 18 complete predictive-regression weeks do not meet the 52-week threshold. Suppressed coefficients are unavailable evidence, not evidence of zero sensitivity.
+
+\appendix
+
+\section{Complete monthly allocation observations}
+
+All 48 supplied fund-month allocations are retained. Percentages are rounded for presentation; unrounded components reconcile to 100 percent. The Other column includes the separately displayed cash and equity shares, so those columns must not be added again.
+
+\subsection{Arzesh Maskan}
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+Jalali month & Housing & Fixed income & Other & Cash & Equity & Assets bn IRR \\
+\midrule
+1403/07 & 83.3\% & 14.2\% & 2.5\% & 1.4\% & 0.0\% & 1,800.6 \\
+1403/08 & 83.1\% & 14.5\% & 2.5\% & 1.7\% & 0.0\% & 1,806.1 \\
+1403/09 & 82.9\% & 14.8\% & 2.3\% & 2.0\% & 0.0\% & 1,809.1 \\
+1403/10 & 82.5\% & 15.1\% & 2.5\% & 2.1\% & 0.0\% & 1,818.8 \\
+1403/11 & 82.3\% & 17.0\% & 0.6\% & 0.4\% & 0.0\% & 1,822.2 \\
+1403/12 & 82.0\% & 17.4\% & 0.6\% & 0.5\% & 0.0\% & 1,829.4 \\
+1404/01 & 81.4\% & 17.7\% & 0.9\% & 0.6\% & 0.0\% & 1,842.4 \\
+1404/02 & 81.0\% & 18.0\% & 1.0\% & 0.7\% & 0.0\% & 1,852.3 \\
+1404/03 & 79.8\% & 17.8\% & 2.4\% & 0.1\% & 0.0\% & 1,879.4 \\
+1404/04 & 77.5\% & 17.7\% & 4.8\% & 2.3\% & 0.0\% & 1,936.0 \\
+1404/05 & 76.9\% & 18.0\% & 5.1\% & 4.3\% & 0.0\% & 1,950.9 \\
+1404/06 & 77.3\% & 21.3\% & 1.4\% & 0.7\% & 0.0\% & 1,940.3 \\
+1404/07 & 76.6\% & 21.7\% & 1.8\% & 1.2\% & 0.0\% & 1,959.0 \\
+1404/08 & 76.0\% & 22.0\% & 2.1\% & 1.5\% & 0.0\% & 1,974.8 \\
+1404/09 & 75.3\% & 22.3\% & 2.3\% & 2.0\% & 0.0\% & 1,991.5 \\
+1404/10 & 74.6\% & 22.7\% & 2.7\% & 2.4\% & 0.0\% & 2,011.4 \\
+1404/11 & 74.0\% & 23.1\% & 2.9\% & 2.6\% & 0.0\% & 2,028.0 \\
+1404/12 & 71.4\% & 23.4\% & 5.2\% & 2.6\% & 0.0\% & 2,047.4 \\
+1405/01 & 70.7\% & 23.7\% & 5.6\% & 3.0\% & 0.0\% & 2,069.2 \\
+1405/02 & 70.1\% & 24.2\% & 5.7\% & 3.1\% & 0.0\% & 2,086.6 \\
+1405/03 & 69.3\% & 24.7\% & 6.0\% & 3.5\% & 0.0\% & 2,107.3 \\
+1405/04 & 70.2\% & 25.7\% & 4.1\% & 1.1\% & 0.0\% & 2,080.0 \\
+1405/05 & 69.4\% & 26.2\% & 4.4\% & 2.0\% & 0.0\% & 2,102.9 \\
+1405/06 & 68.7\% & 26.7\% & 4.6\% & 2.2\% & 0.0\% & 2,120.6 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\subsection{Danik}
+
+\begin{center}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+Jalali month & Housing & Fixed income & Other & Cash & Equity & Assets bn IRR \\
+\midrule
+1403/07 & 89.6\% & 7.9\% & 2.5\% & 0.8\% & 1.6\% & 1,631.0 \\
+1403/08 & 39.7\% & 46.1\% & 14.2\% & 12.5\% & 1.6\% & 1,690.9 \\
+1403/09 & 39.1\% & 58.3\% & 2.6\% & 0.7\% & 1.9\% & 1,716.8 \\
+1403/10 & 38.8\% & 58.5\% & 2.7\% & 0.6\% & 1.9\% & 1,727.0 \\
+1403/11 & 38.4\% & 59.2\% & 2.4\% & 0.6\% & 1.7\% & 1,747.4 \\
+1403/12 & 25.5\% & 69.4\% & 5.0\% & 0.4\% & 0.5\% & 1,826.0 \\
+1404/01 & 25.3\% & 33.0\% & 41.8\% & 0.3\% & 0.5\% & 1,843.0 \\
+1404/02 & 25.0\% & 73.7\% & 1.3\% & 0.3\% & 0.7\% & 1,863.3 \\
+1404/03 & 24.7\% & 74.1\% & 1.2\% & 0.3\% & 0.5\% & 1,887.5 \\
+1404/04 & 24.4\% & 73.3\% & 2.3\% & 1.6\% & 0.5\% & 1,912.8 \\
+1404/05 & 23.9\% & 75.4\% & 0.7\% & 0.1\% & 0.4\% & 1,949.0 \\
+1404/06 & 27.3\% & 69.7\% & 3.0\% & 0.5\% & 0.5\% & 1,707.9 \\
+1404/07 & 26.8\% & 72.0\% & 1.2\% & 0.2\% & 0.6\% & 1,736.3 \\
+1404/08 & 26.4\% & 72.9\% & 0.7\% & 0.0\% & 0.5\% & 1,764.1 \\
+1404/09 & 51.3\% & 47.7\% & 1.0\% & 1.0\% & 0.0\% & 1,790.8 \\
+1404/10 & 50.8\% & 49.1\% & 0.1\% & 0.1\% & 0.0\% & 1,805.1 \\
+1404/11 & 52.2\% & 47.2\% & 0.6\% & 0.6\% & 0.0\% & 1,841.3 \\
+1404/12 & 51.6\% & 48.2\% & 0.2\% & 0.2\% & 0.0\% & 1,863.5 \\
+1405/01 & 51.6\% & 48.1\% & 0.3\% & 0.3\% & 0.0\% & 1,862.7 \\
+1405/02 & 50.9\% & 48.8\% & 0.3\% & 0.2\% & 0.0\% & 1,886.8 \\
+1405/03 & 68.5\% & 30.8\% & 0.7\% & 0.6\% & 0.0\% & 1,915.7 \\
+1405/04 & 68.5\% & 31.3\% & 0.2\% & 0.2\% & 0.0\% & 1,917.1 \\
+1405/05 & 55.2\% & 10.5\% & 34.3\% & 0.1\% & 0.0\% & 3,060.2 \\
+1405/06 & 60.2\% & 12.9\% & 26.9\% & 0.1\% & 0.0\% & 2,804.1 \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\section{Complete return observations in the two-year review window}
+
+These appendices extend the latest-eight-period tables to the entire review window. Missing entries remain dashes. Earlier fund observations used by 36-month correlation cells remain represented by those cells and their explicit windows.
+
+\subsection{Monthly fund returns}
+
+\begingroup\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{lllll}
+\toprule Period & Arzesh Maskan & Kelid & Danik & Kakh \\ \midrule\endfirsthead
+\toprule Period & Arzesh Maskan & Kelid & Danik & Kakh \\ \midrule\endhead
+1403/07 & -11.69\% & -- & -8.83\% & -- \\
+1403/08 & +69.91\% & +8.31\% & +12.99\% & -- \\
+1403/09 & +3.12\% & +13.52\% & +12.17\% & -- \\
+1403/10 & +4.53\% & -6.92\% & +17.93\% & -- \\
+1403/11 & -6.71\% & -2.07\% & -1.87\% & -- \\
+1403/12 & +22.83\% & -0.09\% & -13.10\% & -- \\
+1404/01 & +29.45\% & +18.82\% & +15.98\% & -- \\
+1404/02 & -12.31\% & -6.84\% & -14.85\% & -- \\
+1404/03 & -13.93\% & -1.28\% & -6.36\% & -- \\
+1404/04 & +10.09\% & -6.39\% & -3.00\% & -- \\
+1404/05 & -26.00\% & -14.16\% & +13.15\% & -- \\
+1404/06 & -8.31\% & +4.23\% & -6.05\% & -- \\
+1404/07 & +7.36\% & +14.62\% & +4.68\% & -- \\
+1404/08 & -8.16\% & -5.13\% & -5.93\% & -- \\
+1404/09 & +26.45\% & +15.35\% & +25.72\% & -- \\
+1404/10 & -1.26\% & -6.95\% & -12.05\% & -- \\
+1404/11 & +7.69\% & +4.41\% & +3.02\% & -- \\
+1404/12 & -11.48\% & -8.33\% & -9.80\% & -- \\
+1405/02 & -- & -- & -- & -- \\
+1405/03 & +1.03\% & +7.87\% & -2.83\% & -6.52\% \\
+1405/04 & -9.04\% & +2.56\% & +2.47\% & -2.54\% \\
+1405/05 & +5.70\% & +4.87\% & +3.57\% & +8.02\% \\
+1405/06 & +13.61\% & +6.52\% & -3.71\% & +6.07\% \\
+\bottomrule\end{longtable}\endgroup
+
+\subsection{Weekly fund returns}
+
+\begingroup\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{lllll}
+\toprule Period & Arzesh Maskan & Kelid & Danik & Kakh \\ \midrule\endfirsthead
+\toprule Period & Arzesh Maskan & Kelid & Danik & Kakh \\ \midrule\endhead
+2024-10-04 & -5.85\% & -- & -3.12\% & -- \\
+2024-10-11 & +1.97\% & -- & +0.76\% & -- \\
+2024-10-18 & -3.81\% & -- & -0.40\% & -- \\
+2024-10-25 & -8.58\% & +0.89\% & -3.65\% & -- \\
+2024-11-01 & +16.05\% & +0.88\% & +6.05\% & -- \\
+2024-11-08 & +6.30\% & +0.00\% & -0.93\% & -- \\
+2024-11-15 & +20.91\% & +0.78\% & +2.13\% & -- \\
+2024-11-22 & +17.82\% & +5.90\% & +8.80\% & -- \\
+2024-11-29 & +15.40\% & +12.51\% & +14.07\% & -- \\
+2024-12-06 & -4.73\% & +4.22\% & -1.79\% & -- \\
+2024-12-13 & +3.18\% & -1.64\% & +10.70\% & -- \\
+2024-12-20 & -9.09\% & -1.58\% & -9.55\% & -- \\
+2024-12-27 & +9.94\% & -3.62\% & +5.16\% & -- \\
+2025-01-03 & +0.98\% & +0.42\% & +16.77\% & -- \\
+2025-01-10 & +0.83\% & +0.83\% & +14.02\% & -- \\
+2025-01-17 & -3.91\% & -2.31\% & -12.39\% & -- \\
+2025-01-24 & -0.91\% & -1.27\% & +1.66\% & -- \\
+2025-01-31 & -4.57\% & -2.31\% & -4.04\% & -- \\
+2025-02-07 & -5.39\% & -2.62\% & +0.91\% & -- \\
+2025-02-14 & -6.61\% & -2.25\% & -4.27\% & -- \\
+2025-02-21 & +14.33\% & +3.12\% & +0.01\% & -- \\
+2025-02-28 & +9.10\% & +4.01\% & +1.06\% & -- \\
+2025-03-07 & +4.69\% & -2.57\% & -5.64\% & -- \\
+2025-03-14 & +0.57\% & +0.79\% & -5.86\% & -- \\
+2025-03-21 & +1.48\% & -1.22\% & -3.10\% & -- \\
+2025-03-28 & +6.10\% & +3.09\% & +2.64\% & -- \\
+2025-04-04 & +4.37\% & +2.57\% & +1.41\% & -- \\
+2025-04-11 & +6.63\% & +5.68\% & +3.60\% & -- \\
+2025-04-18 & +9.63\% & +6.32\% & +7.55\% & -- \\
+2025-04-25 & -1.87\% & -0.97\% & -5.93\% & -- \\
+2025-05-02 & -3.58\% & +1.05\% & -3.05\% & -- \\
+2025-05-09 & -0.04\% & -2.38\% & -2.59\% & -- \\
+2025-05-16 & -0.89\% & -1.29\% & -1.52\% & -- \\
+2025-05-23 & -6.45\% & -3.39\% & -2.68\% & -- \\
+2025-05-30 & -2.95\% & -0.08\% & -0.88\% & -- \\
+2025-06-06 & -7.10\% & -1.52\% & -2.34\% & -- \\
+2025-06-13 & -4.55\% & +0.32\% & -3.26\% & -- \\
+2025-07-04 & -- & -- & -- & -- \\
+2025-07-11 & -2.60\% & -0.86\% & +0.03\% & -- \\
+2025-07-18 & +11.49\% & +2.43\% & +4.25\% & -- \\
+2025-07-25 & +12.98\% & -3.14\% & +0.04\% & -- \\
+2025-08-01 & -9.18\% & -8.33\% & -5.21\% & -- \\
+2025-08-08 & -7.45\% & -2.01\% & -0.65\% & -- \\
+2025-08-15 & -7.46\% & -3.51\% & -1.01\% & -- \\
+2025-08-22 & -2.61\% & +0.51\% & +25.02\% & -- \\
+2025-08-29 & -5.77\% & +1.21\% & -7.72\% & -- \\
+2025-09-05 & +4.34\% & +5.47\% & +4.06\% & -- \\
+2025-09-12 & +0.34\% & +1.32\% & -1.15\% & -- \\
+2025-09-19 & -6.10\% & -3.35\% & -2.61\% & -- \\
+2025-09-26 & -3.46\% & -1.35\% & +1.37\% & -- \\
+2025-10-03 & +3.21\% & +3.80\% & +0.60\% & -- \\
+2025-10-10 & +3.42\% & +3.85\% & +0.71\% & -- \\
+2025-10-17 & +1.66\% & +4.60\% & +1.77\% & -- \\
+2025-10-24 & +1.44\% & +2.73\% & +1.79\% & -- \\
+2025-10-31 & -0.99\% & -1.01\% & -1.82\% & -- \\
+2025-11-07 & -3.81\% & -1.20\% & -2.84\% & -- \\
+2025-11-14 & -3.23\% & -3.18\% & -1.39\% & -- \\
+2025-11-21 & -0.34\% & +0.19\% & +0.00\% & -- \\
+2025-11-28 & +0.27\% & +1.35\% & -0.01\% & -- \\
+2025-12-05 & -0.25\% & -0.29\% & -0.27\% & -- \\
+2025-12-12 & +3.67\% & +3.72\% & +4.56\% & -- \\
+2025-12-19 & +14.95\% & +5.62\% & +13.67\% & -- \\
+2025-12-26 & +15.92\% & +6.54\% & +12.60\% & -- \\
+2026-01-02 & -0.45\% & -6.06\% & -9.94\% & -- \\
+2026-01-09 & +0.49\% & +0.17\% & -0.02\% & -- \\
+2026-01-16 & -7.72\% & -5.22\% & -8.48\% & -- \\
+2026-01-23 & +0.16\% & +4.22\% & +2.70\% & -- \\
+2026-01-30 & -7.74\% & -5.28\% & -6.69\% & -- \\
+2026-02-06 & -0.44\% & +0.93\% & -0.09\% & -- \\
+2026-02-13 & -0.52\% & +0.09\% & -0.74\% & -- \\
+2026-02-20 & +15.18\% & +6.81\% & +8.99\% & -- \\
+2026-02-27 & -11.48\% & -8.33\% & -9.80\% & -- \\
+2026-05-08 & -- & -- & -- & -- \\
+2026-05-15 & +14.58\% & +13.97\% & +15.83\% & +15.15\% \\
+2026-05-22 & -0.51\% & -1.44\% & -0.06\% & -2.01\% \\
+2026-05-29 & -2.44\% & +2.42\% & -3.09\% & -4.42\% \\
+2026-06-05 & -2.76\% & +0.49\% & -3.59\% & -3.50\% \\
+2026-06-12 & +7.10\% & +6.40\% & +5.76\% & +2.58\% \\
+2026-06-19 & +4.75\% & +4.19\% & +3.68\% & +4.94\% \\
+2026-06-26 & -5.56\% & -4.26\% & -5.96\% & -7.34\% \\
+2026-07-03 & -3.75\% & +2.83\% & -3.83\% & -3.18\% \\
+2026-07-10 & -0.60\% & +0.57\% & -0.40\% & -0.80\% \\
+2026-07-17 & -1.21\% & -0.38\% & +11.40\% & +4.04\% \\
+2026-07-24 & -3.27\% & -1.68\% & -3.15\% & -0.89\% \\
+2026-07-31 & +3.53\% & +1.59\% & +0.18\% & +2.33\% \\
+2026-08-07 & +6.23\% & +6.29\% & +5.58\% & +4.97\% \\
+2026-08-14 & -3.20\% & -2.92\% & -3.51\% & -0.18\% \\
+2026-08-21 & -1.68\% & -1.19\% & -0.56\% & +0.68\% \\
+2026-08-28 & +9.91\% & +10.56\% & -3.72\% & +5.43\% \\
+2026-09-04 & -1.45\% & -2.75\% & +1.25\% & -2.86\% \\
+2026-09-11 & +10.29\% & +4.48\% & +6.40\% & +3.56\% \\
+2026-09-18 & -2.09\% & -0.19\% & -3.06\% & -1.26\% \\
+2026-09-25 & -1.68\% & -3.69\% & -2.13\% & +1.36\% \\
+2026-10-02 & +5.39\% & +6.13\% & +6.34\% & +2.06\% \\
+\bottomrule\end{longtable}\endgroup
+
+\section{Correlation window and suppression audit}
+
+All 80 active cells are listed with actual paired counts and required minimum counts. Benchmark D means USD/IRR; L means USD/IRR leading REIT; H means Tehran housing; T means TEDPIX. The column W/L gives lookback months and dollar lead weeks. Status OK means reported; omit means insufficient paired observations or variation.
+
+\begingroup\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{llllllll}
+\toprule B & Freq & Fund & W/L & Start & End & n/min & Status \\ \midrule\endfirsthead
+\toprule B & Freq & Fund & W/L & Start & End & n/min & Status \\ \midrule\endhead
+T & daily & Arzesh Maskan & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
+T & daily & Arzesh Maskan & 3/0 & 2026-07-01 & 2026-10-02 & 58/42 & OK \\
+T & daily & Arzesh Maskan & 6/0 & 2026-03-30 & 2026-10-02 & 100/84 & OK \\
+T & daily & Arzesh Maskan & 12/0 & 2025-10-02 & 2026-10-02 & 200/168 & OK \\
+T & daily & Kelid & 1/0 & 2026-09-01 & 2026-10-02 & 20/14 & OK \\
+T & daily & Kelid & 3/0 & 2026-07-01 & 2026-10-02 & 57/42 & OK \\
+T & daily & Kelid & 6/0 & 2026-03-30 & 2026-10-02 & 99/84 & OK \\
+T & daily & Kelid & 12/0 & 2025-10-02 & 2026-10-02 & 198/168 & OK \\
+T & daily & Danik & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
+T & daily & Danik & 3/0 & 2026-07-01 & 2026-10-02 & 57/42 & OK \\
+T & daily & Danik & 6/0 & 2026-03-30 & 2026-10-02 & 99/84 & OK \\
+T & daily & Danik & 12/0 & 2025-10-02 & 2026-10-02 & 199/168 & OK \\
+T & daily & Kakh & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
+T & daily & Kakh & 3/0 & 2026-07-01 & 2026-10-02 & 58/42 & OK \\
+T & daily & Kakh & 6/0 & 2026-03-30 & 2026-10-02 & 97/84 & OK \\
+T & daily & Kakh & 12/0 & 2025-10-02 & 2026-10-02 & 99/168 & omit \\
+D & daily & Arzesh Maskan & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
+D & daily & Arzesh Maskan & 3/0 & 2026-07-01 & 2026-10-02 & 58/42 & OK \\
+D & daily & Kelid & 1/0 & 2026-09-01 & 2026-10-02 & 20/14 & OK \\
+D & daily & Kelid & 3/0 & 2026-07-01 & 2026-10-02 & 57/42 & OK \\
+D & daily & Danik & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
+D & daily & Danik & 3/0 & 2026-07-01 & 2026-10-02 & 57/42 & OK \\
+D & daily & Kakh & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
+D & daily & Kakh & 3/0 & 2026-07-01 & 2026-10-02 & 58/42 & OK \\
+T & weekly & Arzesh Maskan & 1/0 & 2026-09-01 & 2026-10-02 & 5/5 & OK \\
+T & weekly & Arzesh Maskan & 3/0 & 2026-07-01 & 2026-10-02 & 14/10 & OK \\
+T & weekly & Arzesh Maskan & 6/0 & 2026-03-30 & 2026-10-02 & 21/19 & OK \\
+T & weekly & Arzesh Maskan & 12/0 & 2025-10-02 & 2026-10-02 & 43/37 & OK \\
+T & weekly & Arzesh Maskan & 24/0 & 2024-10-01 & 2026-10-02 & 92/73 & OK \\
+T & weekly & Kelid & 1/0 & 2026-09-01 & 2026-10-02 & 5/5 & OK \\
+T & weekly & Kelid & 3/0 & 2026-07-01 & 2026-10-02 & 14/10 & OK \\
+T & weekly & Kelid & 6/0 & 2026-03-30 & 2026-10-02 & 21/19 & OK \\
+T & weekly & Kelid & 12/0 & 2025-10-02 & 2026-10-02 & 43/37 & OK \\
+T & weekly & Kelid & 24/0 & 2024-10-01 & 2026-10-02 & 89/73 & OK \\
+T & weekly & Danik & 1/0 & 2026-09-01 & 2026-10-02 & 5/5 & OK \\
+T & weekly & Danik & 3/0 & 2026-07-01 & 2026-10-02 & 14/10 & OK \\
+T & weekly & Danik & 6/0 & 2026-03-30 & 2026-10-02 & 21/19 & OK \\
+T & weekly & Danik & 12/0 & 2025-10-02 & 2026-10-02 & 43/37 & OK \\
+T & weekly & Danik & 24/0 & 2024-10-01 & 2026-10-02 & 92/73 & OK \\
+T & weekly & Kakh & 1/0 & 2026-09-01 & 2026-10-02 & 5/5 & OK \\
+T & weekly & Kakh & 3/0 & 2026-07-01 & 2026-10-02 & 14/10 & OK \\
+T & weekly & Kakh & 6/0 & 2026-03-30 & 2026-10-02 & 21/19 & OK \\
+T & weekly & Kakh & 12/0 & 2025-10-02 & 2026-10-02 & 21/37 & omit \\
+T & weekly & Kakh & 24/0 & 2024-10-01 & 2026-10-02 & 21/73 & omit \\
+L & weekly & Arzesh Maskan & 24/4 & 2024-10-01 & 2026-10-02 & 89/74 & OK \\
+L & weekly & Kelid & 24/4 & 2024-10-01 & 2026-10-02 & 86/74 & OK \\
+L & weekly & Danik & 24/4 & 2024-10-01 & 2026-10-02 & 89/74 & OK \\
+L & weekly & Kakh & 24/4 & 2024-10-01 & 2026-10-02 & 20/74 & omit \\
+L & weekly & Arzesh Maskan & 24/13 & 2024-10-01 & 2026-10-02 & 89/74 & OK \\
+L & weekly & Kelid & 24/13 & 2024-10-01 & 2026-10-02 & 86/74 & OK \\
+L & weekly & Danik & 24/13 & 2024-10-01 & 2026-10-02 & 89/74 & OK \\
+L & weekly & Kakh & 24/13 & 2024-10-01 & 2026-10-02 & 20/74 & omit \\
+L & weekly & Arzesh Maskan & 24/26 & 2024-10-01 & 2026-10-02 & 90/74 & OK \\
+L & weekly & Kelid & 24/26 & 2024-10-01 & 2026-10-02 & 87/74 & OK \\
+L & weekly & Danik & 24/26 & 2024-10-01 & 2026-10-02 & 90/74 & OK \\
+L & weekly & Kakh & 24/26 & 2024-10-01 & 2026-10-02 & 21/74 & omit \\
+T & monthly & Arzesh Maskan & 12/0 & 1404/07 & 1405/06 & 10/9 & OK \\
+T & monthly & Arzesh Maskan & 24/0 & 1403/07 & 1405/06 & 22/17 & OK \\
+T & monthly & Arzesh Maskan & 36/0 & 1402/07 & 1405/06 & 34/26 & OK \\
+T & monthly & Kelid & 12/0 & 1404/07 & 1405/06 & 10/9 & OK \\
+T & monthly & Kelid & 24/0 & 1403/07 & 1405/06 & 21/17 & OK \\
+T & monthly & Kelid & 36/0 & 1402/07 & 1405/06 & 21/26 & omit \\
+T & monthly & Danik & 12/0 & 1404/07 & 1405/06 & 10/9 & OK \\
+T & monthly & Danik & 24/0 & 1403/07 & 1405/06 & 22/17 & OK \\
+T & monthly & Danik & 36/0 & 1402/07 & 1405/06 & 33/26 & OK \\
+T & monthly & Kakh & 12/0 & 1404/07 & 1405/06 & 4/9 & omit \\
+T & monthly & Kakh & 24/0 & 1403/07 & 1405/06 & 4/17 & omit \\
+T & monthly & Kakh & 36/0 & 1402/07 & 1405/06 & 4/26 & omit \\
+H & monthly & Arzesh Maskan & 12/0 & 1404/07 & 1405/06 & 10/9 & OK \\
+H & monthly & Arzesh Maskan & 24/0 & 1403/07 & 1405/06 & 22/17 & OK \\
+H & monthly & Arzesh Maskan & 36/0 & 1402/07 & 1405/06 & 34/26 & OK \\
+H & monthly & Kelid & 12/0 & 1404/07 & 1405/06 & 10/9 & OK \\
+H & monthly & Kelid & 24/0 & 1403/07 & 1405/06 & 21/17 & OK \\
+H & monthly & Kelid & 36/0 & 1402/07 & 1405/06 & 21/26 & omit \\
+H & monthly & Danik & 12/0 & 1404/07 & 1405/06 & 10/9 & OK \\
+H & monthly & Danik & 24/0 & 1403/07 & 1405/06 & 22/17 & OK \\
+H & monthly & Danik & 36/0 & 1402/07 & 1405/06 & 33/26 & OK \\
+H & monthly & Kakh & 12/0 & 1404/07 & 1405/06 & 4/9 & omit \\
+H & monthly & Kakh & 24/0 & 1403/07 & 1405/06 & 4/17 & omit \\
+H & monthly & Kakh & 36/0 & 1402/07 & 1405/06 & 4/26 & omit \\
+\bottomrule\end{longtable}\endgroup
+
+\section{Output inventory and translation guidance}
+
+This single English source consolidates the active notebook's cumulative comparison, traded-versus-reinvested comparison, recent return tables, six heatmaps as full numerical grids, and conditional-regression results. The allocation dropdown is represented by both complete fund allocation histories. Numerical tables provide the exact values behind the interactive visuals; separate chart files are not required to interpret this document. Earlier exchange-adjusted, payment-date, and superseded lag analyses are historical methods and are not mixed into the active conclusions.
+
+Input lineage: the report reads the processed two-year cumulative panels and summaries, assembly reinvestment daily path and event ledger, reinvested weekly and monthly return panels, requested correlation heatmaps, weekly predictive regressions, and Codal asset-mix monthly panel. The allocation workbook snapshot has SHA-256 \texttt{a2592e41fee12f28db32566224794d3a8129}\allowbreak\texttt{69f1405845e852270d58f73506a1}. The workbook is user-supplied; its accounting reconstruction and flagged rows have not been independently verified against the original filings. The report generation date is not a source-refresh date.
+
+For Persian translation, preserve all dates, signs, units, observation counts, missing-value markers, formulas, and the distinction between percentage points and relative wealth. Translate the interpretation without strengthening association into causation or treating the recorded-distribution scenario as an audited complete total return.
 
 \end{document}
