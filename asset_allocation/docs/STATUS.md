@@ -1,6 +1,16 @@
 # Status
 
+## Current REIT checkpoint — 2026-10-10
+
+Source refresh: all eight canonical TSETMC fund histories and TEDPIX reach 2026-10-07; shared USD/IRR has 13,114 dates through 1405/07/16; Kilid housing remains at its latest complete month, 1405/06. The approved three-event distribution ledger and 48-row, 1403/07–1405/06 Codal-derived allocation snapshot were unchanged. Source coverage is distinct from the rebuilt two-year weekly output through 2026-10-09 and monthly housing output through 2026-09-22.
+
+The weekly anchor bug was corrected to include the latest completed Friday with Wednesday trading. The 630-row six-asset cumulative panel now ends 2026-10-09; baselines vary by asset within the shifted two-year window. Cumulative returns are Arzesh Maskan +177.2%, Kelid +108.2%, Danik +98.8%, TEDPIX +287.2%, and USD/IRR +320.9%. Housing is +160.7% over different monthly endpoints. The 80-cell grid still has 66 reportable correlations; three of four predictive regressions remain reportable. The 12-cell notebook executed, four LaTeX sources were regenerated, and the project suite passed 33 tests. TeX compilation and page layout remain unverified. This checkpoint supersedes the earlier REIT market endpoints and performance figures below; the historical allocation pilot and pending expert survey are unaffected.
+
 Updated: 2026-10-08
+
+Detailed Persian report added 2026-10-08: `reports/REIT_DETAILED_REPORT_FA.tex` covers returns, benchmark shortfalls, drawdowns, recorded distributions, six full correlation grids, dollar-model explanatory power, complete Arzesh/Danik monthly allocation tables, and monthly return history. It explicitly assesses Kelid and Danik as poor housing-exposure vehicles in the observed period and distinguishes Arzesh's better endpoint performance from weak monthly housing tracking. Repeated Kelid missing-composition notices were removed from the Persian management brief. Existing data were used; compilation remains unverified locally.
+
+Persian management companion added 2026-10-08: `reports/REIT_MANAGEMENT_BRIEF_FA.tex` summarizes the three longer-history funds' housing, TEDPIX and USD relationships and the two available asset-mix histories. Three tables follow the narrative, without observation counts or technical regression statistics. It specifies Amiri, RTL text/table direction, and explicit LTR numeric spans. The source was generated from existing processed data; no market data changed. Local TeX compilation and visual rendering remain unavailable. The user confirmed that payment dates were established from financial statements; this supersedes the blanket claim that the dates are unverified, while the analytical reinvestment convention remains assembly-based.
 
 Management companion prepared 2026-10-08: `reports/REIT_MANAGEMENT_BRIEF.tex` presents the key performance, housing-tracking, and composition facts followed by three supporting tables. It distinguishes benchmark shortfalls from unproven management attribution. Existing processed inputs were used; no sources were refreshed. TeX compilation remains unavailable locally.
 

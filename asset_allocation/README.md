@@ -1,5 +1,9 @@
 # Iran Cross-Asset Allocation
 
+## REIT refresh — 2026-10-10
+
+The documented collectors refreshed eight TSETMC REIT histories and TEDPIX through 2026-10-07, shared USD/IRR through Jalali 1405/07/16, and checked Kilid housing (no new complete month after 1405/06). The completed-week correction now includes the week ending 2026-10-09. The two-year cumulative comparison reports Arzesh Maskan +177.2%, Kelid +108.2%, and Danik +98.8%, versus TEDPIX +287.2% and USD/IRR +320.9%. The separate monthly housing proxy remains +160.7% through 2026-09-22, so its return gap is indicative because endpoints differ. The active notebook and English/Persian reports were rebuilt. See [status](docs/STATUS.md) for coverage and verification details.
+
 ## Research question
 
 How stable are hindsight-efficient allocations across Iranian gold, equities, Tehran residential housing, and fixed income, and what does that instability imply for a future forward-looking allocation framework?
@@ -38,6 +42,10 @@ After the monthly REIT-return builder and four-asset housing panel are current, 
 Generate the single table-first [LaTeX research report](reports/REIT_CROSS_ASSET_ANALYSIS.tex) with `python -m asset_allocation.build_reit_latex_report` after rebuilding the derivatives above. It includes the two-year cumulative comparison, all recorded distribution and reinvestment results, latest weekly and monthly fund returns, every cell of the six correlation grids with paired counts, the predictive-regression and coverage tables, and data-grounded conclusions. The generator reads processed tables only; it does not create HTML or modify canonical sources.
 
 ## Housing data integrity
+
+The detailed Persian report is `reports/REIT_DETAILED_REPORT_FA.tex`, built by `python -m asset_allocation.build_reit_detailed_report_fa`. It covers performance, benchmark gaps, drawdowns, distributions, all six correlation grids, dollar-model explanatory power, complete monthly asset-mix histories, and monthly returns. It uses Amiri and explicit RTL/LTR formatting, with a period-specific assessment of housing exposure suitability. The composition section is scoped to Arzesh and Danik without repeating missing-data notices for Kelid.
+
+The Persian management companion `reports/REIT_MANAGEMENT_BRIEF_FA.tex` is generated with `python -m asset_allocation.build_reit_management_brief_fa`. It summarizes housing, equity, and dollar relationships plus Arzesh/Danik composition, with three tables at the end and no sample-count or regression-detail columns. Compile with XeLaTeX and the Amiri font installed; XePersian sets RTL prose/table order and explicit LTR spans preserve numeric signs and digit order. The English reports remain separate.
 
 A concise manager-facing companion is available at `reports/REIT_MANAGEMENT_BRIEF.tex`: key findings and qualifications first, followed by three supporting tables covering performance, asset allocation, and housing correlation. Rebuild with `python -m asset_allocation.build_reit_management_brief`; review its dated narrative whenever the research inputs change.
 

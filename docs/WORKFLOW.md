@@ -1,5 +1,7 @@
 # Workspace Workflow
 
+The 2026-10-10 REIT refresh uses the project collectors for eight TSETMC funds, TEDPIX, and Kilid, plus the shared `shared.market_data.fx` collector. The project workflow records the source checks and rebuild sequence. A completed Friday includes the Wednesday Iranian trading close assigned to that week; the corrected weekly outputs now reach 2026-10-09. Rebuild the active notebook and four LaTeX sources after downstream derivatives, and review the management narrative when returns change.
+
 ## Asset Allocation: active four-fund notebook
 
 Use `asset_allocation/notebooks/iran_reits_cross_asset_analysis.ipynb` for Kelid, Danik, Arzesh Maskan, and Kakh. With `PYTHONPATH=src` from `asset_allocation`, run `python -m asset_allocation.build_reit_assembly_reinvestment`, `python -m asset_allocation.build_reit_two_year_cumulative`, `python -m asset_allocation.build_reit_reinvested_correlations`, and `python -m asset_allocation.analyze_reit_usd_weekly_predictive` in that order. If a new complete housing month is available, run the Kilid collector, four-asset monthly panel builder, and housing two-year cumulative builder. Then run `python -m asset_allocation.build_reit_requested_heatmaps` before executing the notebook and report generator. Source collectors alone refresh canonical raw data; derivatives remain under `data/processed/analysis`.

@@ -1,5 +1,11 @@
 # Research Status
 
+Asset Allocation refreshed canonical REIT and TEDPIX histories through 2026-10-07 and shared USD/IRR through Jalali 1405/07/16 on 2026-10-10; Kilid had no new complete month. A completed-week cutoff correction moved the rebuilt REIT comparison to 2026-10-09. The notebook and four LaTeX reports were regenerated; the 80-cell grid retains 66 reportable coefficients. See the project status for current returns, different housing endpoints, and verification. Earlier REIT performance figures below are superseded.
+
+Asset Allocation added a detailed Persian REIT report on 2026-10-08 at `asset_allocation/reports/REIT_DETAILED_REPORT_FA.tex`, alongside the short Persian and English versions. It includes performance, distributions, all active correlation grids and monthly allocation/return appendices. Its housing-exposure conclusion is explicitly limited to the observed period.
+
+Asset Allocation added a separate Persian management brief on 2026-10-08 at `asset_allocation/reports/REIT_MANAGEMENT_BRIEF_FA.tex`. It uses Amiri, RTL prose/tables and LTR numeric spans, with concise correlation and asset-composition findings followed by three tables. Existing processed inputs were used; PDF rendering is not verified locally.
+
 Asset Allocation added `reports/REIT_MANAGEMENT_BRIEF.tex` on 2026-10-08 as a concise companion to the detailed REIT report, with findings first and three supporting tables at the end. It uses the existing research checkpoint without refreshing data.
 
 Asset Allocation expanded its single English LaTeX REIT performance report on 2026-10-08 with benchmark shortfalls, relative wealth, drawdowns, full allocation histories, management-attribution limits, complete two-year returns, regression diagnostics, and the 80-cell coverage appendix. Existing processed data were used without a source refresh. The source is self-contained for translation; PDF compilation is unverified because no local TeX engine is available.

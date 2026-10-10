@@ -1,5 +1,9 @@
 # Workflow
 
+## REIT refresh checkpoint — 2026-10-10
+
+From `asset_allocation` with `PYTHONPATH=src`, run the documented `collectors.tsetmc_reits`, `collectors.tsetmc_tedpix`, and `collectors.kilid_housing` modules, and run `shared.market_data.fx` from the workspace root. Validate canonical coverage before rebuilding the project modules listed in the active REIT sequence below. The weekly anchor is the latest *completed* Friday that contains a source observation: a Wednesday TSETMC close belongs to the Friday of that same week once Friday has elapsed. Rebuild all weekly derivatives, the active notebook, and all English/Persian reports after a new completed week. The management brief has a checked editorial narrative and requires revision when headline inputs change. The Codal allocation workbook remains an unchanged 1405/06 snapshot; a market refresh does not extend its coverage.
+
 The CBI-period housing levels were cross-checked against the independently curated
 101-month CBI series in the separate Housing repository on 2026-09-19; all levels agree. This project
 continues to generate its own four-asset panel and post-1403/05 Kilid extension. Refresh Kilid with `python -m asset_allocation.collectors.kilid_housing` before rebuilding the monthly panel; the collector archives exact responses, validates overlapping values, writes the canonical raw CSV atomically, and excludes the incomplete current month.
@@ -256,6 +260,10 @@ Historical-only derivatives include the earlier eight-fund traded-close panels, 
 The LaTeX generator also reads the processed asset-mix panel through `reit_performance_review`. It calculates benchmark percentage-point gaps, relative ending wealth, calendar-day CAGR, and observed weekly peak-to-trough drawdown for presentation, and includes complete allocation, two-year return, regression-control, and correlation-coverage appendices. It writes only the report. Inspect that housing's different endpoints remain disclosed and that management explanations are hypotheses, not causal findings. The single source includes numerical equivalents of the active charts and requires no external figure files.
 
 ## Data governance and independent execution
+
+Build the detailed Persian companion with `python -m asset_allocation.build_reit_detailed_report_fa` from the same validated report inputs. The output is `reports/REIT_DETAILED_REPORT_FA.tex`, requiring XeLaTeX, XePersian and Amiri. It includes all six active correlation grids and monthly allocation/return appendices, while omitting sample-count columns for the intended reader. Interpret the housing-exposure assessment as evidence about the observed period; retain the positive stock-market relationships rather than claiming no relationship with all benchmarks. Dividend payment confirmation and the assembly-date reinvestment convention remain distinct.
+
+For the Persian management companion, run `python -m asset_allocation.build_reit_management_brief_fa` against the validated correlation-grid and asset-mix derivatives. This writes `reports/REIT_MANAGEMENT_BRIEF_FA.tex`. Compile using XeLaTeX with XePersian and Amiri. Narrative precedes the three RTL tables, and each numeric cell is explicitly LTR. The brief omits counts and technical diagnostics while retaining frequency/window labels. The user confirmed payment dates from financial statements on 2026-10-08; distinguish that source confirmation from the existing assembly-date reinvestment assumption, and do not describe payment dates as unverified in the new brief.
 
 For a concise management handoff, run `python -m asset_allocation.build_reit_management_brief` after the detailed report inputs are validated. It writes `reports/REIT_MANAGEMENT_BRIEF.tex`, with narrative first and three supporting tables at the end. This is an editorial summary of the current checkpoint; changed inputs require narrative review. The builder rejects changed headline performance figures. It does not refresh sources or change processed data.
 

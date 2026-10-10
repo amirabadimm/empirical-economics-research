@@ -24,7 +24,7 @@ def sections(read, table, escape, funds):
                      *(pct((1+r)/(1+b)-1) for b in refs)])
     parts += [table(["Fund", "Return", "Housing gap pp", "USD gap pp", "TEDPIX gap pp",
                      "Housing-relative wealth", "USD-relative wealth", "TEDPIX-relative wealth"], rows),
-              "Arzesh Maskan, Kelid, and Danik all lagged the dollar and TEDPIX over the displayed window. The housing comparison is heterogeneous: Arzesh was close to the housing proxy, whereas Kelid and Danik had much larger shortfalls. Calling all three equally poor housing substitutes would conceal this material difference. These results describe the recorded-distribution scenario; an omitted payout can understate a fund's return.",
+              "Arzesh Maskan, Kelid, and Danik all lagged the dollar and TEDPIX over the displayed window. The housing comparison is heterogeneous: Arzesh exceeded the housing proxy, whereas Kelid and Danik had large shortfalls. Calling all three equally poor housing substitutes would conceal this material difference. These results describe the recorded-distribution scenario; an omitted payout can understate a fund's return.",
               r"\subsection{Observed drawdowns and time-scaled returns}",
               "CAGR uses actual calendar days between the displayed baseline and last observation. Drawdown is the largest fall from a prior observed weekly peak, calculated on the cumulative wealth path. Missing weeks remain unobserved; an intraweek or unobserved trough can be deeper. No Sharpe ratio is claimed without a consistent risk-free series."]
     rows = []
@@ -72,7 +72,7 @@ def sections(read, table, escape, funds):
                   ["Share-price discount effect", "Comparable historical NAV and distribution-adjusted share prices"],
                   ["Fee and financing drag", "Expense ratios, debt terms, interest and related-party charges"],
                   ["Complete investor return", "All approved payouts, actual payment dates and corporate actions"]]),
-              "The strongest supported conclusion is substantial benchmark underperformance for Kelid and Danik in the current scenario, weak monthly housing co-movement across the longer-history funds, and declining property allocation in the two observed portfolios. Arzesh's endpoint housing shortfall is comparatively small. Management quality remains an attribution question rather than an identified causal result.",
+              "The strongest supported conclusion is substantial benchmark underperformance for Kelid and Danik in the current scenario, weak monthly housing co-movement across the longer-history funds, and declining property allocation in the two observed portfolios. Arzesh exceeded the housing proxy at the endpoint, though the monthly paths tracked poorly. Management quality remains an attribution question rather than an identified causal result.",
               r"\section{Full conditional-regression diagnostics}",
               "The earlier model table emphasizes USD coefficients. This table adds the own-return and TEDPIX controls, full-model fit, and identical-sample baseline fit. The unadjusted joint USD test concerns one- and two-week lags, not the 4/13/26-week correlations. Statistical significance with low explained variation does not imply a strong trading forecast."]
     parts += [table(["Fund", "Own lag beta", "TEDPIX lag beta", "Full R2", "Baseline R2", "First pair", "Last pair"],

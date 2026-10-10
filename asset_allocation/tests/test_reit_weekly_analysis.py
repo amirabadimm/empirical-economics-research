@@ -1,7 +1,17 @@
 import csv
 from datetime import date
 
-from asset_allocation.analyze_reit_tedpix_weekly import friday, shift_jalali_months, weekly_closes
+from asset_allocation.analyze_reit_tedpix_weekly import friday, latest_complete_friday, shift_jalali_months, weekly_closes
+
+
+def test_completed_week_includes_last_wednesday_trade(tmp_path):
+    path = tmp_path / "index.csv"
+    with path.open("w", encoding="utf-8", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=("source_date_gregorian",))
+        writer.writeheader()
+        writer.writerow({"source_date_gregorian": "2026-10-07"})
+    assert latest_complete_friday(path, as_of=date(2026, 10, 10)) == date(2026, 10, 9)
+    assert latest_complete_friday(path, as_of=date(2026, 10, 7)) == date(2026, 10, 2)
 
 
 def test_week_ends_friday_and_uses_last_traded_close(tmp_path):

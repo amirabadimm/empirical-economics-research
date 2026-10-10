@@ -18,7 +18,7 @@
 
 \author{Asset Allocation research workflow}
 
-\date{2026-10-08 22:21 Asia/Tehran}
+\date{2026-10-10 14:35 Asia/Tehran}
 
 \begin{document}
 
@@ -30,13 +30,13 @@
 
 \begin{abstract}
 
-Four Iranian real-estate funds are compared with TEDPIX, USD/IRR, and Tehran housing. The market endpoint is 2026-10-02 and the monthly housing endpoint is 2026-09-22. Fund returns use raw traded closes and immediate reinvestment of the three recorded approved distributions. Six correlation grids contain 80 cells; 66 pass the observation and coverage rules. The results describe historical association rather than causal effects or investable forecasts.
+Four Iranian real-estate funds are compared with TEDPIX, USD/IRR, and Tehran housing. The market endpoint is 2026-10-09 and the monthly housing endpoint is 2026-09-22. Fund returns use raw traded closes and immediate reinvestment of the three recorded approved distributions. Six correlation grids contain 80 cells; 66 pass the observation and coverage rules. The results describe historical association rather than causal effects or investable forecasts.
 
 \end{abstract}
 
 \section{Data, return construction, and sample rules}
 
-The fund series values fractional units at raw traded closes. Recorded cash is assumed available on the assembly date and buys units at the first traded close on or afterward. Actual cash dates and complete distribution histories remain unaudited. Arzesh Maskan and Kakh have no approved cash event in the current ledger; equality of their reconstructed and traded-close paths does not establish zero distributions.
+The fund series values fractional units at raw traded closes. Recorded cash is assumed available on the assembly date and buys units at the first traded close on or afterward. This reinvestment timing is a modeling convention, and complete distribution histories remain unaudited. Arzesh Maskan and Kakh have no approved cash event in the current ledger; equality of their reconstructed and traded-close paths does not establish zero distributions.
 
 Daily comparisons align observed Gregorian dates; weekly comparisons align completed Friday-ending weeks; monthly comparisons align the same Jalali month. A return is missing across a long trading gap or the USD/IRR source-method boundary. No missing return is filled or interpolated. Housing is monthly only: official CBI observations through 1403/05 and a flagged chain-linked Kilid listing-price extension afterward. The 36-month housing window spans both regimes; the 12- and 24-month windows lie entirely in the extension.
 
@@ -53,11 +53,11 @@ Each asset is rebased at its own first observed point inside the two-year window
 \toprule
 Asset & Baseline & Last observed & Observed points & Cumulative return \\
 \midrule
-TEDPIX & 2024-10-04 & 2026-10-02 & 105 weeks & +267.2\% \\
-USD/IRR & 2024-10-04 & 2026-10-02 & 104 weeks & +312.8\% \\
-Arzesh Maskan & 2024-10-04 & 2026-10-02 & 94 weeks & +156.8\% \\
-Kelid & 2024-10-04 & 2026-10-02 & 93 weeks & +97.9\% \\
-Danik & 2024-10-04 & 2026-10-02 & 94 weeks & +74.3\% \\
+TEDPIX & 2024-10-11 & 2026-10-09 & 105 weeks & +287.2\% \\
+USD/IRR & 2024-10-11 & 2026-10-09 & 104 weeks & +320.9\% \\
+Arzesh Maskan & 2024-10-11 & 2026-10-09 & 94 weeks & +177.2\% \\
+Kelid & 2024-10-18 & 2026-10-09 & 93 weeks & +108.2\% \\
+Danik & 2024-10-11 & 2026-10-09 & 94 weeks & +98.8\% \\
 Tehran housing & 2024-10-21 & 2026-09-22 & 24 months & +160.7\% \\
 \bottomrule
 \end{tabular}%
@@ -92,8 +92,8 @@ For funds with recorded events, the following whole-history comparison separates
 \toprule
 Fund & First trade & Last trade & Traded close & Reinvested & Difference \\
 \midrule
-Kelid & 2024-09-28 & 2026-10-04 & +76.6\% & +102.1\% & +25.5\% \\
-Danik & 2023-08-01 & 2026-10-04 & +57.9\% & +83.6\% & +25.7\% \\
+Kelid & 2024-09-28 & 2026-10-07 & +83.4\% & +109.9\% & +26.5\% \\
+Danik & 2023-08-01 & 2026-10-07 & +72.4\% & +100.4\% & +28.1\% \\
 \bottomrule
 \end{tabular}%
 }
@@ -112,7 +112,6 @@ The next two tables retain the notebook's latest observed weekly and monthly div
 \toprule
 Friday-ending week & Arzesh Maskan & Kelid & Danik & Kakh \\
 \midrule
-2026-08-14 & -3.20\% & -2.92\% & -3.51\% & -0.18\% \\
 2026-08-21 & -1.68\% & -1.19\% & -0.56\% & +0.68\% \\
 2026-08-28 & +9.91\% & +10.56\% & -3.72\% & +5.43\% \\
 2026-09-04 & -1.45\% & -2.75\% & +1.25\% & -2.86\% \\
@@ -120,6 +119,7 @@ Friday-ending week & Arzesh Maskan & Kelid & Danik & Kakh \\
 2026-09-18 & -2.09\% & -0.19\% & -3.06\% & -1.26\% \\
 2026-09-25 & -1.68\% & -3.69\% & -2.13\% & +1.36\% \\
 2026-10-02 & +5.39\% & +6.13\% & +6.34\% & +2.06\% \\
+2026-10-09 & +10.06\% & +6.07\% & +14.91\% & +6.33\% \\
 \bottomrule
 \end{tabular}%
 }
@@ -160,10 +160,10 @@ Every cell gives Pearson $r$ and its paired observation count $n$. Columns marke
 \toprule
 REIT & 1m & 3m & 6m & 12m \\
 \midrule
-Arzesh Maskan & +0.593 (n=21) & +0.539 (n=58) & +0.348 (n=100) & +0.459 (n=200) \\
-Kelid & +0.512 (n=20) & +0.500 (n=57) & +0.342 (n=99) & +0.485 (n=198) \\
-Danik & +0.543 (n=21) & +0.291 (n=57) & +0.202 (n=99) & +0.354 (n=199) \\
-Kakh & +0.238 (n=21) & +0.211 (n=58) & +0.157 (n=97) & -- (n=99) \\
+Arzesh Maskan & +0.370 (n=21) & +0.483 (n=62) & +0.329 (n=105) & +0.444 (n=200) \\
+Kelid & +0.312 (n=20) & +0.443 (n=61) & +0.321 (n=104) & +0.469 (n=199) \\
+Danik & +0.390 (n=21) & +0.274 (n=61) & +0.202 (n=104) & +0.350 (n=199) \\
+Kakh & -0.002 (n=21) & +0.137 (n=62) & +0.136 (n=102) & -- (n=104) \\
 \bottomrule
 \end{tabular}%
 }
@@ -178,10 +178,10 @@ Kakh & +0.238 (n=21) & +0.211 (n=58) & +0.157 (n=97) & -- (n=99) \\
 \toprule
 REIT & 1m & 3m & 6m & 12m & 24m \\
 \midrule
-Arzesh Maskan & +0.717 (n=5) & +0.614 (n=14) & +0.336 (n=21) & +0.370 (n=43) & +0.468 (n=92) \\
-Kelid & +0.844 (n=5) & +0.557 (n=14) & +0.353 (n=21) & +0.436 (n=43) & +0.484 (n=89) \\
-Danik & +0.643 (n=5) & -0.122 (n=14) & -0.124 (n=21) & +0.163 (n=43) & +0.251 (n=92) \\
-Kakh & +0.331 (n=5) & +0.195 (n=14) & +0.028 (n=21) & -- (n=21) & -- (n=21) \\
+Arzesh Maskan & +0.595 (n=5) & +0.576 (n=14) & +0.333 (n=22) & +0.373 (n=43) & +0.468 (n=92) \\
+Kelid & +0.759 (n=5) & +0.579 (n=14) & +0.356 (n=22) & +0.434 (n=43) & +0.488 (n=90) \\
+Danik & +0.398 (n=5) & -0.084 (n=14) & -0.087 (n=22) & +0.180 (n=43) & +0.257 (n=92) \\
+Kakh & +0.149 (n=5) & +0.163 (n=14) & +0.039 (n=22) & -- (n=22) & -- (n=22) \\
 \bottomrule
 \end{tabular}%
 }
@@ -234,10 +234,10 @@ Only monthly housing observations exist. Daily and weekly housing heatmaps would
 \toprule
 REIT & 1m & 3m \\
 \midrule
-Arzesh Maskan & +0.021 (n=21) & -0.200 (n=58) \\
-Kelid & -0.153 (n=20) & -0.273 (n=57) \\
-Danik & -0.042 (n=21) & -0.170 (n=57) \\
-Kakh & -0.278 (n=21) & -0.239 (n=58) \\
+Arzesh Maskan & +0.092 (n=21) & -0.150 (n=62) \\
+Kelid & -0.025 (n=20) & -0.221 (n=61) \\
+Danik & -0.066 (n=21) & -0.155 (n=61) \\
+Kakh & -0.014 (n=21) & -0.134 (n=62) \\
 \bottomrule
 \end{tabular}%
 }
@@ -252,10 +252,10 @@ Kakh & -0.278 (n=21) & -0.239 (n=58) \\
 \toprule
 REIT & 4w & 13w & 26w \\
 \midrule
-Arzesh Maskan & -0.017 (n=89) & -0.040 (n=89) & -0.121 (n=90) \\
-Kelid & -0.049 (n=86) & -0.044 (n=86) & -0.139 (n=87) \\
-Danik & -0.176 (n=89) & -0.020 (n=89) & -0.098 (n=90) \\
-Kakh & -- (n=20) & -- (n=20) & -- (n=21) \\
+Arzesh Maskan & -0.000 (n=89) & -0.032 (n=89) & -0.123 (n=90) \\
+Kelid & -0.030 (n=87) & -0.033 (n=87) & -0.150 (n=88) \\
+Danik & -0.142 (n=89) & -0.002 (n=89) & -0.111 (n=90) \\
+Kakh & -- (n=21) & -- (n=21) & -- (n=22) \\
 \bottomrule
 \end{tabular}%
 }
@@ -274,10 +274,10 @@ The separate model is $r^{\mathrm{REIT}}_t=\alpha+\phi r^{\mathrm{REIT}}_{t-1}+\
 \toprule
 Fund & Weeks & USD lag 1 beta & USD lag 2 beta & Joint p & Incremental R2 & Status \\
 \midrule
-Arzesh Maskan & 87 & +0.437 & +0.095 & 0.0020 & +0.064 & Reported \\
-Kelid & 84 & +0.187 & +0.007 & 0.0431 & +0.036 & Reported \\
-Danik & 87 & +0.283 & +0.180 & 0.0041 & +0.053 & Reported \\
-Kakh & 18 & -- & -- & -- & -- & Insufficient history \\
+Arzesh Maskan & 87 & +0.462 & +0.091 & 0.0004 & +0.074 & Reported \\
+Kelid & 85 & +0.212 & +0.004 & 0.0137 & +0.048 & Reported \\
+Danik & 87 & +0.375 & +0.168 & 0.0006 & +0.076 & Reported \\
+Kakh & 19 & -- & -- & -- & -- & Insufficient history \\
 \bottomrule
 \end{tabular}%
 }
@@ -307,17 +307,17 @@ USD/IRR leads REIT & weekly & 4/13/26 & 12 & 9 \\
 
 \section{Results and interpretation}
 
-In the two-year cumulative comparison, USD/IRR had the largest nominal change (+312.8\%), followed by TEDPIX (+267.2\%). The three included REIT scenarios ranged from +74.3\% to +156.8\%; Tehran housing price appreciation was +160.7\%. These values use each asset's stated baseline and are not equal-horizon risk-adjusted returns.
+In the two-year cumulative comparison, USD/IRR had the largest nominal change (+320.9\%), followed by TEDPIX (+287.2\%). The three included REIT scenarios ranged from +98.8\% to +177.2\%; Tehran housing price appreciation was +160.7\%. These values use each asset's stated baseline and are not equal-horizon risk-adjusted returns.
 
-The 24-month weekly TEDPIX correlations for the three longer-history funds range from +0.251 to +0.484. Kakh's 12- and 24-month weekly coefficients are suppressed because its history does not cover enough of those windows. Short windows with five weekly pairs should be treated as unstable descriptive estimates even when they pass the formal threshold.
+The 24-month weekly TEDPIX correlations for the three longer-history funds range from +0.257 to +0.488. Kakh's 12- and 24-month weekly coefficients are suppressed because its history does not cover enough of those windows. Short windows with five weekly pairs should be treated as unstable descriptive estimates even when they pass the formal threshold.
 
 The reportable 24-month monthly housing coefficients are Arzesh Maskan -0.064 (22 pairs), Kelid +0.094 (21 pairs), Danik -0.178 (22 pairs). REIT returns are missing in 1405/01--02 for Arzesh Maskan and Danik; Kelid also lacks 1403/07. The housing source is a listing-price proxy in this interval, so these coefficients should not be read as transaction-price or rent-return relationships.
 
-The three-month daily USD/IRR coefficients range from -0.273 to -0.170. The two-year dollar-leading-weekly-return coefficients for the three longer-history funds range from -0.176 to -0.017; Kakh is suppressed for insufficient two-year coverage. These simple correlations do not by themselves establish a stable dollar lead at the specified 4/13/26-week offsets. The separate one- and two-week conditional regression has unadjusted joint p-values below 0.05 for 3 funds, but it is in-sample, uses different lags, and is not evidence of causation or out-of-sample forecasting skill.
+The three-month daily USD/IRR coefficients range from -0.221 to -0.134. The two-year dollar-leading-weekly-return coefficients for the three longer-history funds range from -0.150 to -0.000; Kakh is suppressed for insufficient two-year coverage. These simple correlations do not by themselves establish a stable dollar lead at the specified 4/13/26-week offsets. The separate one- and two-week conditional regression has unadjusted joint p-values below 0.05 for 3 funds, but it is in-sample, uses different lags, and is not evidence of causation or out-of-sample forecasting skill.
 
 \section{Limitations and reproducibility}
 
-Only three approved distributions are in the current reinvestment ledger. Additional annual payments and actual payment dates need verification before these reconstructed paths can be called complete total returns. The 36-month housing comparison crosses the CBI-to-Kilid source boundary. Daily and weekly housing returns are unavailable. Pair counts vary because source and fund observations are missing; no interpolation or synthetic return is used. Multiple windows are exploratory and their coefficients should not be interpreted as independent confirmations.
+Only three approved distributions are in the current reinvestment ledger. Additional annual payments need verification before these reconstructed paths can be called complete total returns; assembly-date reinvestment remains a modeling convention even where payment dates are documented. The 36-month housing comparison crosses the CBI-to-Kilid source boundary. Daily and weekly housing returns are unavailable. Pair counts vary because source and fund observations are missing; no interpolation or synthetic return is used. Multiple windows are exploratory and their coefficients should not be interpreted as independent confirmations.
 
 \textbf{Rebuild order.} Run the documented REIT reinvestment, cumulative-return, weekly/monthly-return, regression, and monthly housing builders; then run \texttt{python -m asset\_allocation.build\_reit\_requested\_heatmaps} and \texttt{python -m asset\_allocation.build\_reit\_latex\_report}. The report reads processed data only and does not alter canonical sources.
 
@@ -332,15 +332,15 @@ Positive nominal returns do not by themselves mean successful exposure to proper
 \toprule
 Fund & Return & Housing gap pp & USD gap pp & TEDPIX gap pp & Housing-relative wealth & USD-relative wealth & TEDPIX-relative wealth \\
 \midrule
-Arzesh Maskan & 156.8\% & -3.9 & -156.0 & -110.4 & -1.5\% & -37.8\% & -30.1\% \\
-Kelid & 97.9\% & -62.8 & -215.0 & -169.4 & -24.1\% & -52.1\% & -46.1\% \\
-Danik & 74.3\% & -86.4 & -238.5 & -192.9 & -33.1\% & -57.8\% & -52.5\% \\
+Arzesh Maskan & 177.2\% & +16.5 & -143.7 & -110.1 & 6.3\% & -34.1\% & -28.4\% \\
+Kelid & 108.2\% & -52.5 & -212.7 & -179.0 & -20.1\% & -50.5\% & -46.2\% \\
+Danik & 98.8\% & -61.9 & -222.1 & -188.5 & -23.7\% & -52.8\% & -48.7\% \\
 \bottomrule
 \end{tabular}%
 }
 \end{center}
 
-Arzesh Maskan, Kelid, and Danik all lagged the dollar and TEDPIX over the displayed window. The housing comparison is heterogeneous: Arzesh was close to the housing proxy, whereas Kelid and Danik had much larger shortfalls. Calling all three equally poor housing substitutes would conceal this material difference. These results describe the recorded-distribution scenario; an omitted payout can understate a fund's return.
+Arzesh Maskan, Kelid, and Danik all lagged the dollar and TEDPIX over the displayed window. The housing comparison is heterogeneous: Arzesh exceeded the housing proxy, whereas Kelid and Danik had large shortfalls. Calling all three equally poor housing substitutes would conceal this material difference. These results describe the recorded-distribution scenario; an omitted payout can understate a fund's return.
 
 \subsection{Observed drawdowns and time-scaled returns}
 
@@ -353,11 +353,11 @@ CAGR uses actual calendar days between the displayed baseline and last observati
 \toprule
 Asset & Calendar-day CAGR & Observed weekly max drawdown & Observed weeks \\
 \midrule
-TEDPIX & 92.1\% & -24.9\% & 105 \\
-USD/IRR & 103.7\% & -21.8\% & 104 \\
-Arzesh Maskan & 60.5\% & -45.0\% & 94 \\
-Kelid & 40.8\% & -26.5\% & 93 \\
-Danik & 32.1\% & -41.7\% & 94 \\
+TEDPIX & 97.2\% & -24.9\% & 105 \\
+USD/IRR & 105.7\% & -21.8\% & 104 \\
+Arzesh Maskan & 66.8\% & -45.0\% & 94 \\
+Kelid & 45.0\% & -26.5\% & 93 \\
+Danik & 41.2\% & -41.7\% & 94 \\
 \bottomrule
 \end{tabular}%
 }
@@ -426,7 +426,7 @@ Complete investor return & All approved payouts, actual payment dates and corpor
 }
 \end{center}
 
-The strongest supported conclusion is substantial benchmark underperformance for Kelid and Danik in the current scenario, weak monthly housing co-movement across the longer-history funds, and declining property allocation in the two observed portfolios. Arzesh's endpoint housing shortfall is comparatively small. Management quality remains an attribution question rather than an identified causal result.
+The strongest supported conclusion is substantial benchmark underperformance for Kelid and Danik in the current scenario, weak monthly housing co-movement across the longer-history funds, and declining property allocation in the two observed portfolios. Arzesh exceeded the housing proxy at the endpoint, though the monthly paths tracked poorly. Management quality remains an attribution question rather than an identified causal result.
 
 \section{Full conditional-regression diagnostics}
 
@@ -439,10 +439,10 @@ The earlier model table emphasizes USD coefficients. This table adds the own-ret
 \toprule
 Fund & Own lag beta & TEDPIX lag beta & Full R2 & Baseline R2 & First pair & Last pair \\
 \midrule
-Arzesh Maskan & +0.2223 & +0.0777 & +0.1149 & +0.0507 & 2024-10-11 & 2026-10-02 \\
-Danik & -0.0931 & +0.0104 & +0.0601 & +0.0072 & 2024-10-11 & 2026-10-02 \\
-Kakh & -- & -- & -- & -- & 2026-05-22 & 2026-10-02 \\
-Kelid & +0.0172 & +0.0856 & +0.0388 & +0.0025 & 2024-11-01 & 2026-10-02 \\
+Arzesh Maskan & +0.2241 & +0.0988 & +0.1284 & +0.0539 & 2024-10-18 & 2026-10-09 \\
+Danik & -0.0835 & +0.0714 & +0.0784 & +0.0028 & 2024-10-18 & 2026-10-09 \\
+Kakh & -- & -- & -- & -- & 2026-05-22 & 2026-10-09 \\
+Kelid & +0.0252 & +0.0998 & +0.0537 & +0.0053 & 2024-11-01 & 2026-10-09 \\
 \bottomrule
 \end{tabular}%
 }
@@ -450,11 +450,11 @@ Kelid & +0.0172 & +0.0856 & +0.0388 & +0.0025 & 2024-11-01 & 2026-10-02 \\
 
 \section{Fund-by-fund assessment}
 
-Arzesh Maskan: cumulative return 156.8\%; housing correlation -0.064 from 22 monthly pairs; conditional model R-squared 0.115, incremental R-squared 0.064, joint USD p-value 0.0020. Asset-composition history is available in the appendix.
+Arzesh Maskan: cumulative return 177.2\%; housing correlation -0.064 from 22 monthly pairs; conditional model R-squared 0.128, incremental R-squared 0.074, joint USD p-value 0.0004. Asset-composition history is available in the appendix.
 
-Kelid: cumulative return 97.9\%; housing correlation +0.094 from 21 monthly pairs; conditional model R-squared 0.039, incremental R-squared 0.036, joint USD p-value 0.0431. No asset-composition history is supplied for this fund.
+Kelid: cumulative return 108.2\%; housing correlation +0.094 from 21 monthly pairs; conditional model R-squared 0.054, incremental R-squared 0.048, joint USD p-value 0.0137. No asset-composition history is supplied for this fund.
 
-Danik: cumulative return 74.3\%; housing correlation -0.178 from 22 monthly pairs; conditional model R-squared 0.060, incremental R-squared 0.053, joint USD p-value 0.0041. Asset-composition history is available in the appendix.
+Danik: cumulative return 98.8\%; housing correlation -0.178 from 22 monthly pairs; conditional model R-squared 0.078, incremental R-squared 0.076, joint USD p-value 0.0006. Asset-composition history is available in the appendix.
 
 Kakh is an exploratory short-history comparison. It remains in qualifying daily and weekly correlation cells, but is excluded from the two-year cumulative ranking. Its 18 complete predictive-regression weeks do not meet the 52-week threshold. Suppressed coefficients are unavailable evidence, not evidence of zero sensitivity.
 
@@ -581,7 +581,6 @@ These appendices extend the latest-eight-period tables to the entire review wind
 \begin{longtable}{lllll}
 \toprule Period & Arzesh Maskan & Kelid & Danik & Kakh \\ \midrule\endfirsthead
 \toprule Period & Arzesh Maskan & Kelid & Danik & Kakh \\ \midrule\endhead
-2024-10-04 & -5.85\% & -- & -3.12\% & -- \\
 2024-10-11 & +1.97\% & -- & +0.76\% & -- \\
 2024-10-18 & -3.81\% & -- & -0.40\% & -- \\
 2024-10-25 & -8.58\% & +0.89\% & -3.65\% & -- \\
@@ -675,6 +674,7 @@ These appendices extend the latest-eight-period tables to the entire review wind
 2026-09-18 & -2.09\% & -0.19\% & -3.06\% & -1.26\% \\
 2026-09-25 & -1.68\% & -3.69\% & -2.13\% & +1.36\% \\
 2026-10-02 & +5.39\% & +6.13\% & +6.34\% & +2.06\% \\
+2026-10-09 & +10.06\% & +6.07\% & +14.91\% & +6.33\% \\
 \bottomrule\end{longtable}\endgroup
 
 \section{Correlation window and suppression audit}
@@ -685,62 +685,62 @@ All 80 active cells are listed with actual paired counts and required minimum co
 \begin{longtable}{llllllll}
 \toprule B & Freq & Fund & W/L & Start & End & n/min & Status \\ \midrule\endfirsthead
 \toprule B & Freq & Fund & W/L & Start & End & n/min & Status \\ \midrule\endhead
-T & daily & Arzesh Maskan & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
-T & daily & Arzesh Maskan & 3/0 & 2026-07-01 & 2026-10-02 & 58/42 & OK \\
-T & daily & Arzesh Maskan & 6/0 & 2026-03-30 & 2026-10-02 & 100/84 & OK \\
-T & daily & Arzesh Maskan & 12/0 & 2025-10-02 & 2026-10-02 & 200/168 & OK \\
-T & daily & Kelid & 1/0 & 2026-09-01 & 2026-10-02 & 20/14 & OK \\
-T & daily & Kelid & 3/0 & 2026-07-01 & 2026-10-02 & 57/42 & OK \\
-T & daily & Kelid & 6/0 & 2026-03-30 & 2026-10-02 & 99/84 & OK \\
-T & daily & Kelid & 12/0 & 2025-10-02 & 2026-10-02 & 198/168 & OK \\
-T & daily & Danik & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
-T & daily & Danik & 3/0 & 2026-07-01 & 2026-10-02 & 57/42 & OK \\
-T & daily & Danik & 6/0 & 2026-03-30 & 2026-10-02 & 99/84 & OK \\
-T & daily & Danik & 12/0 & 2025-10-02 & 2026-10-02 & 199/168 & OK \\
-T & daily & Kakh & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
-T & daily & Kakh & 3/0 & 2026-07-01 & 2026-10-02 & 58/42 & OK \\
-T & daily & Kakh & 6/0 & 2026-03-30 & 2026-10-02 & 97/84 & OK \\
-T & daily & Kakh & 12/0 & 2025-10-02 & 2026-10-02 & 99/168 & omit \\
-D & daily & Arzesh Maskan & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
-D & daily & Arzesh Maskan & 3/0 & 2026-07-01 & 2026-10-02 & 58/42 & OK \\
-D & daily & Kelid & 1/0 & 2026-09-01 & 2026-10-02 & 20/14 & OK \\
-D & daily & Kelid & 3/0 & 2026-07-01 & 2026-10-02 & 57/42 & OK \\
-D & daily & Danik & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
-D & daily & Danik & 3/0 & 2026-07-01 & 2026-10-02 & 57/42 & OK \\
-D & daily & Kakh & 1/0 & 2026-09-01 & 2026-10-02 & 21/14 & OK \\
-D & daily & Kakh & 3/0 & 2026-07-01 & 2026-10-02 & 58/42 & OK \\
-T & weekly & Arzesh Maskan & 1/0 & 2026-09-01 & 2026-10-02 & 5/5 & OK \\
-T & weekly & Arzesh Maskan & 3/0 & 2026-07-01 & 2026-10-02 & 14/10 & OK \\
-T & weekly & Arzesh Maskan & 6/0 & 2026-03-30 & 2026-10-02 & 21/19 & OK \\
-T & weekly & Arzesh Maskan & 12/0 & 2025-10-02 & 2026-10-02 & 43/37 & OK \\
-T & weekly & Arzesh Maskan & 24/0 & 2024-10-01 & 2026-10-02 & 92/73 & OK \\
-T & weekly & Kelid & 1/0 & 2026-09-01 & 2026-10-02 & 5/5 & OK \\
-T & weekly & Kelid & 3/0 & 2026-07-01 & 2026-10-02 & 14/10 & OK \\
-T & weekly & Kelid & 6/0 & 2026-03-30 & 2026-10-02 & 21/19 & OK \\
-T & weekly & Kelid & 12/0 & 2025-10-02 & 2026-10-02 & 43/37 & OK \\
-T & weekly & Kelid & 24/0 & 2024-10-01 & 2026-10-02 & 89/73 & OK \\
-T & weekly & Danik & 1/0 & 2026-09-01 & 2026-10-02 & 5/5 & OK \\
-T & weekly & Danik & 3/0 & 2026-07-01 & 2026-10-02 & 14/10 & OK \\
-T & weekly & Danik & 6/0 & 2026-03-30 & 2026-10-02 & 21/19 & OK \\
-T & weekly & Danik & 12/0 & 2025-10-02 & 2026-10-02 & 43/37 & OK \\
-T & weekly & Danik & 24/0 & 2024-10-01 & 2026-10-02 & 92/73 & OK \\
-T & weekly & Kakh & 1/0 & 2026-09-01 & 2026-10-02 & 5/5 & OK \\
-T & weekly & Kakh & 3/0 & 2026-07-01 & 2026-10-02 & 14/10 & OK \\
-T & weekly & Kakh & 6/0 & 2026-03-30 & 2026-10-02 & 21/19 & OK \\
-T & weekly & Kakh & 12/0 & 2025-10-02 & 2026-10-02 & 21/37 & omit \\
-T & weekly & Kakh & 24/0 & 2024-10-01 & 2026-10-02 & 21/73 & omit \\
-L & weekly & Arzesh Maskan & 24/4 & 2024-10-01 & 2026-10-02 & 89/74 & OK \\
-L & weekly & Kelid & 24/4 & 2024-10-01 & 2026-10-02 & 86/74 & OK \\
-L & weekly & Danik & 24/4 & 2024-10-01 & 2026-10-02 & 89/74 & OK \\
-L & weekly & Kakh & 24/4 & 2024-10-01 & 2026-10-02 & 20/74 & omit \\
-L & weekly & Arzesh Maskan & 24/13 & 2024-10-01 & 2026-10-02 & 89/74 & OK \\
-L & weekly & Kelid & 24/13 & 2024-10-01 & 2026-10-02 & 86/74 & OK \\
-L & weekly & Danik & 24/13 & 2024-10-01 & 2026-10-02 & 89/74 & OK \\
-L & weekly & Kakh & 24/13 & 2024-10-01 & 2026-10-02 & 20/74 & omit \\
-L & weekly & Arzesh Maskan & 24/26 & 2024-10-01 & 2026-10-02 & 90/74 & OK \\
-L & weekly & Kelid & 24/26 & 2024-10-01 & 2026-10-02 & 87/74 & OK \\
-L & weekly & Danik & 24/26 & 2024-10-01 & 2026-10-02 & 90/74 & OK \\
-L & weekly & Kakh & 24/26 & 2024-10-01 & 2026-10-02 & 21/74 & omit \\
+T & daily & Arzesh Maskan & 1/0 & 2026-09-08 & 2026-10-09 & 21/14 & OK \\
+T & daily & Arzesh Maskan & 3/0 & 2026-07-08 & 2026-10-09 & 62/42 & OK \\
+T & daily & Arzesh Maskan & 6/0 & 2026-04-06 & 2026-10-09 & 105/84 & OK \\
+T & daily & Arzesh Maskan & 12/0 & 2025-10-09 & 2026-10-09 & 200/168 & OK \\
+T & daily & Kelid & 1/0 & 2026-09-08 & 2026-10-09 & 20/14 & OK \\
+T & daily & Kelid & 3/0 & 2026-07-08 & 2026-10-09 & 61/42 & OK \\
+T & daily & Kelid & 6/0 & 2026-04-06 & 2026-10-09 & 104/84 & OK \\
+T & daily & Kelid & 12/0 & 2025-10-09 & 2026-10-09 & 199/168 & OK \\
+T & daily & Danik & 1/0 & 2026-09-08 & 2026-10-09 & 21/14 & OK \\
+T & daily & Danik & 3/0 & 2026-07-08 & 2026-10-09 & 61/42 & OK \\
+T & daily & Danik & 6/0 & 2026-04-06 & 2026-10-09 & 104/84 & OK \\
+T & daily & Danik & 12/0 & 2025-10-09 & 2026-10-09 & 199/168 & OK \\
+T & daily & Kakh & 1/0 & 2026-09-08 & 2026-10-09 & 21/14 & OK \\
+T & daily & Kakh & 3/0 & 2026-07-08 & 2026-10-09 & 62/42 & OK \\
+T & daily & Kakh & 6/0 & 2026-04-06 & 2026-10-09 & 102/84 & OK \\
+T & daily & Kakh & 12/0 & 2025-10-09 & 2026-10-09 & 104/168 & omit \\
+D & daily & Arzesh Maskan & 1/0 & 2026-09-08 & 2026-10-09 & 21/14 & OK \\
+D & daily & Arzesh Maskan & 3/0 & 2026-07-08 & 2026-10-09 & 62/42 & OK \\
+D & daily & Kelid & 1/0 & 2026-09-08 & 2026-10-09 & 20/14 & OK \\
+D & daily & Kelid & 3/0 & 2026-07-08 & 2026-10-09 & 61/42 & OK \\
+D & daily & Danik & 1/0 & 2026-09-08 & 2026-10-09 & 21/14 & OK \\
+D & daily & Danik & 3/0 & 2026-07-08 & 2026-10-09 & 61/42 & OK \\
+D & daily & Kakh & 1/0 & 2026-09-08 & 2026-10-09 & 21/14 & OK \\
+D & daily & Kakh & 3/0 & 2026-07-08 & 2026-10-09 & 62/42 & OK \\
+T & weekly & Arzesh Maskan & 1/0 & 2026-09-08 & 2026-10-09 & 5/5 & OK \\
+T & weekly & Arzesh Maskan & 3/0 & 2026-07-08 & 2026-10-09 & 14/10 & OK \\
+T & weekly & Arzesh Maskan & 6/0 & 2026-04-06 & 2026-10-09 & 22/19 & OK \\
+T & weekly & Arzesh Maskan & 12/0 & 2025-10-09 & 2026-10-09 & 43/37 & OK \\
+T & weekly & Arzesh Maskan & 24/0 & 2024-10-08 & 2026-10-09 & 92/73 & OK \\
+T & weekly & Kelid & 1/0 & 2026-09-08 & 2026-10-09 & 5/5 & OK \\
+T & weekly & Kelid & 3/0 & 2026-07-08 & 2026-10-09 & 14/10 & OK \\
+T & weekly & Kelid & 6/0 & 2026-04-06 & 2026-10-09 & 22/19 & OK \\
+T & weekly & Kelid & 12/0 & 2025-10-09 & 2026-10-09 & 43/37 & OK \\
+T & weekly & Kelid & 24/0 & 2024-10-08 & 2026-10-09 & 90/73 & OK \\
+T & weekly & Danik & 1/0 & 2026-09-08 & 2026-10-09 & 5/5 & OK \\
+T & weekly & Danik & 3/0 & 2026-07-08 & 2026-10-09 & 14/10 & OK \\
+T & weekly & Danik & 6/0 & 2026-04-06 & 2026-10-09 & 22/19 & OK \\
+T & weekly & Danik & 12/0 & 2025-10-09 & 2026-10-09 & 43/37 & OK \\
+T & weekly & Danik & 24/0 & 2024-10-08 & 2026-10-09 & 92/73 & OK \\
+T & weekly & Kakh & 1/0 & 2026-09-08 & 2026-10-09 & 5/5 & OK \\
+T & weekly & Kakh & 3/0 & 2026-07-08 & 2026-10-09 & 14/10 & OK \\
+T & weekly & Kakh & 6/0 & 2026-04-06 & 2026-10-09 & 22/19 & OK \\
+T & weekly & Kakh & 12/0 & 2025-10-09 & 2026-10-09 & 22/37 & omit \\
+T & weekly & Kakh & 24/0 & 2024-10-08 & 2026-10-09 & 22/73 & omit \\
+L & weekly & Arzesh Maskan & 24/4 & 2024-10-08 & 2026-10-09 & 89/74 & OK \\
+L & weekly & Kelid & 24/4 & 2024-10-08 & 2026-10-09 & 87/74 & OK \\
+L & weekly & Danik & 24/4 & 2024-10-08 & 2026-10-09 & 89/74 & OK \\
+L & weekly & Kakh & 24/4 & 2024-10-08 & 2026-10-09 & 21/74 & omit \\
+L & weekly & Arzesh Maskan & 24/13 & 2024-10-08 & 2026-10-09 & 89/74 & OK \\
+L & weekly & Kelid & 24/13 & 2024-10-08 & 2026-10-09 & 87/74 & OK \\
+L & weekly & Danik & 24/13 & 2024-10-08 & 2026-10-09 & 89/74 & OK \\
+L & weekly & Kakh & 24/13 & 2024-10-08 & 2026-10-09 & 21/74 & omit \\
+L & weekly & Arzesh Maskan & 24/26 & 2024-10-08 & 2026-10-09 & 90/74 & OK \\
+L & weekly & Kelid & 24/26 & 2024-10-08 & 2026-10-09 & 88/74 & OK \\
+L & weekly & Danik & 24/26 & 2024-10-08 & 2026-10-09 & 90/74 & OK \\
+L & weekly & Kakh & 24/26 & 2024-10-08 & 2026-10-09 & 22/74 & omit \\
 T & monthly & Arzesh Maskan & 12/0 & 1404/07 & 1405/06 & 10/9 & OK \\
 T & monthly & Arzesh Maskan & 24/0 & 1403/07 & 1405/06 & 22/17 & OK \\
 T & monthly & Arzesh Maskan & 36/0 & 1402/07 & 1405/06 & 34/26 & OK \\

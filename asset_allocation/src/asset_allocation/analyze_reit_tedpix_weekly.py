@@ -45,11 +45,11 @@ def shift_jalali_months(day: date, months: int) -> date:
     return shifted.togregorian()
 
 
-def latest_complete_friday(path: Path = INDEX) -> date:
+def latest_complete_friday(path: Path = INDEX, as_of: date | None = None) -> date:
     with path.open(encoding="utf-8", newline="") as source:
         latest = max(date.fromisoformat(row["source_date_gregorian"]) for row in csv.DictReader(source))
-    source_friday = latest - timedelta(days=(latest.weekday() - 4) % 7)
-    today = datetime.now(ZoneInfo("Asia/Tehran")).date()
+    source_friday = friday(latest)
+    today = as_of or datetime.now(ZoneInfo("Asia/Tehran")).date()
     elapsed_friday = today - timedelta(days=(today.weekday() - 4) % 7 or 7)
     return min(source_friday, elapsed_friday)
 
