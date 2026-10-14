@@ -1,5 +1,10 @@
 # Empirical Economics Research
 
+October 14 update: copper LME, shared FX, and certificate sources include
+October 13; certificate/intrinsic has 229 rows. The primary copper comparison
+remains at 223 rows through its October 11 physical anchor. See the
+[copper project](commodity/copper/README.md) for coverage.
+
 **Mohammad Mahdi Amirabadi**
 Reproducible empirical research on financial, commodity, and macroeconomic markets, with a focus on Iran.
 

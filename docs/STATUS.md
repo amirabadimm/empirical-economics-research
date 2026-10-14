@@ -1,5 +1,13 @@
 # Research Status
 
+## Copper October 13 data (refreshed 2026-10-14)
+
+LME, shared USD/IRR, and copper certificate sources now include October 13.
+Copper certificate/intrinsic has 229 rows through that date; the primary
+comparison and Power BI delivery remain at 223 rows through the October 11
+physical anchor. No newer eligible physical trade was returned. See
+[copper status](../commodity/copper/docs/STATUS.md).
+
 Asset Allocation refreshed canonical REIT and TEDPIX histories through 2026-10-07 and shared USD/IRR through Jalali 1405/07/16 on 2026-10-10; Kilid had no new complete month. A completed-week cutoff correction moved the rebuilt REIT comparison to 2026-10-09. The notebook and four LaTeX reports were regenerated; the 80-cell grid retains 66 reportable coefficients. See the project status for current returns, different housing endpoints, and verification. Earlier REIT performance figures below are superseded.
 
 Asset Allocation added a detailed Persian REIT report on 2026-10-08 at `asset_allocation/reports/REIT_DETAILED_REPORT_FA.tex`, alongside the short Persian and English versions. It includes performance, distributions, all active correlation grids and monthly allocation/return appendices. Its housing-exposure conclusion is explicitly limited to the observed period.

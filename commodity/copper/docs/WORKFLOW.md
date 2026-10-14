@@ -1,5 +1,15 @@
 # Copper Warehouse-Receipt Certificate: Research Workflow
 
+## October 13 source refresh (2026-10-14)
+
+The documented `refresh_powerbi.py --collect` workflow collected October 13
+LME, shared FX, and certificate records, then rebuilt production comparisons
+and distributions. The physical collector returned no newer eligible cash
+trade, so the primary comparison remains bounded at October 11. Research
+derivatives and the 17 copper/shared pipeline tests were refreshed separately.
+Current counts and source coverage are in [STATUS.md](STATUS.md); the older
+checkpoints below are historical.
+
 ## Full copper refresh (2026-09-27)
 
 Completed the online production refresh with `refresh_powerbi.py --collect`,

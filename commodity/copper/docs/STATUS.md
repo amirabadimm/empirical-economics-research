@@ -1,5 +1,37 @@
 # Copper Project Status
 
+## October 13 source refresh (2026-10-14)
+
+The documented live collectors completed with direct source access. LME now has
+4,750 rows through 2026-10-13; shared USD/IRR has 13,118 rows through
+1405/07/21 (2026-10-13); and certificate raw has 308 rows through 2026-10-13,
+including 229 traded days. The physical collector returned no new eligible NCI
+cash rows: raw remains 1,178 rows and the daily benchmark 802 days through
+1405/07/19 (2026-10-11).
+
+Production outputs were rebuilt: 223 primary certificate/physical rows through
+2026-10-11, 802 physical/intrinsic rows, 229 certificate/intrinsic rows through
+2026-10-13, 1,254 distribution rows, and 223 Power BI rows. Research derivatives
+were rebuilt: regression 229 rows/39 anchors, presentation timeline 359 daily
+rows and 268 events, and forward-gap diagnostic 16 trade dates. All 17 copper
+and shared certificate-pipeline tests passed. The primary comparison remains
+bounded by observed physical anchors.
+
+## Local rebuild checkpoint (2026-10-14)
+
+The local production pipeline rebuilt from existing canonical raw inputs using
+`.venv/Scripts/python.exe commodity/copper/refresh_powerbi.py`. It produced 802
+eligible physical days, 223 primary certificate/physical comparisons, 802
+physical/intrinsic comparisons, 228 certificate/intrinsic comparisons, 1,253
+distribution rows, and 223 Power BI delivery rows. All 17 copper and shared
+certificate-pipeline tests passed.
+
+This was a validation and derived-output rebuild before the later successful
+October 13 source refresh above. The initial live collection attempt stopped at
+shared FX because the machine proxy was unavailable; direct source access then
+allowed the documented collectors to complete. The local rebuild used the
+repository virtual environment because the system Python lacked Matplotlib.
+
 ## Full copper refresh (2026-09-27)
 
 Completed the online production refresh with `refresh_powerbi.py --collect`,

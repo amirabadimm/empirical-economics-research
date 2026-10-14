@@ -1,5 +1,12 @@
 # Workspace Workflow
 
+## Copper October 13 data (2026-10-14)
+
+The copper live collectors and production rebuild completed for October 13
+source data. Direct source access bypassed an unavailable machine proxy.
+Current coverage and the physical-anchor limit are recorded in
+[copper status](../commodity/copper/docs/STATUS.md).
+
 The 2026-10-10 REIT refresh uses the project collectors for eight TSETMC funds, TEDPIX, and Kilid, plus the shared `shared.market_data.fx` collector. The project workflow records the source checks and rebuild sequence. A completed Friday includes the Wednesday Iranian trading close assigned to that week; the corrected weekly outputs now reach 2026-10-09. Rebuild the active notebook and four LaTeX sources after downstream derivatives, and review the management narrative when returns change.
 
 ## Asset Allocation: active four-fund notebook

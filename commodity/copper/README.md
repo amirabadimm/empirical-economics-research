@@ -1,5 +1,14 @@
 # Copper Certificate Valuation
 
+## October 13 data update (2026-10-14)
+
+The live collectors added the October 13 LME, shared USD/IRR, and traded
+certificate observations. No newer eligible NCI cash physical trade was returned.
+The rebuilt certificate/intrinsic comparison has 229 dates through October 13;
+the primary certificate/physical comparison remains at 223 dates through the
+October 11 physical anchor. See [current status](docs/STATUS.md) for row counts,
+research derivatives, and validation.
+
 ## Research question
 
 Does the Iranian copper-cathode warehouse receipt trade at a premium or discount to a comparable domestic physical-market value, after accounting for movements in LME cash copper and the free-market USD/IRR exchange rate?
