@@ -1,5 +1,15 @@
 # Copper Warehouse-Receipt Certificate: Research Workflow
 
+## Application checkpoint verification — 2026-10-17
+
+After any output refresh, run `python reports/application/verify_claims.py` from
+the workspace root and reconcile the project README and `reports/copper/research/REPORT.md`.
+Regenerate report figures with `python reports/copper/research/build_figures.py`.
+The October 17 review used existing data: 223 primary dates, 39 anchors, mean
+premium 6.09%, median 6.96%. No collector ran. Current distribution builders use
+the shared full-sample empirical CDF and absolute-exceedance schema; earlier
+expanding/recency-weighted workflow entries below are historical and superseded.
+
 ## October 13 source refresh (2026-10-14)
 
 The documented `refresh_powerbi.py --collect` workflow collected October 13
@@ -9,6 +19,13 @@ trade, so the primary comparison remains bounded at October 11. Research
 derivatives and the 17 copper/shared pipeline tests were refreshed separately.
 Current counts and source coverage are in [STATUS.md](STATUS.md); the older
 checkpoints below are historical.
+
+## Notebook distribution view (2026-10-13)
+
+After rebuilding `copper_bubble_distribution.csv`, the final cells of `notebooks/01_lme_analysis.ipynb` and `notebooks/02_certificate_analysis.ipynb` display the current signed histogram, empirical CDF, and absolute-exceedance panels for each governed series. They read `percentile` and `abs_exceedance_pct` from the standard distribution schema. The former expanding-rank cell text is superseded.
+## Live refresh checkpoint (2026-10-13)
+
+Live collection and the shared production rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); physical raw: 1,178 rows; eligible physical: 802 days through 1405/07/19. Primary comparison: 223 rows; distribution: 1,253 rows. Shared FX reached 1405/07/20. The main comparison remains bounded by observed physical anchors. Additional active research builders completed: intrinsic regression 228 rows/39 anchors, presentation timeline 358 daily rows and 267 events, and forward-gap diagnostic 16 trade dates.
 
 ## Full copper refresh (2026-09-27)
 

@@ -15,6 +15,8 @@ class SilverArchitectureTests(unittest.TestCase):
     def test_broad_and_strict_scopes(self):
         self.assertTrue(is_silver_related({"GoodsName": "ساچمه نقره"}))
         self.assertFalse(is_silver_related({"GoodsName": "شمش طلا 995"}))
+        self.assertFalse(is_silver_related({"GoodsName": "تارا دستی نقره‌ای تیتانیوم"}))
+        self.assertTrue(is_silver_related({"GoodsName": "نقره خام"}))
         self.assertTrue(is_9999_silver_bar("شمش نقره 999.9"))
         self.assertFalse(is_9999_silver_bar("شمش نقره 925"))
 

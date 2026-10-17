@@ -1,5 +1,33 @@
 # Iran Cross-Asset Allocation
 
+## Application reading guide — 2026-10-17
+
+Use [the current research summary](reports/CURRENT_RESEARCH_SUMMARY.md) for the
+historical allocation pilot and the separate provisional eight-fund REIT extension.
+The current return grid has 126 months and 125 complete four-asset months; the
+expert-informed forward-looking allocation remains planned. The September pilot
+report is an earlier numerical vintage. Older four-fund notebook/LaTeX performance
+narratives are superseded for current dividend results. The latest profile evidence
+includes subscription facts and founders; exact 2026-10-07 units/caps remain open.
+This review did not collect sources or rerun optimization. The allocation and Pista
+suites passed 50 tests together; a chart-label f-string now supports Python 3.11.
+
+## Presentation data handoff - 2026-10-10
+
+Four derived files are ready under `data/processed/analysis`: `reit_fund_profiles.csv` (eight fund rows), `reit_daily_series.csv` (4,057 raw-date rows with qTotCap trading value and observed return indices), `reit_correlations.xlsx` (TEDPIX, USD/IRR, housing, and paired REIT correlation sheets with counts), and `reit_dividends.csv` (13 modeled positive events). Run `python -m asset_allocation.build_reit_data_handoff` after the current dividend and benchmark builders. The 40-day war begins 2026-02-28 inclusive, so the common post-war cutoff is 2026-04-09 (1405/01/20). Returns begin at the first actual traded session on or after that cutoff, with the baseline date shown per fund. Turnover uses TSETMC `qTotCap` divided by 10^10 for billion toman and averages traded sessions only. FIPIRAN now supplies dated total NAV for all eight funds, and TSETMC supplies a 2026-10-10 issued-unit observation. The profile includes these dated values and an indicative cap using the 2026-10-07 close; exact 2026-10-07 units and same-date market cap remain blank. Subscription dates/proceeds and founders remain unverified. These outputs do not include a new presentation.
+
+
+## Eight-fund dividend refactor - 2026-10-10
+
+The active dividend analysis covers all eight listed REITs through 2026-10-07. The new `config/reit_dividend_events.csv` ledger drives hypothetical reinvestment at the first valid trading close strictly after each event, using raw prices. It contains 13 user-supplied positive events; Amin Shahr's five distribution dates and Malek Atiyeh's supplementary date are provisional model dates. All total-return estimates remain provisional because complete payout histories have not been independently verified.
+
+Current outputs: `data/processed/analysis/reit_eight_fund_comparison.csv`, `reit_assembly_reinvested_daily.csv`, `reit_dividend_events_verified.csv`, `reit_all_fund_weekly_returns.csv`, `reit_all_fund_monthly_returns.csv`, separate daily/weekly/monthly exchange-adjusted reference returns under `data/processed/analysis/reit_exchange_adjusted_reference_*.csv`, eight PNGs under `outputs/reit_dividend_comparison`, and `reports/REIT_EIGHT_FUND_REINVESTMENT.md`. Run the assembly reinvestment, eight-fund review, and dividend audit report modules in that order with `PYTHONPATH=src`. The older four-fund notebook and LaTeX performance reports have fixed narratives and are superseded for the current dividend results.
+
+## Listed REIT coverage check - 2026-10-10
+
+The October 10 collector rerun found no new complete source observations. TSETMC instrument searches using Persian and Arabic spellings of real estate and the word for real estate holdings returned eight distinct listed REITs, matching the canonical roster. This supports coverage of the currently searchable TSETMC universe, not unlisted funds.
+
+
 ## REIT refresh — 2026-10-10
 
 The documented collectors refreshed eight TSETMC REIT histories and TEDPIX through 2026-10-07, shared USD/IRR through Jalali 1405/07/16, and checked Kilid housing (no new complete month after 1405/06). The completed-week correction now includes the week ending 2026-10-09. The two-year cumulative comparison reports Arzesh Maskan +177.2%, Kelid +108.2%, and Danik +98.8%, versus TEDPIX +287.2% and USD/IRR +320.9%. The separate monthly housing proxy remains +160.7% through 2026-09-22, so its return gap is indicative because endpoints differ. The active notebook and English/Persian reports were rebuilt. See [status](docs/STATUS.md) for coverage and verification details.
@@ -23,7 +51,11 @@ The canonical monthly panel spans Solar Hijri 1395/01 through 1405/06, with the 
 
 Daily traded assets use the final valid observation in each Jalali month. Returns are calculated only from adjacent month-end levels; missing observations remain missing rather than being forward-filled or replaced with zero.
 
-## Four real estate funds and reconstructed returns
+## Historical four-fund presentation (superseded)
+
+The following description records the earlier four-fund presentation and its
+three-event ledger. It is retained for continuity, not as the current run sequence.
+Use the eight-fund workflow above and the current research summary for submission.
 
 The single active notebook, `notebooks/iran_reits_cross_asset_analysis.ipynb`, covers Kelid, Danik, Arzesh Maskan, and Kakh. Its nine Plotly figures include six frequency-matched heatmaps: TEDPIX daily (1/3/6/12 months), weekly (1/3/6/12/24), and monthly (12/24/36); housing monthly (12/24/36); USD/IRR daily (1/3); and weekly REIT returns against USD/IRR returns 4/13/26 completed weeks earlier over a two-year sample. Housing is observed monthly, so no daily or weekly housing returns are invented. Every reported correlation needs at least five pairs, 70% coverage of its stated window, and nonconstant returns. The two-year cumulative comparison excludes Kakh because its history starts later. Daily, weekly, and monthly fund returns use compounded units times raw traded closes, never exchange-adjusted fund prices.
 
@@ -140,3 +172,4 @@ Housing is not observed with the same frequency or market microstructure as exch
 The historical pilot also estimates performance using realized returns, so it is inherently hindsight-based. The operational model must replace realized-return inputs with a documented forward-looking expectation process and must estimate risk from an information set available at the allocation date.
 
 For detailed source and methodological decisions, see [`docs/WORKFLOW.md`](docs/WORKFLOW.md), [`docs/SOURCES.md`](docs/SOURCES.md), [`docs/FIXED_INCOME.md`](docs/FIXED_INCOME.md), and [`docs/INDEPENDENCE.md`](docs/INDEPENDENCE.md).
+**REIT profile update (2026-10-10).** `data/processed/analysis/reit_subscription_facts.csv` records the eight public subscription start dates and actual proceeds from archived TSETMC 10,000-IRR subscription trades, with notice and sponsor sources. `reit_fund_profiles.csv` incorporates them. Run `asset_allocation.collect_reit_subscription_notices` and `asset_allocation.collect_reit_founder_statutes` before `asset_allocation.build_reit_data_handoff` when rebuilding this evidence. Danik and Kashaneh legal founder lists are now verified from signed statutes; all eight same-date 2026-10-07 issued-unit counts and market caps remain unconfirmed. Current TSETMC units yield only the separately labelled indicative capitalization.

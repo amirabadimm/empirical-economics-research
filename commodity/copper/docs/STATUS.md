@@ -1,5 +1,15 @@
 # Copper Project Status
 
+## Application review — 2026-10-17
+
+Existing primary output verified: 223 dates, 2025-10-26–2026-10-11; 39 observed
+anchors and 184 interpolations; mean premium 6.09%, median 6.96%. README and
+Markdown research report now use this checkpoint, superseding their September
+206-day summaries. Report figures were regenerated. No source was refreshed.
+The root validation passed 86 tests and 233 subtests; see the workspace application
+handoff for environment details. Current distributions use full-sample empirical
+percentiles, not the superseded expanding/recency-weighted Copper description.
+
 ## October 13 source refresh (2026-10-14)
 
 The documented live collectors completed with direct source access. LME now has
@@ -31,6 +41,13 @@ October 13 source refresh above. The initial live collection attempt stopped at
 shared FX because the machine proxy was unavailable; direct source access then
 allowed the documented collectors to complete. The local rebuild used the
 repository virtual environment because the system Python lacked Matplotlib.
+
+## Notebook display correction (2026-10-13)
+
+The final Copper LME-analysis and certificate-analysis cells were aligned with the current standard distribution CSV schema. This repairs the missing `expanding_percentile` error and updates the chart explanation; it does not refresh sources or change the comparison calculation.
+## Live refresh checkpoint (2026-10-13)
+
+Live collection and the shared production rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); physical raw: 1,178 rows; eligible physical: 802 days through 1405/07/19. Primary comparison: 223 rows; distribution: 1,253 rows. Shared FX reached 1405/07/20. The main comparison remains bounded by observed physical anchors. Additional active research builders completed: intrinsic regression 228 rows/39 anchors, presentation timeline 358 daily rows and 267 events, and forward-gap diagnostic 16 trade dates.
 
 ## Full copper refresh (2026-09-27)
 

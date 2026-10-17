@@ -2,6 +2,10 @@
 
 **Mohammad Mahdi Amirabadi**
 
+Reviewed 2026-10-17 against existing local outputs; source refresh 2026-10-13.
+The primary sample ends at the 2026-10-11 physical anchor. Figures were regenerated
+for this review. This checkpoint supersedes the September 206-day headline result.
+
 This report summarizes the current empirical result for the Iranian zinc-ingot warehouse receipt. It is the visitor-facing research report; operational checkpoints and earlier report vintages remain in the project documentation.
 
 ## Research question
@@ -35,9 +39,9 @@ This design preserves movements in LME zinc and USD/IRR while allowing the domes
 
 ## Primary result
 
-The current primary output contains **206 modeled certificate days** from 2025-10-26 through 2026-09-20. It contains **50 observed anchors** and **156 bounded interpolations**.
+The current primary output contains **223 modeled certificate days** from 2025-10-26 through 2026-10-11. It contains **54 observed anchors** and **169 bounded interpolations**.
 
-The certificate premium to estimated domestic physical value averages **0.80%**. By contrast, the direct certificate-to-LME–FX comparison shows an average **20.54% discount**.
+The certificate premium to estimated domestic physical value averages **1.88%**, with a median of **2.73%**. The direct certificate-to-LME–FX comparison shows an average **20.58% discount on the same 223 dates**. These are unweighted daily descriptive statistics; the common sample isolates the change in benchmark from a change in sample dates.
 
 ![Zinc certificate premium to estimated domestic physical value](figures/zinc_main_bubble.png)
 
@@ -50,6 +54,10 @@ The contrast is economically important: a large discount to the international re
 ![Zinc certificate versus intrinsic value](figures/zinc_certificate_bubble.png)
 
 This series measures the certificate directly against the international zinc price translated at free-market FX. It is a transparent benchmark, not a complete domestic parity value.
+
+This supporting chart retains the full 228-date direct sample through 2026-10-12,
+whose mean discount is 20.43%. Use the paired 223-date statistic above when comparing
+the two benchmarks numerically.
 
 ### Domestic physical zinc versus LME–FX intrinsic value
 
@@ -80,4 +88,4 @@ Add `--collect` to the first command when source refresh is explicitly required.
 
 For full methodology, sample construction, validation rules, and current coverage, see the [Zinc project README](../../../commodity/zinc/README.md) and [workflow](../../../commodity/zinc/docs/WORKFLOW.md).
 
-The LaTeX source in this directory is retained as an earlier typeset research-report source. Its numerical checkpoint predates the current September production refresh; use this Markdown report and the project README for current headline results.
+The LaTeX source in this directory is retained as an earlier typeset research-report source. Its numerical checkpoint predates the October outputs; use this Markdown report and the project README for current headline results.

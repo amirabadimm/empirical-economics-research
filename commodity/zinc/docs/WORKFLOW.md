@@ -1,5 +1,23 @@
 # Zinc-Ingot Warehouse-Receipt Certificate: Research Workflow
 
+## Application checkpoint verification — 2026-10-17
+
+Run `python reports/application/verify_claims.py` from the workspace root after
+an intentional output refresh; reconcile README and `reports/zinc/research/REPORT.md`,
+then run `python reports/zinc/research/build_figures.py`. Compare mean domestic and
+international premiums on the same dates: the current 223-date sample gives 1.88%
+and −20.58%, respectively. The direct chart retains its separately labelled
+228-date full sample. The October 17 review refreshed presentation only. Current
+distribution builders use full-sample empirical CDF and absolute-exceedance columns;
+earlier expanding/recency-weighted workflow entries are historical and superseded.
+
+## Notebook distribution view (2026-10-13)
+
+After rebuilding `zinc_bubble_distribution.csv`, the final cells of `notebooks/01_zinc_analysis.ipynb` and `notebooks/02_bubble_analysis.ipynb` use the standard `percentile` and `abs_exceedance_pct` columns and display signed histograms, empirical CDFs, and absolute-exceedance panels. The former expanding-rank cell text is superseded.
+## Live refresh checkpoint (2026-10-13)
+
+Live collection and the shared production rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); physical raw: 6,465 rows; eligible physical: 567 days through 1405/07/19. Primary comparison: 223 rows; physical/intrinsic: 567; certificate/intrinsic: 228; distribution: 1,018. Research-only studies were not part of the production pipeline. The research-only intrinsic regression was also rebuilt to 228 rows and 54 anchors after a stale 210-row table failed alignment verification. Zinc's full suite then passed 14 tests and 233 subtests.
+
 ## Source refresh checkpoint (2026-09-26)
 
 Online FX, Westmetall/LME, IME certificate and physical collectors completed.

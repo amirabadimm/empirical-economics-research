@@ -1,5 +1,16 @@
 # Status
 
+## Validation isolation — 2026-10-17
+
+The historical-cutoff panel test now uses temporary copies of its inputs and a
+temporary processed-output path. It can no longer overwrite the live research
+panel. Both data-dependent fee tests skip when local inputs are absent. The root
+suite passed 86 tests and 233 subtests. This was a validation-code change, not a
+tariff refresh; the October 13 source/output checkpoint below remains current.
+## Live refresh checkpoint (2026-10-13)
+
+The current official fee table was collected (12 assets), and the Wayback inventory contains 110 unique page records. The daily panel rebuilt to 32,794 rows for 21 commodities through 2026-10-13. Historical tariff boundaries retain their documented quality flags; the archive inventory is evidence, not a newly audited tariff event.
+
 Last verified build: 2026-09-19.
 
 - Canonical output: `data/processed/warehouse_fees_daily.csv`

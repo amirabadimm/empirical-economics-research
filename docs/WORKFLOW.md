@@ -1,5 +1,29 @@
 # Workspace Workflow
 
+## Application snapshot maintenance — 2026-10-17
+
+Start with `reports/application/README.md` and `HANDOFF.md`. Run
+`python reports/application/verify_claims.py --check` to verify the pinned local
+outputs without collection. After an intentional refresh, inspect new statistics,
+reconcile the affected reports/READMEs, regenerate commodity figures, then use
+`--write` to update the evidence checkpoint. Do not silently change a submitted
+sample. CV claims must retain observed/interpolated distinctions, local/server
+coverage separation, and provisional or planned research stages.
+
+Build the portable reader packet with `python reports/application/build_packet.py`.
+It checks the evidence checkpoint and packages an explicit report/figure allowlist,
+rewriting external-to-packet file links as repository references. The manifest and
+internal links are verified; generated ZIPs stay in ignored `reports/application/outputs`.
+
+The current REIT route is the eight-fund dividend workflow in the project docs.
+The older four-fund narrative and command section below is superseded for current
+dividend results. Warehouse-fee validation now runs in a temporary project tree
+and does not rebuild the real processed panel.
+
+## Gold ETF activity notebook — 2026-10-17
+
+The local gold price/NAV collectors and derived builders were run, then `commodity/gold/notebooks/02_etf_trading_activity.ipynb` was executed. It reads the five configured TSETMC price histories and compares positive-activity trade counts over their common last 90 calendar days. See the [Gold workflow](../commodity/gold/docs/WORKFLOW.md) for refresh commands and source dates.
+
 ## Copper October 13 data (2026-10-14)
 
 The copper live collectors and production rebuild completed for October 13
@@ -7,9 +31,25 @@ source data. Direct source access bypassed an unavailable machine proxy.
 Current coverage and the physical-anchor limit are recorded in
 [copper status](../commodity/copper/docs/STATUS.md).
 
+## Commodity refresh (2026-10-13)
+
+Commodity refresh on 2026-10-13: live collection and production rebuild completed for Copper (223 primary rows), Zinc (223), Pellet (26), Rebar (57 exploratory rows), Bitumen (32 exploratory rows), and Pista (16; manual Abtahi prices unchanged). Gold's five local histories and bubbles were refreshed; Warehouse Fees rebuilt to 32,794 rows through 2026-10-13. Silver's first certificate collection reached 307 rows; its 235-month physical archive yielded no eligible silver-metal rows, so no diagnostic was built. Shared USD/IRR reaches 1405/07/20. These counts distinguish source from derived coverage; older September checkpoints below are superseded for these active outputs.
+
+For the REIT presentation data handoff, run `asset_allocation.collect_reit_instrument_info` and then `asset_allocation.build_reit_data_handoff` after the eight-fund dividend and correlation builders. The four processed outputs use archived qTotCap and the common 2026-04-09 post-war cutoff. The FIPIRAN NAV and dated TSETMC units are sourced; exact 2026-10-07 units/cap, founders, and subscription fields remain blank until verified.
+
+
+For current REIT dividend work, use `asset_allocation/config/reit_dividend_events.csv` and run the assembly reinvestment, eight-fund review, and dividend audit report builders in order. Historical payment-date and three-event ledgers must not be combined with the new model. The new eight-fund report and PNGs supersede the older four-fund performance narrative.
+
+The October 10 TSETMC instrument-search roster check found eight listed REITs matching the project collector. The source refresh added no complete observations.
+
+
 The 2026-10-10 REIT refresh uses the project collectors for eight TSETMC funds, TEDPIX, and Kilid, plus the shared `shared.market_data.fx` collector. The project workflow records the source checks and rebuild sequence. A completed Friday includes the Wednesday Iranian trading close assigned to that week; the corrected weekly outputs now reach 2026-10-09. Rebuild the active notebook and four LaTeX sources after downstream derivatives, and review the management narrative when returns change.
 
-## Asset Allocation: active four-fund notebook
+## Asset Allocation: historical four-fund notebook (superseded)
+
+This section records the earlier presentation. Use the active eight-fund sequence
+in the project workflow for current dividend calculations and the application
+summary for current scope.
 
 Use `asset_allocation/notebooks/iran_reits_cross_asset_analysis.ipynb` for Kelid, Danik, Arzesh Maskan, and Kakh. With `PYTHONPATH=src` from `asset_allocation`, run `python -m asset_allocation.build_reit_assembly_reinvestment`, `python -m asset_allocation.build_reit_two_year_cumulative`, `python -m asset_allocation.build_reit_reinvested_correlations`, and `python -m asset_allocation.analyze_reit_usd_weekly_predictive` in that order. If a new complete housing month is available, run the Kilid collector, four-asset monthly panel builder, and housing two-year cumulative builder. Then run `python -m asset_allocation.build_reit_requested_heatmaps` before executing the notebook and report generator. Source collectors alone refresh canonical raw data; derivatives remain under `data/processed/analysis`.
 
@@ -119,3 +159,4 @@ reviews separately from data refreshes and test runs.
 
 Inspect the diff and stage intended files explicitly before committing. Raw data, snapshots,
 credentials, environments, logs, caches, and bulk outputs must remain outside Git.
+The REIT profile handoff now also runs `asset_allocation.collect_reit_subscription_notices` before `asset_allocation.build_reit_data_handoff`. The latter builds an eight-row subscription-facts derivative from immutable TSETMC messages and `qTotCap` trade snapshots; it fills public subscription dates/proceeds and role-labelled founders or sponsors. Run `asset_allocation.collect_reit_founder_statutes` to archive their signed statutes before the handoff; only 2026-10-07 exact units/caps remain unresolved. The TSETMC historical-instrument endpoint is unsuitable for the latter because it repeats current unit counts for future dates.

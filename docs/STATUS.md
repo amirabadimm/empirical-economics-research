@@ -1,5 +1,29 @@
 # Research Status
 
+## Application portfolio checkpoint — 2026-10-17
+
+Prepared [application materials](../reports/application/README.md), CV project
+descriptions, an evidence report with 19 input fingerprints, and a portfolio-wide
+handoff inventory. Copper and zinc headline reports now match the October output
+samples: 223 dates each, means 6.09% and 1.88%, with 39/54 observed anchors.
+The former 206-date September headline statistics are superseded. Gold has 8,253
+local matched fund-days. Allocation remains an ex-post pilot; current REIT
+scenarios remain provisional and older four-fund narratives are superseded.
+
+Verification: root suite 86 tests plus 233 subtests; allocation/Pista 50 tests;
+Ruff passed. Corrected a Python 3.11 f-string and isolated the warehouse-fee test
+from its actual processed output. Copper/zinc figures were regenerated. This is
+a presentation and validation checkpoint, not a new source refresh, model-stage
+completion, remote CI run, publication, or server verification. Detailed limits
+and remaining research are recorded in [the handoff](../reports/application/HANDOFF.md).
+The local reader packet includes eight Markdown research/application documents,
+data-availability documentation, licence, six selected figures, a start page,
+and a file manifest. It is a reader packet, not a dataset or full repository release.
+
+## Gold ETF trading activity — 2026-10-17
+
+Gold's five configured funds were locally refreshed: prices through 2026-10-14 and selected NAV through 2026-10-11 to 2026-10-13 by fund. Two-year and bubble outputs were rebuilt, and an executed notebook ranks 90-day average daily trade counts with two plots. See [Gold status](../commodity/gold/docs/STATUS.md). The server database was not verified.
+
 ## Copper October 13 data (refreshed 2026-10-14)
 
 LME, shared USD/IRR, and copper certificate sources now include October 13.
@@ -7,6 +31,20 @@ Copper certificate/intrinsic has 229 rows through that date; the primary
 comparison and Power BI delivery remain at 223 rows through the October 11
 physical anchor. No newer eligible physical trade was returned. See
 [copper status](../commodity/copper/docs/STATUS.md).
+
+## Commodity refresh (2026-10-13)
+
+Commodity refresh on 2026-10-13: live collection and production rebuild completed for Copper (223 primary rows), Zinc (223), Pellet (26), Rebar (57 exploratory rows), Bitumen (32 exploratory rows), and Pista (16; manual Abtahi prices unchanged). Gold's five local histories and bubbles were refreshed; Warehouse Fees rebuilt to 32,794 rows through 2026-10-13. Silver's first certificate collection reached 307 rows; its 235-month physical archive yielded no eligible silver-metal rows, so no diagnostic was built. Shared USD/IRR reaches 1405/07/20. These counts distinguish source from derived coverage; older September checkpoints below are superseded for these active outputs.
+
+Asset Allocation collected FIPIRAN total NAV and reporting dates for all eight listed REITs and matching TSETMC issued-unit counts dated 2026-10-10. The updated profile contains NAV; a separate source table gives an indicative capitalization using 2026-10-07 closes. Exact same-date unit counts and market caps remain open. Subscription dates and public proceeds are now populated from TSETMC subscription trades; Danik and Kashaneh legal founder lists are verified from signed fund statutes. Source responses are archived immutably. This supersedes the older NAV-missing statement below.
+
+Asset Allocation generated four presentation data handoff files on 2026-10-10: an eight-row fund profile, 4,057-row qTotCap-backed daily series, eight-sheet correlation workbook, and 13-row dividend table. Post-war metrics use the first valid trade on or after 2026-04-09. A later official-source refresh supplied FIPIRAN NAV and TSETMC units; see the new checkpoint below. Subscription and founder facts, plus exact same-date market cap, remain open. The full project suite passed 41 tests. No new presentation was produced.
+
+
+Asset Allocation's 2026-10-10 dividend refactor now builds eight-fund raw-price, cash-holding, and hypothetical first-trading-day-after-event returns from 13 user-supplied dividend events. Its new audit report and eight PNGs are current. Older four-fund notebook and LaTeX performance narratives are superseded. The full project test suite passed 38 tests; see the project status for dividend coverage limits.
+
+On 2026-10-10, collectors found no new complete REIT, TEDPIX, shared USD/IRR, or Kilid housing observations. A TSETMC instrument search found eight matching listed REITs, all in the canonical roster.
+
 
 Asset Allocation refreshed canonical REIT and TEDPIX histories through 2026-10-07 and shared USD/IRR through Jalali 1405/07/16 on 2026-10-10; Kilid had no new complete month. A completed-week cutoff correction moved the rebuilt REIT comparison to 2026-10-09. The notebook and four LaTeX reports were regenerated; the 80-cell grid retains 66 reportable coefficients. See the project status for current returns, different housing endpoints, and verification. Earlier REIT performance figures below are superseded.
 
@@ -252,3 +290,4 @@ The independent `economic_usd` project now contains reproducible, non-modeled in
 After any change in source, schema, path, formula, observation count, or research stage, update
 this file, the project README, and its `docs/WORKFLOW.md`. Detailed operational histories remain
 inside each project.
+On 2026-10-10, Asset Allocation archived eight TSETMC REIT subscription-notice responses and derived all eight initial public subscription dates and proceeds from immutable exchange trades. Founder fields are now populated, including Danik and Kashaneh from signed fund statutes; all eight 2026-10-07 unit counts and market caps remain open. The latter are separate from dated current units and indicative caps. This supersedes the prior blanket statement that subscription facts and founders are missing.

@@ -1,4 +1,7 @@
 # IME warehouse and assessment fees
+## Live refresh checkpoint (2026-10-13)
+
+The current official fee table was collected (12 assets), and the Wayback inventory contains 110 unique page records. The daily panel rebuilt to 32,794 rows for 21 commodities through 2026-10-13. Historical tariff boundaries retain their documented quality flags; the archive inventory is evidence, not a newly audited tariff event.
 
 Reproducible daily panel of storage and assessment tariffs for commodity deposit
 certificates listed by the Iran Mercantile Exchange (IME).
@@ -9,7 +12,7 @@ certificates listed by the Iran Mercantile Exchange (IME).
 It contains one unique row per calendar date and commodity. Do not use files in
 `data/raw` or `data/interim` directly for analysis.
 
-Current coverage: 32,290 daily rows for 21 commodities from 2016-10-29 through 2026-09-19. Coverage
+Current coverage: 32,794 daily rows for 21 commodities from 2016-10-29 through 2026-10-13. Coverage
 starts independently for each commodity at its first recoverable official record.
 
 Important quality fields:
@@ -23,6 +26,10 @@ Important quality fields:
 
 See [docs/WORKFLOW.md](docs/WORKFLOW.md) for lineage and [docs/STATUS.md](docs/STATUS.md)
 for current coverage.
+
+Validation review 2026-10-17: the panel test now builds in a temporary project
+directory, so running tests cannot replace this current panel with its historical
+test cutoff. Local-data tests skip explicitly when their unversioned inputs are absent.
 
 ## Commands
 

@@ -1,5 +1,22 @@
 # Gold status — 2026-09-29
 
+## Application evidence review — 2026-10-17
+
+Local full-history outputs independently recounted to 8,253 matched fund-days;
+two-year tables contain 2,279 exact-NAV matches across 2,309 candidate fund-days.
+Price/NAV formulas, keys, identities, alignment labels, and file fingerprints
+were verified. Added `reports/RESEARCH_SUMMARY.md` and reconciled the README to
+the existing October 17 local build. This presentation review ran no collectors
+and did not re-audit provider disputes or inspect the server database. The root
+suite passed 86 tests and 233 subtests across projects.
+## Trading activity refresh — 2026-10-17
+
+Local TSETMC price histories for all five active ETFs end 2026-10-14. Selected Fipiran NAV ends 2026-10-11 (Ayar), 2026-10-12 (Tala, Kahroba, Ganj), and 2026-10-13 (Gohar). Two-year processed tables ending 2026-10-17 contain 462/444, 462/460, 462/459, 462/456, and 461/460 traded/exact-NAV rows respectively. Full bubble histories contain 1,939, 2,184, 1,224, 874, and 2,032 rows respectively. The executed trading activity notebook covers 2026-07-17 through 2026-10-14 and ranks average daily transaction counts: Ayar 110,332 (62 days), Tala 23,442 (62), Kahroba 18,169 (62), Ganj 13,715 (62), Gohar 8,651 (61). This supersedes the 2026-10-13 local refresh checkpoint below. Server database state was not verified.
+
+## Live refresh checkpoint (2026-10-13)
+
+Local live collection refreshed the five active ETF price and Fipiran NAV sources, then rebuilt the two-year analysis through 2026-10-12 and all five daily bubble histories. Exact-date NAV matches: Ayar 449/465, Tala 464/465, Kahroba 464/465, Ganj 461/465, Gohar 463/464. Bubble rows: 1,939, 2,183, 1,224, 874, and 2,030 respectively. This is a local research refresh; the separately scheduled server database was not verified in this run.
+
 ## Five-minute monitor deployed and daily data refreshed — 2026-10-03
 
 Disposable current-price/current-NAV cache and four daily-only reference ranks

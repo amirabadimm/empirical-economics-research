@@ -1,5 +1,12 @@
 # Bitumen Certificate Research Workflow
 
+## Notebook diagnostic view (2026-10-13)
+
+After rebuilding `bitumen_bubble_distribution.csv`, run the final section of `notebooks/01_bitumen_physical_analysis.ipynb` to view the exploratory 60/70 cash diagnostic distribution. It reads the standard `percentile` and `abs_exceedance_pct` fields and does not write source data.
+## Live refresh checkpoint (2026-10-13)
+
+Live certificate and broad physical collection and the shared diagnostic rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); broad physical raw: 47,235 rows. The 60/70 cash/cash diagnostic and distribution have 32 rows. Certificate units and product comparability remain unverified.
+
 ## Shared execution checkpoint (2026-09-22)
 
 The delivered comparison uses the shared engine in `shared/certificate_pipeline`.

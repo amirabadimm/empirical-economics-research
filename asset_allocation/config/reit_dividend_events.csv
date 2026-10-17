@@ -1,0 +1,14 @@
+﻿ins_code,event_id,event_type,assembly_date_jalali,reported_distribution_date_jalali,event_date_jalali,cash_irr_per_unit,eligibility_reference_event,evidence_status,data_source,notes
+71945594172117613,arzesh_1405,annual_assembly,1405/03/03,,1405/03/03,310,,verified,user_supplied_assembly,Approved dividend
+67717913151786055,danik_1404,annual_assembly,1404/05/28,,1404/05/28,1800,,verified,user_supplied_records,Corrected assembly date supersedes earlier 1404/05/27
+67717913151786055,danik_1405,annual_assembly,1405/05/31,,1405/05/31,1774,,verified,user_supplied_records,93.3 percent of period profit
+70814244102598215,amin_1403_10,reported_distribution,,1403/10/08,1403/10/08,65,,provisional_date,user_supplied_distribution_report,Assembly date unverified
+70814244102598215,amin_1404_05,reported_distribution,,1404/05/01,1404/05/01,126,,provisional_date,user_supplied_distribution_report,Assembly date unverified
+70814244102598215,amin_1404_08,reported_distribution,,1404/08/21,1404/08/21,100,,provisional_date,user_supplied_distribution_report,Zero entry on 1404/08/20 excluded
+70814244102598215,amin_1404_10,reported_distribution,,1404/10/06,1404/10/06,203,,provisional_date,user_supplied_distribution_report,Assembly date unverified
+70814244102598215,amin_1405_03,reported_distribution,,1405/03/27,1405/03/27,311,,provisional_date,user_supplied_distribution_report,Assembly date unverified
+37118058361762279,malek_1404,annual_assembly,1404/02/31,,1404/02/31,1176,,verified,user_supplied_assembly,Annual dividend
+37118058361762279,malek_1405,annual_assembly,1405/03/05,,1405/03/05,1283,,verified,user_supplied_assembly,Original eligibility reference for supplement
+37118058361762279,malek_1405_supp,supplementary_announcement,1405/03/05,,1405/05/14,89,malek_1405,provisional_date,user_supplied_supplement,Uses 1405 annual assembly eligible units
+45292762906823004,kelid_1404,annual_assembly,1404/07/16,,1404/07/16,907,,verified,user_supplied_assembly,Annual dividend
+45292762906823004,kelid_1405,annual_assembly,1405/06/25,,1405/06/25,864,,verified,user_supplied_assembly,Annual dividend

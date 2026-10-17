@@ -2,6 +2,10 @@
 
 **Mohammad Mahdi Amirabadi**
 
+Reviewed 2026-10-17 against existing local outputs; source refresh 2026-10-14.
+The primary sample ends at the 2026-10-11 physical anchor. Figures were regenerated
+for this review. This checkpoint supersedes the September 206-day headline result.
+
 This report summarizes the current empirical result for the Iranian copper-cathode warehouse receipt. It is the visitor-facing research report; implementation checkpoints and source-refresh history remain in the project documentation.
 
 ## Research question
@@ -29,9 +33,9 @@ LME and FX observations are aligned as-of using the latest value on or before th
 
 ## Primary result
 
-The current primary output contains **206 certificate-trading days** from 2025-10-26 through 2026-09-20. Of these, **36** are observed physical anchors and **170** use bounded interpolation between anchors.
+The current primary output contains **223 certificate-trading days** from 2025-10-26 through 2026-10-11. Of these, **39** are observed physical anchors and **184** use bounded interpolation between anchors.
 
-The estimated certificate premium to comparable domestic physical value averages **5.73%**, with a median of **7.16%**.
+The estimated certificate premium to comparable domestic physical value averages **6.09%**, with a median of **6.96%**. These statistics give each modeled certificate day equal weight; they do not treat interpolated values as additional observed physical transactions.
 
 ![Copper certificate premium to estimated domestic physical value](figures/copper_main_bubble.png)
 
@@ -46,6 +50,10 @@ The project retains two separate supporting measures rather than folding them in
 ![Copper certificate versus intrinsic value](figures/copper_certificate_bubble.png)
 
 This comparison asks how the certificate trades relative to the international copper price translated at the free-market exchange rate. It is useful context, but it is not treated as a substitute for a domestic physical-market comparable.
+
+On the primary sample's same 223 dates, the mean direct discount is **10.35%**.
+The supporting chart uses the full 229-date direct sample through 2026-10-13,
+whose mean discount is 10.32%; its window differs from the primary chart.
 
 ### Domestic physical copper versus LME–FX intrinsic value
 

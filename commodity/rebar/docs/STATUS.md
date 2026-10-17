@@ -1,4 +1,7 @@
 # Steel Rebar Research Status
+## Live refresh checkpoint (2026-10-13)
+
+Live certificate and broad physical collection and the shared diagnostic rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); broad physical raw: 32,243 rows. A3/18 exact-date diagnostic: 5 rows through 2026-05-26; A3/12 cross-diameter diagnostic: 52 rows through 2026-10-07; combined distribution: 57 rows. Neither diagnostic is an approved homogeneous benchmark.
 
 ## Shared execution checkpoint (2026-09-22)
 

@@ -1,5 +1,12 @@
 # Zinc Certificate Valuation
 
+## Notebook distribution view (2026-10-13)
+
+The final cells of `notebooks/01_zinc_analysis.ipynb` and `notebooks/02_bubble_analysis.ipynb` now use the current empirical-distribution CSV schema. They display signed histograms, empirical CDFs, absolute-exceedance charts, and recent observations for the three governed comparisons. Their earlier expanding-rank descriptions are superseded; sources and production formulas did not change.
+## Live refresh checkpoint (2026-10-13)
+
+Live collection and the shared production rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); physical raw: 6,465 rows; eligible physical: 567 days through 1405/07/19. Primary comparison: 223 rows; physical/intrinsic: 567; certificate/intrinsic: 228; distribution: 1,018. Research-only studies were not part of the production pipeline. The research-only intrinsic regression was also rebuilt to 228 rows and 54 anchors after a stale 210-row table failed alignment verification. Zinc's full suite then passed 14 tests and 233 subtests.
+
 ## Research question
 
 How does the Iranian zinc-ingot warehouse receipt trade relative to an eligible domestic physical basket and to an LME-FX intrinsic benchmark?
@@ -15,7 +22,7 @@ The production workflow combines:
 - LME cash zinc;
 - the shared free-market USD/IRR series.
 
-The documented checkpoint contains 6,398 broad physical-market rows, including 3,581 positive trades. The approved physical benchmark contains 563 daily observations. Certificate data contain more than 200 positive-trading observations in the active sample, while the primary modeled comparison contains 206 certificate days through 2026-09-20.
+The October 13 source checkpoint records 6,465 broad physical-market rows and 307 certificate rows, including 228 positive-trading dates through 2026-10-12. The approved physical benchmark contains 567 daily observations through 2026-10-11; the bounded primary comparison contains 223 certificate days through that physical anchor.
 
 Raw physical data intentionally retain both zinc ingot and zinc soil for auditability. Product filtering occurs only in the reproducible benchmark builder.
 
@@ -45,17 +52,17 @@ This separation matters because a large direct certificate-to-LME discount can c
 
 ## Main result
 
-The primary output contains **206 modeled certificate days** from 2025-10-26 through 2026-09-20. Of these, **50** are observed physical anchors and **156** are bounded interpolations.
+Verified against local output on 2026-10-17, the primary sample contains **223 modeled certificate days** from 2025-10-26 through 2026-10-11. Of these, **54** are observed physical anchors and **169** are bounded interpolations. This supersedes the 206-day September headline checkpoint.
 
-The certificate premium to estimated domestic physical value averages **0.80%**.
+The certificate premium to estimated domestic physical value averages **1.88%**, with a median of **2.73%**.
 
-By contrast, the direct certificate-to-LME-FX comparison shows an average **20.54% discount**.
+The direct certificate-to-LME-FX comparison shows an average **20.58% discount on those same 223 dates**. Its full 228-date sample averages a 20.43% discount; the paired comparison avoids mixing sample windows. These are unweighted daily descriptive statistics.
 
 The difference is the central empirical finding of the project: the domestic physical-market basis is economically important, and using the international benchmark alone gives a very different view of relative valuation.
 
 ## Historical distributions
 
-The standardized distribution table keeps signed bubble values and chronological empirical ranks. It reports an expanding equal-weight percentile and a recent-weighted percentile with a configurable 90-calendar-day half-life.
+The current standardized distribution table keeps signed bubble values, full-sample empirical percentiles, and absolute-exceedance percentages. The notebooks show histograms, empirical CDFs, and absolute-exceedance panels. Earlier expanding and recency-weighted distribution descriptions are superseded for the current Zinc builder.
 
 Certificate-versus-physical rows preserve `point_method` and `is_interpolated`, so observed anchors and model-derived days remain identifiable. Because bounded interpolation can use later anchors, these historical ranks are descriptive and are not presented as vintage-safe trading backtests.
 

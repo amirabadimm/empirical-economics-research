@@ -1,6 +1,7 @@
 """Collect broad silver-related rows from complete official IME responses."""
 from __future__ import annotations
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -12,7 +13,8 @@ from shared.ime_data.ime_physical_collector import (  # noqa: E402
 )
 
 def is_silver_related(row: dict) -> bool:
-    return "نقره" in normalize_fa(row.get("GoodsName"))
+    name = normalize_fa(row.get("GoodsName"))
+    return bool(re.search(r"نقره(?![\s\u200c-]*ای)", name))
 
 def config(project_dir: Path | None = None) -> PhysicalCollectorConfig:
     return PhysicalCollectorConfig(

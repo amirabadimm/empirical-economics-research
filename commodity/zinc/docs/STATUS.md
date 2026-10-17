@@ -1,5 +1,22 @@
 # Zinc Research Status
 
+## Application review — 2026-10-17
+
+Existing primary output verified: 223 dates, 2025-10-26–2026-10-11; 54 observed
+anchors and 169 interpolations; mean premium 1.88%, median 2.73%. The mean direct
+LME–FX discount on those same dates is 20.58% (full 228-date direct sample: 20.43%).
+README, Markdown report, and figures now use the October checkpoint, superseding
+the September 206-day headline result. No source was refreshed. The root suite
+passed 86 tests and 233 subtests. Current distributions use full-sample empirical
+percentiles; earlier expanding/recency-weighted descriptions are superseded.
+
+## Notebook display correction (2026-10-13)
+
+The final Zinc analysis and bubble-analysis cells were aligned with the current standard distribution CSV schema. Both now run without the missing `expanding_percentile` error. This was a presentation correction; source and comparison data were unchanged.
+## Live refresh checkpoint (2026-10-13)
+
+Live collection and the shared production rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); physical raw: 6,465 rows; eligible physical: 567 days through 1405/07/19. Primary comparison: 223 rows; physical/intrinsic: 567; certificate/intrinsic: 228; distribution: 1,018. Research-only studies were not part of the production pipeline. The research-only intrinsic regression was also rebuilt to 228 rows and 54 anchors after a stale 210-row table failed alignment verification. Zinc's full suite then passed 14 tests and 233 subtests.
+
 ## Source refresh checkpoint (2026-09-26)
 
 Online FX, Westmetall/LME, IME certificate and physical collectors completed.

@@ -1,5 +1,12 @@
 # Bitumen Certificate Research
 
+## Notebook diagnostic view (2026-10-13)
+
+The final cells of `notebooks/01_bitumen_physical_analysis.ipynb` now display the processed 60/70 cash diagnostic as a signed histogram, empirical CDF, absolute-exceedance panel, and recent-observation table. The diagnostic remains exploratory; this view does not approve certificate units or physical comparability.
+## Live refresh checkpoint (2026-10-13)
+
+Live certificate and broad physical collection and the shared diagnostic rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); broad physical raw: 47,235 rows. The 60/70 cash/cash diagnostic and distribution have 32 rows. Certificate units and product comparability remain unverified.
+
 ## Shared execution checkpoint (2026-09-22)
 
 The delivered comparison uses the shared engine in `shared/certificate_pipeline`.

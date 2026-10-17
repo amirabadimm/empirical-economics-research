@@ -1,6 +1,10 @@
 # Silver research architecture
 
-Data-free scaffold for Iranian silver research. It keeps the IME 999.9 silver-bar
+## First source collection (2026-10-13)
+
+First live certificate collection produced 307 rows through 2026-10-12, including 228 traded rows. The full official physical archive was collected and replayed from 235 immutable monthly snapshots. The corrected filter excludes vehicle colors; it found zero silver-bar or silver-shot physical rows. Consequently the strict physical benchmark and certificate/physical diagnostic cannot be built. This is source coverage, not an approved economic valuation. The combined Silver and Warehouse Fees test run passed 6 tests.
+
+Initially data-free scaffold for Iranian silver research. It keeps the IME 999.9 silver-bar
 certificate, broad physical-market observations, and derived analysis independent.
 No source data or snapshots are bundled, and local rebuilds never collect data.
 

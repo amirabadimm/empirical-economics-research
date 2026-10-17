@@ -1,5 +1,9 @@
 # Pista status
 
+## Live refresh checkpoint (2026-10-13)
+
+Live certificate collection and the shared diagnostic rebuild completed on 2026-10-13. Certificate raw contains 42 rows through 2026-10-12, including 36 traded rows. The certificate/Abtahi comparison and distribution remain at 16 rows because the Abtahi weekly workbook is a manual input and was not updated.
+
 ## Shared execution checkpoint (2026-09-22)
 
 The delivered comparison uses the shared engine in `shared/certificate_pipeline`.

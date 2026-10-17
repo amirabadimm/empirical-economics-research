@@ -1,5 +1,12 @@
 # Bitumen Research Status
 
+## Notebook display update (2026-10-13)
+
+The physical-analysis notebook now includes a final interactive distribution view for its 32-row processed cash diagnostic. Its economic approval status remains exploratory; no source or comparison formula changed.
+## Live refresh checkpoint (2026-10-13)
+
+Live certificate and broad physical collection and the shared diagnostic rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); broad physical raw: 47,235 rows. The 60/70 cash/cash diagnostic and distribution have 32 rows. Certificate units and product comparability remain unverified.
+
 ## Shared execution checkpoint (2026-09-22)
 
 The delivered comparison uses the shared engine in `shared/certificate_pipeline`.

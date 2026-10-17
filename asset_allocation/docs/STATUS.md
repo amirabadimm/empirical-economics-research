@@ -1,4 +1,41 @@
+## Official REIT NAV and unit-source refresh - 2026-10-10 (founding facts superseded by later checkpoint)
+
+FIPIRAN fundcompare fund type 18 returned exactly the eight roster funds. Its latest dated total NAV values (IRR converted to billion toman) and NAV dates now populate all eight profile rows; per-unit cancellation NAV multiplied by FIPIRAN invested units cross-checks each total within 0.1%. TSETMC instrument info returned matching `zTitad` unit counts for all eight, dated 2026-10-10. Source responses are archived immutably under `data/raw/real_estate_funds/{fipiran_snapshots,instrument_info_snapshots}` by the documented collector. `data/processed/analysis/reit_tsetmc_instrument_info.csv` contains unit counts, NAV, dates, official source URLs, snapshots, and an indicative market cap using the 2026-10-07 close. Because the unit record is later than the close, the exact 2026-10-07 unit count and same-date market cap remain blank in `reit_fund_profiles.csv`. Subscription date/proceeds and founder remain unverified. The earlier source audit below is superseded regarding FIPIRAN accessibility and NAV availability; dividend coverage is unchanged. The handoff builder was rerun successfully.
+
+## REIT profile source audit - 2026-10-10
+
+The seven profile fields requested for all eight funds were checked against the local raw histories, TSETMC history snapshots, and current processed inputs. The local evidence supports the 1405/07/15 closing price for each fund but contains no dated official NAV, published unit count as of that date, subscription notice/proceeds, or issuer filing that verifies the founder. Therefore the corresponding cells in `data/processed/analysis/reit_fund_profiles.csv` remain blank and market capitalization cannot yet be calculated. First trading dates are not relabeled as subscription dates. This is a documentation review, not a source refresh.
+
+An attempted read of the official TSETMC instrument API (`https://cdn.tsetmc.com/api/Instrument/GetInstrumentInfo/71945594172117613`) failed because this runtime's network proxy refused the connection. The FIPIRAN homepage timed out through web retrieval; indexed official CODAL searches did not return dated disclosures for the requested eight-fund profile facts. Secondary market pages surfaced possible unit counts (for example 165 million for Arzesh Maskan on 1405/07/11), but those are not evidence for 1405/07/15 and were not copied into the profile. The old presentation's sponsor and subscription figures remain unverified leads. Next source step: obtain dated TSETMC/CODAL/FIPIRAN records or fund-issued NAV reports and subscription notices, archive the exact documents, then compute market cap using same-date outstanding units and the archived close.
+
 # Status
+
+## Application scope and validation — 2026-10-17
+
+Added `reports/CURRENT_RESEARCH_SUMMARY.md` separating the delivered historical
+pilot from planned expert-informed allocation and provisional eight-fund REIT
+returns. Existing level/return grids were checked: 508/504 asset-month rows,
+127/126 months, one missing return and 125 complete four-asset months. The REIT
+summary has eight funds and 13 identified events through 2026-10-07. Saved pilot
+notebook results were inspected, not re-executed. The older September pilot
+report and four-fund performance narratives are explicitly historical.
+The allocation and Pista suites passed 50 tests together. Fixed Python 3.11
+f-string compatibility in the eight-fund chart builder; Ruff passed. No source,
+return formula, dividend evidence, or research-stage completion was changed.
+
+## Presentation data handoff - 2026-10-10
+
+The four requested files were generated from the eight-fund raw archive and updated reinvestment model: eight profile rows, 4,057 daily raw-date rows, 13 dividend rows, and an eight-sheet correlation workbook. Archived qTotCap covers every raw date without conflicting overlaps. Post-war returns use 2026-04-09 (1405/01/20) as the cutoff and the first later valid trade as baseline; Emarat Dey is flagged as listed after the cutoff. Latest closes for all eight funds remain 2026-10-07. Subscription, founder, official NAV, units outstanding, and market-cap fields are intentionally blank pending source evidence. Three handoff CSVs reproduced byte-for-byte on rerun. The full project suite passed 41 tests. This derived handoff did not refresh canonical prices or create a presentation.
+
+
+## Eight-fund dividend refactor - 2026-10-10
+
+The current model covers eight raw REIT histories, 3,441 valid traded sessions, and 13 user-supplied positive dividend events across five funds. Each fund's latest valid close is 2026-10-07. New outputs include daily price, cash-holding and hypothetical reinvested values; weekly and Jalali-monthly returns; 160 cross-asset heatmap cells; 128 other correlation cells; eight PNG charts; and an audit report. The 2026-10-09 Friday-ending two-year panel includes all eight funds plus TEDPIX and USD/IRR. The full project suite passed 38 tests, and three daily/event CSVs reproduced byte-for-byte. Complete dividend histories, independent source documents, adjusted-price semantics, and corporate actions remain open. The older four-fund notebook and LaTeX reports are superseded for current dividend results; older counts below are historical.
+
+## Listed REIT coverage recheck - 2026-10-10
+
+The REIT, TEDPIX, USD/IRR, and Kilid collectors found no new complete observations. A read-only TSETMC search returned eight listed REIT instruments matching the canonical roster. No market source date changed.
+
 
 ## Current REIT checkpoint — 2026-10-10
 
@@ -147,3 +184,6 @@ Housing now has 125 valid monthly returns; only 1395/01 remains missing for lack
 The corrected 1397 sequence removes the artificial -99%/+13,000% pair. Its housing returns now
 have 4.06% monthly sample volatility and 14.08% annualized volatility. Official revision
 disagreements for 1396/12 and 1398/08 remain explicitly flagged under the current-report rule.
+## REIT subscription and sponsor source refresh — 2026-10-10
+
+TSETMC supervisor notices were archived immutably for all eight funds. Their first public subscription dates were matched to archived TSETMC traded sessions at the fixed 10,000 IRR price. Summed `qTotCap` and volumes give initial public proceeds (billion toman): Arzesh 30, Danik 140, Amin Shahr 352.537003, Malek Atiyeh 475, Kelid 452.593307, Kashaneh 340, Kakh 690.002547, and Emarat Dey 776.597. The processed `reit_subscription_facts.csv` and `reit_fund_profiles.csv` now contain these dates and amounts. Named founders from exchange or reported issuer notices are included; Danik and Kashaneh legal founder lists are now sourced from the signed statute tables (PDF pages 37 and 34 respectively). These amounts describe public subscription trades, not total fund capitalization or units outstanding. The 2026-10-07 issued-unit counts and same-date market caps remain open: the TSETMC `GetInstrumentHistory` endpoint returned the same current `zTitad` for a future date, so it is not reliable point-in-time evidence. This checkpoint supersedes the subscription/founder-missing statements below; NAV and dividend caveats remain.

@@ -9,6 +9,13 @@ the primary certificate/physical comparison remains at 223 dates through the
 October 11 physical anchor. See [current status](docs/STATUS.md) for row counts,
 research derivatives, and validation.
 
+## Notebook distribution view (2026-10-13)
+
+The final cells of `notebooks/01_lme_analysis.ipynb` and `notebooks/02_certificate_analysis.ipynb` now read the current empirical-distribution schema and display signed histograms, empirical CDFs, absolute-exceedance charts, and recent observations for the three governed comparisons. The earlier expanding-rank descriptions in those cells are superseded; no source data or production formula changed.
+## Live refresh checkpoint (2026-10-13)
+
+Live collection and the shared production rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); physical raw: 1,178 rows; eligible physical: 802 days through 1405/07/19. Primary comparison: 223 rows; distribution: 1,253 rows. Shared FX reached 1405/07/20. The main comparison remains bounded by observed physical anchors. Additional active research builders completed: intrinsic regression 228 rows/39 anchors, presentation timeline 358 daily rows and 267 events, and forward-gap diagnostic 16 trade dates.
+
 ## Research question
 
 Does the Iranian copper-cathode warehouse receipt trade at a premium or discount to a comparable domestic physical-market value, after accounting for movements in LME cash copper and the free-market USD/IRR exchange rate?
@@ -24,7 +31,7 @@ The active production pipeline combines:
 - LME cash copper prices;
 - the shared free-market USD/IRR series.
 
-The latest production refresh documented 293 certificate rows, including 214 positive-volume observations, and 1,175 physical-market rows. The eligible daily physical benchmark contains 799 observations through 2026-09-20. LME coverage extends through 2026-09-25 and the shared USD/IRR series through 2026-09-26.
+The October 14 source checkpoint records 308 certificate rows, including 229 positive-volume observations, and 1,178 physical-market rows. The eligible daily physical benchmark contains 802 observations through 2026-10-11. LME and shared USD/IRR coverage extend through 2026-10-13. Source coverage is separate from the bounded primary sample below.
 
 Canonical source records remain separate under `data/raw`; processed benchmarks and valuation outputs are reproducible derivatives.
 
@@ -61,15 +68,15 @@ A time-series regression using intrinsic value as its sole feature is retained o
 
 ## Main result
 
-The primary output contains **206 certificate-trading days** from 2025-10-26 through 2026-09-20. Of these, **36** are observed physical anchors and **170** are bounded interpolations between anchors.
+Verified against local output on 2026-10-17, the primary sample contains **223 certificate-trading days** from 2025-10-26 through 2026-10-11. Of these, **39** are observed physical anchors and **184** are bounded interpolations between anchors. This supersedes the 206-day September headline checkpoint.
 
-The estimated certificate premium to domestic physical value averages **5.73%**, with a median of **7.16%**.
+The estimated certificate premium to domestic physical value averages **6.09%**, with a median of **6.96%**. These are unweighted daily descriptive statistics.
 
 The result should be interpreted with care because the physical-anchor sample is small and temporally uneven. The interpolation is intended to preserve the observed domestic basis between anchors, not to claim that an unobserved physical trade actually occurred on each modeled day.
 
 ## Historical distributions
 
-The standardized distribution output keeps signed bubble values and chronological empirical ranks. For each date, the project reports an expanding equal-weight percentile and a recency-weighted percentile using a configurable 90-calendar-day half-life.
+The current standardized distribution output keeps signed bubble values, full-sample empirical percentiles, and absolute-exceedance percentages. The notebooks show histograms, empirical CDFs, and absolute-exceedance panels. Earlier expanding and recency-weighted distribution descriptions are superseded for the current Copper builder.
 
 Observed and interpolated certificate-versus-physical values remain distinguishable through `point_method` and `is_interpolated`. Interpolated series may use later anchors, so these distributions are descriptive historical analyses rather than vintage-safe trading backtests.
 

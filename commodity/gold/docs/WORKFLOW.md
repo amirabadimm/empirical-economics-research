@@ -1,5 +1,22 @@
 # Gold workflow
 
+## Application summary verification — 2026-10-17
+
+`reports/RESEARCH_SUMMARY.md` describes the local five-fund research checkpoint.
+From the workspace root, `python reports/application/verify_claims.py --check`
+checks the pinned files, formulas, fund identities, and counts without collecting
+data or touching PostgreSQL. Update that evidence report and public summaries
+after an intentional rebuild. Keep full-history fund-days, two-year matches,
+source price/NAV dates, and server coverage separate. The October 17 presentation
+review verified 8,253 full-history matched fund-days from existing outputs.
+
+## Trading activity notebook checkpoint (2026-10-17)
+
+Run `python commodity/gold/collect_daily.py` and `python commodity/gold/collect_fipiran_nav.py`, then `python commodity/gold/build_two_years.py --as-of YYYY-MM-DD` and `python commodity/gold/refresh.py --fund <key>` for each configured fund. Run all cells in `notebooks/02_etf_trading_activity.ipynb` from the workspace or gold project tree. It reads canonical TSETMC price CSVs, ranks mean daily `trade_count` over the last common 90 calendar days, and plots the five funds and their five-session trends. Only positive-volume, positive-count sessions enter. The notebook writes no data. These steps succeeded locally on 2026-10-17; the server database was not checked.
+## Live refresh checkpoint (2026-10-13)
+
+Local live collection refreshed the five active ETF price and Fipiran NAV sources, then rebuilt the two-year analysis through 2026-10-12 and all five daily bubble histories. Exact-date NAV matches: Ayar 449/465, Tala 464/465, Kahroba 464/465, Ganj 461/465, Gohar 463/464. Bubble rows: 1,939, 2,183, 1,224, 874, and 2,030 respectively. This is a local research refresh; the separately scheduled server database was not verified in this run.
+
 Live and scheduled daily refresh code is in `db/run_server.py`, with versioned
 `db/gold-*.service` and `db/gold-*.timer` units. Live readings use last price/current
 redemption NAV and compare only with completed daily bubbles: rolling one year,

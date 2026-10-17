@@ -1,5 +1,9 @@
 # Silver workflow
 
+## First source collection (2026-10-13)
+
+First live certificate collection produced 307 rows through 2026-10-12, including 228 traded rows. The full official physical archive was collected and replayed from 235 immutable monthly snapshots. The corrected filter excludes vehicle colors; it found zero silver-bar or silver-shot physical rows. Consequently the strict physical benchmark and certificate/physical diagnostic cannot be built. This is source coverage, not an approved economic valuation. The combined Silver and Warehouse Fees test run passed 6 tests.
+
 1. The certificate wrapper selects only the governed IME silver contract.
 2. The physical wrapper retains a broad silver-related subset of complete IME
    responses. Comparable-product selection occurs only in processing.

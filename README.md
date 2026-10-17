@@ -1,10 +1,5 @@
 # Empirical Economics Research
 
-October 14 update: copper LME, shared FX, and certificate sources include
-October 13; certificate/intrinsic has 229 rows. The primary copper comparison
-remains at 223 rows through its October 11 physical anchor. See the
-[copper project](commodity/copper/README.md) for coverage.
-
 **Mohammad Mahdi Amirabadi**
 Reproducible empirical research on financial, commodity, and macroeconomic markets, with a focus on Iran.
 
@@ -14,13 +9,19 @@ This repository is a research portfolio built around a simple standard: an empir
 
 The repository is intentionally broader than a single paper. The strongest completed and near-completed projects are highlighted below; exploratory and infrastructure-heavy work is kept separate from headline research claims.
 
+Start with the [application portfolio](reports/application/README.md),
+[CV project descriptions](reports/application/CV_PROJECTS.md), and
+[verified evidence checkpoint](reports/application/EVIDENCE.md).
+Public summaries were reconciled on **2026-10-17** against existing local outputs;
+this review is distinct from the source-refresh dates recorded in each project.
+
 ## Featured research
 
 | Project | Research question | Data and method | Selected result / status |
 |---|---|---|---|
-| [Gold ETF NAV premiums](commodity/gold/README.md) | How do liquid Iranian gold ETFs trade relative to same-date redemption NAV, and how unusual is a given premium or discount relative to each fund's own history? | Five ETFs; TSETMC prices; Fipiran redemption NAV; exact-date matching; expanding and recency-weighted empirical distributions | 8,000+ matched daily premium/discount observations in PostgreSQL, with explicit NAV-source reliability checks and a separate disposable intraday monitor |
-| [Copper certificate valuation](commodity/copper/README.md) | Does the copper warehouse receipt trade at a premium or discount to a comparable domestic physical-market value? | IME certificate and physical trades; LME cash copper; USD/IRR; bounded interpolation between observed physical anchors | 206 certificate-trading days; estimated certificate premium to domestic physical value averages **5.73%**, median **7.16%** |
-| [Zinc certificate valuation](commodity/zinc/README.md) | How does the zinc-ingot certificate compare with an eligible domestic physical basket and an LME-FX benchmark? | Grade-filtered physical basket; certificate trades; LME zinc; USD/IRR; bounded interpolation | 206 modeled days; certificate premium to estimated domestic physical value averages **0.80%**, versus an average direct certificate/intrinsic discount of **20.54%** |
+| [Gold ETF NAV premiums](commodity/gold/README.md) | How do liquid Iranian gold ETFs trade relative to same-date redemption NAV, and how unusual is a given premium or discount relative to each fund's own history? | Five ETFs; TSETMC prices; Fipiran redemption NAV; exact-date matching; empirical distributions | **8,253 matched fund-day observations** in local historical outputs; source disagreements and missing NAV remain explicit |
+| [Copper certificate valuation](commodity/copper/README.md) | Does the copper warehouse receipt trade at a premium or discount to a comparable domestic physical-market value? | IME certificate and physical trades; LME cash copper; USD/IRR; bounded interpolation between observed physical anchors | **223 modeled days**, 39 observed anchors; mean estimated domestic premium **6.09%**, median **6.96%** |
+| [Zinc certificate valuation](commodity/zinc/README.md) | How does the zinc-ingot certificate compare with an eligible domestic physical basket and an LME-FX benchmark? | Grade-filtered physical basket; certificate trades; LME zinc; USD/IRR; bounded interpolation | **223 modeled days**, 54 observed anchors; mean domestic premium **1.88%**, versus **20.58%** direct LME-FX discount on the same dates |
 | [Iran cross-asset allocation](asset_allocation/README.md) | How unstable are hindsight-efficient allocations across gold, equities, Tehran housing, and fixed income? | Monthly asset panels; source-audited housing series; long-only portfolio optimization; explicit risk-aversion sensitivity | Historical optimum is strongly regime-dependent; five of ten Stage-I solutions are corner portfolios, so the exercise does not identify a stable all-weather allocation |
 
 ## Research profile
@@ -38,17 +39,17 @@ The work is descriptive and measurement-focused unless a project explicitly stat
 
 ### Copper
 
-The primary copper comparison contains 206 certificate-trading days from 2025-10-26 through 2026-09-20. Thirty-six days have observed comparable physical anchors and 170 are bounded interpolations between anchors. The estimated certificate premium to domestic physical value averages **5.73%** with a median of **7.16%**. Interpretation is limited by the small and uneven physical-anchor sample.
+The primary copper comparison contains 223 certificate-trading days from 2025-10-26 through 2026-10-11. Thirty-nine days have observed comparable physical anchors and 184 are bounded interpolations between anchors. The estimated certificate premium to domestic physical value averages **6.09%** with a median of **6.96%**. Interpretation is limited by the small and uneven physical-anchor sample.
 
 ### Zinc
 
-The primary zinc output contains 206 modeled certificate days, including 50 observed anchors and 156 bounded interpolations. The certificate premium to estimated domestic physical value averages **0.80%**, while the direct certificate-to-LME-FX comparison averages a **20.54% discount**. The difference illustrates the economic importance of the domestic physical-market basis.
+The primary zinc output contains 223 modeled certificate days from 2025-10-26 through 2026-10-11, including 54 observed anchors and 169 bounded interpolations. The certificate premium to estimated domestic physical value averages **1.88%**, while the direct certificate-to-LME-FX comparison averages a **20.58% discount on those same 223 dates**. The difference illustrates the economic importance of the domestic physical-market basis. These October statistics supersede the former 206-day September headline samples.
 
 ### Cross-asset allocation
 
 The historical pilot compares 18-karat gold, TEDPIX, Tehran residential housing, and the Etemad fixed-income ETF. The identity of the hindsight-efficient risky asset changes sharply across regimes: gold dominates five periods, housing four, and equity one. Five of ten Stage-I solutions place the entire risky sleeve in a single asset. The result is intentionally framed as an ex-post diagnostic, not a forecast or portfolio recommendation.
 
-The real estate fund source archive retains eight histories. The active [four-fund notebook](asset_allocation/notebooks/iran_reits_cross_asset_analysis.ipynb) compares Arzesh Maskan, Kelid, Danik, and Kakh with TEDPIX, USD/IRR, and a separate monthly Tehran housing proxy. It builds custom cash-reinvested REIT returns from traded closes and shows six Plotly correlation heatmaps: TEDPIX daily/weekly/monthly, housing monthly, USD/IRR daily, and weekly REIT returns versus dollar returns 4/13/26 completed weeks earlier. Windows and observed pair counts are explicit; at least five pairs and 70% coverage are required. Kakh is excluded from the cumulative comparison but retained in qualifying daily and weekly correlation cells. Housing has no genuine daily or weekly return series, so none is imputed. A separate two-lag predictive regression remains in the notebook. Dividend completeness and actual cash dates remain under audit; these results are not certified total returns or a forward-looking allocation. The [LaTeX research report](asset_allocation/reports/REIT_CROSS_ASSET_ANALYSIS.tex) contains all tables and data-grounded conclusions.
+The separate REIT extension covers eight funds through 2026-10-07 and models 13 identified dividend events. Its [current scenario report](asset_allocation/reports/REIT_EIGHT_FUND_REINVESTMENT.md) distinguishes raw-price returns, cash holding, and hypothetical reinvestment. Dividend histories remain incomplete, and some event dates are provisional. Earlier four-fund notebook and LaTeX performance narratives are superseded for current dividend results. Use the [current research summary](asset_allocation/reports/CURRENT_RESEARCH_SUMMARY.md) for the application-facing scope; expert-survey allocation remains planned.
 
 ### Gold ETFs
 

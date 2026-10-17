@@ -1,5 +1,31 @@
 # Workflow
 
+## Application handoff — 2026-10-17
+
+Use `reports/CURRENT_RESEARCH_SUMMARY.md` to present the historical pilot and
+current eight-fund scenario separately. The active dividend ledger is
+`config/reit_dividend_events.csv`; the older four-fund sequence below is retained
+as superseded history and must not be used to recreate current dividend claims.
+Read-only application checks run from the workspace root with
+`python reports/application/verify_claims.py --check`. This verifies current
+panel coverage and the eight-fund summary, not a new optimization or dividend audit.
+The eight-fund figure builder's label quoting was corrected for Python 3.11;
+no return formula or data output changed.
+
+## Presentation data handoff workflow - 2026-10-10
+
+After rebuilding the eight-fund dividend model, weekly/monthly returns, benchmark correlations, and requested heatmaps, run `python -m asset_allocation.collect_reit_instrument_info` and then `python -m asset_allocation.build_reit_data_handoff` with `PYTHONPATH=src`. It validates all raw fund dates against immutable TSETMC history snapshots and uses `qTotCap` for actual daily trading value. It writes only four files under `data/processed/analysis`: profiles, daily series, correlations workbook, and dividends. The 40-day period starting 2026-02-28 ends 2026-04-08 inclusive; the post-war cutoff is 2026-04-09. The official-source collector archives immutable, content-addressed TSETMC instrument responses and FIPIRAN fundcompare responses under `data/raw/real_estate_funds`, validates the eight-fund roster and agreement of unit counts, and writes `data/processed/analysis/reit_tsetmc_instrument_info.csv`. FIPIRAN total NAV and its reporting date populate the profile. TSETMC units are dated 2026-10-10; the profile computes an explicitly indicative cap with the 2026-10-07 close but leaves same-date market cap and units blank. Founder and subscription facts remain blank. Do not infer market cap from trading volume or NAV from traded prices.
+
+
+## Active eight-fund dividend workflow - 2026-10-10
+
+Keep `config/reit_dividend_events.csv` as the model input. It contains Jalali event dates, evidence status, and Malek Atiyeh's supplementary eligibility reference. From `asset_allocation` with `PYTHONPATH=src`, run `python -m asset_allocation.build_reit_assembly_reinvestment`, `python -m asset_allocation.build_reit_eight_fund_review`, and `python -m asset_allocation.build_reit_dividend_audit_report`. Then run the existing two-year, reinvested-correlation, predictive, and requested-heatmap builders. Use raw traded closes; adjusted prices remain a separate reference. Do not combine historical payment-date or three-event ledgers with the new ledger. The old notebook and LaTeX builders need narrative and layout revision before republishing.
+
+## REIT roster check - 2026-10-10
+
+Use TSETMC instrument search with Persian and Arabic spellings of real estate and the term for real estate holdings, deduplicate by instrument code, and compare with `data/raw/real_estate_funds/instruments.csv`. The October 10 check found eight matching listed funds; the collector rerun added no complete observations.
+
+
 ## REIT refresh checkpoint — 2026-10-10
 
 From `asset_allocation` with `PYTHONPATH=src`, run the documented `collectors.tsetmc_reits`, `collectors.tsetmc_tedpix`, and `collectors.kilid_housing` modules, and run `shared.market_data.fx` from the workspace root. Validate canonical coverage before rebuilding the project modules listed in the active REIT sequence below. The weekly anchor is the latest *completed* Friday that contains a source observation: a Wednesday TSETMC close belongs to the Friday of that same week once Friday has elapsed. Rebuild all weekly derivatives, the active notebook, and all English/Persian reports after a new completed week. The management brief has a checked editorial narrative and requires revision when headline inputs change. The Codal allocation workbook remains an unchanged 1405/06 snapshot; a market refresh does not extend its coverage.
@@ -240,7 +266,11 @@ optimization objective and constraints. Publish the resulting portfolio only aft
 analysis, risk specification, and reproducible model run are complete. The final output must clearly
 separate expert expectations, historical risk estimates, and optimizer decisions.
 
-## Real estate funds: current four-fund workflow
+## Real estate funds: historical four-fund workflow (superseded)
+
+This section describes the earlier ledger and presentation. Follow the active
+eight-fund workflow above for current calculations; older narrative builders
+still require revision before being republished as current results.
 
 The active English-language notebook is `notebooks/iran_reits_cross_asset_analysis.ipynb`. It covers Kelid, Danik, Arzesh Maskan, and Kakh. Eight funds remain in the immutable TSETMC source archive, but the active notebook displays only these four. If source prices or TEDPIX need refreshing, first run the documented incremental collectors `asset_allocation.collectors.tsetmc_reits` and `asset_allocation.collectors.tsetmc_tedpix`; validate the resulting raw coverage before rebuilding derivatives. Do not use exchange-adjusted fund prices for the current returns.
 
@@ -302,3 +332,4 @@ and Stage II diagnostics and any future investable, out-of-sample allocation ana
 The current notebook is the historical pilot. The future expert-informed model must be implemented
 as a separate, reproducible stage so that its assumptions and outputs cannot be confused with the
 ex-post results.
+For the eight REIT founding facts, first run `python -m asset_allocation.collect_reit_subscription_notices` from `asset_allocation` with `PYTHONPATH=src`. It archives TSETMC supervisor-message responses in content-addressed immutable files under `data/raw/real_estate_funds/subscription_notice_snapshots`. Then `python -m asset_allocation.build_reit_data_handoff` validates the explicit subscription session windows against immutable TSETMC `qTotCap` and 10,000-IRR traded-unit counts, writes `data/processed/analysis/reit_subscription_facts.csv`, and incorporates dates, public proceeds, and founder/sponsor descriptions into the profiles. Danik and Kashaneh legal founder lists come from their signed statute tables, archived by `python -m asset_allocation.collect_reit_founder_statutes` (PDF pages 37 and 34). Do not equate public subscription proceeds with fund size. Exact 2026-10-07 issued units and market caps stay blank until a genuine point-in-time source is found; `GetInstrumentHistory` repeats current `zTitad` even for future dates.

@@ -1,5 +1,16 @@
 # Workflow — IME warehouse and assessment fees
 
+## Isolated validation — 2026-10-17
+
+The panel test copies the two audited interim inputs into a temporary project
+directory and builds its historical test window there. It never writes the actual
+`data/processed/warehouse_fees_daily.csv`. Both local-data tests skip explicitly
+when the unversioned inputs are unavailable. This fixes a test side effect without
+changing fee formulas or refreshing sources.
+## Live refresh checkpoint (2026-10-13)
+
+The current official fee table was collected (12 assets), and the Wayback inventory contains 110 unique page records. The daily panel rebuilt to 32,794 rows for 21 commodities through 2026-10-13. Historical tariff boundaries retain their documented quality flags; the archive inventory is evidence, not a newly audited tariff event.
+
 ## Data flow
 
 1. `collect_current.py` downloads the current official IME table, writes a

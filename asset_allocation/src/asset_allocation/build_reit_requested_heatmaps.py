@@ -18,7 +18,8 @@ from asset_allocation.analyze_reit_housing_monthly import HOUSING
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "data/processed/analysis/reit_requested_correlation_heatmaps.csv"
-FUNDS = ("Arzesh Maskan", "Kelid", "Danik", "Kakh")
+from asset_allocation.build_reit_assembly_reinvestment import FUNDS as FUND_CODES
+FUNDS = tuple(FUND_CODES.values())
 WINDOWS = {"daily": (1, 3, 6, 12), "weekly": (1, 3, 6, 12, 24),
            "monthly": (12, 24, 36)}
 USD_LAGS = {1: 4, 3: 13, 6: 26}  # Completed Friday-ending weeks.

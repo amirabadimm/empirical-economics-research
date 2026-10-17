@@ -1,4 +1,7 @@
 # Iron-Ore Pellet Certificate Research
+## Live refresh checkpoint (2026-10-13)
+
+Live certificate and physical collection and the shared diagnostic rebuild completed. Certificate raw: 307 rows through 2026-10-12 (228 traded); physical raw: 3,676 rows. Exact-date comparison and distribution: 26 rows. Economic comparability remains provisional.
 
 ## Shared execution checkpoint (2026-09-22)
 

@@ -1,8 +1,8 @@
 # Zinc Research Report
 
-For the current visitor-facing research summary, see [`REPORT.md`](REPORT.md). It contains the current September production result and renders the three valuation figures directly on GitHub.
+For the current visitor-facing research summary, see [`REPORT.md`](REPORT.md). It contains the October output checkpoint, reviewed on 2026-10-17, and renders the regenerated three valuation figures directly on GitHub.
 
-The LaTeX file `zinc_research_report.tex` is retained as an **earlier report vintage**. Its numerical checkpoint predates the current September production refresh, so it should not be used for current headline values. `REPORT.md` and the Zinc project README are the authoritative public summaries.
+The LaTeX file `zinc_research_report.tex` is retained as an **earlier report vintage**. Its numerical checkpoint predates the October outputs, so it should not be used for current headline values. `REPORT.md` and the Zinc project README are the authoritative public summaries.
 
 - Current Markdown report: `REPORT.md`
 - Earlier LaTeX report source: `zinc_research_report.tex`

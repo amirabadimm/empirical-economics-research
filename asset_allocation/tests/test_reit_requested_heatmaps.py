@@ -31,6 +31,6 @@ def test_five_pairs_alone_do_not_claim_twelve_month_coverage():
     result = pd.DataFrame(correlation_rows(reits, housing, name="Tehran housing",
                                            frequency="monthly", anchor=date(2026, 10, 2),
                                            windows=(12,)))
-    assert result.paired_observations.eq(6).all()
+    assert result.loc[result.fund.isin(reits.fund.unique()), "paired_observations"].eq(6).all()
     assert result.minimum_pairs.eq(9).all()
     assert result.correlation.isna().all()
