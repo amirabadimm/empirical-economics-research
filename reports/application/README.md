@@ -2,6 +2,12 @@
 
 **Mohammad Mahdi Amirabadi** · Application checkpoint: **2026-10-17**
 
+**Final portfolio edition: 2026-10-25.** This is a closed research notebook for
+CV and application use. The original evidence checkpoint and October 18 copper
+maintenance dates remain distinct from the closure date. Unfinished research is
+preserved at its documented stage. [Housing research](https://github.com/amirabadimm/iran-housing-data)
+continues separately when work resumes.
+
 My research examines how asset prices in Iran relate to underlying value,
 international benchmarks, and domestic market conditions. The projects combine
 economic measurement with reproducible data construction, emphasizing source

@@ -3,17 +3,28 @@
 **Mohammad Mahdi Amirabadi**
 Reproducible empirical research on financial, commodity, and macroeconomic markets, with a focus on Iran.
 
+**Closed research notebook — 25 October 2026.** This portfolio preserves the
+research, code, and documented findings delivered at closure. Active development
+and routine data refreshes in this repository have ended. Exploratory studies and
+unfinished extensions retain their recorded limitations; closure does not turn
+them into completed results. Earlier project status and workflow entries are
+historical checkpoints. The separate [Iran Housing Data Research Platform](https://github.com/amirabadimm/iran-housing-data)
+remains open for future work.
+
 [![CI](https://github.com/amirabadimm/empirical-economics-research/actions/workflows/ci.yml/badge.svg)](https://github.com/amirabadimm/empirical-economics-research/actions/workflows/ci.yml)
 
 This repository is a research portfolio built around a simple standard: an empirical result should be traceable to its source data, economically interpretable, reproducible from code, and explicit about measurement limits. The projects combine market data engineering with applied economic analysis in price formation, asset pricing, market integration, portfolio choice, and derivatives.
 
-The repository is intentionally broader than a single paper. The strongest completed and near-completed projects are highlighted below; exploratory and infrastructure-heavy work is kept separate from headline research claims.
+The repository is intentionally broader than a single paper. The principal delivered research components are highlighted below; exploratory and infrastructure-heavy work is kept separate from headline research claims.
 
 Start with the [application portfolio](reports/application/README.md),
 [CV project descriptions](reports/application/CV_PROJECTS.md), and
 [verified evidence checkpoint](reports/application/EVIDENCE.md).
 Public summaries were reconciled on **2026-10-17** against existing local outputs;
 this review is distinct from the source-refresh dates recorded in each project.
+Copper was subsequently refreshed and validated on **2026-10-18**: certificates
+and shared FX reach October 17, LME reaches October 16, and the bounded primary
+sample below remains unchanged because the latest physical anchor is October 11.
 
 ## Featured research
 
@@ -60,7 +71,7 @@ The gold project separates source reliability, daily research history, and live 
 | Project | Scope | Status |
 |---|---|---|
 | [Ahrom options](options/README.md) | Contract discovery and historical daily option-data pipeline for the Ahrom ETF | Dataset/infrastructure project: 996 contracts and 8,903 historical rows in the initial build |
-| [Economic USD/IRR](economic_usd/README.md) | Iranian liquidity, free-market USD, Iranian CPI, and U.S. CPI preparation for PPP and liquidity-based valuation | Work in progress; data preparation implemented, valuation intentionally not yet claimed |
+| [Economic USD/IRR](economic_usd/README.md) | Iranian liquidity, free-market USD, Iranian CPI, and U.S. CPI preparation for PPP and liquidity-based valuation | Closed at data-preparation stage; valuation not delivered |
 | [National Copper — Codal](codal/national_copper/README.md) | Issuer financial-statement reconstruction from cumulative disclosures | 75 valid quarters and 18 complete years |
 | [Pistachio certificates](goods/pista/README.md) | IME certificate history and weekly physical-price audit | Exploratory; proxy and unit matching remain limitations |
 | [Iran Energy Exchange](energy_exchange/README.md) | Market and regulatory mapping plus certificate-market feasibility analysis | Closed research project; intended empirical design rejected because trading activity was too sparse and concentrated |

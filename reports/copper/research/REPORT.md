@@ -2,9 +2,10 @@
 
 **Mohammad Mahdi Amirabadi**
 
-Reviewed 2026-10-17 against existing local outputs; source refresh 2026-10-14.
-The primary sample ends at the 2026-10-11 physical anchor. Figures were regenerated
-for this review. This checkpoint supersedes the September 206-day headline result.
+Sources refreshed and outputs rebuilt/validated on 2026-10-18. Certificates and
+shared FX reach October 17; LME reaches October 16. The primary sample still ends
+at the 2026-10-11 physical anchor. Figures were regenerated. This checkpoint
+supersedes the October 14 source counts and September 206-day headline result.
 
 This report summarizes the current empirical result for the Iranian copper-cathode warehouse receipt. It is the visitor-facing research report; implementation checkpoints and source-refresh history remain in the project documentation.
 
@@ -52,8 +53,9 @@ The project retains two separate supporting measures rather than folding them in
 This comparison asks how the certificate trades relative to the international copper price translated at the free-market exchange rate. It is useful context, but it is not treated as a substitute for a domestic physical-market comparable.
 
 On the primary sample's same 223 dates, the mean direct discount is **10.35%**.
-The supporting chart uses the full 229-date direct sample through 2026-10-13,
-whose mean discount is 10.32%; its window differs from the primary chart.
+The supporting chart uses the full 232-date direct sample through 2026-10-17,
+whose mean discount is 10.28%; its window differs from the primary chart.
+The latest direct discount is 7.52%, using October 16 LME and October 17 FX.
 
 ### Domestic physical copper versus LME–FX intrinsic value
 

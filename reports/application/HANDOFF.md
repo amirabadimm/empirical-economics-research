@@ -1,5 +1,39 @@
 # Project closeout and handoff
 
+## Final closure — 2026-10-25
+
+The owner has ended active work in this repository and preserved it as a closed
+research notebook for CV and application use. The portfolio, CV descriptions,
+evidence checkpoint, and project inventory are the entry points for readers.
+The stages in the inventory below record what was delivered at closure; references
+to ongoing maintenance or planned extensions describe prior intentions. Unfinished
+work remains unfinished and is not an active commitment of this repository.
+
+The separate [Housing repository](https://github.com/amirabadimm/iran-housing-data)
+remains open for future development. Its continuation checkpoint is maintained
+there. Closing this notebook does not stop or transfer deployed services, and
+does not create a backup of ignored source data, secrets, or local environments.
+Those operational boundaries and the data-availability policy remain applicable.
+
+Closure validation on October 25: the root suite passed **86 tests and 233
+subtests**; the Pista and two allocation collector suites used by CI passed
+**10 tests**. Ruff, changed Python files' 3.11 syntax, changed-document local
+links, notebook source preservation, and the evidence fingerprint verifier passed.
+Saved copper notebook outputs were cleared without changing any cell source.
+The final 18-file reader packet passed its manifest, link, and ZIP checks.
+Tests used the existing local Python 3.14 research environment with isolated
+temporary directories; allocation collector imports used `asset_allocation/src`.
+This is local validation, not a new full notebook run or a remote CI result.
+
+## Subsequent copper maintenance — 2026-10-18
+
+Copper sources and production/research outputs were refreshed, both notebooks
+executed in memory, and 23 targeted tests passed. Certificate/intrinsic now has
+232 dates through October 17; the 223-date primary sample and its headline
+statistics remain unchanged through October 11. Figures and evidence fingerprints
+were updated. The October 17 portfolio review below remains a dated checkpoint;
+this maintenance does not re-audit other projects or change their research scope.
+
 Review date: **2026-10-17**. This review reconciles presentation and validates local
 code/output claims. It does not refresh market sources, transfer an employer's
 systems, or change the existing research stages listed below.
@@ -13,7 +47,7 @@ snapshot; continued market collection is maintenance rather than a condition
 for describing the completed work.
 
 Copper and zinc use the October 11 bounded primary sample. Their source-refresh
-dates are October 14 and October 13, respectively. Gold's local sources were
+dates are October 18 and October 13, respectively. Gold's local sources were
 refreshed October 17, with prices through October 14 and NAV/matched coverage
 varying by fund. Allocation source and model checkpoints differ; its panel ends
 at 1405/06 and REIT closes at October 7. Verification dates must not be substituted

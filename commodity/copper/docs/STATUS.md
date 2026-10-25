@@ -1,5 +1,52 @@
 # Copper Project Status
 
+## Current source refresh and validation — 2026-10-18
+
+Repeat live check started at 16:03 Asia/Tehran (12:33 UTC): all four collectors
+completed with unchanged source coverage and row counts. The current-month full
+IME response contained 3,773 market rows versus 3,707 in the earlier run, but
+still only three rows in the configured copper scope. The new response was
+archived by the shared collector; older evidence was preserved. Production,
+regression, timelines, forward-gap diagnostics and figures were rebuilt again.
+All 23 targeted tests passed, and `verify_claims.py --check` confirmed unchanged
+derived fingerprints and statistics. Notebook execution below refers to the
+earlier October 18 run; notebooks were not rerun for this unchanged checkpoint.
+
+This checkpoint supersedes earlier source/output counts below. The documented
+collectors completed using direct network access after the configured local proxy
+failed. No collection logic, eligibility rules, units, or valuation formulas changed.
+
+| Source | Rows | Latest observation |
+|---|---:|---|
+| Certificate raw | 311 (232 positive-volume dates) | 2026-10-17 |
+| Physical raw | 1,178 | 1405/07/19 (2026-10-11) |
+| LME copper | 4,753 | 2026-10-16 |
+| Shared USD/IRR | 13,121 | 1405/07/25 (2026-10-17) |
+
+The physical collector refreshed 1405/05–1405/07 and returned no newer eligible
+NCI cash trade. Source coverage is distinct from derived coverage:
+
+- Eligible physical benchmark and physical/intrinsic: 802 dates through October 11.
+- Primary certificate/physical and Power BI delivery: 223 dates through October 11,
+  comprising 39 observed anchors and 184 bounded interpolations. Mean premium
+  6.09%, median 6.96%; latest observed premium 24.80% on October 11.
+- Certificate/intrinsic: 232 dates through October 17; mean discount 10.28%,
+  latest discount 7.52%. The latest quote uses October 16 LME and October 17 FX.
+- Distribution: 1,257 rows across the three approved comparisons.
+- Intrinsic regression: 232 dates, 39 anchors; selected model `linear_with_intercept`.
+- Presentation timeline: 363 daily rows, 271 events, 39 overlaps.
+- Historical forward-gap diagnostic: 16 dates; scope unchanged.
+
+All production and research builders and the report figure builder completed.
+All 23 targeted copper/pipeline/FX/snapshot tests passed using a writable workspace
+temporary directory. Earlier restricted-shell attempts failed on filesystem
+permissions; the successful run resolved those environment failures. Both active
+notebooks executed in memory (18 and 29 code cells); raw CSV hashes were unchanged.
+Display rendering was suppressed during notebook execution; saved notebook files
+were not rewritten. Validation log: `logs/notebook_validation_20261018.txt`.
+Report figures and the application evidence checkpoint were reconciled separately.
+Global/COCHILCO research remains cancelled; its source evidence is frozen.
+
 ## Application review — 2026-10-17
 
 Existing primary output verified: 223 dates, 2025-10-26–2026-10-11; 39 observed

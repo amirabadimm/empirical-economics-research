@@ -1,5 +1,28 @@
 # Workspace Workflow
 
+## Closed notebook workflow — 2026-10-25
+
+This repository is preserved as a research portfolio. The collection and deployment
+commands below document historical operation; they are not a schedule for further
+maintenance. To inspect the final portfolio, start with
+[the application overview](../reports/application/README.md), verify available
+local evidence with `python reports/application/verify_claims.py --check`, and
+build the reader packet with `python reports/application/build_packet.py`.
+Market-source collection is unnecessary for reviewing the preserved results.
+Reproduction requiring unversioned inputs follows the existing data policy.
+Any future continuation should explicitly identify its new scope and checkpoint.
+
+## Copper maintenance refresh — 2026-10-18
+
+Run `python commodity/copper/refresh_powerbi.py --collect` for the four active
+sources and production outputs, then the explicit research builders and figure
+builder listed in [Copper workflow](../commodity/copper/docs/WORKFLOW.md).
+This run completed with direct network access after an unavailable machine proxy.
+Reconcile report coverage and application evidence even when the primary sample
+does not grow: the direct certificate/intrinsic series now ends October 17 while
+the physical anchor still ends October 11. Shared FX freshness does not imply
+that other consumers have been rebuilt.
+
 ## Application snapshot maintenance — 2026-10-17
 
 Start with `reports/application/README.md` and `HANDOFF.md`. Run

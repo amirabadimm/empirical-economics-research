@@ -1,5 +1,16 @@
 # Shared Market Data
 
+## Latest FX refresh — 2026-10-18
+
+A repeat live check starting at 16:03 Asia/Tehran returned zero new dates and
+zero revised closes; coverage and the row count below remain unchanged.
+
+The copper maintenance run added three TGJU dates. The canonical USD/IRR CSV now
+contains 13,121 rows through 1405/07/25 (2026-10-17); no visible existing close
+was revised. This supersedes the earlier coverage checkpoints below. Copper's
+dependent outputs were rebuilt; this does not establish freshness for other
+consumers such as Zinc or Asset Allocation. FX and IME snapshot tests passed.
+
 Cross-commodity external inputs have one workspace owner here. Commodity projects consume these
 inputs directly and must not maintain local copies.
 

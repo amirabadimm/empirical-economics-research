@@ -1,5 +1,38 @@
 # Copper Warehouse-Receipt Certificate: Research Workflow
 
+## Current execution checkpoint — 2026-10-18
+
+The same collection/build sequence was repeated starting at 16:03 Asia/Tehran
+on October 18. All collectors completed without extending copper coverage.
+Research builders and figures were regenerated; 23 targeted tests and the
+application evidence check passed. No evidence rewrite was necessary because
+the pinned derived outputs were unchanged.
+
+Ran `.venv/Scripts/python.exe commodity/copper/refresh_powerbi.py --collect`,
+then the explicit `build_intrinsic_regression.py`, `build_presentation_timeline.py`,
+and `build_forward_gap_analysis.py` research builders and
+`reports/copper/research/build_figures.py`. Direct network access resolved the
+unavailable machine proxy; no persistent proxy configuration was changed.
+
+Source coverage is now certificate/FX through October 17, LME through October 16,
+and physical through October 11. Production contains 223 primary, 802 physical/
+intrinsic, 232 certificate/intrinsic and 1,257 distribution rows. Research contains
+232 regression rows, 363 timeline days, 271 events and 16 forward-gap dates.
+These counts supersede the historical checkpoints below. The primary model stays
+bounded by observed physical anchors, with no extrapolation.
+
+Validation from the workspace root:
+
+```powershell
+python -m pytest -q commodity/copper/tests shared/tests/test_certificate_pipeline.py shared/tests/test_fx.py shared/tests/test_ime_snapshot_ownership.py -p no:cacheprovider
+```
+
+All 23 tests passed with TEMP/TMP pointing to
+`commodity/copper/logs/validation_tmp`. The two active notebooks passed all 47 code
+cells in memory with display suppressed and raw CSV hashes checked before/after.
+Report summaries and application evidence fingerprints must be reconciled after
+a refresh, as described below.
+
 ## Application checkpoint verification — 2026-10-17
 
 After any output refresh, run `python reports/application/verify_claims.py` from

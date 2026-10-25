@@ -65,7 +65,7 @@ def build() -> Path:
         })
     payloads["START_HERE.md"] = (
         "# Economics application reader packet\n\n"
-        "Mohammad Mahdi Amirabadi · Research checkpoint: 2026-10-17\n\n"
+        "Mohammad Mahdi Amirabadi · Closed portfolio edition: 2026-10-25\n\n"
         "Start with [the portfolio](PORTFOLIO.md) and [CV project descriptions](CV_PROJECTS.md).\n"
         "The research folder contains copper, zinc, gold, and allocation summaries.\n"
         "[Evidence](EVIDENCE.md) documents the numerical claims.\n\n"
@@ -75,8 +75,8 @@ def build() -> Path:
         "This is a reader packet of original summaries and selected figures, not a full\n"
         "research environment or data release. References marked 'repository file'\n"
         "require the accompanying repository checkout. No raw or processed datasets\n"
-        "are included. The materials describe the local reviewed working state; a\n"
-        "public Git release and remote server state were not verified.\n\n"
+        "are included. The materials preserve the final documented research scope;\n"
+        "remote services and source-data backups are outside this packet.\n\n"
         "MANIFEST.json fingerprints the source documents and packaged copies.\n"
     ).encode("utf-8")
     payloads["MANIFEST.json"] = (json.dumps(manifest, indent=2) + "\n").encode("utf-8")
@@ -88,12 +88,12 @@ def build() -> Path:
                 continue
             resolved = posixpath.normpath(posixpath.join(posixpath.dirname(name), target.split("#")[0]))
             require(resolved in payloads, f"Broken packet link: {name} -> {target}")
-    output = Path(__file__).parent / "outputs" / "economics_application_2026-10-17.zip"
+    output = Path(__file__).parent / "outputs" / "economics_application_2026-10-25.zip"
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary = output.with_suffix(".zip.tmp")
     with ZipFile(temporary, "w", compression=ZIP_DEFLATED) as archive:
         for name, content in sorted(payloads.items()):
-            info = ZipInfo(name, date_time=(2026, 10, 17, 0, 0, 0))
+            info = ZipInfo(name, date_time=(2026, 10, 25, 0, 0, 0))
             info.compress_type = ZIP_DEFLATED
             archive.writestr(info, content)
     with ZipFile(temporary) as archive:

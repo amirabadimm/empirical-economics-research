@@ -1,5 +1,41 @@
 # Research Status
 
+## Portfolio closure — 2026-10-25
+
+The owner has closed this repository as a research notebook and CV portfolio.
+Routine development and source refreshes have ended. The project inventory and
+unresolved research boundaries in [the handoff](../reports/application/HANDOFF.md)
+define the scope preserved at closure. Entries below retain their original dates
+and describe historical stages, not a continuing work queue. Planned valuation,
+survey, and exploratory extensions remain undelivered.
+
+This closure date is not a new market-data observation or collection date. Copper's
+latest documented source check remains October 18; other projects retain their
+own coverage checkpoints. The separate Housing repository remains open for later
+research. Closure here does not stop or verify any externally deployed service.
+
+Closure checks: 86 root tests and 233 subtests passed; 10 Pista/allocation collector
+tests passed. Ruff, evidence fingerprints, changed-document links, and the final
+reader packet checks passed locally. See the handoff for environment and scope.
+
+## Copper maintenance refresh — 2026-10-18
+
+Repeated live collection starting at 16:03 Asia/Tehran returned no newer copper
+observations. Production/research builders and figures completed again; all 23
+targeted tests and the application evidence fingerprint check passed. Coverage
+below remains current for that check.
+
+Copper's active sources and production/research outputs were refreshed. Certificate
+raw has 311 rows (232 traded) through October 17; LME has 4,753 rows through
+October 16; shared USD/IRR has 13,121 rows through October 17. Physical raw remains
+1,178 rows and the eligible benchmark 802 days through October 11. The bounded
+primary comparison remains 223 dates/39 observed anchors; direct certificate/
+intrinsic now has 232 dates and the distribution 1,257 rows. Regression, timelines,
+forward-gap diagnostics, Power BI delivery and report figures were rebuilt.
+All 23 targeted tests and 47 notebook code cells passed. See
+[copper status](../commodity/copper/docs/STATUS.md) for coverage and validation.
+This supersedes older copper/shared-FX counts below; other projects were not rebuilt.
+
 ## Application portfolio checkpoint — 2026-10-17
 
 Prepared [application materials](../reports/application/README.md), CV project

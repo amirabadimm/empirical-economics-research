@@ -1,5 +1,9 @@
 # CV-ready research project descriptions
 
+Final portfolio edition: **2026-10-25**. Portfolio link:
+[Empirical Economics Research](https://github.com/amirabadimm/empirical-economics-research).
+This repository is a closed research notebook; Housing is a separate ongoing project.
+
 Evidence checkpoint: 2026-10-17. These entries describe projects, not an employment
 title, publication, or degree. Add actual project dates and institutional affiliation
 in the CV; those biographical details are not inferred from repository activity.

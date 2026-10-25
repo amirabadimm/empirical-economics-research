@@ -1,6 +1,7 @@
 # Application evidence checkpoint
 
 Prepared for the 2026-10-17 portfolio review from existing local outputs.
+Copper maintenance reconciled 2026-10-18; its primary sample is unchanged.
 This is a file and formula verification, not a source refresh, independent
 source audit, server check, or new execution of the allocation notebook.
 
@@ -14,7 +15,7 @@ The direct international comparison below uses exactly the primary sample dates.
 | Copper | 2025-10-26–2026-10-11 | 223 | 39 | 184 | 6.09% | 6.96% | -10.35% |
 | Zinc | 2025-10-26–2026-10-11 | 223 | 54 | 169 | 1.88% | 2.73% | -20.58% |
 
-- Copper: direct certificate/intrinsic output has 229 rows through 2026-10-13 (full-sample mean -10.32%); physical/intrinsic output has 802 rows through 2026-10-11.
+- Copper: direct certificate/intrinsic output has 232 rows through 2026-10-17 (full-sample mean -10.28%); physical/intrinsic output has 802 rows through 2026-10-11.
 - Zinc: direct certificate/intrinsic output has 228 rows through 2026-10-12 (full-sample mean -20.43%); physical/intrinsic output has 567 rows through 2026-10-11.
 
 Interpolated observations may use later physical anchors. These are descriptive
@@ -53,7 +54,7 @@ Raw third-party datasets are not included in the application package.
 | Local input (relative to repository root) | SHA-256 |
 |---|---|
 | `commodity/copper/data/processed/bubble/copper_certificate_bubble.csv` | `94ce3b02490a0eeeca6814c6ba39a3867de062be62cb2fd30c6c52596f9aff8e` |
-| `commodity/copper/data/processed/bubble/certificate_vs_intrinsic_bubble.csv` | `f0887bef7798eff3f71f86e08dc301bd0a7b6b135bf826b7dee328fae6b43823` |
+| `commodity/copper/data/processed/bubble/certificate_vs_intrinsic_bubble.csv` | `d26e4b996e28068a1585cc7ebb7206e5098d51a4c40a52e22a73913b1abfaca4` |
 | `commodity/copper/data/processed/bubble/physical_vs_intrinsic_bubble.csv` | `d4692c14c91f79b6b45cef8426cdd5088c5610d9b056c2229f62481236f92eb0` |
 | `commodity/zinc/data/processed/bubble/zinc_certificate_bubble.csv` | `806cb0ac53abeb4349ab2eb47c6e27031b17fcf325863019821aab291579fbca` |
 | `commodity/zinc/data/processed/bubble/certificate_vs_intrinsic_bubble.csv` | `1ef86c93096d19d534e8ec94556ae564acceb0a98662ce1b44a1c384ddccf529` |

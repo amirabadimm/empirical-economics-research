@@ -1,5 +1,22 @@
 # Copper Certificate Valuation
 
+## Current refresh — 2026-10-18
+
+Live sources were checked again at 16:03 Asia/Tehran on October 18. All four
+collectors completed; no newer copper observations were returned. Production,
+research outputs and figures were rebuilt again; 23 targeted tests and the
+application evidence check passed. Coverage and statistics below are unchanged.
+
+All four active collectors and the production/research builders completed. Certificate
+raw now has 311 rows (232 traded dates) through October 17; LME has 4,753 rows
+through October 16; shared USD/IRR has 13,121 rows through October 17. Physical raw
+remains at 1,178 rows and the eligible benchmark at 802 dates through October 11.
+The primary comparison therefore remains at 223 dates and 39 observed anchors;
+certificate/intrinsic now has 232 dates. Regression, timelines, distributions,
+Power BI delivery and report figures were rebuilt. All 23 targeted tests and all
+47 code cells across the two active notebooks passed. This checkpoint supersedes
+the source/output counts below; see [status](docs/STATUS.md) for details.
+
 ## October 13 data update (2026-10-14)
 
 The live collectors added the October 13 LME, shared USD/IRR, and traded
@@ -31,7 +48,7 @@ The active production pipeline combines:
 - LME cash copper prices;
 - the shared free-market USD/IRR series.
 
-The October 14 source checkpoint records 308 certificate rows, including 229 positive-volume observations, and 1,178 physical-market rows. The eligible daily physical benchmark contains 802 observations through 2026-10-11. LME and shared USD/IRR coverage extend through 2026-10-13. Source coverage is separate from the bounded primary sample below.
+The October 18 source checkpoint records 311 certificate rows, including 232 positive-volume observations, and 1,178 physical-market rows. The eligible daily physical benchmark contains 802 observations through 2026-10-11. LME coverage extends through 2026-10-16 and shared USD/IRR through 2026-10-17. Source coverage is separate from the bounded primary sample below.
 
 Canonical source records remain separate under `data/raw`; processed benchmarks and valuation outputs are reproducible derivatives.
 
@@ -68,7 +85,7 @@ A time-series regression using intrinsic value as its sole feature is retained o
 
 ## Main result
 
-Verified against local output on 2026-10-17, the primary sample contains **223 certificate-trading days** from 2025-10-26 through 2026-10-11. Of these, **39** are observed physical anchors and **184** are bounded interpolations between anchors. This supersedes the 206-day September headline checkpoint.
+Rebuilt and verified on 2026-10-18, the primary sample contains **223 certificate-trading days** from 2025-10-26 through 2026-10-11. Of these, **39** are observed physical anchors and **184** are bounded interpolations between anchors. This supersedes the 206-day September headline checkpoint.
 
 The estimated certificate premium to domestic physical value averages **6.09%**, with a median of **6.96%**. These are unweighted daily descriptive statistics.
 
@@ -116,7 +133,7 @@ For the standard production workflow, `python commodity/copper/refresh_powerbi.p
 
 ## Reproducibility and validation
 
-The latest documented production refresh passed all 17 copper and shared certificate-pipeline tests. Notebook calculations do not modify canonical source files, and the Power BI delivery layer copies canonical bubble values rather than recalculating a separate headline percentage.
+The October 18 refresh passed all 23 targeted copper, shared certificate-pipeline, FX, and IME snapshot tests. Both active notebooks executed in memory (18 LME and 29 certificate code cells); canonical raw CSV hashes remained unchanged. Saved notebook outputs remain cleared. The Power BI delivery layer copies canonical bubble values rather than recalculating a separate headline percentage.
 
 Detailed source contracts, processing rules, and validation logic are documented in [`docs/WORKFLOW.md`](docs/WORKFLOW.md), while current coverage and operational checkpoints belong in [`docs/STATUS.md`](docs/STATUS.md).
 

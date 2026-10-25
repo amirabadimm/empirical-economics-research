@@ -47,6 +47,7 @@ def render() -> str:
         "# Application evidence checkpoint",
         "",
         "Prepared for the 2026-10-17 portfolio review from existing local outputs.",
+        "Copper maintenance reconciled 2026-10-18; its primary sample is unchanged.",
         "This is a file and formula verification, not a source refresh, independent",
         "source audit, server check, or new execution of the allocation notebook.",
         "",
